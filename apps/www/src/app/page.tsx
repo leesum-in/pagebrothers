@@ -1,4 +1,4 @@
-import { Card } from '@repo/shared/components';
+import { Card } from '@repo/shared';
 
 const LINKS = [
   {

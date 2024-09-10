@@ -1,4 +1,4 @@
-import '@repo/shared/styles.css';
+import '@repo/shared/src/styles.css';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
