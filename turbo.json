@@ -15,5 +15,6 @@
     "clean": {
       "cache": false
     }
-  }
+  },
+  "globalEnv": ["NEXT_PUBLIC_RUN_MODE"]
 }
