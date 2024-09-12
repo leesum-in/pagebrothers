@@ -1,6 +1,7 @@
 'use client';
 
 import { type PropsWithChildren } from 'react';
+
 import { AuthContext } from '../contexts';
 
 export function AuthProvider({ children }: PropsWithChildren): React.ReactNode {
