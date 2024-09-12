@@ -30,7 +30,6 @@ module.exports = {
     ].map(require.resolve),
     'turbo',
     'eslint:recommended',
-    'plugin:@typescript-eslint/recommended',
     'plugin:import/typescript',
     'plugin:import/recommended',
     'plugin:prettier/recommended',
