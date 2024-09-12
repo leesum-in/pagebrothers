@@ -58,6 +58,7 @@ module.exports = {
     'import/no-default-export': 'off',
     'unicorn/filename-case': 'off',
     // 'import/order': 'off',
+    'react/jsx-sort-props': 'off',
     'import/order': [
       'error',
       {
