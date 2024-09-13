@@ -1,5 +1,4 @@
-import React from 'react';
-import Page from '../../../../www/src/app/page';
+import Page from '../../../../www/src/app/(provider)/(public)/page';
 
 export default {
   title: 'www/Page',

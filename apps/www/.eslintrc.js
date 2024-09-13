@@ -1,8 +1,9 @@
 const { resolve } = require('node:path');
+
 const project = resolve(__dirname, 'tsconfig.json');
 
 module.exports = {
-  extends: ['@repo/eslint-config/next.js'],
+  extends: ['@repo/eslint-config/next.js', 'plugin:prettier/recommended'],
   parserOptions: {
     project,
   },
@@ -12,6 +13,7 @@ module.exports = {
         project,
       },
       node: {
+        paths: ['src'],
         extensions: ['.mjs', '.js', '.jsx', '.ts', '.tsx'],
       },
     },
