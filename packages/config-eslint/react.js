@@ -1,6 +1,6 @@
-const { resolve } = require('node:path');
+// const { resolve } = require('node:path');
 
-const project = resolve(process.cwd(), 'packages/shared/tsconfig.json');
+// const project = resolve(process.cwd(), 'packages/shared/tsconfig.json');
 
 /*
  * This is a custom ESLint configuration for use a library
@@ -17,22 +17,22 @@ module.exports = {
     '@vercel/style-guide/eslint/typescript',
     '@vercel/style-guide/eslint/react',
   ].map(require.resolve),
-  parserOptions: {
-    project,
-  },
+  // parserOptions: {
+  //   project,
+  // },
   globals: {
     JSX: true,
   },
-  settings: {
-    'import/resolver': {
-      typescript: {
-        project,
-      },
-      node: {
-        extensions: ['.mjs', '.js', '.jsx', '.ts', '.tsx'],
-      },
-    },
-  },
+  // settings: {
+  //   'import/resolver': {
+  //     typescript: {
+  //       project,
+  //     },
+  //     node: {
+  //       extensions: ['.mjs', '.js', '.jsx', '.ts', '.tsx'],
+  //     },
+  //   },
+  // },
   ignorePatterns: ['node_modules/', 'dist/', '.eslintrc.js', '**/*.css'],
   // add rules configurations here
   rules: {
