@@ -16,5 +16,5 @@
       "cache": false
     }
   },
-  "globalEnv": ["NEXT_PUBLIC_RUN_MODE"]
+  "globalEnv": ["NEXT_PUBLIC_RUN_MODE", "NEXT_PUBLIC_BASE_URL", "NEXT_PUBLIC_API_URL"]
 }
