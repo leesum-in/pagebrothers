@@ -3,27 +3,22 @@ import { LuArrowRight } from 'react-icons/lu';
 import { RiKakaoTalkFill } from 'react-icons/ri';
 
 import NaverSvg from '@/components/atoms/auth/svgs/NaverSvg.svg';
-
-export enum SocialLoginType {
-  KAKAO = 'kakao',
-  NAVER = 'naver',
-  GOOGLE = 'google',
-}
+import { type SocialLoginType } from '@/types/Auth.type';
 
 interface SocialLoginButtonProps {
   type: SocialLoginType;
 }
 
 const text: Record<SocialLoginType, string> = {
-  kakao: '카카오톡 아이디로 로그인',
-  naver: '네이버 아이디로 로그인',
-  google: '구글 아이디로 로그인',
+  KAKAO: '카카오톡 아이디로 로그인',
+  NAVER: '네이버 아이디로 로그인',
+  GOOGLE: '구글 아이디로 로그인',
 };
 
 const icon: Record<SocialLoginType, React.ReactNode> = {
-  kakao: <RiKakaoTalkFill className="relative mr-4 text-2xl text-black" />,
-  naver: <NaverSvg className="relative mr-4 text-2xl text-[#2dB400]" />,
-  google: <FcGoogle className="relative mr-4 text-2xl" />,
+  KAKAO: <RiKakaoTalkFill className="relative mr-4 text-2xl text-black" />,
+  NAVER: <NaverSvg className="relative mr-4 text-2xl text-[#2dB400]" />,
+  GOOGLE: <FcGoogle className="relative mr-4 text-2xl" />,
 };
 
 function SocialLoginButton({ type }: SocialLoginButtonProps): React.ReactNode {
