@@ -2,7 +2,7 @@
 
 import LogInHeader from '@/components/atoms/auth/LogInHeader';
 import SocialLoginButton from '@/components/molecules/auth/SocialLoginButton';
-import { SocialLoginType } from '@/types/Auth.type';
+import { SocialLoginType } from '@/types';
 
 function LogIn(): React.ReactNode {
   return (
