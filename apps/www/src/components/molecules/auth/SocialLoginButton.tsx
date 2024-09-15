@@ -1,9 +1,11 @@
+'use client';
+
 import { FcGoogle } from 'react-icons/fc';
 import { LuArrowRight } from 'react-icons/lu';
 import { RiKakaoTalkFill } from 'react-icons/ri';
 
 import NaverSvg from '@/components/atoms/auth/svgs/NaverSvg.svg';
-import { type SocialLoginType } from '@/types/Auth.type';
+import { type SocialLoginType } from '@/types';
 
 interface SocialLoginButtonProps {
   type: SocialLoginType;
