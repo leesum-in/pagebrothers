@@ -1,7 +1,8 @@
 'use client';
 
 import LogInHeader from '@/components/atoms/auth/LogInHeader';
-import SocialLoginButton, { SocialLoginType } from '@/components/molecules/auth/SocialLoginButton';
+import SocialLoginButton from '@/components/molecules/auth/SocialLoginButton';
+import { SocialLoginType } from '@/types/Auth.type';
 
 function LogIn(): React.ReactNode {
   return (
