@@ -11,6 +11,15 @@ export type SocialLoginError = {
   trace?: string;
 };
 
+export type RegisterData = {
+  name: string;
+  email: string;
+  provider: SocialLoginType;
+  providerId: string;
+  profileImage: string;
+  acceptMarketing: boolean;
+};
+
 export type SocialLoginResponse = {
   id: string;
 };
