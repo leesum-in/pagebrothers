@@ -5,7 +5,8 @@ import { LuArrowRight } from 'react-icons/lu';
 import { RiKakaoTalkFill } from 'react-icons/ri';
 
 import NaverSvg from '@/components/atoms/auth/svgs/NaverSvg.svg';
-import { type SocialLoginType } from '@/types';
+import { useAuth } from '@/hooks/auth';
+import { SocialLoginType } from '@/types';
 
 interface SocialLoginButtonProps {
   type: SocialLoginType;
@@ -24,8 +25,17 @@ const icon: Record<SocialLoginType, React.ReactNode> = {
 };
 
 function SocialLoginButton({ type }: SocialLoginButtonProps): React.ReactNode {
+  const { logInWithKakao } = useAuth();
+
+  const handleClick = (): void => {
+    if (type === SocialLoginType.KAKAO) {
+      logInWithKakao();
+    }
+  };
+
   return (
     <button
+      onClick={handleClick}
       type="button"
       className="flex justify-center items-center h-14 w-full rounded-lg bg-slate-50 pl-6 pr-4 shadow-sm ring-1 ring-slate-200 transition-colors hover:bg-slate-100 disabled:opacity-50"
     >
