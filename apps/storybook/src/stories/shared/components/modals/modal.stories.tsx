@@ -30,7 +30,13 @@ modal.args = {
   showFooter: true,
   headerContent: <h2>모달 헤더</h2>,
   footerContent: <h2>모달 푸터</h2>,
-  children: <div>모달 안의 기본 내용</div>, // children도 args로 전달
+  children: (
+    <div>
+      <div className=" bg-gray-100 px-10 py-20 ">첫 번째 블럭 내용</div>
+      <div className=" bg-gray-100 px-10 py-10 mt-6">두번째 블럭 내용</div>
+      <div className=" bg-gray-100 px-10 py-20 mt-6">세번째 블럭 내용</div>
+    </div>
+  ), // children도 args로 전달
 };
 
 export const addModal = Template.bind({});

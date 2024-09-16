@@ -27,15 +27,16 @@ const Modal: React.FC<ModalProps> = ({
         className="absolute inset-0 bg-black opacity-50 backdrop-blur-sm"
         onClick={onClose}
       ></div>
-      <div className="relative bg-white w-[480px] h-[90vh] max-h-[90vh] rounded-2xl shadow-lg flex flex-col">
+      {/* 스크롤바 전체영역 */}
+      <div className="relative bg-white w-[480px] h-[90vh] max-h-[90vh] rounded-2xl shadow-lg flex flex-col overflow-y-auto">
         {showHeader && (
-          <div className="flex justify-between items-center border-b pt-4 px-8">
-            {headerContent}
-          </div>
+          <div className="sticky top-0 bg-white border-b pt-4 px-8 z-10">{headerContent}</div>
         )}
-        <div className="p-4 flex-grow overflow-auto py-6 px-8">{children}</div>
+        <div className="flex-grow px-8 pt-6">{children}</div>
         {showFooter && (
-          <div className="flex justify-end items-center pt-4 pb-6 px-8">{footerContent}</div>
+          <div className="sticky bottom-0 bg-white border-t pt-4 pb-6 px-8 z-10">
+            {footerContent}
+          </div>
         )}
       </div>
     </div>
