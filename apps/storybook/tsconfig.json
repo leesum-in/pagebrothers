@@ -12,8 +12,11 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
+    "baseUrl": "./",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      // "@/*": ["../../packages/shared/src/*"] // <<< 이미 쓰고있을경우
+      "@shared/*": ["../../packages/shared/src/*"] // 충돌 방지용 alias 이름설정. @shared/xxxx/xxxx 이런식으로 사용
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
