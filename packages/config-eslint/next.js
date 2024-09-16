@@ -57,9 +57,10 @@ module.exports = {
   rules: {
     'import/no-default-export': 'off',
     'unicorn/filename-case': 'off',
-    // 'import/order': 'off',
+    '@typescript-eslint/no-empty-function': 'off',
     'react/jsx-sort-props': 'off',
     '@typescript-eslint/consistent-type-definitions': 'off', // type과 interface 사용 강제하지 않음
+    'no-console': 'off',
     'import/order': [
       'error',
       {
