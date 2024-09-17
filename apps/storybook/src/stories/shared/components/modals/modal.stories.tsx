@@ -1,4 +1,4 @@
-import Modal from '@shared/components/modals/Modal';
+import { Modal } from '@shared/components/modals';
 import { Meta, StoryFn } from '@storybook/react';
 
 export default {
