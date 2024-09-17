@@ -2,14 +2,16 @@
 
 import { createContext } from 'react';
 
+import type { MeResponse } from '@/types';
+
 export interface AuthContextInterface {
-  me: null;
-  logInWithKakao: () => void;
+  me: MeResponse | null;
+  logInStartWithKakao: () => void;
 }
 
 const initialValue: AuthContextInterface = {
   me: null,
-  logInWithKakao: () => {},
+  logInStartWithKakao: () => {},
 };
 
 export const AuthContext = createContext<AuthContextInterface>(initialValue);
