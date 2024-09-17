@@ -25,11 +25,11 @@ const icon: Record<SocialLoginType, React.ReactNode> = {
 };
 
 function SocialLoginButton({ type }: SocialLoginButtonProps): React.ReactNode {
-  const { logInWithKakao } = useAuth();
+  const { logInStartWithKakao } = useAuth();
 
   const handleClick = (): void => {
     if (type === SocialLoginType.KAKAO) {
-      logInWithKakao();
+      logInStartWithKakao();
     }
   };
 
