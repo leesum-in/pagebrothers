@@ -1,25 +1,35 @@
 import { Modal } from '@shared/components/modals';
 import { Meta, StoryFn } from '@storybook/react';
+import { useState } from 'react';
 
 export default {
   title: 'Shared/Components/Modals', //스토리북 왼쪽 UI구조
   component: Modal, //연결할 컴포넌트
-  argTypes: {
-    showHeader: { control: 'boolean' },
-    showFooter: { control: 'boolean' },
-  },
 } as Meta;
 
 const Template: StoryFn = (args) => {
   //Template은 기본 스토리 템플릿을 정의
+  const [isModalOpen, setIsModalOpen] = useState(false);
   return (
-    <Modal
-      isOpen={true}
-      onClose={() => alert('모달 닫힘')}
-      {...args} // args로 전달된 props를 모달에 전달
-    >
-      {args.children} {/* children도 args로 동적으로 전달 */}
-    </Modal>
+    <>
+      <button
+        onClick={() => setIsModalOpen(true)}
+        className="border border-gray-300 rounded-lg px-4 py-2 hover:bg-gray-100"
+      >
+        모달창 열기
+      </button>
+      <Modal
+        isModalOpen={isModalOpen}
+        onCloseModal={() => setIsModalOpen(false)}
+        showHeader={args.showHeader}
+        showFooter={args.showFooter}
+        headerContent={args.headerContent}
+        footerContent={args.footerContent}
+        // {...args} // args로 전달된 props를 모달에 전달
+      >
+        {args.children} {/* children도 args로 동적으로 전달 */}
+      </Modal>
+    </>
   );
 };
 
