@@ -1,7 +1,12 @@
 'use client';
 
 import Link from 'next/link';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
+
+import { useAuth } from '@/hooks/auth';
+import { useRegisterMutation } from '@/hooks/mutations';
+import type { SocialLoginType } from '@/types';
 
 import AuthWrapper from './AuthWrapper';
 
@@ -32,6 +37,11 @@ const registerList = [
 function Register(): React.ReactNode {
   const [agreeList, setAgreeList] = useState([...registerList]);
   const [isAgreed, setIsAgreed] = useState(false);
+  const { mutateAsync: register } = useRegisterMutation();
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const { me } = useAuth();
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const targetIndex = Number(e.target.dataset.id);
     setAgreeList((prev) => {
@@ -43,6 +53,34 @@ function Register(): React.ReactNode {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
+
+    const isAcceptMarketing = agreeList[2].agree;
+    const name = searchParams.get('name');
+    const email = searchParams.get('email');
+    const provider = searchParams.get('provider') as SocialLoginType;
+    const providerId = searchParams.get('providerId');
+    const profileImage = searchParams.get('profileImage');
+
+    const isEveryQueryParamsExist = name && email && providerId && profileImage;
+
+    if (!isEveryQueryParamsExist) {
+      router.push('/');
+      return;
+    }
+    const registerData = {
+      name,
+      email,
+      provider,
+      providerId,
+      profileImage,
+      acceptMarketing: isAcceptMarketing,
+    };
+
+    const onSubmit = async (): Promise<void> => {
+      const result = await register(registerData);
+      console.log(result);
+    };
+    void onSubmit();
   };
 
   useEffect(() => {
@@ -53,6 +91,12 @@ function Register(): React.ReactNode {
       setIsAgreed(false);
     }
   }, [agreeList]);
+
+  useEffect(() => {
+    if (me) {
+      router.push('/');
+    }
+  }, [me, router]);
 
   return (
     <AuthWrapper type="login">
