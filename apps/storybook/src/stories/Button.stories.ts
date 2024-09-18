@@ -28,6 +28,7 @@ export const Primary: Story = {
   args: {
     variants: 'primary',
     label: '적용하기',
+    disabled: true,
   },
 };
 
@@ -35,6 +36,7 @@ export const Default: Story = {
   args: {
     variants: 'default',
     label: '미리보기',
+    disabled: true,
   },
 };
 
@@ -42,6 +44,7 @@ export const White: Story = {
   args: {
     variants: 'white',
     label: '미리보기',
+    disabled: true,
   },
 };
 
@@ -49,6 +52,7 @@ export const Dashed: Story = {
   args: {
     variants: 'dashed',
     label: '위젯 추가하기',
+    disabled: true,
   },
 };
 
@@ -56,6 +60,7 @@ export const TextPrimary: Story = {
   args: {
     variants: 'textPrimary',
     label: '편집',
+    disabled: true,
   },
 };
 
@@ -63,5 +68,6 @@ export const TextDefault: Story = {
   args: {
     variants: 'textDefault',
     label: '삭제',
+    disabled: true,
   },
 };
