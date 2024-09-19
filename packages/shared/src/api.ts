@@ -12,9 +12,6 @@ api.interceptors.request.use((config) => {
     if (token) {
       config.headers.set('Authorization', `Bearer ${token}`);
     }
-  } else {
-    const authHeader = config.headers.get('pagebrothers-token') as string;
-    config.headers.set('Authorization', `Bearer ${authHeader}`);
   }
   return config;
 });
