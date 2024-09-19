@@ -4,9 +4,9 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState, type PropsWithChildren } from 'react';
 
 import { useMeQuery } from '@/hooks/queries';
-
-import { Me } from '@/types';
+import type { Me } from '@/types';
 import { deleteCookie } from '@/utils';
+
 import { AuthContext } from '../contexts';
 
 export function AuthProvider({ children }: PropsWithChildren): React.ReactNode {

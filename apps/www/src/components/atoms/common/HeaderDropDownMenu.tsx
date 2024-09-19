@@ -1,7 +1,8 @@
 'use client';
-import { useAuth } from '@/hooks/auth';
 import { MenuItem, MenuItems } from '@headlessui/react';
 import Link from 'next/link';
+
+import { useAuth } from '@/hooks/auth';
 
 function HeaderDropDownMenu(): React.ReactNode {
   const { logOut } = useAuth();

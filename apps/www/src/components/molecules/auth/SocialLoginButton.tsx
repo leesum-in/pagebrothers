@@ -1,13 +1,13 @@
 'use client';
 
+import { useSearchParams } from 'next/navigation';
 import { FcGoogle } from 'react-icons/fc';
 import { LuArrowRight } from 'react-icons/lu';
 import { RiKakaoTalkFill } from 'react-icons/ri';
 
 import Naver from '@/components/atoms/svgs/Naver.svg';
 import { useAuth } from '@/hooks/auth';
-import { SocialLoginType } from '@/types';
-import { useSearchParams } from 'next/navigation';
+import type { SocialLoginType } from '@/types';
 
 interface SocialLoginButtonProps {
   type: SocialLoginType;

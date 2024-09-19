@@ -2,9 +2,10 @@
 
 import { Menu, MenuButton } from '@headlessui/react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 import { useAuth } from '@/hooks/auth';
-import { usePathname } from 'next/navigation';
+
 import HeaderDropDownMenu from './HeaderDropDownMenu';
 
 function HeaderMenu(): React.ReactNode {
