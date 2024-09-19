@@ -1,8 +1,15 @@
 // import type { NextRequest } from 'next/server';
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
 // export function middleware(request: NextRequest): NextResponse {
-export function middleware(): NextResponse {
+export function middleware(request: NextRequest): NextResponse {
+  // const pagebrothersCookie = request.cookies.get('pagebrothers-token');
+  // const pathName = request.nextUrl.pathname;
+
+  // if (pagebrothersCookie && pathName === '/login') {
+  //   return NextResponse.redirect(new URL('/start', request.url));
+  // }
+
   return NextResponse.next();
 }
 
