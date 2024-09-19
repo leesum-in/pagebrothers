@@ -9,7 +9,6 @@ export async function getMeFromClient(): Promise<Me | null> {
     return null;
   }
 
-  // 토큰을 로컬 스토리지에 저장하지 않는데 이게 쓸모가 있을까?
   const data = await fetchWrapper<Me, SocialLoginError>(url, {
     method: 'GET',
     headers: {
