@@ -7,8 +7,8 @@ import { QueryProvider } from '@/providers';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: '페이지브라더스',
-  description: '페이지브라더스',
+  title: '쉽고 빠르게 만드는 모바일 청첩장 - 페이지브라더스',
+  description: '쉽고 빠르게 만드는 모바일 청첩장 - 페이지브라더스',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }): JSX.Element {
