@@ -1,6 +1,5 @@
 import '@repo/shared/src/styles.css';
 import type { Metadata } from 'next';
-import { twJoin } from 'tailwind-merge';
 
 import { gowunBatang, notoSerifKr, pretendard } from '@/fonts';
 import QueryProvider from '@/query/provider';
@@ -13,15 +12,11 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }): JSX.Element {
   return (
-    <html lang="kr">
-      <body
-        className={twJoin(
-          pretendard.className,
-          gowunBatang.className,
-          notoSerifKr.className,
-          'font-sans leading-relaxed tracking-tight text-slate-700',
-        )}
-      >
+    <html
+      lang="kr"
+      className={`${pretendard.variable} ${gowunBatang.variable} ${notoSerifKr.variable}`}
+    >
+      <body className="font-sans leading-relaxed tracking-tight text-slate-700">
         <QueryProvider>
           <div className="flex min-h-full flex-1 flex-col">{children}</div>
         </QueryProvider>
