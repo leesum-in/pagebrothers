@@ -4,13 +4,11 @@ import api from '@repo/shared/src/api';
 export async function getMeFromClient(): Promise<Me | null> {
   const url = '/user/me';
   const token = localStorage.getItem('pagebrothers-token');
-
   if (!token) {
     return null;
   }
-
-  const response = await api.get<Me>(url);
-  return response.data;
+  api.defaults.headers.common.Authorization = `Bearer ${token}`;
+  return await api.get<Me, Me>(url);
 }
 
 interface GetMeFromServerProps {
@@ -22,13 +20,8 @@ export async function getMeFromServer({ token }: GetMeFromServerProps): Promise<
   if (!token) {
     return null;
   }
-  const response = await api.get<Me>(url, {
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
-  });
-  return response.data;
+  api.defaults.headers.common.Authorization = `Bearer ${token}`;
+  return await api.get<Me, Me>(url);
 }
 
 export async function postRegister(registerData: RegisterData): Promise<SocialLoginResponse> {

@@ -1,10 +1,12 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import type { Me } from '@/auth/types';
 
+import { useQueryClient } from '@tanstack/react-query';
+import { QUERY_KEY_ME } from './constants';
 import { useMeQuery } from './queries';
 
 interface UseAuth {
@@ -15,8 +17,9 @@ interface UseAuth {
 
 export function useAuth(): UseAuth {
   const router = useRouter();
-  const { data: meFromQuery, isPending, error } = useMeQuery();
-  const [me, setMe] = useState<Me | null>(meFromQuery ?? null);
+  const { data: me, isPending, error } = useMeQuery();
+
+  const queryClient = useQueryClient();
 
   const logInStartWithProvider = (provider: string, backUrl: string): void => {
     const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
@@ -26,8 +29,8 @@ export function useAuth(): UseAuth {
   };
 
   const logOut = (): void => {
-    // await deleteCookie('pagebrothers-token');
-    setMe(null);
+    localStorage.removeItem('pagebrothers-token');
+    queryClient.setQueryData([QUERY_KEY_ME], null);
   };
 
   useEffect(() => {
@@ -44,7 +47,7 @@ export function useAuth(): UseAuth {
   }, [me]);
 
   return {
-    me,
+    me: me ?? null,
     logInStartWithProvider,
     logOut,
   };
