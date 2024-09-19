@@ -6,7 +6,7 @@ interface LoginCallbackPageProps {
   searchParams: Record<string, string | string[] | undefined>;
 }
 
-export function LoginCallbackPage({ searchParams }: LoginCallbackPageProps): React.ReactNode {
+function LoginCallbackPage({ searchParams }: LoginCallbackPageProps): React.ReactNode {
   const cookieStore = cookies();
   const token = searchParams.token as string;
   const backUrl = searchParams.backUrl as string;
@@ -21,3 +21,5 @@ export function LoginCallbackPage({ searchParams }: LoginCallbackPageProps): Rea
 
   return <LoginCallbackTemplate token={token} backUrl={backUrl} />;
 }
+
+export default LoginCallbackPage;
