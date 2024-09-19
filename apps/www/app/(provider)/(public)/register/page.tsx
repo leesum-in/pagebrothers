@@ -1,13 +1,13 @@
 import type { Metadata } from 'next';
 
-import Register from '@/components/organisms/auth/Register';
+import RegisterTemplate from '@/components/organisms/auth/RegisterTemplate';
 
 export const metadata: Metadata = {
   title: '회원가입하기',
 };
 
 function RegisterPage(): React.ReactNode {
-  return <Register />;
+  return <RegisterTemplate />;
 }
 
 export default RegisterPage;

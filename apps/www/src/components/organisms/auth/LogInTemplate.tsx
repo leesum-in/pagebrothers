@@ -1,14 +1,14 @@
 import SocialLoginButton from '@/components/molecules/auth/SocialLoginButton';
-import { SocialLoginType } from '@/types';
+import { SOCIAL_LOGIN_TYPES } from '@/types';
 
 import AuthWrapper from './AuthWrapper';
 
-function LogIn(): React.ReactNode {
+function LogInTemplate(): React.ReactNode {
   return (
     <AuthWrapper type="login">
       <div className="mt-8">
         <ul className="space-y-2 font-bold">
-          {Object.values(SocialLoginType).map((type) => (
+          {SOCIAL_LOGIN_TYPES.map((type) => (
             <li key={type}>
               <SocialLoginButton type={type} />
             </li>
@@ -19,4 +19,4 @@ function LogIn(): React.ReactNode {
   );
 }
 
-export default LogIn;
+export default LogInTemplate;

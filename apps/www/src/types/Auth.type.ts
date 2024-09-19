@@ -1,4 +1,4 @@
-const SOCIAL_LOGIN_TYPES = ['KAKAO', 'NAVER', 'GOOGLE'] as const;
+export const SOCIAL_LOGIN_TYPES = ['KAKAO', 'NAVER', 'GOOGLE'] as const;
 export type SocialLoginType = (typeof SOCIAL_LOGIN_TYPES)[number];
 
 export type SocialLoginError = {

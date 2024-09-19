@@ -35,7 +35,7 @@ const registerList = [
   },
 ];
 
-function Register(): React.ReactNode {
+function RegisterTemplate(): React.ReactNode {
   const [agreeList, setAgreeList] = useState([...registerList]);
   const [isAgreed, setIsAgreed] = useState(false);
   const { mutateAsync: register } = useRegisterMutation();
@@ -154,4 +154,4 @@ function Register(): React.ReactNode {
   );
 }
 
-export default Register;
+export default RegisterTemplate;
