@@ -80,6 +80,8 @@ function Register(): React.ReactNode {
     const onSubmit = async (): Promise<void> => {
       const result = await register(registerData);
       console.log(result);
+      // 아래 라우터푸시 카카오에서는 필요없는 것 같은데...
+      router.push('/');
     };
     void onSubmit();
   };
@@ -120,7 +122,7 @@ function Register(): React.ReactNode {
                     onChange={handleChange}
                   />
                   <div className="center-flex h-5 w-5 flex-none rounded-sm border border-slate-200 bg-white text-transparent peer-checked:border-indigo-600 peer-checked:bg-indigo-600 peer-checked:text-white peer-focus:ring peer-disabled:bg-slate-100">
-                    <Check />
+                    <Check className="text-base" />
                   </div>
                   <span className="flex-1 text-slate-400 peer-checked:text-current peer-disabled:text-slate-300">
                     <p className="flex items-center justify-between space-x-2">
