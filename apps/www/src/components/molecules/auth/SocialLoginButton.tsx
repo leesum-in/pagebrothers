@@ -7,6 +7,7 @@ import { RiKakaoTalkFill } from 'react-icons/ri';
 import Naver from '@/components/atoms/svgs/Naver.svg';
 import { useAuth } from '@/hooks/auth';
 import { SocialLoginType } from '@/types';
+import { useSearchParams } from 'next/navigation';
 
 interface SocialLoginButtonProps {
   type: SocialLoginType;
@@ -25,12 +26,12 @@ const icon: Record<SocialLoginType, React.ReactNode> = {
 };
 
 function SocialLoginButton({ type }: SocialLoginButtonProps): React.ReactNode {
-  const { logInStartWithKakao } = useAuth();
+  const { logInStartWithProvider } = useAuth();
+  const searchParams = useSearchParams();
+  const backUrl = searchParams.get('backUrl');
 
   const handleClick = (): void => {
-    if (type === SocialLoginType.KAKAO) {
-      logInStartWithKakao();
-    }
+    logInStartWithProvider(type.toLowerCase(), backUrl ?? '/');
   };
 
   return (

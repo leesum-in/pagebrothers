@@ -4,10 +4,12 @@ import { Menu, MenuButton } from '@headlessui/react';
 import Link from 'next/link';
 
 import { useAuth } from '@/hooks/auth';
+import { usePathname } from 'next/navigation';
 import HeaderDropDownMenu from './HeaderDropDownMenu';
 
 function HeaderMenu(): React.ReactNode {
   const { me } = useAuth();
+  const pathname = usePathname();
 
   return (
     <ul className="flex items-center gap-3 desktop:gap-4">
@@ -16,7 +18,7 @@ function HeaderMenu(): React.ReactNode {
       </li>
       <li className="relative">
         {!me ? (
-          <Link className="font-bold leading-snug" href="/login">
+          <Link className="font-bold leading-snug" href={`/login?backUrl=${pathname}`}>
             로그인
           </Link>
         ) : (
