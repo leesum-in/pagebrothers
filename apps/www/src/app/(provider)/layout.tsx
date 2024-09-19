@@ -3,6 +3,7 @@ import { cookies } from 'next/headers';
 import { Suspense, type PropsWithChildren } from 'react';
 
 import { getMeFromServer } from '@/apis/auth/me-server.api';
+import Header from '@/components/molecules/common/Header';
 import { QUERY_KEY_ME } from '@/constants';
 import { AuthProvider } from '@/providers';
 
@@ -20,7 +21,10 @@ async function ProviderLayout({ children }: PropsWithChildren): Promise<React.Re
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <HydrationBoundary state={dehydratedState}>
-        <AuthProvider>{children}</AuthProvider>
+        <AuthProvider>
+          <Header />
+          {children}
+        </AuthProvider>
       </HydrationBoundary>
     </Suspense>
   );
