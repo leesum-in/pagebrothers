@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
 interface LoginCallbackTemplateProps {
-  token: string;
+  token: string | null;
   backUrl: string;
 }
 
