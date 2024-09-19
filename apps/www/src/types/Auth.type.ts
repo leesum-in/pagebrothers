@@ -24,7 +24,7 @@ export type SocialLoginResponse = {
   id: string;
 };
 
-export type MeResponse = {
+export type Me = {
   id: string;
   name: string;
   email: string;

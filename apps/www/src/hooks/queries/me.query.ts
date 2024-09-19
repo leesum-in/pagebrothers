@@ -3,10 +3,10 @@ import { useQuery } from '@tanstack/react-query';
 
 import { getMeFromClient } from '@/apis/auth/me-client.api';
 import { QUERY_KEY_ME } from '@/constants';
-import type { MeResponse, SocialLoginError } from '@/types';
+import type { Me, SocialLoginError } from '@/types';
 
-export function useMeQuery(): UseQueryResult<MeResponse | null, SocialLoginError> {
-  return useQuery<MeResponse | null, SocialLoginError>({
+export function useMeQuery(): UseQueryResult<Me | null, SocialLoginError> {
+  return useQuery<Me | null, SocialLoginError>({
     queryKey: [QUERY_KEY_ME],
     queryFn: getMeFromClient,
   });
