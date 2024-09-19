@@ -1,4 +1,4 @@
-type SocialLoginType = 'KAKAO' | 'NAVER' | 'GOOGLE';
+export type SocialLoginType = 'KAKAO' | 'NAVER' | 'GOOGLE';
 
 export type SocialLoginError = {
   message: string;
