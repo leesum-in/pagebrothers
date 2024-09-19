@@ -1,8 +1,4 @@
-export enum SocialLoginType {
-  KAKAO = 'KAKAO',
-  NAVER = 'NAVER',
-  GOOGLE = 'GOOGLE',
-}
+type SocialLoginType = 'KAKAO' | 'NAVER' | 'GOOGLE';
 
 export type SocialLoginError = {
   message: string;
