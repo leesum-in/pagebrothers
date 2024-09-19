@@ -13,10 +13,9 @@ export async function getMeFromServer({ token }: GetMeFromServerProps): Promise<
   const data = await fetchWrapper<Me, SocialLoginError>(url, {
     method: 'GET',
     headers: {
+      'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
   });
   return data;
 }
-
-// 수정 요망
