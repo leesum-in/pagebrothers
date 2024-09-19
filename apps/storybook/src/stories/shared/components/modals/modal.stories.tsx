@@ -21,10 +21,10 @@ const Template: StoryFn = (args) => {
       <Modal
         isModalOpen={isModalOpen}
         onCloseModal={() => setIsModalOpen(false)}
-        showHeader={args.showHeader}
-        showFooter={args.showFooter}
-        headerContent={args.headerContent}
-        footerContent={args.footerContent}
+        isModalHeader={args.isModalHeader}
+        isModalFooter={args.isModalFooter}
+        modalHeader={args.modalHeader}
+        modalFooter={args.modalFooter}
         // {...args} // args로 전달된 props를 모달에 전달
       >
         {args.children} {/* children도 args로 동적으로 전달 */}
@@ -36,10 +36,10 @@ const Template: StoryFn = (args) => {
 export const modal = Template.bind({}); // Template.bind({})로 Template을 복사해서 새로운 스토리만듬
 modal.args = {
   //해당 스토리에서 사용할 기본 props 값을 설정
-  showHeader: true,
-  showFooter: true,
-  headerContent: <h2>모달 헤더</h2>,
-  footerContent: <h2>모달 푸터</h2>,
+  isModalHeader: true,
+  isModalFooter: true,
+  modalHeader: <h2>모달 헤더</h2>,
+  modalFooter: <h2>모달 푸터</h2>,
   children: (
     <div>
       <div className=" bg-gray-100 px-10 py-20 ">첫 번째 블럭 내용</div>
@@ -51,9 +51,9 @@ modal.args = {
 
 export const addModal = Template.bind({});
 addModal.args = {
-  showHeader: true,
-  showFooter: true,
-  headerContent: <h2>에드 모달 헤더</h2>,
-  footerContent: <h2>에드 모달 푸터</h2>,
+  isModalHeader: true,
+  isModalFooter: true,
+  modalHeader: <h2>에드 모달 헤더</h2>,
+  modalFooter: <h2>에드 모달 푸터</h2>,
   children: <div>에드 모달 내용</div>,
 }; //요런식
