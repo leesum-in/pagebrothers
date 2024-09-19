@@ -37,7 +37,7 @@ module.exports = {
   // parserOptions: {
   //   project,
   // },
-  plugins: ['import'],
+  // plugins: ['import'],
   globals: {
     React: true,
     JSX: true,
