@@ -4,7 +4,7 @@ import { FcGoogle } from 'react-icons/fc';
 import { LuArrowRight } from 'react-icons/lu';
 import { RiKakaoTalkFill } from 'react-icons/ri';
 
-import NaverSvg from '@/components/atoms/auth/svgs/NaverSvg.svg';
+import Naver from '@/components/atoms/svgs/Naver.svg';
 import { useAuth } from '@/hooks/auth';
 import { SocialLoginType } from '@/types';
 
@@ -20,7 +20,7 @@ const text: Record<SocialLoginType, string> = {
 
 const icon: Record<SocialLoginType, React.ReactNode> = {
   KAKAO: <RiKakaoTalkFill className="relative mr-4 text-2xl text-black" />,
-  NAVER: <NaverSvg className="relative mr-4 text-2xl text-[#2dB400]" />,
+  NAVER: <Naver className="relative mr-4 text-2xl text-[#2dB400]" />,
   GOOGLE: <FcGoogle className="relative mr-4 text-2xl" />,
 };
 

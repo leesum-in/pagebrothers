@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
+import Check from '@/components/atoms/svgs/Check.svg';
 import { useAuth } from '@/hooks/auth';
 import { useRegisterMutation } from '@/hooks/mutations';
 import type { SocialLoginType } from '@/types';
@@ -119,20 +120,7 @@ function Register(): React.ReactNode {
                     onChange={handleChange}
                   />
                   <div className="center-flex h-5 w-5 flex-none rounded-sm border border-slate-200 bg-white text-transparent peer-checked:border-indigo-600 peer-checked:bg-indigo-600 peer-checked:text-white peer-focus:ring peer-disabled:bg-slate-100">
-                    <svg
-                      stroke="currentColor"
-                      fill="none"
-                      strokeWidth="3"
-                      viewBox="0 0 24 24"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="text-base"
-                      height="1em"
-                      width="1em"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <polyline points="20 6 9 17 4 12" />
-                    </svg>
+                    <Check />
                   </div>
                   <span className="flex-1 text-slate-400 peer-checked:text-current peer-disabled:text-slate-300">
                     <p className="flex items-center justify-between space-x-2">
