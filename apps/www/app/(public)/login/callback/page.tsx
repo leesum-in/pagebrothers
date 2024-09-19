@@ -1,14 +1,9 @@
 import { cookies } from 'next/headers';
-import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+
+import LoginCallbackTemplate from '@/auth/components/LogInCallbackTemplate';
 
 interface LoginCallbackPageProps {
   searchParams: Record<string, string | string[] | undefined>;
-}
-
-interface LoginCallbackTemplateClientProps {
-  token: string;
-  backUrl: string;
 }
 
 export function LoginCallbackPage({ searchParams }: LoginCallbackPageProps): React.ReactNode {
@@ -24,23 +19,5 @@ export function LoginCallbackPage({ searchParams }: LoginCallbackPageProps): Rea
     });
   }
 
-  return <LoginCallbackTemplateClient token={token} backUrl={backUrl} />;
-}
-
-('use client');
-
-export function LoginCallbackTemplateClient({
-  token,
-  backUrl,
-}: LoginCallbackTemplateClientProps): null {
-  const router = useRouter();
-  useEffect(() => {
-    if (token) {
-      localStorage.setItem('pagebrothers-token', token);
-    }
-
-    router.replace(backUrl);
-  }, [token, backUrl, router]);
-
-  return null;
+  return <LoginCallbackTemplate token={token} backUrl={backUrl} />;
 }
