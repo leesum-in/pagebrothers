@@ -1,5 +1,5 @@
 function PublicPage(): React.ReactNode {
-  return <main>page</main>;
+  return <main>main</main>;
 }
 
 export default PublicPage;

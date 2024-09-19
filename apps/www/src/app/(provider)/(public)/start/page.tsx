@@ -5,7 +5,7 @@ export const metadata: Metadata = {
 };
 
 function StartPage(): React.ReactNode {
-  return <h1>시작하기</h1>;
+  return <div />;
 }
 
 export default StartPage;
