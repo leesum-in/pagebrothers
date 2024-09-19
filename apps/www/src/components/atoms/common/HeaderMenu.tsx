@@ -1,8 +1,10 @@
 'use client';
 
+import { Menu, MenuButton } from '@headlessui/react';
 import Link from 'next/link';
 
 import { useAuth } from '@/hooks/auth';
+import HeaderDropDownMenu from './HeaderDropDownMenu';
 
 function HeaderMenu(): React.ReactNode {
   const { me } = useAuth();
@@ -18,16 +20,14 @@ function HeaderMenu(): React.ReactNode {
             로그인
           </Link>
         ) : (
-          // headless ui 로 변경 요망
-          <button
-            className="block h-6 w-6 rounded-full bg-slate-200 bg-cover desktop:h-8 desktop:w-8"
-            style={{ backgroundImage: `url(${me.profileImage})` }}
-            id="headlessui-menu-button-:ra:"
-            aria-haspopup="menu"
-            aria-expanded="false"
-            data-headlessui-state=""
-            type="button"
-          />
+          <Menu>
+            <MenuButton
+              className="block h-6 w-6 rounded-full bg-slate-200 bg-cover desktop:h-8 desktop:w-8"
+              style={{ backgroundImage: `url(${me.profileImage})` }}
+              type="button"
+            />
+            <HeaderDropDownMenu />
+          </Menu>
         )}
       </li>
     </ul>
