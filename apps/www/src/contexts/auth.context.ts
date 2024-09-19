@@ -6,13 +6,13 @@ import type { Me } from '@/types';
 
 export interface AuthContextInterface {
   me: Me | null;
-  logInStartWithKakao: () => void;
+  logInStartWithProvider: (provider: string, backUrl: string) => void;
   logOut: () => void;
 }
 
 const initialValue: AuthContextInterface = {
   me: null,
-  logInStartWithKakao: () => {},
+  logInStartWithProvider: () => {},
   logOut: () => {},
 };
 

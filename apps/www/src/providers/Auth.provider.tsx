@@ -14,12 +14,11 @@ export function AuthProvider({ children }: PropsWithChildren): React.ReactNode {
   const { data: meFromQuery, isPending, error } = useMeQuery();
   const [me, setMe] = useState<Me | null>(meFromQuery ?? null);
 
-  // 처음부터 만들기 << 버튼으로 이동시 backUrl 추가 https://dev.pagesisters.cc/start
-  const logInStartWithKakao = (): void => {
+  const logInStartWithProvider = (provider: string, backUrl: string): void => {
     const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
     const API_URL = process.env.NEXT_PUBLIC_API_URL;
-    const kakaoAuthUrl = `${API_URL}/oauth2/authorize/kakao?redirect_uri=${BASE_URL}/login/callback?backUrl=/start&register_uri=${BASE_URL}/register?backUrl=/`;
-    router.push(kakaoAuthUrl);
+    const authUrl = `${API_URL}/oauth2/authorize/${provider}?redirect_uri=${BASE_URL}/login/callback?backUrl=${backUrl}&register_uri=${BASE_URL}/register?backUrl=${backUrl}`;
+    router.push(authUrl);
   };
 
   const logOut = async (): Promise<void> => {
@@ -43,7 +42,7 @@ export function AuthProvider({ children }: PropsWithChildren): React.ReactNode {
   const value = {
     me: me ?? null,
     logOut,
-    logInStartWithKakao,
+    logInStartWithProvider,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
