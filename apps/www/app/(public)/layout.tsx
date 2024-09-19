@@ -2,9 +2,9 @@ import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query
 import { cookies } from 'next/headers';
 import { Suspense, type PropsWithChildren } from 'react';
 
-import { getMeFromServer } from '@/apis/auth/me-server.api';
-import Header from '@/components/molecules/common/Header';
-import { QUERY_KEY_ME } from '@/constants';
+import { getMeFromServer } from '@/auth/apis';
+import { QUERY_KEY_ME } from '@/auth/constants';
+import Header from '@/common/components/Header';
 
 async function ProviderLayout({ children }: PropsWithChildren): Promise<React.ReactNode> {
   const cookieStore = cookies();

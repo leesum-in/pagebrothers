@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 
-import RegisterTemplate from '@/components/organisms/auth/RegisterTemplate';
+import RegisterTemplate from '@/auth/components/RegisterTemplate';
 
 export const metadata: Metadata = {
   title: '회원가입하기',

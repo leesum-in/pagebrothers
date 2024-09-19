@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import { twJoin } from 'tailwind-merge';
 
 import { gowunBatang, notoSerifKr, pretendard } from '@/fonts';
-import { QueryProvider } from '@/providers';
+import QueryProvider from '@/query/provider';
 import './globals.css';
 
 export const metadata: Metadata = {

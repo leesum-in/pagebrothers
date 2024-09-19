@@ -1,6 +1,5 @@
+import LogInTemplate from '@/auth/components/LogInTemplate';
 import type { Metadata } from 'next';
-
-import LogInTemplate from '@/components/organisms/auth/LogInTemplate';
 
 export const metadata: Metadata = {
   title: '로그인하기',
