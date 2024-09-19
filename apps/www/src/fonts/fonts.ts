@@ -6,15 +6,18 @@ export const pretendard = localFont({
   weight: '45 920',
   style: 'normal',
   display: 'swap',
+  variable: '--font-pretendard',
 });
 
 export const notoSerifKr = NotoSerifKr({
   subsets: ['latin'],
   weight: ['200', '300', '400', '500', '600', '700', '900'],
+  variable: '--font-notoSerifKr',
 });
 
 export const gowunBatang = localFont({
   src: './GowunBatangRegular.woff',
   style: 'normal',
   display: 'swap',
+  variable: '--font-gowunBatang',
 });
