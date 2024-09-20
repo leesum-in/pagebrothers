@@ -7,7 +7,17 @@ settings:
 importers:
 
   .:
+    dependencies:
+      axios:
+        specifier: ^1.7.7
+        version: 1.7.7
+      react-dom:
+        specifier: ^18.3.1
+        version: 18.3.1(react@18.3.1)
     devDependencies:
+      '@types/react-dom':
+        specifier: ^18.3.0
+        version: 18.3.0
       prettier:
         specifier: ^3.2.5
         version: 3.3.3
