@@ -1,18 +1,19 @@
 'use client';
 
+import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
 import type { Me } from '@/auth/types';
+import { deleteCookie } from 'backup/utils';
 
-import { useQueryClient } from '@tanstack/react-query';
 import { QUERY_KEY_ME } from './constants';
 import { useMeQuery } from './queries';
 
 interface UseAuth {
   me: Me | null;
   logInStartWithProvider: (provider: string, backUrl: string) => void;
-  logOut: () => void;
+  logOut: () => Promise<void>;
 }
 
 export function useAuth(): UseAuth {
@@ -28,13 +29,14 @@ export function useAuth(): UseAuth {
     router.push(authUrl);
   };
 
-  const logOut = (): void => {
+  const logOut = async (): Promise<void> => {
     localStorage.removeItem('pagebrothers-token');
     queryClient.setQueryData([QUERY_KEY_ME], null);
+    await deleteCookie('pagebrothers-token');
   };
 
   useEffect(() => {
-    console.log('loading');
+    console.log('>>>>>>>>>loading');
   }, [isPending]);
 
   useEffect(() => {
