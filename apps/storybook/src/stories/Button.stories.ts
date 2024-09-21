@@ -29,6 +29,7 @@ export const Primary: Story = {
     variants: 'primary',
     label: '적용하기',
     disabled: true,
+    size: 'medium',
   },
 };
 
@@ -37,6 +38,7 @@ export const Default: Story = {
     variants: 'default',
     label: '미리보기',
     disabled: true,
+    size: 'small',
   },
 };
 
@@ -45,6 +47,7 @@ export const White: Story = {
     variants: 'white',
     label: '미리보기',
     disabled: true,
+    size: 'large',
   },
 };
 
@@ -53,6 +56,7 @@ export const Dashed: Story = {
     variants: 'dashed',
     label: '위젯 추가하기',
     disabled: true,
+    size: 'medium',
   },
 };
 
@@ -61,6 +65,7 @@ export const TextPrimary: Story = {
     variants: 'textPrimary',
     label: '편집',
     disabled: true,
+    size: 'medium',
   },
 };
 
@@ -69,5 +74,6 @@ export const TextDefault: Story = {
     variants: 'textDefault',
     label: '삭제',
     disabled: true,
+    size: 'small',
   },
 };
