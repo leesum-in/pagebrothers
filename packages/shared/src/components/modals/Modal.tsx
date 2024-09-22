@@ -10,7 +10,7 @@ interface ModalProps {
   isModalHeader?: boolean;
   isModalFooter?: boolean;
   zIndex?: number;
-  scale?: number;
+  isMultiModal?: boolean;
 }
 
 const Modal: React.FC<ModalProps> = ({
@@ -22,27 +22,23 @@ const Modal: React.FC<ModalProps> = ({
   modalHeader,
   modalFooter,
   zIndex = 50,
-  scale = 1,
+  isMultiModal = false,
 }) => {
-  // 모달 배경
-  const modalBackground = `fixed inset-0 bg-blue-700 bg-opacity-30 transition-opacity duration-300 z-[${zIndex - 1} ${
-    isModalOpen ? 'opacity-50' : 'opacity-0 pointer-events-none'
+  const modalBackground = `fixed inset-0 bg-blue-800 bg-opacity-15 flex justify-center items-end md:items-center z-[${zIndex}] transform transition-opacity duration-300 ${
+    isModalOpen
+      ? 'pointer-events-auto backdrop-blur-sm opacity-100'
+      : 'pointer-events-none opacity-0'
   }`;
 
-  // 모달 컨테이너
-  const modalContainer = `fixed bottom-0 left-0 right-0 items-end justify-center md:bottom-0 left-0 right-0 top-0 flex md:items-center  z-[${zIndex}]  transform transition-all duration-300 ${
-    isModalOpen ? 'pointer-events-auto backdrop-blur-sm' : 'pointer-events-none'
-  }`;
+  const multiModalWidth = isMultiModal ? 'max-w-sm' : 'md:w-[480px]';
 
-  // 모달 내용
-  const modalContent = `relative bg-white w-full md:w-[480px] max-h-[90vh] rounded-t-2xl md:rounded-2xl shadow-lg flex flex-col overflow-y-auto transform transition-all duration-300 ${
-    isModalOpen ? `opacity-100 translate-y-0 ` : 'opacity-0 translate-y-full md:translate-y-4 '
-  }scale-${scale === 0.75 ? '75' : '100'}`;
+  const modalContent = `relative bg-white w-full ${multiModalWidth} max-h-[90vh] rounded-t-2xl md:rounded-2xl shadow-lg flex flex-col overflow-y-auto transform transition-all duration-300 ${
+    isModalOpen ? `opacity-100 translate-y-0` : 'opacity-0 translate-y-full md:translate-y-4'
+  }`;
 
   return ReactDOM.createPortal(
     <>
-      <div className={modalBackground}></div>
-      <div className={modalContainer} onClick={onCloseModal}>
+      <div className={modalBackground} onClick={onCloseModal}>
         <div className={modalContent} onClick={(e) => e.stopPropagation()}>
           {isModalHeader && (
             <div className="sticky top-0 bg-white border-b pt-4 px-8 z-10">{modalHeader}</div>
