@@ -8,6 +8,7 @@ interface CheckboxProps {
   labelText?: string;
 }
 
+// default, disabled, checked & disabled 상태별 스타일
 const getCheckboxStateStyles = (checked: boolean, disabled: boolean) => {
   if (disabled) {
     return checked ? 'bg-indigo-100 border-none' : 'bg-slate-50 border-[0.1rem] border-slate-100';
@@ -15,6 +16,7 @@ const getCheckboxStateStyles = (checked: boolean, disabled: boolean) => {
   return checked ? 'bg-indigo-500 border-none' : 'border-[0.1rem] border-slate-200';
 };
 
+// 사이즈별 체크박스 스타일
 const getCheckboxSizeStyles = (label: CheckboxProps['label']) => {
   switch (label) {
     case 'small':
@@ -27,6 +29,7 @@ const getCheckboxSizeStyles = (label: CheckboxProps['label']) => {
   }
 };
 
+// 사이즈별 텍스트 스타일
 const getLabelSizeStyles = (label: CheckboxProps['label']) => {
   switch (label) {
     case 'small':
@@ -39,12 +42,7 @@ const getLabelSizeStyles = (label: CheckboxProps['label']) => {
   }
 };
 
-const Checkbox = ({
-  label,
-  checked = false,
-  disabled = false,
-  labelText = '레이블',
-}: CheckboxProps) => {
+const Checkbox = ({ label, checked = false, disabled = false, labelText = '' }: CheckboxProps) => {
   const [enabled, setEnabled] = useState(checked);
 
   const handleChange = (value: boolean) => {
@@ -53,13 +51,8 @@ const Checkbox = ({
     }
   };
 
-  // default, disabled, checked & disabled 상태별 스타일
   const checkboxStateStyles = getCheckboxStateStyles(enabled, disabled);
-
-  // 사이즈별 체크박스 스타일
   const checkboxSizeStyles = getCheckboxSizeStyles(label);
-
-  // 사이즈별 텍스트 스타일
   const labelSizeStyles = getLabelSizeStyles(label);
 
   return (

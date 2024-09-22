@@ -32,7 +32,7 @@ Default.args = {
   label: 'small',
   checked: false,
   disabled: false,
-  labelText: '디폴트 레이블 입력',
+  labelText: '디폴트',
 };
 
 // Checked Checkbox 스토리
@@ -41,7 +41,7 @@ Checked.args = {
   label: 'small',
   checked: true,
   disabled: false,
-  labelText: '체크됨 레이블 입력',
+  labelText: '체크됨',
 };
 
 // Disabled Checkbox 스토리
@@ -50,7 +50,7 @@ Disabled.args = {
   label: 'small',
   checked: false,
   disabled: true,
-  labelText: '비활성화 레이블 입력',
+  labelText: '비활성화',
 };
 
 // Checked & Disabled Checkbox 스토리
@@ -59,5 +59,5 @@ CheckedDisabled.args = {
   label: 'small',
   checked: true,
   disabled: true,
-  labelText: '체크 & 비활성화됨 레이블 입력',
+  labelText: '체크 & 비활성화됨',
 };
