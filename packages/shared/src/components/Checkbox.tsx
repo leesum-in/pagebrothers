@@ -8,6 +8,37 @@ interface CheckboxProps {
   labelText?: string;
 }
 
+const getCheckboxStateStyles = (checked: boolean, disabled: boolean) => {
+  if (disabled) {
+    return checked ? 'bg-indigo-100 border-none' : 'bg-slate-50 border-[0.1rem] border-slate-100';
+  }
+  return checked ? 'bg-indigo-500 border-none' : 'border-[0.1rem] border-slate-200';
+};
+
+const getCheckboxSizeStyles = (label: CheckboxProps['label']) => {
+  switch (label) {
+    case 'small':
+      return 'w-[1.125rem] h-[1.125rem] border-[0.1rem] rounded-[0.25rem] gap-0';
+    case 'large':
+      return 'w-[1.25rem] h-[1.25rem] border-[0.1rem] rounded-[0.25rem] gap-0';
+    case 'none':
+    default:
+      return 'w-[1.5rem] h-[1.5rem] border-[0.1rem] rounded-[0.25rem] gap-0';
+  }
+};
+
+const getLabelSizeStyles = (label: CheckboxProps['label']) => {
+  switch (label) {
+    case 'small':
+      return 'text-[0.875rem] font-normal leading-[1.4rem] tracking-[-0.02em] text-justify';
+    case 'large':
+      return 'text-[1rem] font-normal leading-[1.6rem] tracking-[-0.02em] text-justify';
+    case 'none':
+    default:
+      return 'hidden';
+  }
+};
+
 const Checkbox = ({
   label,
   checked = false,
