@@ -32,7 +32,7 @@ Default.args = {
   label: 'small',
   selected: false,
   disabled: false,
-  labelText: '레이블',
+  labelText: '디폴트',
 };
 
 // Selected Radio 스토리

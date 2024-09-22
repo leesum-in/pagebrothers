@@ -47,7 +47,7 @@ interface RadioProps {
   labelText?: string;
 }
 
-const Radio = ({ label, selected = false, disabled = false, labelText = '레이블' }: RadioProps) => {
+const Radio = ({ label, selected = false, disabled = false, labelText = '' }: RadioProps) => {
   const [selectedOption, setSelectedOption] = useState(selected);
 
   const radioStateStyles = getRadioStateStyles(label);
