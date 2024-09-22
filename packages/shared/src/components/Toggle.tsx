@@ -40,7 +40,7 @@ const Toggle = ({
   label = 'left',
   toggleOn = false,
   disabled = false,
-  labelText = '레이블',
+  labelText = '',
 }: ToggleProps) => {
   const [enabled, setEnabled] = useState(toggleOn);
 

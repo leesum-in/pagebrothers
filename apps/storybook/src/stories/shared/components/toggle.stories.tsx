@@ -32,7 +32,7 @@ Default.args = {
   label: 'left',
   toggleOn: false,
   disabled: false,
-  labelText: '레이블',
+  labelText: '디폴트',
 };
 
 // Toggle On 스토리
