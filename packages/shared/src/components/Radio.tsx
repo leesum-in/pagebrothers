@@ -53,7 +53,6 @@ const Radio = ({ label, selected = false, disabled = false, labelText = '' }: Ra
   const radioStateStyles = getRadioStateStyles(label);
   const textStyle = getTextStyle(label);
   const selectedCircleStyle = getSelectedCircleStyle(label);
-  const labelOpacity = disabled ? 'opacity-50' : '';
 
   return (
     <RadioGroup value={selectedOption} onChange={setSelectedOption} disabled={disabled}>
@@ -66,7 +65,6 @@ const Radio = ({ label, selected = false, disabled = false, labelText = '' }: Ra
         >
           {({ checked }) => (
             <>
-              {/* 선택된 경우 작은 원 표시 */}
               {checked && (
                 <div
                   className={`absolute ${selectedCircleStyle} ${
@@ -84,7 +82,7 @@ const Radio = ({ label, selected = false, disabled = false, labelText = '' }: Ra
         </RadioGroup.Option>
         <RadioGroup.Label
           as="span"
-          className={`ml-[0.5rem] text-slate-600 ${textStyle} ${labelOpacity}`}
+          className={`ml-[0.5rem] text-slate-600 ${textStyle} ${disabled ? 'opacity-50' : ''}`}
         >
           {labelText}
         </RadioGroup.Label>
