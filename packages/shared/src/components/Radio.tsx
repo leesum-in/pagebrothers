@@ -1,5 +1,12 @@
 import { RadioGroup } from '@headlessui/react';
-import { useState } from 'react';
+
+interface RadioProps {
+  label: 'small' | 'large' | 'none';
+  selected: boolean;
+  disabled?: boolean;
+  labelText?: string;
+  onChange: (value: boolean) => void;
+}
 
 // 라벨별 스타일
 const getRadioStateStyles = (label: 'small' | 'large' | 'none') => {
@@ -40,22 +47,13 @@ const getSelectedCircleStyle = (label: 'small' | 'large' | 'none') => {
   }
 };
 
-interface RadioProps {
-  label: 'small' | 'large' | 'none';
-  selected?: boolean;
-  disabled?: boolean;
-  labelText?: string;
-}
-
-const Radio = ({ label, selected = false, disabled = false, labelText = '' }: RadioProps) => {
-  const [selectedOption, setSelectedOption] = useState(selected);
-
+const Radio = ({ label, selected, disabled = false, labelText = '', onChange }: RadioProps) => {
   const radioStateStyles = getRadioStateStyles(label);
   const textStyle = getTextStyle(label);
   const selectedCircleStyle = getSelectedCircleStyle(label);
 
   return (
-    <RadioGroup value={selectedOption} onChange={setSelectedOption} disabled={disabled}>
+    <RadioGroup value={selected} onChange={onChange} disabled={disabled}>
       <div className="flex items-center">
         <RadioGroup.Option
           value={true}
