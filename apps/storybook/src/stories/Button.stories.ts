@@ -27,7 +27,7 @@ type Story = StoryObj<typeof meta>;
 export const Primary: Story = {
   args: {
     variants: 'primary',
-    label: '적용하기',
+    children: '적용하기',
     disabled: true,
     size: 'medium',
   },
@@ -36,7 +36,7 @@ export const Primary: Story = {
 export const Default: Story = {
   args: {
     variants: 'default',
-    label: '미리보기',
+    children: '미리보기',
     disabled: true,
     size: 'small',
   },
@@ -45,7 +45,7 @@ export const Default: Story = {
 export const White: Story = {
   args: {
     variants: 'white',
-    label: '미리보기',
+    children: '미리보기',
     disabled: true,
     size: 'large',
   },
@@ -54,7 +54,7 @@ export const White: Story = {
 export const Dashed: Story = {
   args: {
     variants: 'dashed',
-    label: '위젯 추가하기',
+    children: '위젯 추가하기',
     disabled: true,
     size: 'medium',
   },
@@ -63,7 +63,7 @@ export const Dashed: Story = {
 export const TextPrimary: Story = {
   args: {
     variants: 'textPrimary',
-    label: '편집',
+    children: '편집',
     disabled: true,
     size: 'medium',
   },
@@ -72,7 +72,7 @@ export const TextPrimary: Story = {
 export const TextDefault: Story = {
   args: {
     variants: 'textDefault',
-    label: '삭제',
+    children: '삭제',
     disabled: true,
     size: 'small',
   },
