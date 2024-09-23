@@ -11,6 +11,7 @@ const config: Omit<Config, 'content'> = {
       fontFamily: {
         sans: ['var(--font-pretendard)', 'Helvetica', 'Arial', 'sans-serif'],
         serif: ['var(--font-gowunBatang)', 'var(--font-notoSerifKr)', 'serif'],
+        noto: ['var(--font-notoSerifKr)', 'serif'],
       },
     },
     screens: {
