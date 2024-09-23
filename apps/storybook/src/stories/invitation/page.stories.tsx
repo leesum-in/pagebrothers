@@ -1,5 +1,4 @@
-import React from 'react';
-import Page from '../../../../invitation/src/app/page';
+import Page from '../../../../invitation/app/page';
 
 export default {
   title: 'invitation/Page',
