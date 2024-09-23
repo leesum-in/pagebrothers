@@ -131,12 +131,6 @@ const config: Omit<Config, 'content'> = {
             letterSpacing: styles.letterSpacing,
             fontWeight: styles.fontWeight,
           };
-          fontUtilities[`.typo-${key}`] = {
-            fontSize,
-            lineHeight: styles.lineHeight,
-            letterSpacing: styles.letterSpacing,
-            fontWeight: styles.fontWeight,
-          };
         }
       });
       addUtilities(fontUtilities);
