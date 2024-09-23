@@ -1,11 +1,12 @@
 import { Switch } from '@headlessui/react';
-import { useState } from 'react';
+import { useCallback } from 'react';
 
 interface ToggleProps {
   label?: 'left' | 'right' | 'none';
-  toggleOn?: boolean;
+  toggleOn: boolean;
   disabled?: boolean;
   labelText?: string;
+  onChange?: (checked: boolean) => void;
 }
 
 // 토글 컨테이너 상태별 스타일
@@ -38,14 +39,20 @@ const getCircleStyles = (disabled: boolean, enabled: boolean) => {
 
 const Toggle = ({
   label = 'left',
-  toggleOn = false,
+  toggleOn,
   disabled = false,
   labelText = '',
+  onChange,
 }: ToggleProps) => {
-  const [enabled, setEnabled] = useState(toggleOn);
+  const toggleStyles = getToggleStyles(disabled, toggleOn);
+  const circleStyles = getCircleStyles(disabled, toggleOn);
 
-  const toggleStyles = getToggleStyles(disabled, enabled);
-  const circleStyles = getCircleStyles(disabled, enabled);
+  const handleChange = useCallback(
+    (checked: boolean) => {
+      if (onChange) onChange(checked);
+    },
+    [onChange],
+  );
 
   return (
     <Switch.Group as="div" className="flex items-center">
@@ -57,10 +64,12 @@ const Toggle = ({
         </Switch.Label>
       )}
       <Switch
-        checked={enabled}
-        onChange={setEnabled}
+        checked={toggleOn}
+        onChange={handleChange}
         disabled={disabled}
-        className={`relative inline-flex items-center justify-start ${toggleStyles} ${disabled ? 'cursor-not-allowed' : 'cursor-pointer'}`}
+        className={`relative inline-flex items-center justify-start ${toggleStyles} ${
+          disabled ? 'cursor-not-allowed' : 'cursor-pointer'
+        }`}
       >
         <span
           className={`absolute top-1/2 transform -translate-y-1/2 transition-transform ${circleStyles}`}
