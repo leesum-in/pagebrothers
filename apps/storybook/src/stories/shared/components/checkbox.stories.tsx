@@ -1,5 +1,6 @@
+import { Checkbox } from '@shared/components/checkbox';
 import { Meta, StoryFn } from '@storybook/react';
-import Checkbox from '../../../../../../packages/shared/src/components/Checkbox';
+import { useCallback, useEffect, useState } from 'react';
 
 export default {
   title: 'Shared/Components/Checkbox',
@@ -24,7 +25,23 @@ export default {
   },
 } as Meta<typeof Checkbox>;
 
-const Template: StoryFn<typeof Checkbox> = (args) => <Checkbox {...args} />;
+const Template: StoryFn<typeof Checkbox> = (args) => {
+  const [isChecked, setIsChecked] = useState(args.checked);
+
+  useEffect(() => {
+    setIsChecked(args.checked);
+  }, [args.checked]);
+
+  const handleCheckChange = useCallback(
+    (checked: boolean) => {
+      setIsChecked(checked);
+      args.onChange?.(checked);
+    },
+    [args],
+  );
+
+  return <Checkbox {...args} checked={isChecked} onChange={handleCheckChange} />;
+};
 
 // Default Checkbox 스토리
 export const Default = Template.bind({});
