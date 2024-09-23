@@ -1,4 +1,5 @@
 import { Checkbox as HeadlessUiCheckbox } from '@headlessui/react';
+import { useCallback } from 'react';
 
 interface CheckboxProps {
   label: 'small' | 'large' | 'none';
@@ -49,11 +50,14 @@ const Checkbox = ({
   labelText = '',
   onChange,
 }: CheckboxProps) => {
-  const handleCheckChange = (value: boolean) => {
-    if (!disabled) {
-      onChange?.(value);
-    }
-  };
+  const handleCheckChange = useCallback(
+    (value: boolean) => {
+      if (!disabled) {
+        onChange?.(value);
+      }
+    },
+    [disabled, onChange],
+  );
 
   const checkboxStateStyles = getCheckboxStateStyles(checked, disabled);
   const checkboxSizeStyles = getCheckboxSizeStyles(label);
