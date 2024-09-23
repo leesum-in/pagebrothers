@@ -1,6 +1,6 @@
+import { LongTextField } from '@shared/components/longTextField';
 import { Meta, StoryFn } from '@storybook/react';
 import { useState } from 'react';
-import LongTextField from '../../../../../../packages/shared/src/components/LongTextField';
 
 export default {
   title: 'Shared/Components/LongTextField',
