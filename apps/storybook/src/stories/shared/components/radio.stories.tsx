@@ -1,5 +1,6 @@
+import { Radio } from '@shared/components/radio';
 import { Meta, StoryFn } from '@storybook/react';
-import Radio from '../../../../../../packages/shared/src/components/Radio';
+import { useCallback, useEffect, useState } from 'react';
 
 export default {
   title: 'Shared/Components/Radio',
@@ -24,7 +25,23 @@ export default {
   },
 } as Meta<typeof Radio>;
 
-const Template: StoryFn<typeof Radio> = (args) => <Radio {...args} />;
+const Template: StoryFn<typeof Radio> = (args) => {
+  const [isSelected, setIsSelected] = useState(args.selected);
+
+  useEffect(() => {
+    setIsSelected(args.selected);
+  }, [args.selected]);
+
+  const handleSelectedChange = useCallback(
+    (value: boolean) => {
+      setIsSelected(value);
+      args.onChange?.(value);
+    },
+    [args],
+  );
+
+  return <Radio {...args} selected={isSelected} onChange={handleSelectedChange} />;
+};
 
 // Default Radio 스토리
 export const Default = Template.bind({});
