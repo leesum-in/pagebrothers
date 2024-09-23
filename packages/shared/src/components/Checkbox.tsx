@@ -1,11 +1,11 @@
 import { Checkbox as HeadlessUiCheckbox } from '@headlessui/react';
-import { useState } from 'react';
 
 interface CheckboxProps {
   label: 'small' | 'large' | 'none';
-  checked?: boolean;
+  checked: boolean;
   disabled?: boolean;
   labelText?: string;
+  onChange?: (checked: boolean) => void;
 }
 
 // default, disabled, checked & disabled 상태별 스타일
@@ -42,24 +42,28 @@ const getLabelSizeStyles = (label: CheckboxProps['label']) => {
   }
 };
 
-const Checkbox = ({ label, checked = false, disabled = false, labelText = '' }: CheckboxProps) => {
-  const [enabled, setEnabled] = useState(checked);
-
-  const handleChange = (value: boolean) => {
+const Checkbox = ({
+  label,
+  checked,
+  disabled = false,
+  labelText = '',
+  onChange,
+}: CheckboxProps) => {
+  const handleCheckChange = (value: boolean) => {
     if (!disabled) {
-      setEnabled(value);
+      onChange?.(value);
     }
   };
 
-  const checkboxStateStyles = getCheckboxStateStyles(enabled, disabled);
+  const checkboxStateStyles = getCheckboxStateStyles(checked, disabled);
   const checkboxSizeStyles = getCheckboxSizeStyles(label);
   const labelSizeStyles = getLabelSizeStyles(label);
 
   return (
     <div className="flex items-center">
       <HeadlessUiCheckbox
-        checked={enabled}
-        onChange={handleChange}
+        checked={checked}
+        onChange={handleCheckChange}
         disabled={disabled}
         // ============== cva, clsx 설치 후 tailwind css custom 방식으로 수정 필요 ===============
         className={`group block ${checkboxSizeStyles} ${checkboxStateStyles} ${
