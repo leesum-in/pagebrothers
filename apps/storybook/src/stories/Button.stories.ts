@@ -28,8 +28,9 @@ export const Primary: Story = {
   args: {
     variants: 'primary',
     children: '적용하기',
-    disabled: true,
+    disabled: false,
     size: 'medium',
+    addition: 'w-[414px]',
   },
 };
 
@@ -37,7 +38,7 @@ export const Default: Story = {
   args: {
     variants: 'default',
     children: '미리보기',
-    disabled: true,
+    disabled: false,
     size: 'small',
   },
 };

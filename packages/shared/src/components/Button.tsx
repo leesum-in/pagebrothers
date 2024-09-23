@@ -4,9 +4,18 @@ export interface ButtonProps {
   variants: string;
   size: string;
   disabled?: boolean;
+  addition?: string;
 }
 
-export const Button = ({ children, onClick, variants, size, disabled, ...props }: ButtonProps) => {
+export const Button = ({
+  children,
+  onClick,
+  variants,
+  size,
+  disabled,
+  addition,
+  ...props
+}: ButtonProps) => {
   const BUTTON_COLOR: { [key: string]: string } = {
     primary: 'bg-indigo-600 text-white drop-shadow-md hover:bg-indigo-700 disabled:opacity-40',
     default:
@@ -27,7 +36,7 @@ export const Button = ({ children, onClick, variants, size, disabled, ...props }
   return (
     <button
       type="button"
-      className={`${BUTTON_COLOR[variants]} ${BUTTON_SIZE[size]} flex items-center font-bold box-border `}
+      className={`${BUTTON_COLOR[variants]} ${BUTTON_SIZE[size]} ${addition} flex justify-center items-center font-bold box-border `}
       onClick={onClick}
       {...props}
       disabled={disabled}
