@@ -1,8 +1,8 @@
 export interface ButtonProps {
   children: React.ReactNode;
-  onClick?: () => void;
-  variants: string;
-  size: string;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  variants: 'primary' | 'default' | 'white' | 'dashed' | 'textPrimary' | 'textDefault';
+  size: 'small' | 'medium' | 'large';
   disabled?: boolean;
   addition?: string;
 }
