@@ -7,7 +7,7 @@ export interface ButtonProps {
   addition?: string;
 }
 
-export const Button = ({
+const Button = ({
   children,
   onClick,
   variants,
@@ -45,3 +45,5 @@ export const Button = ({
     </button>
   );
 };
+
+export default Button;
