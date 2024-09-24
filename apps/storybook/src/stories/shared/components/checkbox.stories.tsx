@@ -1,6 +1,7 @@
 import { Checkbox } from '@shared/components/checkbox';
+import { useArgs } from '@storybook/addons';
 import { Meta, StoryFn } from '@storybook/react';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback } from 'react';
 
 export default {
   title: 'Shared/Components/Checkbox',
@@ -26,21 +27,17 @@ export default {
 } as Meta<typeof Checkbox>;
 
 const Template: StoryFn<typeof Checkbox> = (args) => {
-  const [isChecked, setIsChecked] = useState(args.checked);
-
-  useEffect(() => {
-    setIsChecked(args.checked);
-  }, [args.checked]);
+  const [isChecked, setIsChecked] = useArgs();
 
   const handleCheckChange = useCallback(
     (checked: boolean) => {
-      setIsChecked(checked);
+      setIsChecked({ checked });
       args.onChange?.(checked);
     },
-    [args],
+    [setIsChecked, args],
   );
 
-  return <Checkbox {...args} checked={isChecked} onChange={handleCheckChange} />;
+  return <Checkbox {...args} checked={isChecked.checked} onChange={handleCheckChange} />;
 };
 
 // Default Checkbox 스토리
