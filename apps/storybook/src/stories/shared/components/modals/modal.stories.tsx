@@ -23,6 +23,7 @@ const Template: StoryFn = (args) => {
         onCloseModal={() => setIsModalOpen(false)}
         isModalHeader={args.isModalHeader}
         isModalFooter={args.isModalFooter}
+        isFooterBg={args.isFooterBg}
         modalHeader={
           <ModalHeader
             modalHeaderTitle={args.modalHeaderTitle}
@@ -47,6 +48,7 @@ modal.args = {
   //해당 스토리에서 사용할 기본 props 값을 설정
   isModalHeader: true,
   isModalFooter: true,
+  isFooterBg: true,
   isHeaderModalTabs: true,
   isHeaderSubtitle: true,
   modalHeaderTitle: '모달 헤더',
@@ -74,6 +76,7 @@ export const addModal = Template.bind({});
 addModal.args = {
   isModalHeader: true,
   isModalFooter: true,
+  isFooterBg: true,
   isHeaderModalTabs: true,
   isHeaderSubtitle: true,
   modalHeaderTitle: '에드 모달',
@@ -109,6 +112,7 @@ const MultiModalTemplate: StoryFn = (args) => {
         onCloseModal={() => setIsModalOpen(false)}
         isModalHeader={args.isModalHeader}
         isModalFooter={args.isModalFooter}
+        isFooterBg={args.isFooterBg}
         modalHeader={
           <ModalHeader
             modalHeaderTitle={args.modalHeaderTitle}
@@ -133,16 +137,17 @@ const MultiModalTemplate: StoryFn = (args) => {
       <Modal
         isModalOpen={isMultiModalOpen}
         onCloseModal={() => setIsMultiModalOpen(false)}
-        isModalHeader={args.IsMultiModalHeader}
-        isModalFooter={args.IsMultiModalFooter}
+        isModalHeader={args.isMultiModalHeader}
+        isModalFooter={args.isMultiModalFooter}
+        isFooterBg={args.isMultiModalFooterBg}
         modalHeader={
           <ModalHeader
             modalHeaderTitle={args.MultiModalHeaderTitle}
             modalHeaderOnClose={args.MultiModalHeaderOnClose}
             modalHeaderTabs={args.MultiModalHeaderTabs}
             modalHeaderSubtitle={args.MultiModalHeaderSubtitle}
-            isHeaderModalTabs={args.IsMultiModalHeaderTabs}
-            isHeaderSubtitle={args.IsMultiModalHeaderSubtitle}
+            isHeaderModalTabs={args.isMultiModalHeaderTabs}
+            isHeaderSubtitle={args.isMultiModalHeaderSubtitle}
           />
         }
         modalFooter={args.MultiModalFooter}
@@ -159,6 +164,7 @@ export const MultiModal = MultiModalTemplate.bind({});
 MultiModal.args = {
   isModalHeader: true,
   isModalFooter: true,
+  isFooterBg: true,
   isHeaderModalTabs: true,
   isHeaderSubtitle: true,
   modalHeaderTitle: '모달',
@@ -181,10 +187,11 @@ MultiModal.args = {
     </div>
   ),
 
-  IsMultiModalHeader: true,
-  IsMultiModalFooter: true,
-  IsMultiModalHeaderTabs: true,
-  IsMultiModalHeaderSubtitle: true,
+  isMultiModalHeader: true,
+  isMultiModalFooter: true,
+  isMultiModalFooterBg: true,
+  isMultiModalHeaderTabs: true,
+  isMultiModalHeaderSubtitle: true,
   MultiModalHeaderTitle: '중첩 모달',
   MultiModalHeaderOnClose: () => alert('중첩 모달 닫기'),
   MultiModalHeaderTabs: ['중첩1', '중첩2'],

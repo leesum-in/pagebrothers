@@ -11,6 +11,7 @@ interface ModalProps {
   isModalFooter?: boolean;
   zIndex?: number;
   isMultiModal?: boolean;
+  isFooterBg?: boolean;
 }
 
 const Modal: React.FC<ModalProps> = ({
@@ -23,6 +24,7 @@ const Modal: React.FC<ModalProps> = ({
   modalFooter,
   zIndex = 50,
   isMultiModal = false,
+  isFooterBg = false,
 }) => {
   const modalBackground = `fixed inset-0 bg-blue-800 bg-opacity-15 flex justify-center items-end md:items-center z-[${zIndex}] transform transition-opacity duration-300 ${
     isModalOpen
@@ -36,6 +38,10 @@ const Modal: React.FC<ModalProps> = ({
     isModalOpen ? `opacity-100 translate-y-0` : 'opacity-0 translate-y-full md:translate-y-4'
   }`;
 
+  const footerBackground = isFooterBg
+    ? 'bg-gradient-to-t from-slate-200 to-transparent'
+    : 'bg-transparent';
+
   return ReactDOM.createPortal(
     <>
       <div className={modalBackground} onClick={onCloseModal}>
@@ -45,7 +51,9 @@ const Modal: React.FC<ModalProps> = ({
           )}
           <div className="flex-grow px-8 pt-6">{children}</div>
           {isModalFooter && (
-            <div className="sticky bottom-0 bg-white pt-4 pb-6 px-8 z-10">{modalFooter}</div>
+            <div className={`sticky bottom-0 ${footerBackground} pt-4 pb-6 px-8 z-10`}>
+              {modalFooter}
+            </div>
           )}
         </div>
       </div>

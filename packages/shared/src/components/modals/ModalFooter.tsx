@@ -14,7 +14,7 @@ const ModalFooter: React.FC<ModalFooterProps> = ({
   previewBtnLabel,
 }) => {
   return (
-    <div className="sticky flex justify-end space-x-4">
+    <div className="flex justify-end space-x-4">
       <button
         onClick={onPreviewBtn}
         className="bg-slate-100 font-bold border border-slate-200 text-sm rounded-md px-4 h-12 hover:bg-slate-300 transition-colors "
