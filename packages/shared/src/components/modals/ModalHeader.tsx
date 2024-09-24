@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { IoClose } from 'react-icons/io5';
 
 interface ModalHeaderProps {
   modalHeaderTitle: string;
@@ -23,10 +24,10 @@ const ModalHeader: React.FC<ModalHeaderProps> = ({
   };
 
   return (
-    <div className="sticky top-0 bg-white leading-10 z-10">
-      <div className="flex justify-between items-center ">
+    <div className="sticky top-0 bg-white z-10">
+      <div className="flex justify-between items-center">
         <div className="flex items-center space-x-6">
-          <h2 className="text-xl font-bold text-slate-900">{modalHeaderTitle}</h2>
+          <h2 className="text-xl font-bold text-slate-900 py-4 pt-2">{modalHeaderTitle}</h2>
           {isHeaderModalTabs && modalHeaderTabs.length > 0 && (
             <div className="flex space-x-6">
               {modalHeaderTabs.map((tab, index) => (
@@ -35,8 +36,8 @@ const ModalHeader: React.FC<ModalHeaderProps> = ({
                   onClick={() => handleTabClick(index)}
                   className={` ${
                     activeTab === index
-                      ? 'text-indigo-700 border-b-2 border-indigo-700 pt-1'
-                      : 'text-slate-400 border-b-2 border-transparent pt-1'
+                      ? 'text-indigo-700 border-b-2 border-indigo-700 leading-[3rem] pb-1'
+                      : 'text-slate-400 border-b-2 border-transparent pb-1'
                   }`}
                 >
                   {tab}
@@ -45,8 +46,11 @@ const ModalHeader: React.FC<ModalHeaderProps> = ({
             </div>
           )}
         </div>
-        <button onClick={modalHeaderOnClose} className="text-gray-500 hover:text-gray-700">
-          X
+        <button
+          onClick={modalHeaderOnClose}
+          className="flex items-center justify-center h-12 w-12 text-gray-500 hover:text-gray-700 pb-1"
+        >
+          <IoClose className="text-2xl" />
         </button>
       </div>
       {isHeaderSubtitle && modalHeaderSubtitle && (
