@@ -1,5 +1,3 @@
-import { RadioGroup } from '@headlessui/react';
-
 interface RadioProps {
   label: 'small' | 'large' | 'none';
   selected: boolean;
@@ -48,44 +46,23 @@ const getSelectedCircleStyle = (label: 'small' | 'large' | 'none') => {
 };
 
 const Radio = ({ label, selected, disabled = false, labelText = '', onChange }: RadioProps) => {
-  const radioStateStyles = getRadioStateStyles(label);
-  const textStyle = getTextStyle(label);
-  const selectedCircleStyle = getSelectedCircleStyle(label);
-
   return (
-    <RadioGroup value={selected} onChange={onChange} disabled={disabled}>
-      <div className="flex items-center">
-        <RadioGroup.Option
-          value={true}
-          className={`relative flex items-center justify-center ${radioStateStyles} ${
-            disabled ? 'cursor-not-allowed' : 'cursor-pointer'
-          }`}
-        >
-          {({ checked }) => (
-            <>
-              {checked && (
-                <div
-                  className={`absolute ${selectedCircleStyle} ${
-                    disabled ? 'bg-slate-200' : 'bg-indigo-500'
-                  }`}
-                  style={{
-                    top: '50%',
-                    left: '50%',
-                    transform: 'translate(-50%, -50%)',
-                  }}
-                />
-              )}
-            </>
-          )}
-        </RadioGroup.Option>
-        <RadioGroup.Label
-          as="span"
-          className={`ml-[0.5rem] text-slate-600 ${textStyle} ${disabled ? 'opacity-50' : ''}`}
-        >
-          {labelText}
-        </RadioGroup.Label>
+    <div
+      className={`flex items-center cursor-pointer ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+      onClick={() => !disabled && onChange(!selected)}
+    >
+      <div
+        className={`relative flex items-center justify-center ${getRadioStateStyles(label)} ${disabled ? 'cursor-not-allowed' : 'cursor-pointer'}`}
+      >
+        {selected && (
+          <div
+            className={`absolute ${getSelectedCircleStyle(label)} ${disabled ? 'bg-slate-200' : 'bg-indigo-500'} 
+              top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2`}
+          />
+        )}
       </div>
-    </RadioGroup>
+      <span className={`ml-[0.5rem] text-slate-600 ${getTextStyle(label)}`}>{labelText}</span>
+    </div>
   );
 };
 
