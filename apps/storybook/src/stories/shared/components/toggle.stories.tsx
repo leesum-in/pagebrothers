@@ -1,6 +1,6 @@
 import { Toggle } from '@shared/components/toggle';
+import { useArgs } from '@storybook/addons';
 import { Meta, StoryFn } from '@storybook/react';
-import { useCallback, useEffect, useState } from 'react';
 
 export default {
   title: 'Shared/Components/Toggle',
@@ -26,21 +26,14 @@ export default {
 } as Meta<typeof Toggle>;
 
 const Template: StoryFn<typeof Toggle> = (args) => {
-  const [toggleState, setToggleState] = useState(args.toggleOn);
+  const [{ toggleOn, ...restArgs }, setToggleOn] = useArgs();
 
-  useEffect(() => {
-    setToggleState(args.toggleOn);
-  }, [args.toggleOn]);
+  const handleToggleChange = (value: boolean) => {
+    setToggleOn({ toggleOn: value });
+    restArgs.onChange?.(value);
+  };
 
-  const handleChange = useCallback(
-    (value: boolean) => {
-      setToggleState(value);
-      args.onChange?.(value);
-    },
-    [args],
-  );
-
-  return <Toggle {...args} toggleOn={toggleState} onChange={handleChange} />;
+  return <Toggle {...restArgs} toggleOn={toggleOn} onChange={handleToggleChange} />;
 };
 
 // Default Toggle 스토리
