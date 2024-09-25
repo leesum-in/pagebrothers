@@ -22,9 +22,16 @@ function WidgetWrapper({
     >
       <div className="flex items-center justify-between p-4 font-bold text-slate-900">
         <WidgetTitleButton title={title} />
+        <WidgetModifyButtons />
       </div>
-      {children}
-      <WidgetModifyButtons />
+
+      <div className="border-t border-slate-200">
+        <div className="font-serif text-[14px] leading-loose">
+          <div className="relative overflow-hidden">
+            <div className="relative no-interaction">{children}</div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
