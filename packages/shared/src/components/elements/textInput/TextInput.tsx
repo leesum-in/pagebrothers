@@ -1,4 +1,12 @@
 import React, { useState } from 'react';
+import { LeftAddOnHttpButton, LeftAddOnSearchIcon } from '../textInputLeftAddOn';
+import {
+  RightAddOnArrowIcon,
+  RightAddOnButton,
+  RightAddOnCalendarIcon,
+  RightAddOnTimeDisplay,
+  RightAddOnUnit,
+} from '../textInputRightAddOn';
 
 type TextInputProps = {
   error?: boolean;
@@ -10,6 +18,8 @@ type TextInputProps = {
   label?: string;
   buttonText?: string;
   placeholder?: string;
+  iconType?: 'search' | 'http';
+  rightAddOnType?: 'arrow' | 'button' | 'calendar' | 'time' | 'unit'; // Right add-on 타입 추가
 };
 
 const TextInput: React.FC<TextInputProps> = ({
@@ -22,17 +32,17 @@ const TextInput: React.FC<TextInputProps> = ({
   label = '레이블',
   buttonText = '버튼',
   placeholder = '텍스트 인풋',
+  iconType = 'search',
+  rightAddOnType = 'arrow', // 기본 right add-on은 arrow로 설정
 }) => {
   const [focused, setFocused] = useState(false);
 
   const inputClassName = `
-    mt-3 block w-full rounded py-1.5 px-3 border text-sm text-slate-600 leading-6 caret-indigo-700
-    ${disabled ? ' outline-2 border-red-500 cursor-not-allowed' : 'bg-white/5 text-white'}
+    block w-full rounded pl-[48px] pr-[56px] border text-sm text-slate-600 leading-6 caret-indigo-700 h-[48px]
+    ${disabled ? ' outline-2 border-red-500 cursor-not-allowed' : 'bg-white/5'}
     ${focused && !disabled ? 'outline-2 outline-indigo-700 border-none' : ''}
     ${error ? 'outline-2 border-red-500' : ''}
     ${!error && !focused && !disabled ? 'border-none focus:outline-none' : ''}
-    ${icon ? 'pl-10' : ''}
-    ${button ? 'pr-16' : ''}
   `;
 
   return (
@@ -40,7 +50,19 @@ const TextInput: React.FC<TextInputProps> = ({
       <div className="flex flex-col">
         {showLabel && <label className={`text-sm font-medium `}>{label}</label>}
         <div className="relative mt-3">
-          {icon && <span className="absolute top-5 left-3 text-gray-400">🔍</span>}
+          {/* Left Add-On: 48px 너비 */}
+          {icon && iconType === 'search' && (
+            <span className="absolute top-0 left-0 w-[48px] h-full flex items-center justify-center text-gray-400">
+              <LeftAddOnSearchIcon />
+            </span>
+          )}
+          {icon && iconType === 'http' && (
+            <span className="absolute top-0 left-0 w-[48px] h-full flex items-center justify-center">
+              <LeftAddOnHttpButton />
+            </span>
+          )}
+
+          {/* Input 필드 */}
           <input
             className={inputClassName}
             onFocus={() => setFocused(true)}
@@ -48,13 +70,16 @@ const TextInput: React.FC<TextInputProps> = ({
             disabled={disabled}
             placeholder={placeholder}
           />
+
+          {/* Right Add-On: button이 true일 경우에만 렌더링 */}
           {button && (
-            <button
-              className="absolute text-sm top-[30px] right-1 transform -translate-y-1/2 bg-none text-slate-900 font-bold px-3 py-1.5"
-              disabled={disabled}
-            >
-              {buttonText}
-            </button>
+            <span className="absolute top-0 right-0 w-[56px] h-full flex items-center justify-center">
+              {rightAddOnType === 'arrow' && <RightAddOnArrowIcon />}
+              {rightAddOnType === 'button' && <RightAddOnButton />}
+              {rightAddOnType === 'calendar' && <RightAddOnCalendarIcon />}
+              {rightAddOnType === 'time' && <RightAddOnTimeDisplay />}
+              {rightAddOnType === 'unit' && <RightAddOnUnit />}
+            </span>
           )}
         </div>
         {error && <p className="mt-2 text-sm text-red-500">{errorText}</p>}
