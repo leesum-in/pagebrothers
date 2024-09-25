@@ -27,17 +27,17 @@ export default {
 } as Meta<typeof Checkbox>;
 
 const Template: StoryFn<typeof Checkbox> = (args) => {
-  const [isChecked, setIsChecked] = useArgs();
+  const [{ checked }, setChecked] = useArgs();
 
   const handleCheckChange = useCallback(
-    (checked: boolean) => {
-      setIsChecked({ checked });
-      args.onChange?.(checked);
+    (isChecked: boolean) => {
+      setChecked({ checked: isChecked });
+      args.onChange?.(isChecked);
     },
-    [setIsChecked, args],
+    [args, setChecked],
   );
 
-  return <Checkbox {...args} checked={isChecked.checked} onChange={handleCheckChange} />;
+  return <Checkbox {...args} checked={checked} onChange={handleCheckChange} />;
 };
 
 // Default Checkbox 스토리

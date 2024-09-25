@@ -1,12 +1,11 @@
 import { Checkbox as HeadlessUiCheckbox } from '@headlessui/react';
-import { useCallback } from 'react';
 
 interface CheckboxProps {
   label: 'small' | 'large' | 'none';
   checked: boolean;
   disabled?: boolean;
   labelText?: string;
-  onChange?: (checked: boolean) => void;
+  onChange: (checked: boolean) => void; // 부모로부터 반드시 전달받는 함수
 }
 
 // default, disabled, checked & disabled 상태별 스타일
@@ -50,27 +49,13 @@ const Checkbox = ({
   labelText = '',
   onChange,
 }: CheckboxProps) => {
-  const handleCheckChange = useCallback(
-    (value: boolean) => {
-      if (!disabled) {
-        onChange?.(value);
-      }
-    },
-    [disabled, onChange],
-  );
-
-  const checkboxStateStyles = getCheckboxStateStyles(checked, disabled);
-  const checkboxSizeStyles = getCheckboxSizeStyles(label);
-  const labelSizeStyles = getLabelSizeStyles(label);
-
   return (
     <div className="flex items-center">
       <HeadlessUiCheckbox
         checked={checked}
-        onChange={handleCheckChange}
+        onChange={(value) => onChange(value)}
         disabled={disabled}
-        // ============== cva, clsx 설치 후 tailwind css custom 방식으로 수정 필요 ===============
-        className={`group block ${checkboxSizeStyles} ${checkboxStateStyles} ${
+        className={`group block ${getCheckboxSizeStyles(label)} ${getCheckboxStateStyles(checked, disabled)} ${
           disabled ? 'cursor-not-allowed' : 'cursor-pointer'
         }`}
       >
@@ -83,7 +68,9 @@ const Checkbox = ({
           <path d="M3 8L6 11L11 3.5" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       </HeadlessUiCheckbox>
-      <span className={`ml-2 text-slate-600 ${labelSizeStyles} ${disabled ? 'opacity-50' : ''}`}>
+      <span
+        className={`ml-2 text-slate-600 ${getLabelSizeStyles(label)} ${disabled ? 'opacity-50' : ''}`}
+      >
         {labelText}
       </span>
     </div>
