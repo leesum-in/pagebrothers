@@ -1,4 +1,4 @@
-import { Checkbox } from '@shared/components/checkbox';
+import { Checkbox } from '@repo/shared';
 import { useArgs } from '@storybook/addons';
 import { Meta, StoryFn } from '@storybook/react';
 import { useCallback } from 'react';

@@ -1,4 +1,4 @@
-import { LongTextField } from '@shared/components/longTextField';
+import { LongTextField } from '@repo/shared';
 import { useArgs } from '@storybook/addons';
 import { Meta, StoryFn } from '@storybook/react';
 
