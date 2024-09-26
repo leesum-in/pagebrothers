@@ -18,7 +18,7 @@ function WidgetWrapper({
       aria-disabled={false}
       // aria-roledescription="sortable"
       // aria-describedby="DndDescribedBy-0"
-      className="relative overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-1 cursor-default"
+      className="relative overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-1 cursor-default w-[416px]"
     >
       <div className="flex items-center justify-between p-4 font-bold text-slate-900">
         <WidgetTitleButton title={title} />
