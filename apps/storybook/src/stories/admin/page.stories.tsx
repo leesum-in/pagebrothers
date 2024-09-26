@@ -1,5 +1,4 @@
-import React from 'react';
-import Page from '../../../../admin/src/app/page';
+import Page from '../../../../admin/app/page';
 
 export default {
   title: 'Admin/Page',
