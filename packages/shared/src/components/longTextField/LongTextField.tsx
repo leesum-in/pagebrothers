@@ -1,5 +1,3 @@
-import { useCallback } from 'react';
-
 interface LongTextFieldProps {
   status: 'default' | 'hover' | 'focused' | 'completed' | 'error' | 'disabled';
   label?: boolean;
@@ -36,13 +34,6 @@ const LongTextField = ({
   placeholder,
   descriptionText = '',
 }: LongTextFieldProps) => {
-  const handleTextareaChange = useCallback(
-    (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-      onChange(e.target.value);
-    },
-    [onChange],
-  );
-
   return (
     <div>
       {label && (
@@ -58,7 +49,7 @@ const LongTextField = ({
             status === 'disabled' ? 'bg-slate-50' : 'bg-white'
           } focus:outline-none border-none resize`}
           value={value}
-          onChange={handleTextareaChange}
+          onChange={(e) => onChange(e.target.value)}
           disabled={status === 'disabled'}
           placeholder={placeholder}
         />

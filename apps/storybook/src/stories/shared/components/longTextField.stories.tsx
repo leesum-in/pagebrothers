@@ -1,6 +1,6 @@
 import { LongTextField } from '@shared/components/longTextField';
+import { useArgs } from '@storybook/addons';
 import { Meta, StoryFn } from '@storybook/react';
-import { useState } from 'react';
 
 export default {
   title: 'Shared/Components/LongTextField',
@@ -37,9 +37,13 @@ export default {
 } as Meta<typeof LongTextField>;
 
 const Template: StoryFn<typeof LongTextField> = (args) => {
-  const [value, setValue] = useState('');
+  const [{ value }, setValue] = useArgs();
 
-  return <LongTextField {...args} value={value} onChange={setValue} />;
+  const handleValueChange = (newValue: string) => {
+    setValue({ value: newValue });
+  };
+
+  return <LongTextField {...args} value={value} onChange={handleValueChange} />;
 };
 
 // Default 스토리
@@ -51,6 +55,7 @@ Default.args = {
   labelText: '디폴트',
   placeholder: '기본 Placeholder',
   descriptionText: '이것은 기본 설명입니다.',
+  value: '',
 };
 
 // Hover 스토리
@@ -62,6 +67,7 @@ Hover.args = {
   labelText: '호버 상태',
   placeholder: '호버 상태 Placeholder',
   descriptionText: '호버 상태 설명입니다.',
+  value: '',
 };
 
 // Focused 스토리
@@ -73,6 +79,7 @@ Focused.args = {
   labelText: '포커스됨',
   placeholder: '포커스됨 Placeholder',
   descriptionText: '포커스된 상태 설명입니다.',
+  value: '',
 };
 
 // Completed 스토리
@@ -84,6 +91,7 @@ Completed.args = {
   labelText: '완료됨',
   placeholder: '완료됨 Placeholder',
   descriptionText: '완료된 상태 설명입니다.',
+  value: '',
 };
 
 // Error 스토리
@@ -95,6 +103,7 @@ Error.args = {
   labelText: '오류',
   placeholder: '오류 Placeholder',
   descriptionText: '오류 설명입니다.',
+  value: '',
 };
 
 // Disabled 스토리
@@ -106,4 +115,5 @@ Disabled.args = {
   labelText: '비활성화됨',
   placeholder: '비활성화됨 Placeholder',
   descriptionText: '비활성화된 상태 설명입니다.',
+  value: '',
 };
