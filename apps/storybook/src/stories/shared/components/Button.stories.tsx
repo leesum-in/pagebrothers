@@ -12,7 +12,14 @@ export default {
     variants: {
       control: {
         type: 'select',
-        options: ['primary', 'default', 'white', 'dashed', 'textPrimary', 'textDefault'],
+        options: [
+          'fill_primary',
+          'fill_secondary',
+          'fill_white',
+          'ghost',
+          'text_primary',
+          'text_secondary',
+        ],
       },
       description: '버튼 Style',
     },
@@ -42,50 +49,50 @@ const Template: StoryFn<typeof Button> = (args) => {
   );
 };
 
-export const Primary = Template.bind({});
-Primary.args = {
-  variants: 'primary',
+export const Fill_primary = Template.bind({});
+Fill_primary.args = {
+  variants: 'fill_primary',
   children: '적용하기',
   disabled: false,
   size: 'medium',
 };
 
-export const Default = Template.bind({});
-Default.args = {
-  variants: 'default',
+export const Fill_secondary = Template.bind({});
+Fill_secondary.args = {
+  variants: 'fill_secondary',
   children: '미리보기',
   disabled: false,
   size: 'small',
 };
 
-export const White = Template.bind({});
-White.args = {
-  variants: 'white',
+export const Fill_white = Template.bind({});
+Fill_white.args = {
+  variants: 'fill_white',
   children: '삭제',
   disabled: false,
   size: 'large',
 };
 
-export const Dashed = Template.bind({});
-Dashed.args = {
-  variants: 'dashed',
+export const Ghost = Template.bind({});
+Ghost.args = {
+  variants: 'ghost',
   children: '추가하기 +',
   disabled: false,
   size: 'medium',
-  addition: 'w-[414px]',
+  className: 'w-[414px]',
 };
 
-export const TextPrimary = Template.bind({});
-TextPrimary.args = {
-  variants: 'textPrimary',
+export const Text_primary = Template.bind({});
+Text_primary.args = {
+  variants: 'text_primary',
   children: '편집',
   disabled: false,
   size: 'medium',
 };
 
-export const TextDefault = Template.bind({});
-TextDefault.args = {
-  variants: 'textDefault',
+export const Text_secondary = Template.bind({});
+Text_secondary.args = {
+  variants: 'text_secondary',
   children: '메뉴',
   disabled: false,
   size: 'medium',

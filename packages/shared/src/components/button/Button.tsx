@@ -1,10 +1,16 @@
 export interface ButtonProps {
   children: React.ReactNode;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
-  variants: 'primary' | 'default' | 'white' | 'dashed' | 'textPrimary' | 'textDefault';
+  variants:
+    | 'fill_primary'
+    | 'fill_secondary'
+    | 'fill_white'
+    | 'ghost'
+    | 'text_primary'
+    | 'text_secondary';
   size: 'small' | 'medium' | 'large';
   disabled?: boolean;
-  addition?: string;
+  className?: string;
 }
 
 const Button = ({
@@ -13,19 +19,19 @@ const Button = ({
   variants,
   size,
   disabled,
-  addition,
+  className,
   ...props
 }: ButtonProps) => {
   const BUTTON_COLOR: { [key: string]: string } = {
-    primary: 'bg-indigo-600 text-white drop-shadow-md hover:bg-indigo-700 disabled:opacity-40',
-    default:
+    fill_primary: 'bg-indigo-600 text-white drop-shadow-md hover:bg-indigo-700 disabled:opacity-40',
+    fill_secondary:
       'bg-slate-100 border border-solid border-slate-200 text-slate-900 drop-shadow-md hover:bg-slate-200 disabled:opacity-40',
-    white:
+    fill_white:
       'bg-white border border-solid border-slate-200 text-slate-900 drop-shadow-md hover:bg-slate-50 disabled:opacity-40',
-    dashed:
+    ghost:
       'bg-transparent border border-dashed border-slate-300 text-slate-600 hover:border-slate-400 hover:text-slate-700 disabled:opacity-40',
-    textPrimary: 'bg-transparent text-indigo-600 hover:text-indigo-700 disabled:opacity-40',
-    textDefault: 'bg-transparent text-slate-700 hover:text-slate-800 disabled:opacity-40',
+    text_primary: 'bg-transparent text-indigo-600 hover:text-indigo-700 disabled:opacity-40',
+    text_secondary: 'bg-transparent text-slate-700 hover:text-slate-800 disabled:opacity-40',
   };
 
   const BUTTON_SIZE: { [key: string]: string } = {
@@ -36,7 +42,7 @@ const Button = ({
   return (
     <button
       type="button"
-      className={`${BUTTON_COLOR[variants]} ${BUTTON_SIZE[size]} ${addition} flex justify-center items-center font-bold box-border `}
+      className={`${BUTTON_COLOR[variants]} ${BUTTON_SIZE[size]} ${className} flex justify-center items-center font-bold box-border `}
       onClick={onClick}
       {...props}
       disabled={disabled}
