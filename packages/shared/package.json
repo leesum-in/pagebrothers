@@ -29,6 +29,7 @@
     "typescript": "^5.3.3"
   },
   "dependencies": {
+    "@headlessui/react": "^2.1.8",
     "@types/node": "^22.5.5",
     "axios": "^1.7.7",
     "@headlessui/react": "^2.1.8"
