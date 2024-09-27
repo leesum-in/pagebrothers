@@ -1,4 +1,4 @@
-import { Toggle } from '@shared/components/toggle';
+import { Toggle } from '@repo/shared';
 import { useArgs } from '@storybook/addons';
 import { Meta, StoryFn } from '@storybook/react';
 
