@@ -216,6 +216,9 @@ importers:
       axios:
         specifier: ^1.7.7
         version: 1.7.7
+      clsx:
+        specifier: ^2.1.1
+        version: 2.1.1
       next:
         specifier: ^14.2.12
         version: 14.2.12(@babel/core@7.25.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -312,12 +315,18 @@ importers:
       axios:
         specifier: ^1.7.7
         version: 1.7.7
+      clsx:
+        specifier: ^2.1.1
+        version: 2.1.1
       react:
         specifier: ^18.2.0
         version: 18.3.1
       react-icons:
         specifier: ^5.3.0
         version: 5.3.0(react@18.3.1)
+      tailwind-merge:
+        specifier: ^2.5.2
+        version: 2.5.2
     devDependencies:
       '@repo/eslint-config':
         specifier: workspace:*
