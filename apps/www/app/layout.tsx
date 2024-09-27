@@ -12,12 +12,13 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }): JSX.Element {
   return (
-    <html
-      lang="kr"
-      className={`${pretendard.variable} ${gowunBatang.variable} ${notoSerifKr.variable}`}
-    >
-      <body className="font-sans leading-relaxed tracking-tight text-slate-700">
-        <QueryProvider>{children}</QueryProvider>
+    <html lang="kr">
+      <body
+        className={`font-sans leading-relaxed tracking-tight text-slate-700 ${pretendard.variable} ${gowunBatang.variable} ${notoSerifKr.variable}`}
+      >
+        <QueryProvider>
+          <div className="flex min-h-full flex-1 flex-col">{children}</div>
+        </QueryProvider>
       </body>
     </html>
   );
