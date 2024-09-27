@@ -1,5 +1,3 @@
-import React from 'react';
-
 interface ModalFooterProps {
   onApplyBtn: () => void;
   onPreviewBtn?: () => void;
@@ -7,12 +5,12 @@ interface ModalFooterProps {
   previewBtnLabel?: string;
 }
 
-const ModalFooter: React.FC<ModalFooterProps> = ({
+const ModalFooter = ({
   onApplyBtn,
   onPreviewBtn,
   applyBtnLabel,
   previewBtnLabel,
-}) => {
+}: ModalFooterProps) => {
   return (
     <div className="flex justify-end space-x-4">
       <button
