@@ -4,6 +4,9 @@ import WidgetStickerButton from './WidgetStickerButton';
 
 function WidgetModifyButtons(): React.ReactNode {
   // 이렇게 쓰면 되나요..?
+  // rounded 가 안먹어요
+  // arbitrary 클래스들이 안먹어요
+  // text-[12px] 는 또 먹었어요....;;;
   return (
     <div className="flex gap-2">
       <WidgetStickerButton />
