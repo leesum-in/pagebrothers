@@ -10,6 +10,7 @@ const config: Pick<Config, 'content' | 'presets'> = {
     `src/**/*.{js,ts,jsx,tsx}`,
     // include packages if not transpiling
     '../../packages/shared/*.{js,ts,jsx,tsx}',
+    '../../packages/shared/src/**/*.{js,ts,jsx,tsx}',
   ],
   presets: [sharedConfig],
 };
