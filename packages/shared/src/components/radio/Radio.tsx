@@ -61,7 +61,9 @@ const Radio = ({ label, selected, disabled = false, labelText = '', onChange }: 
           />
         )}
       </div>
-      <span className={`ml-[0.5rem] text-slate-600 ${getTextStyle(label)}`}>{labelText}</span>
+      <span className={`text-p1 ml-[0.5rem] text-slate-600 ${getTextStyle(label)}`}>
+        {labelText}
+      </span>
     </div>
   );
 };

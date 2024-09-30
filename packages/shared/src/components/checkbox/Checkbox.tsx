@@ -5,7 +5,7 @@ interface CheckboxProps {
   checked: boolean;
   disabled?: boolean;
   labelText?: string;
-  onChange: (checked: boolean) => void; // 부모로부터 반드시 전달받는 함수
+  onChange: (checked: boolean) => void;
 }
 
 // default, disabled, checked & disabled 상태별 스타일
@@ -33,9 +33,9 @@ const getCheckboxSizeStyles = (label: CheckboxProps['label']) => {
 const getLabelSizeStyles = (label: CheckboxProps['label']) => {
   switch (label) {
     case 'small':
-      return 'text-[0.875rem] font-normal leading-[1.4rem] tracking-[-0.02em] text-justify';
+      return 'text-p2 text-justify';
     case 'large':
-      return 'text-[1rem] font-normal leading-[1.6rem] tracking-[-0.02em] text-justify';
+      return 'text-p1 text-justify';
     case 'none':
     default:
       return 'hidden';
