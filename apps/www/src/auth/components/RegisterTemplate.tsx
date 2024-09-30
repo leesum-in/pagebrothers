@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-import Check from '@/common/svgs/Check.svg';
+import Check from '@/ui/svgs/Check.svg';
 
 import { useAuth } from '../hooks';
 import { useRegisterMutation } from '../mutations';
