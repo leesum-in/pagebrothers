@@ -1,6 +1,6 @@
 import type { PropsWithChildren } from 'react';
 
-import Navigation from '@/common/nav/Navigation';
+import { Navigation } from '@/ui/components';
 
 function EditIdLayout({ children }: PropsWithChildren): React.ReactNode {
   return (
