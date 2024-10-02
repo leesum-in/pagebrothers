@@ -1,6 +1,6 @@
 import { ReactNode, useState } from 'react';
 
-type TextInputProps = {
+interface TextInputProps {
   error?: boolean;
   errorText?: string;
   // error가 description
@@ -12,7 +12,7 @@ type TextInputProps = {
   placeholder?: string;
   value: string;
   onChange: (value: string) => void;
-};
+}
 
 const TextInput = ({
   error = false,
