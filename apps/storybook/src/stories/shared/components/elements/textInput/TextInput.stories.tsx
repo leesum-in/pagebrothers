@@ -39,6 +39,7 @@ export default {
 
 const Template: StoryFn<typeof TextInput> = (args) => <TextInput {...args} />;
 
+// 기본
 export const Default = Template.bind({});
 Default.args = {
   labelText: '레이블',
@@ -46,4 +47,23 @@ Default.args = {
   label: true,
   leftAddOn: 'None',
   rightAddOn: 'None',
+};
+
+// 에러
+export const WithError = Template.bind({});
+WithError.args = {
+  labelText: '레이블',
+  placeholder: '텍스트 인풋',
+  label: true,
+  error: true,
+  errorText: '피드백이나 부가 설명이 들어갑니다.',
+};
+
+// 비활성화
+export const Disabled = Template.bind({});
+Disabled.args = {
+  labelText: '레이블',
+  placeholder: '텍스트 인풋',
+  label: true,
+  disabled: true,
 };
