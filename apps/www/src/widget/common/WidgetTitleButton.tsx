@@ -1,4 +1,4 @@
-import Move from '@/common/svgs/Move.svg';
+import Move from '@/ui/svgs/Move.svg';
 import { Button } from '@repo/shared';
 
 interface WidgetTitleButtonProps {
