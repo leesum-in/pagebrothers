@@ -27,9 +27,7 @@ function WidgetWrapper({
 
       <div className="border-t border-slate-200">
         <div className="font-serif text-[14px] leading-loose">
-          <div className="relative overflow-hidden">
-            <div className="relative no-interaction">{children}</div>
-          </div>
+          <div className="relative overflow-hidden">{children}</div>
         </div>
       </div>
     </div>
