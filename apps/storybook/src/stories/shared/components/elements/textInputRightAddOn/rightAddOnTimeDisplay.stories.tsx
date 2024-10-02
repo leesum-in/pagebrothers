@@ -6,9 +6,7 @@ export default {
   component: RightAddOnTimeDisplay,
 } as Meta;
 
-const Template: StoryFn<typeof RightAddOnTimeDisplay> = (args) => (
-  <RightAddOnTimeDisplay {...args} />
-);
+const Template: StoryFn<typeof RightAddOnTimeDisplay> = (args) => <RightAddOnTimeDisplay />;
 
 export const rightAddOnTimeDisplay = Template.bind({});
 rightAddOnTimeDisplay.args = {};

@@ -6,9 +6,7 @@ export default {
   component: RightAddOnCalendarIcon,
 } as Meta;
 
-const Template: StoryFn<typeof RightAddOnCalendarIcon> = (args) => (
-  <RightAddOnCalendarIcon {...args} />
-);
+const Template: StoryFn<typeof RightAddOnCalendarIcon> = (args) => <RightAddOnCalendarIcon />;
 
 export const rightAddOnCalendarIcon = Template.bind({});
 rightAddOnCalendarIcon.args = {};

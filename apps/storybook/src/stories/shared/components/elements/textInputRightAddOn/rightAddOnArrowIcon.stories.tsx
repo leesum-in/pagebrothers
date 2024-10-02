@@ -6,7 +6,7 @@ export default {
   component: RightAddOnArrowIcon,
 } as Meta;
 
-const Template: StoryFn<typeof RightAddOnArrowIcon> = (args) => <RightAddOnArrowIcon {...args} />;
+const Template: StoryFn<typeof RightAddOnArrowIcon> = (args) => <RightAddOnArrowIcon />;
 
 export const rightAddOnArrowIcon = Template.bind({});
 rightAddOnArrowIcon.args = {};

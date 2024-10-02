@@ -6,7 +6,6 @@ export default {
   component: LeftAddOnSearchIcon,
 } as Meta;
 
-const Template: StoryFn<typeof LeftAddOnSearchIcon> = (args) => <LeftAddOnSearchIcon {...args} />;
+const Template: StoryFn = () => <LeftAddOnSearchIcon />;
 
 export const leftAddOnSearchIcon = Template.bind({});
-leftAddOnSearchIcon.args = {};
