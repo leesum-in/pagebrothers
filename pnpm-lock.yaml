@@ -169,10 +169,10 @@ importers:
         version: 8.3.0(@storybook/test@8.3.0(storybook@8.3.0))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.3.0)(typescript@5.6.2)
       '@storybook/test':
         specifier: ^8.2.9
-        version: 8.3.0(storybook@8.3.0)
       '@svgr/webpack':
         specifier: ^8.1.0
-        version: 8.1.0(typescript@5.6.2)
+        version: 8.1.0(typescript@5.5.4)
+        version: 8.3.0(storybook@8.3.0)
       '@types/node':
         specifier: ^20
         version: 20.16.5
@@ -311,6 +311,9 @@ importers:
 
   packages/shared:
     dependencies:
+      '@svgr/webpack':
+        specifier: ^8.1.0
+        version: 8.1.0(typescript@5.5.4)
       '@headlessui/react':
         specifier: ^2.1.8
         version: 2.1.8(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -323,9 +326,6 @@ importers:
       axios:
         specifier: ^1.7.7
         version: 1.7.7
-      clsx:
-        specifier: ^2.1.1
-        version: 2.1.1
       react:
         specifier: ^18.2.0
         version: 18.3.1
