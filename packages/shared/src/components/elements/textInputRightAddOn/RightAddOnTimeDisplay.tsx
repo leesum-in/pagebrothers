@@ -1,6 +1,4 @@
-import React from 'react';
-
-const RightAddOnTimeDisplay: React.FC = () => {
+const RightAddOnTimeDisplay = () => {
   return <span>00:00</span>;
 };
 

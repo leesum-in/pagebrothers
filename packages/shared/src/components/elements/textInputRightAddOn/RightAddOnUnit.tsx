@@ -1,6 +1,4 @@
-import React from 'react';
-
-const RightAddOnUnit: React.FC = () => {
+const RightAddOnUnit = () => {
   return <span>단위</span>;
 };
 

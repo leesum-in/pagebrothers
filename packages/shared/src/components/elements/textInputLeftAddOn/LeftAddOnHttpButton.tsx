@@ -1,6 +1,4 @@
-import React from 'react';
-
-const LeftAddOnHttpButton: React.FC = () => {
+const LeftAddOnHttpButton = () => {
   return <button>http://</button>;
 };
 
