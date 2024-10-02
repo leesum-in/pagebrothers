@@ -4,7 +4,8 @@
     "baseUrl": ".",
     "paths": {
       "*.svg": ["./svg.d.ts"]
-    }
+    },
+    "types": ["node"]
   },
   "include": ["."],
   "exclude": ["dist", "build", "node_modules"]
