@@ -10,6 +10,8 @@ type TextInputProps = {
   label?: boolean;
   labelText?: string;
   placeholder?: string;
+  value: string;
+  onChange: (value: string) => void;
 };
 
 const TextInput = ({
@@ -21,6 +23,8 @@ const TextInput = ({
   label = true,
   labelText = '레이블',
   placeholder = '텍스트 인풋',
+  value,
+  onChange,
 }: TextInputProps) => {
   const [focused, setFocused] = useState(false);
 
@@ -44,13 +48,14 @@ const TextInput = ({
             </span>
           )}
 
-          {/* Input 필드 */}
           <input
             className={inputClassName}
             onFocus={() => setFocused(true)}
             onBlur={() => setFocused(false)}
             disabled={disabled}
             placeholder={placeholder}
+            value={value}
+            onChange={(e) => onChange(e.target.value)}
           />
 
           {rightAddOn && (
