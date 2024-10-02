@@ -29,21 +29,20 @@ const TextInput = ({
   const [focused, setFocused] = useState(false);
 
   const inputClassName = `
-    block w-full rounded pl-[48px] pr-[56px] border text-sm text-slate-600 leading-6 caret-indigo-700 h-[48px]
-    ${disabled ? ' outline-2 border-red-500 cursor-not-allowed' : 'bg-white/5'}
-    ${focused && !disabled ? 'outline-2 outline-indigo-700 border-none' : ''}
-    ${error ? 'outline-2 border-red-500' : ''}
-    ${!error && !focused && !disabled ? 'border-none focus:outline-none' : ''}
+    block w-full rounded pl-[3rem] pr-[3.5rem] border text-p1 text-slate-600 leading-6 caret-indigo-700 h-[3rem]
+    ${disabled ? 'border-red-500 cursor-not-allowed' : 'border-slate-200'}
+    ${focused && !disabled ? 'outline-2 outline-indigo-700 border-indigo-700' : ''}
+    ${error ? 'border-red-500' : ''}
     hover:shadow-[0_4px_12px_0_rgba(19,32,57,0.1),_0_8px_20px_0_rgba(19,32,57,0.03)]
   `;
 
   return (
     <div className="w-full max-w-md px-4">
       <div className="flex flex-col">
-        {label && <label className={`text-sm font-medium `}>{labelText}</label>}
+        {label && <label className="text-sm font-medium">{labelText}</label>}
         <div className="relative mt-3">
           {leftAddOn && (
-            <span className="absolute top-0 left-0 w-[48px] h-full flex items-center justify-center">
+            <span className="absolute top-0 left-0 w-[3rem] h-full flex items-center justify-center">
               {leftAddOn}
             </span>
           )}
@@ -59,12 +58,12 @@ const TextInput = ({
           />
 
           {rightAddOn && (
-            <span className="absolute top-0 right-0 w-[56px] h-full flex items-center justify-center">
+            <span className="absolute top-0 right-0 w-[3.5rem] h-full flex items-center justify-center">
               {rightAddOn}
             </span>
           )}
         </div>
-        {error && <p className="mt-2 text-sm text-red-500">{errorText}</p>}
+        {error && <p className="mt-2 text-p2 text-red-500">{errorText}</p>}
       </div>
     </div>
   );
