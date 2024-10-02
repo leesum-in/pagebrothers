@@ -4,7 +4,7 @@ import { HttpButtonAddOn, SearchIconAddOn } from './leftAddOn.stories';
 import { ArrowIconAddOn, ButtonAddOn, CalendarIconAddOn } from './rightAddOn.stories';
 
 export default {
-  title: 'Elements/TextInput',
+  title: 'Shared/Components/TextInput',
   component: TextInput,
   argTypes: {
     error: { control: 'boolean' },
