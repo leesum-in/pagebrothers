@@ -5,7 +5,9 @@ import DashboardHeader from './DashboardHeader';
 function DashboardTemplate() {
   return (
     <PageWrapper>
-      <DashboardHeader />
+      <div className="mx-auto w-full max-w-2xl space-y-10">
+        <DashboardHeader />
+      </div>
     </PageWrapper>
   );
 }
