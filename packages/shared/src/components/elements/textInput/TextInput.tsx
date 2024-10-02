@@ -1,31 +1,25 @@
 import { ReactNode, useState } from 'react';
-// import { LeftAddOnHttpButton, LeftAddOnSearchIcon } from '../textInputLeftAddOn';
-// import {
-//   RightAddOnArrowIcon,
-//   RightAddOnButton,
-//   RightAddOnCalendarIcon,
-//   RightAddOnTimeDisplay,
-//   RightAddOnUnit,
-// } from '../textInputRightAddOn';
 
 type TextInputProps = {
   error?: boolean;
   errorText?: string;
+  // error가 description
   disabled?: boolean;
   leftAddOn?: ReactNode;
   rightAddOn?: ReactNode;
-  showLabel?: boolean;
-  label?: string;
+  label?: boolean;
+  labelText?: string;
   placeholder?: string;
 };
 
+const TextInput = ({
   error = false,
   errorText = '피드백이나 부가 설명이 들어갑니다.',
   disabled = false,
   leftAddOn,
   rightAddOn,
-  showLabel = true,
-  label = '레이블',
+  label = true,
+  labelText = '레이블',
   placeholder = '텍스트 인풋',
 }: TextInputProps) => {
   const [focused, setFocused] = useState(false);
@@ -42,7 +36,7 @@ type TextInputProps = {
   return (
     <div className="w-full max-w-md px-4">
       <div className="flex flex-col">
-        {showLabel && <label className={`text-sm font-medium `}>{label}</label>}
+        {label && <label className={`text-sm font-medium `}>{labelText}</label>}
         <div className="relative mt-3">
           {leftAddOn && (
             <span className="absolute top-0 left-0 w-[48px] h-full flex items-center justify-center">

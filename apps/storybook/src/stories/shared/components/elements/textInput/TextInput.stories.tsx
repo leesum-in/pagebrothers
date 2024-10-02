@@ -10,8 +10,8 @@ export default {
     error: { control: 'boolean' },
     errorText: { control: 'text' },
     disabled: { control: 'boolean' },
-    showLabel: { control: 'boolean' },
-    label: { control: 'text' },
+    label: { control: 'boolean' },
+    labelText: { control: 'text' },
     placeholder: { control: 'text' },
     leftAddOn: {
       control: { type: 'select' },
@@ -41,9 +41,9 @@ const Template: StoryFn<typeof TextInput> = (args) => <TextInput {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {
-  label: '레이블',
+  labelText: '레이블',
   placeholder: '텍스트 인풋',
-  showLabel: true,
+  label: true,
   leftAddOn: 'None',
   rightAddOn: 'None',
 };
