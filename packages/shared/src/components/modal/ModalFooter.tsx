@@ -1,8 +1,26 @@
+import Button from '../../components/button/Button';
+
 interface ModalFooterProps {
   onApplyBtn: () => void;
-  onPreviewBtn?: () => void;
+  onPreviewBtn: () => void;
   applyBtnLabel: string;
-  previewBtnLabel?: string;
+  previewBtnLabel: string;
+  applyBtnVariant?:
+    | 'fill_primary'
+    | 'fill_secondary'
+    | 'fill_white'
+    | 'ghost'
+    | 'text_primary'
+    | 'text_secondary';
+  previewBtnVariant?:
+    | 'fill_primary'
+    | 'fill_secondary'
+    | 'fill_white'
+    | 'ghost'
+    | 'text_primary'
+    | 'text_secondary';
+  applyBtnSize?: 'small' | 'medium' | 'large';
+  previewBtnSize?: 'small' | 'medium' | 'large';
 }
 
 const ModalFooter = ({
@@ -10,22 +28,20 @@ const ModalFooter = ({
   onPreviewBtn,
   applyBtnLabel,
   previewBtnLabel,
+  applyBtnVariant = 'fill_primary',
+  previewBtnVariant = 'fill_secondary',
+  applyBtnSize = 'medium',
+  previewBtnSize = 'medium',
 }: ModalFooterProps) => {
   return (
     <div className="flex justify-end space-x-4">
-      <button
-        onClick={onPreviewBtn}
-        className="bg-slate-100 font-bold border border-slate-200 text-sm rounded-md px-4 h-12 hover:bg-slate-300 transition-colors "
-      >
+      <Button onClick={onPreviewBtn} variants={previewBtnVariant} size={previewBtnSize}>
         {previewBtnLabel}
-      </button>
+      </Button>
 
-      <button
-        onClick={onApplyBtn}
-        className="bg-indigo-600 font-bold text-white text-sm rounded-md px-4 hover:bg-indigo-700 transition-colors "
-      >
+      <Button onClick={onApplyBtn} variants={applyBtnVariant} size={applyBtnSize}>
         {applyBtnLabel}
-      </button>
+      </Button>
     </div>
   );
 };

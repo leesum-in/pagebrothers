@@ -33,9 +33,9 @@ const ModalHeader = ({
         }`}
       >
         <div className={`py-4 ${isHeaderSubtitle ? 'md:pb-0 md:pt-2' : 'md:pb-4 md:pt-2'}`}>
-          <div className="font-bold md:text-xl">{modalHeaderTitle}</div>
+          <div className="font-sans text-p1b md:text-h4b">{modalHeaderTitle}</div>
           {isHeaderSubtitle && modalHeaderSubtitle && (
-            <div className="mt-1 text-sm text-slate-500 ">{modalHeaderSubtitle}</div>
+            <div className="mt-1 text-slate-500 font-sans text-p2">{modalHeaderSubtitle}</div>
           )}
         </div>
         {isHeaderModalTabs && modalHeaderTabs.length > 0 && (
@@ -51,7 +51,7 @@ const ModalHeader = ({
                 }`}
               >
                 <span
-                  className={`${
+                  className={`font-sans text-p1b${
                     activeTab === index
                       ? 'border-b-2 border-indigo-700 pb-[18px]'
                       : 'border-b-2 border-transparent'

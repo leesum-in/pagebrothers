@@ -64,6 +64,10 @@ modal.args = {
       onPreviewBtn={() => alert('미리보기 클릭')}
       applyBtnLabel="적용하기"
       previewBtnLabel="미리보기"
+      applyBtnVariant="fill_primary"
+      previewBtnVariant="fill_secondary"
+      applyBtnSize="medium"
+      previewBtnSize="medium"
     />
   ),
   children: [
@@ -101,6 +105,10 @@ addModal.args = {
       onPreviewBtn={() => alert('에드 미리보기 클릭')}
       applyBtnLabel="에드적용"
       previewBtnLabel="에드미리"
+      applyBtnVariant="fill_primary"
+      previewBtnVariant="fill_secondary"
+      applyBtnSize="medium"
+      previewBtnSize="medium"
     />
   ),
   children: [
@@ -202,6 +210,10 @@ MultiModal.args = {
       onPreviewBtn={() => alert('미리보기 클릭')}
       applyBtnLabel="적용하기"
       previewBtnLabel="미리보기"
+      applyBtnVariant="fill_primary"
+      previewBtnVariant="fill_secondary"
+      applyBtnSize="medium"
+      previewBtnSize="medium"
     />
   ),
   children: [
@@ -236,6 +248,10 @@ MultiModal.args = {
       onPreviewBtn={() => alert('중첩미리보기 클릭')}
       applyBtnLabel="중첩적용"
       previewBtnLabel="중첩미리"
+      applyBtnVariant="fill_primary"
+      previewBtnVariant="fill_secondary"
+      applyBtnSize="medium"
+      previewBtnSize="medium"
     />
   ),
   MultiModalChildren: [
