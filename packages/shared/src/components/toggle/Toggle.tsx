@@ -47,7 +47,7 @@ const Toggle = ({
     <Switch.Group as="div" className="flex items-center">
       {label === 'left' && labelText && (
         <Switch.Label
-          className={`mr-5 ${disabled ? 'text-slate-500 opacity-50' : 'text-slate-500'}`}
+          className={`text-p1 mr-5 ${disabled ? 'text-slate-500 opacity-50' : 'text-slate-500'}`}
         >
           {labelText}
         </Switch.Label>

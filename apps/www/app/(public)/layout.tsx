@@ -1,6 +1,6 @@
 import { Suspense, type PropsWithChildren } from 'react';
 
-import Header from '@/common/components/Header';
+import Header from '@/ui/components/Header';
 
 function PublicLayout({ children }: PropsWithChildren): React.ReactNode {
   return (

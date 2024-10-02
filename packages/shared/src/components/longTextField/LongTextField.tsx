@@ -38,14 +38,14 @@ const LongTextField = ({
     <div>
       {label && (
         <div className="flex items-center w-full h-[2.5rem] gap-2">
-          <label className="block text-slate-500">{labelText}</label>
+          <label className="text-p2b block text-slate-500">{labelText}</label>
         </div>
       )}
       <div
         className={`w-full h-[8rem] max-w-full max-h-full rounded-md ${getTextFieldStyle(status)}`}
       >
         <textarea
-          className={`w-full h-full max-w-full max-h-full ${
+          className={`text-p1 w-full h-full max-w-full max-h-full ${
             status === 'disabled' ? 'bg-slate-50' : 'bg-white'
           } focus:outline-none border-none resize`}
           value={value}
@@ -55,7 +55,7 @@ const LongTextField = ({
         />
       </div>
       {description && (
-        <div className="flex items-center w-full h-[1.625rem] pt-1 gap-2">
+        <div className="text-p2 flex items-center w-full h-[1.625rem] pt-1 gap-2">
           <p className={status === 'error' ? 'text-red-500' : 'text-slate-500'}>
             {descriptionText}
           </p>
