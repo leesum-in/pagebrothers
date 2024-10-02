@@ -1,4 +1,4 @@
-import TextInput from '@shared/components/elements/textInput/TextInput';
+import TextInput from '@repo/shared/src/components/textInput/TextInput';
 import { Meta, StoryFn } from '@storybook/react';
 import { HttpButtonAddOn, SearchIconAddOn } from './leftAddOn.stories';
 import { ArrowIconAddOn, ButtonAddOn, CalendarIconAddOn } from './rightAddOn.stories';

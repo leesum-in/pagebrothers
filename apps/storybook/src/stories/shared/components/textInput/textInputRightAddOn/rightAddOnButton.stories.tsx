@@ -1,4 +1,4 @@
-import { RightAddOnButton } from '@shared/components/elements/textInputRightAddOn';
+import { RightAddOnButton } from '@repo/shared/src/components/textInput/textInputRightAddOn';
 import { Meta, StoryFn } from '@storybook/react';
 
 export default {

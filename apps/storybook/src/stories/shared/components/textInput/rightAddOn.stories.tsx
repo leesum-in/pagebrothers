@@ -2,7 +2,7 @@ import {
   RightAddOnArrowIcon,
   RightAddOnButton,
   RightAddOnCalendarIcon,
-} from '@shared/components/elements/textInputRightAddOn';
+} from '@repo/shared/src/components/textInput/textInputRightAddOn';
 import { Meta, StoryFn } from '@storybook/react';
 
 export default {

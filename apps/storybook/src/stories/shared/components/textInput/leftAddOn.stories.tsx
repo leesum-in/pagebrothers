@@ -1,7 +1,7 @@
 import {
   LeftAddOnHttpButton,
   LeftAddOnSearchIcon,
-} from '@shared/components/elements/textInputLeftAddOn';
+} from '@repo/shared/src/components/textInput/textInputLeftAddOn';
 import { Meta, StoryFn } from '@storybook/react';
 
 export default {
