@@ -43,6 +43,7 @@ const TextInput: React.FC<TextInputProps> = ({
     ${focused && !disabled ? 'outline-2 outline-indigo-700 border-none' : ''}
     ${error ? 'outline-2 border-red-500' : ''}
     ${!error && !focused && !disabled ? 'border-none focus:outline-none' : ''}
+    hover:shadow-[0_4px_12px_0_rgba(19,32,57,0.1),_0_8px_20px_0_rgba(19,32,57,0.03)]
   `;
 
   return (
