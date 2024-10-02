@@ -1,4 +1,4 @@
-import WidgetWrapper from '@/widget/WidgetWrapper';
+import { WidgetWrapper } from '@/widget/common';
 
 function VideoWidget(): React.ReactNode {
   return (
