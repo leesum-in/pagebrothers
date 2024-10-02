@@ -12,29 +12,22 @@ type TextInputProps = {
   error?: boolean;
   errorText?: string;
   disabled?: boolean;
-  icon?: boolean;
-  button?: boolean;
+  leftAddOn?: ReactNode;
+  rightAddOn?: ReactNode;
   showLabel?: boolean;
   label?: string;
-  buttonText?: string;
   placeholder?: string;
-  iconType?: 'search' | 'http';
-  rightAddOnType?: 'arrow' | 'button' | 'calendar' | 'time' | 'unit'; // Right add-on 타입 추가
 };
 
-const TextInput: React.FC<TextInputProps> = ({
   error = false,
   errorText = '피드백이나 부가 설명이 들어갑니다.',
   disabled = false,
-  icon = false,
-  button = false,
+  leftAddOn,
+  rightAddOn,
   showLabel = true,
   label = '레이블',
-  buttonText = '버튼',
   placeholder = '텍스트 인풋',
-  iconType = 'search',
-  rightAddOnType = 'arrow', // 기본 right add-on은 arrow로 설정
-}) => {
+}: TextInputProps) => {
   const [focused, setFocused] = useState(false);
 
   const inputClassName = `
@@ -51,15 +44,9 @@ const TextInput: React.FC<TextInputProps> = ({
       <div className="flex flex-col">
         {showLabel && <label className={`text-sm font-medium `}>{label}</label>}
         <div className="relative mt-3">
-          {/* Left Add-On: 48px 너비 */}
-          {icon && iconType === 'search' && (
-            <span className="absolute top-0 left-0 w-[48px] h-full flex items-center justify-center text-gray-400">
-              <LeftAddOnSearchIcon />
-            </span>
-          )}
-          {icon && iconType === 'http' && (
+          {leftAddOn && (
             <span className="absolute top-0 left-0 w-[48px] h-full flex items-center justify-center">
-              <LeftAddOnHttpButton />
+              {leftAddOn}
             </span>
           )}
 
@@ -72,14 +59,9 @@ const TextInput: React.FC<TextInputProps> = ({
             placeholder={placeholder}
           />
 
-          {/* Right Add-On: button이 true일 경우에만 렌더링 */}
-          {button && (
+          {rightAddOn && (
             <span className="absolute top-0 right-0 w-[56px] h-full flex items-center justify-center">
-              {rightAddOnType === 'arrow' && <RightAddOnArrowIcon />}
-              {rightAddOnType === 'button' && <RightAddOnButton />}
-              {rightAddOnType === 'calendar' && <RightAddOnCalendarIcon />}
-              {rightAddOnType === 'time' && <RightAddOnTimeDisplay />}
-              {rightAddOnType === 'unit' && <RightAddOnUnit />}
+              {rightAddOn}
             </span>
           )}
         </div>

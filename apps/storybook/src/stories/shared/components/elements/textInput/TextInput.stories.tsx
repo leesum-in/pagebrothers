@@ -1,5 +1,7 @@
 import TextInput from '@shared/components/elements/textInput/TextInput';
 import { Meta, StoryFn } from '@storybook/react';
+import { HttpButtonAddOn, SearchIconAddOn } from './leftAddOn.stories';
+import { ArrowIconAddOn, ButtonAddOn, CalendarIconAddOn } from './rightAddOn.stories';
 
 export default {
   title: 'Elements/TextInput',
@@ -8,12 +10,30 @@ export default {
     error: { control: 'boolean' },
     errorText: { control: 'text' },
     disabled: { control: 'boolean' },
-    icon: { control: 'boolean' },
-    button: { control: 'boolean' },
     showLabel: { control: 'boolean' },
     label: { control: 'text' },
-    buttonText: { control: 'text' },
     placeholder: { control: 'text' },
+    leftAddOn: {
+      control: { type: 'select' },
+      options: ['None', 'SearchIconAddOn', 'HttpButtonAddOn'],
+      mapping: {
+        None: null,
+        SearchIconAddOn: <SearchIconAddOn />,
+        HttpButtonAddOn: <HttpButtonAddOn />,
+        // 새로운 옵션은 아래에 이어서 추가해주세요.
+      },
+    },
+    rightAddOn: {
+      control: { type: 'select' },
+      options: ['None', 'ButtonAddOn', 'ArrowIconAddOn', 'CalendarIconAddOn'],
+      mapping: {
+        None: null,
+        ButtonAddOn: <ButtonAddOn />,
+        ArrowIconAddOn: <ArrowIconAddOn />,
+        CalendarIconAddOn: <CalendarIconAddOn />,
+        // 새로운 옵션은 아래에 이어서 추가해주세요.
+      },
+    },
   },
 } as Meta<typeof TextInput>;
 
@@ -24,54 +44,6 @@ Default.args = {
   label: '레이블',
   placeholder: '텍스트 인풋',
   showLabel: true,
-};
-
-// 에러
-export const WithError = Template.bind({});
-WithError.args = {
-  label: '레이블',
-  placeholder: '텍스트 인풋',
-  showLabel: true,
-  error: true,
-  errorText: '피드백이나 부가 설명이 들어갑니다.',
-};
-
-// 비활성화
-export const Disabled = Template.bind({});
-Disabled.args = {
-  label: '레이블',
-  placeholder: '텍스트 인풋',
-  showLabel: true,
-  disabled: true,
-};
-
-// 아이콘 조절
-export const WithIcon = Template.bind({});
-WithIcon.args = {
-  label: '레이블',
-  placeholder: '텍스트 인풋',
-  showLabel: true,
-  icon: true,
-};
-
-// 버튼 조절
-export const WithButton = Template.bind({});
-WithButton.args = {
-  label: '레이블',
-  placeholder: '텍스트 인풋',
-  showLabel: true,
-  button: true,
-  buttonText: '버튼',
-};
-
-export const AllFeatures = Template.bind({});
-AllFeatures.args = {
-  label: '레이블',
-  placeholder: '텍스트 인풋',
-  showLabel: true,
-  error: true,
-  disabled: false,
-  icon: true,
-  button: true,
-  buttonText: '버튼',
+  leftAddOn: 'None',
+  rightAddOn: 'None',
 };
