@@ -1,8 +1,10 @@
+import Link from 'next/link';
+
 function Navigation(): React.ReactNode {
   return (
     <nav className="sticky top-0 z-20 flex h-12 flex-none items-center bg-white pl-2 text-sm desktop:h-14 desktop:pl-3 desktop:text-base">
       <div className="flex items-center gap-2 whitespace-nowrap px-2 font-bold desktop:px-4">
-        <a href="/">
+        <Link href="/">
           <svg
             viewBox="0 0 22 13"
             fill="none"
@@ -57,8 +59,8 @@ function Navigation(): React.ReactNode {
               </linearGradient>
             </defs>
           </svg>
-        </a>
-        <a href="/dashboard">나의 청첩장</a>
+        </Link>
+        <Link href="/dashboard">나의 청첩장</Link>
       </div>
       <div className="ml-auto h-full" />
     </nav>
