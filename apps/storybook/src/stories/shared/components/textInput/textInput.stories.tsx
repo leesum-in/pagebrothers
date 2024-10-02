@@ -7,8 +7,8 @@ export default {
   title: 'Shared/Components/TextInput',
   component: TextInput,
   argTypes: {
-    error: { control: 'boolean' },
-    errorText: { control: 'text' },
+    description: { control: 'boolean' },
+    descriptionText: { control: 'text' },
     disabled: { control: 'boolean' },
     label: { control: 'boolean' },
     labelText: { control: 'text' },
@@ -50,13 +50,13 @@ Default.args = {
 };
 
 // 에러
-export const WithError = Template.bind({});
-WithError.args = {
+export const WithDescription = Template.bind({});
+WithDescription.args = {
   labelText: '레이블',
   placeholder: '텍스트 인풋',
   label: true,
-  error: true,
-  errorText: '피드백이나 부가 설명이 들어갑니다.',
+  description: true,
+  descriptionText: '피드백이나 부가 설명이 들어갑니다.',
 };
 
 // 비활성화
