@@ -2,6 +2,7 @@
 
 import { useInvitationsQuery } from '@/invitations/queries';
 import { PageWrapper } from '@/ui/wrapper';
+import Link from 'next/link';
 import { useEffect } from 'react';
 import DashboardHeader from './DashboardHeader';
 
@@ -17,6 +18,12 @@ function DashboardTemplate() {
     <PageWrapper>
       <div className="mx-auto w-full max-w-2xl space-y-10">
         <DashboardHeader />
+        {/** 아래 완전 임시입니다 ~ */}
+        {invitations?.items.map((invitation, index) => (
+          <div key={invitation.id}>
+            <Link href={`/dashboard/${invitation.id}/edit`}>{`${index + 1}번째 청첩장`}</Link>
+          </div>
+        ))}
       </div>
     </PageWrapper>
   );
