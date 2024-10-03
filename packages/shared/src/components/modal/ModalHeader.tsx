@@ -1,4 +1,11 @@
-import CloseIcon from '../../assets/icons/x.svg';
+import { clsx, type ClassValue } from 'clsx';
+import { twMerge } from 'tailwind-merge';
+import CloseIcon from '../../assets/icons/CloseIcon';
+
+// cn 함수 정의
+function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
 
 interface ModalHeaderProps {
   modalHeaderTitle: string;
@@ -9,6 +16,7 @@ interface ModalHeaderProps {
   isHeaderSubtitle?: boolean;
   activeTab: number;
   onTabChange: (index: number) => void;
+  closeIconButtonClassName?: string;
 }
 
 const ModalHeader = ({
@@ -20,6 +28,7 @@ const ModalHeader = ({
   isHeaderSubtitle = false,
   activeTab,
   onTabChange,
+  closeIconButtonClassName,
 }: ModalHeaderProps) => {
   const handleTabClick = (index: number) => {
     onTabChange(index); // 탭을 클릭할 때 활성화된 탭의 인덱스를 업데이트
@@ -28,12 +37,14 @@ const ModalHeader = ({
   return (
     <div className="w-full bg-white">
       <div
-        className={`flex bg-white px-6 md:px-8 text-slate-900 gap-6 ${
-          isHeaderSubtitle ? 'md:py-4' : 'md:pt-4'
+        className={`flex bg-white px-6 desktop:px-8 text-slate-900 gap-6 ${
+          isHeaderSubtitle ? 'desktop:py-4' : 'desktop:pt-4'
         }`}
       >
-        <div className={`py-4 ${isHeaderSubtitle ? 'md:pb-0 md:pt-2' : 'md:pb-4 md:pt-2'}`}>
-          <div className="font-sans text-p1b md:text-h4b">{modalHeaderTitle}</div>
+        <div
+          className={`py-4 ${isHeaderSubtitle ? 'desktop:pb-0 desktop:pt-2' : 'desktop:pb-4 desktop:pt-2'}`}
+        >
+          <div className="font-sans text-p1b desktop:text-h4b">{modalHeaderTitle}</div>
           {isHeaderSubtitle && modalHeaderSubtitle && (
             <div className="mt-1 text-slate-500 font-sans text-p2">{modalHeaderSubtitle}</div>
           )}
@@ -46,12 +57,12 @@ const ModalHeader = ({
                 onClick={() => handleTabClick(index)}
                 className={`${
                   activeTab === index
-                    ? 'text-indigo-700 p-2 md:p-3 md:pb-4'
-                    : 'text-slate-400 p-2 md:p-3 md:pb-4'
+                    ? 'text-indigo-700 p-2 desktop:p-3 desktop:pb-4'
+                    : 'text-slate-400 p-2 desktop:p-3 desktop:pb-4'
                 }`}
               >
                 <span
-                  className={`font-sans text-p1b${
+                  className={`font-sans text-p1b ${
                     activeTab === index
                       ? 'border-b-2 border-indigo-700 pb-[18px]'
                       : 'border-b-2 border-transparent'
@@ -63,10 +74,10 @@ const ModalHeader = ({
             ))}
           </div>
         )}
-        <div className="flex ml-auto translate-x-4 items-center md:items-start">
+        <div className="flex ml-auto translate-x-4 items-center desktop:items-start">
           <button
             type="button"
-            className="flex justify-center items-center h-12 w-12 "
+            className={cn('flex justify-center items-center h-12 w-12', closeIconButtonClassName)}
             onClick={modalHeaderOnClose}
           >
             <CloseIcon />

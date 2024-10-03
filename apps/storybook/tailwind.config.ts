@@ -54,6 +54,9 @@ const config: Config = {
         c: ['12px', { lineHeight: '19.2px', letterSpacing: '-0.02em', fontWeight: '400' }],
         ce: ['12px', { lineHeight: '19.2px', letterSpacing: '0.04em', fontWeight: '400' }],
       },
+      screens: {
+        desktop: '820px',
+      },
     },
   },
   plugins: [
