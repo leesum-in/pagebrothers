@@ -1,10 +1,12 @@
 'use client';
 
+import { useParams } from 'next/navigation';
+import { useEffect } from 'react';
+
 import { useInvitationQuery } from '@/invitations/queries';
 import ErrorTemplate from '@/ui/error/ErrorTemplate';
 import { PageWrapper } from '@/ui/wrapper';
 import { VideoWidget } from '@/widget/video';
-import { useParams } from 'next/navigation';
 
 function EditTemplate() {
   const { id } = useParams<{ id: string }>();
@@ -14,6 +16,10 @@ function EditTemplate() {
   // useEffect(() => {
   //   if (error) throw new Error('error');
   // }, [error]);
+
+  useEffect(() => {
+    if (invitation) console.log('invitation ====>', invitation);
+  }, [invitation]);
 
   if (isPending) {
     // 로딩 중일 때 표시할 컴포넌트 수정 요망

@@ -1,8 +1,9 @@
 'use client';
 
-import { useAuth } from '@/auth/hooks';
 import { Button } from '@repo/shared';
 import Link from 'next/link';
+
+import { useAuth } from '@/auth/hooks';
 
 function DashboardHeader() {
   const { me } = useAuth();

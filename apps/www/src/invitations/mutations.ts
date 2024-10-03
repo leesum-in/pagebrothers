@@ -1,8 +1,10 @@
-import { IInvitation } from '@/types/Pagebrothers.type';
 import { useMutation, type UseMutationResult, useQueryClient } from '@tanstack/react-query';
+
+import type { IInvitation } from '@/types/Pagebrothers.type';
+
 import { postInvitation } from './apis';
 import { QUERY_KEY_INVITATION } from './constants';
-import { InvitationResponse } from './types';
+import type { InvitationResponse } from './types';
 
 export function useInvitationMutation(): UseMutationResult<
   InvitationResponse,

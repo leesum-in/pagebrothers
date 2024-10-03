@@ -1,5 +1,6 @@
-import EditTemplate from '@/invitations/dashboard/components/EditTemplate';
 import type { Metadata } from 'next';
+
+import EditTemplate from '@/invitations/dashboard/components/EditTemplate';
 
 export const metadata: Metadata = {
   title: '편집하기',

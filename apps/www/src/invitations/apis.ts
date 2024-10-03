@@ -1,6 +1,8 @@
-import { IInvitation } from '@/types/Pagebrothers.type';
 import { api } from '@repo/shared';
-import { InvitationResponse, ItemsResponse } from './types';
+
+import type { IInvitation } from '@/types/Pagebrothers.type';
+
+import type { InvitationResponse, ItemsResponse } from './types';
 
 export async function getTemplates(): Promise<ItemsResponse> {
   const url = '/v2/templates?stage=BEST';

@@ -1,4 +1,4 @@
-import { PropsWithChildren } from 'react';
+import type { PropsWithChildren } from 'react';
 
 // 이 컴포넌트는 완전히 임시입니다...
 // overflow-x-hidden
