@@ -61,6 +61,9 @@ module.exports = {
     'react/jsx-sort-props': 'off',
     '@typescript-eslint/consistent-type-definitions': 'off', // type과 interface 사용 강제하지 않음
     'no-console': 'off',
+    '@typescript-eslint/no-misused-promises': 'off', // promise return void 강제하지 않음
+    '@typescript-eslint/naming-convention': 'off', // 변수명 규칙 강제하지 않음
+    'import/no-cycle': 'off', // 순환 참조 강제하지 않음
     'import/order': [
       'error',
       {
