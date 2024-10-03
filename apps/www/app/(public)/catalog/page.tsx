@@ -1,4 +1,4 @@
-import CatalogTemplate from '@/catalog/components/CatalogTemplate';
+import { CatalogTemplate } from '@/catalog/components';
 
 function CatalogPage() {
   return <CatalogTemplate />;
