@@ -1,4 +1,4 @@
-import { Button } from '@repo/shared';
+import { Button } from '@shared/components';
 import { Meta, StoryFn } from '@storybook/react';
 
 export default {
@@ -79,7 +79,7 @@ Ghost.args = {
   children: '추가하기 +',
   disabled: false,
   size: 'medium',
-  className: 'w-[414px]',
+  className: 'w-[414px] justify-start',
 };
 
 export const Text_primary = Template.bind({});
