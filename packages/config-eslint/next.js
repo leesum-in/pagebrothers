@@ -64,6 +64,7 @@ module.exports = {
     '@typescript-eslint/no-misused-promises': 'off', // promise return void 강제하지 않음
     '@typescript-eslint/naming-convention': 'off', // 변수명 규칙 강제하지 않음
     'import/no-cycle': 'off', // 순환 참조 강제하지 않음
+    'import/named': 'off', // uuid 사용 시 오류 발생
     'import/order': [
       'error',
       {

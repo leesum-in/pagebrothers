@@ -1,15 +1,13 @@
 'use client';
 
 import { Button } from '@repo/shared';
-import { v4 as uuidv4 } from 'uuid/';
+import { v4 as uuidv4 } from 'uuid';
 
 import { useInvitationMutation } from '@/invitations/mutations';
 import type { IInvitation } from '@/types/Pagebrothers.type';
 
 function StartButton() {
   const { mutateAsync: makeInvitation } = useInvitationMutation();
-
-  console.log(uuidv4());
 
   const handleMakeClick = async () => {
     const invitation: Partial<IInvitation> = {
