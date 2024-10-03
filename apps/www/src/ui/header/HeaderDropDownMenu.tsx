@@ -1,8 +1,10 @@
 'use client';
+
 import { MenuItem, MenuItems } from '@headlessui/react';
 import Link from 'next/link';
 
 import { useAuth } from '@/auth/hooks';
+import { Button } from '@repo/shared';
 
 function HeaderDropDownMenu(): React.ReactNode {
   const { logOut } = useAuth();
@@ -18,13 +20,14 @@ function HeaderDropDownMenu(): React.ReactNode {
         </Link>
       </MenuItem>
       <MenuItem as="li">
-        <button
-          type="button"
-          className="flex h-12 w-full items-center px-4 hover:bg-slate-50"
+        <Button
+          variants="fill_white"
+          size="medium"
+          className="flex h-12 w-full justify-start px-4 hover:bg-slate-50"
           onClick={logOut}
         >
           로그아웃
-        </button>
+        </Button>
       </MenuItem>
     </MenuItems>
   );

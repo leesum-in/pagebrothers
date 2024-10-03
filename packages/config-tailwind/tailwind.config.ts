@@ -121,6 +121,13 @@ const config: Omit<Config, 'content'> = {
         sm: '24rem',
       },
     },
+    'no-interaction': {
+      pointerEvents: 'none',
+      touchAction: 'none',
+      webkitUserSelect: 'none',
+      mozUserSelect: 'none',
+      userSelect: 'none',
+    },
   },
   plugins: [
     plugin(function ({ addUtilities, theme }) {

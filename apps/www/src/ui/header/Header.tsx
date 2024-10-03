@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-import HeaderMenu from '@/ui/components/HeaderMenu';
+import { HeaderMenu } from '@/ui/header';
 import Logo from '@/ui/svgs/Logo.svg';
 
 function Header(): React.ReactNode {
