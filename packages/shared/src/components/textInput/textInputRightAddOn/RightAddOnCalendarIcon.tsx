@@ -1,7 +1,6 @@
-import React from 'react';
 import { HiOutlineCalendar } from 'react-icons/hi';
 
-const RightAddOnCalendarIcon: React.FC = () => {
+const RightAddOnCalendarIcon = () => {
   return (
     <span>
       <HiOutlineCalendar />

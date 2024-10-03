@@ -1,6 +1,4 @@
-import React from 'react';
-
-const RightAddOnButton: React.FC = () => {
+const RightAddOnButton = () => {
   return <button>버튼</button>;
 };
 

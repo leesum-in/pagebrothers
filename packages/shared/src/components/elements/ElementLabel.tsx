@@ -1,10 +1,8 @@
-import React from 'react';
-
 interface ElementLabelProps {
   text: string;
 }
 
-const ElementLabel: React.FC<ElementLabelProps> = ({ text }) => {
+const ElementLabel = ({ text }: ElementLabelProps) => {
   return <label>{text}</label>;
 };
 

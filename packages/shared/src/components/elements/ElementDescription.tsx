@@ -1,10 +1,8 @@
-import React from 'react';
-
 interface ElementDescriptionProps {
   text: string;
 }
 
-const ElementDescription: React.FC<ElementDescriptionProps> = ({ text }) => {
+const ElementDescription = ({ text }: ElementDescriptionProps) => {
   return <p>{text}</p>;
 };
 
