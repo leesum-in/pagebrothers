@@ -180,7 +180,6 @@ export type Size = 'sm' | 'md' | 'lg';
 export type ZoomDisabledKey = 'none' | 'photo' | 'all';
 
 // WIDGET
-
 export type WidgetType =
   | 'CONGRATULATION'
   | 'LOCATION'
@@ -309,6 +308,7 @@ export interface OwnerAccountItem {
   bank: string;
   number: string;
 }
+
 export type CongratulationLayoutKey = 'COLLAPSIBLE' | 'SPREADED';
 
 /** EVENT_SEQUENCE (예식 구성) */
@@ -359,7 +359,8 @@ export interface GreetingItem {
 
 export type GreetingNameLayoutKey = 'VERTICAL' | 'HORIZONTAL';
 
-export type GreetingNameFormatKey = /** 누구와 누구의 딸, 고영희 */
+export type GreetingNameFormatKey =
+  /** 누구와 누구의 딸, 고영희 */
   | 'LEVEL_AND_FULL_NAME_WITH_PARENT'
   /** 모 누구 - 부 누구의 딸, 고영희 */
   | 'FULL_NAME_WITH_PREFIX_PARENT'
