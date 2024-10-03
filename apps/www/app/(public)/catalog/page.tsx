@@ -1,4 +1,4 @@
-import { CatalogTemplate } from '@/catalog/components';
+import { CatalogTemplate } from '@/invitation/catalog/components';
 
 function CatalogPage() {
   return <CatalogTemplate />;

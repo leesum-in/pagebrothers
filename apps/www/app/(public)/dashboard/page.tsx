@@ -1,4 +1,4 @@
-import { DashboardTemplate } from '@/dashboard/components';
+import { DashboardTemplate } from '@/invitation/dashboard/components';
 
 function DashBoardPage() {
   return <DashboardTemplate />;

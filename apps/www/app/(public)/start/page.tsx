@@ -1,4 +1,4 @@
-import { StartTemplate } from '@/start/components';
+import { StartTemplate } from '@/invitation/start/components';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {

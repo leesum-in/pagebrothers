@@ -3,7 +3,7 @@
 import { IInvitation } from '@/types/Pagebrothers.type';
 import { Button } from '@repo/shared';
 import { v4 as uuidv4 } from 'uuid';
-import { useInvitationMutation } from '../mutations';
+import { useInvitationMutation } from '../../mutations';
 
 function StartButton() {
   const { mutateAsync: makeInvitation } = useInvitationMutation();
