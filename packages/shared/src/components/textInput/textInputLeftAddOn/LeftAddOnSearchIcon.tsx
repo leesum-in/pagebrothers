@@ -1,7 +1,6 @@
-import React from 'react';
 import { HiMagnifyingGlass } from 'react-icons/hi2';
 
-const LeftAddOnSearchIcon: React.FC = () => {
+const LeftAddOnSearchIcon = () => {
   return (
     <span>
       <HiMagnifyingGlass />

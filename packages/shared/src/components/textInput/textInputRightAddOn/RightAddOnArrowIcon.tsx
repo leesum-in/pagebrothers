@@ -1,7 +1,6 @@
-import React from 'react';
 import { IoIosArrowDown } from 'react-icons/io';
 
-const RightAddOnArrowIcon: React.FC = () => {
+const RightAddOnArrowIcon = () => {
   return (
     <span>
       <IoIosArrowDown />

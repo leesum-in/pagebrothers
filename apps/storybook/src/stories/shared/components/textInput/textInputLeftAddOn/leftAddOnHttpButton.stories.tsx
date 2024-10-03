@@ -6,7 +6,7 @@ export default {
   component: LeftAddOnHttpButton,
 } as Meta;
 
-const Template: StoryFn<typeof LeftAddOnHttpButton> = (args) => <LeftAddOnHttpButton {...args} />;
+const Template: StoryFn<typeof LeftAddOnHttpButton> = (args) => <LeftAddOnHttpButton />;
 
 export const leftAddOnHttpButton = Template.bind({});
 leftAddOnHttpButton.args = {};
