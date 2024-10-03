@@ -30,7 +30,6 @@
   },
   "dependencies": {
     "@svgr/webpack": "^8.1.0",
-    "@svgr/webpack": "^8.1.0",
     "@headlessui/react": "^2.1.8",
     "@types/node": "^22.5.5",
     "axios": "^1.7.7",

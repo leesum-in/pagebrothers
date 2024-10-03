@@ -1,11 +1,5 @@
-import { clsx, type ClassValue } from 'clsx';
 import ReactDOM from 'react-dom';
-import { twMerge } from 'tailwind-merge';
-
-// cn 함수 정의
-function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
-}
+import { cn } from '../../../src/utils';
 
 interface ModalProps {
   isModalOpen: boolean;

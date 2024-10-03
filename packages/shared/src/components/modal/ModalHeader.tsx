@@ -1,11 +1,5 @@
-import { clsx, type ClassValue } from 'clsx';
-import { twMerge } from 'tailwind-merge';
+import { cn } from '../../../src/utils';
 import CloseIcon from '../../assets/icons/CloseIcon';
-
-// cn 함수 정의
-function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
-}
 
 interface ModalHeaderProps {
   modalHeaderTitle: string;
