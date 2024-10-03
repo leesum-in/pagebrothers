@@ -1,3 +1,4 @@
+import { StartTemplate } from '@/start/components';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -5,7 +6,7 @@ export const metadata: Metadata = {
 };
 
 function StartPage(): React.ReactNode {
-  return <div />;
+  return <StartTemplate />;
 }
 
 export default StartPage;
