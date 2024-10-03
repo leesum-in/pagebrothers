@@ -65,6 +65,8 @@ module.exports = {
     '@typescript-eslint/naming-convention': 'off', // 변수명 규칙 강제하지 않음
     'import/no-cycle': 'off', // 순환 참조 강제하지 않음
     'import/named': 'off', // uuid 사용 시 오류 발생
+    '@typescript-eslint/explicit-function-return-type': 'off', // 함수 반환 타입 강제하지 않음
+    'no-unused-vars': 'off', // 분명 변수 사용하고 있는데 오류 출력으로 off
     'import/order': [
       'error',
       {
