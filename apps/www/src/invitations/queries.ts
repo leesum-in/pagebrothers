@@ -1,7 +1,7 @@
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useQuery } from '@tanstack/react-query';
 
-import type { ErrorResponse } from '@/types/Error.type';
+import type { ErrorResponse } from '@/types/error.type';
 
 import { getInvitation, getInvitations, getTemplates } from './apis';
 import { QUERY_KEY_INVITATION, QUERY_KEY_INVITATIONS, QUERY_KEY_TEMPLATES } from './constants';

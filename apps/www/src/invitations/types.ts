@@ -1,4 +1,4 @@
-import type { IInvitation, IInvitationTemplate } from '@/types/Pagebrothers.type';
+import type { IInvitation, IInvitationTemplate } from '@/types/pageBrothers.type';
 
 export type InvitationResponse = {
   id: string;

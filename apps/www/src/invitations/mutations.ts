@@ -1,6 +1,6 @@
 import { useMutation, type UseMutationResult, useQueryClient } from '@tanstack/react-query';
 
-import type { IInvitation } from '@/types/Pagebrothers.type';
+import type { IInvitation } from '@/types/pageBrothers.type';
 
 import { postInvitation } from './apis';
 import { QUERY_KEY_INVITATION } from './constants';

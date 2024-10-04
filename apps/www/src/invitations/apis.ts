@@ -1,6 +1,6 @@
 import { api } from '@repo/shared';
 
-import type { IInvitation } from '@/types/Pagebrothers.type';
+import type { IInvitation } from '@/types/pageBrothers.type';
 
 import type { InvitationResponse, ItemsResponse } from './types';
 
