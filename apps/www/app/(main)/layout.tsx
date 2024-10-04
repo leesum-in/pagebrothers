@@ -6,7 +6,7 @@ function PublicLayout({ children }: PropsWithChildren): React.ReactNode {
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <Header />
-      {children}
+      <main className="p-12 text-black">{children}</main>
     </Suspense>
   );
 }

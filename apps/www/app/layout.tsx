@@ -2,7 +2,7 @@ import '@repo/shared/src/styles.css';
 import type { Metadata } from 'next';
 
 import { gowunBatang, notoSerifKr, pretendard } from '@/fonts';
-import QueryProvider from '@/query/provider';
+import { QueryProvider } from '@/query';
 import './globals.css';
 
 export const metadata: Metadata = {
