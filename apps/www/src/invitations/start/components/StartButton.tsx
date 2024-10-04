@@ -1,7 +1,6 @@
 'use client';
 
 import { Button } from '@repo/shared';
-import { v4 as uuidv4 } from 'uuid';
 
 import { useInvitationMutation } from '@/invitations/mutations';
 import type { IInvitation } from '@/types/Pagebrothers.type';
@@ -21,12 +20,12 @@ function StartButton() {
       },
       owners: [
         {
-          id: uuidv4(),
+          id: crypto.randomUUID(),
           name: '김철수',
           role: 'GROOM',
         },
         {
-          id: uuidv4(),
+          id: crypto.randomUUID(),
           name: '박영희',
           role: 'BRIDE',
         },
