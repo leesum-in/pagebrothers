@@ -1,3 +1,5 @@
+import { cn } from '../../utils';
+
 export interface ButtonProps {
   children: React.ReactNode;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
@@ -42,7 +44,9 @@ const Button = ({
   return (
     <button
       type="button"
-      className={`${BUTTON_COLOR[variants]} ${BUTTON_SIZE[size]} ${className} flex justify-center items-center font-bold box-border `}
+      className={cn(
+        `${BUTTON_COLOR[variants]} ${BUTTON_SIZE[size]} flex justify-center items-center font-bold box-border ${className}`,
+      )}
       onClick={onClick}
       {...props}
       disabled={disabled}
