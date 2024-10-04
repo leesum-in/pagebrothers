@@ -1,5 +1,6 @@
-import Move from '@/ui/svgs/Move.svg';
 import { Button } from '@repo/shared';
+
+import Move from '@/ui/svgs/Move.svg';
 
 interface WidgetTitleButtonProps {
   title: string;

@@ -1,10 +1,10 @@
 'use client';
 
 import { MenuItem, MenuItems } from '@headlessui/react';
+import { Button } from '@repo/shared';
 import Link from 'next/link';
 
 import { useAuth } from '@/auth/hooks';
-import { Button } from '@repo/shared';
 
 function HeaderDropDownMenu(): React.ReactNode {
   const { logOut } = useAuth();
