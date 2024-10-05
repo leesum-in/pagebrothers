@@ -1,5 +1,5 @@
 import { ReactNode, useState } from 'react';
-import { cn } from 'src';
+import { cn } from '../../utils';
 
 interface TextInputProps {
   description?: boolean;
