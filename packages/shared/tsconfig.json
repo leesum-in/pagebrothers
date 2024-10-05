@@ -3,6 +3,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
+      "@/*": ["./src/*"],
       "*.svg": ["./svg.d.ts"]
     },
     "types": ["node"]
