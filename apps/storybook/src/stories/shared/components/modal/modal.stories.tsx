@@ -25,6 +25,10 @@ const Template: StoryFn = (args) => {
         isModalHeader={args.isModalHeader}
         isModalFooter={args.isModalFooter}
         isModalFooterBg={args.isModalFooterBg}
+        isHeaderBorderLine={args.isHeaderBorderLine}
+        modalBgClassName={args.modalBgClassName} // 모달배경클래스
+        modalContentClassName={args.modalContentClassName} // 모달클래스
+        modalChildrenClassName={args.modalChildrenClassName} // 모달 내용클래스
         modalHeader={
           <ModalHeader
             modalHeaderTitle={args.modalHeaderTitle}
@@ -35,6 +39,7 @@ const Template: StoryFn = (args) => {
             isHeaderSubtitle={args.isHeaderSubtitle}
             activeTab={activeTab}
             onTabChange={setActiveTab}
+            closeIconButtonClassName={args.closeIconButtonClassName}
           />
         }
         modalFooter={args.modalFooter}
@@ -54,16 +59,25 @@ modal.args = {
   isModalFooterBg: true,
   isHeaderModalTabs: true,
   isHeaderSubtitle: false,
+  isHeaderBorderLine: true,
   modalHeaderTitle: '타이틀',
   modalHeaderOnClose: () => alert('모달 닫기'),
   modalHeaderTabs: ['메뉴1', '메뉴2', '메뉴3'], //탭 메뉴 설정. 배열 갯수에 따라 탭 생성 .[]빈배열 => 키0번 기본값
   modalHeaderSubtitle: '모달 작은 글씨가 표시.',
+  modalBgClassName: '', // 모달 배경 관련 스타일 적용
+  modalContentClassName: '', // 모달 스타일 적용
+  modalChildrenClassName: '', // 모달 children 영역에 스타일 적용
+  closeIconButtonClassName: '', // 닫기 아이콘 외부 스타일 적용
   modalFooter: (
     <ModalFooter
       onApplyBtn={() => alert('적용하기 클릭')}
       onPreviewBtn={() => alert('미리보기 클릭')}
       applyBtnLabel="적용하기"
       previewBtnLabel="미리보기"
+      applyBtnVariant="fill_primary"
+      previewBtnVariant="fill_secondary"
+      applyBtnSize="medium"
+      previewBtnSize="medium"
     />
   ),
   children: [
@@ -91,16 +105,25 @@ addModal.args = {
   isModalFooterBg: true,
   isHeaderModalTabs: true,
   isHeaderSubtitle: false,
+  isHeaderBorderLine: true,
   modalHeaderTitle: '에드',
   modalHeaderOnClose: () => alert('에드 모달 닫기'),
   modalHeaderTabs: ['에드1', '에드2'],
   modalHeaderSubtitle: '에드 작은 글씨 표시',
+  modalBgClassName: '', // 모달 배경 관련 스타일 적용
+  modalContentClassName: '', // 모달 스타일 적용
+  modalChildrenClassName: '', // 모달 children 영역에 스타일 적용
+  closeIconButtonClassName: '', // 닫기 아이콘 외부 스타일 적용
   modalFooter: (
     <ModalFooter
       onApplyBtn={() => alert('에드 적용하기 클릭')}
       onPreviewBtn={() => alert('에드 미리보기 클릭')}
       applyBtnLabel="에드적용"
       previewBtnLabel="에드미리"
+      applyBtnVariant="fill_primary"
+      previewBtnVariant="fill_secondary"
+      applyBtnSize="medium"
+      previewBtnSize="medium"
     />
   ),
   children: [
@@ -134,6 +157,10 @@ const MultiModalTemplate: StoryFn = (args) => {
         isModalHeader={args.isModalHeader}
         isModalFooter={args.isModalFooter}
         isModalFooterBg={args.isModalFooterBg}
+        isHeaderBorderLine={args.isHeaderBorderLine}
+        modalBgClassName={args.modalBgClassName} // 모달배경클래스
+        modalContentClassName={args.modalContentClassName} // 모달클래스
+        modalChildrenClassName={args.modalChildrenClassName} // 모달 내용클래스
         modalHeader={
           <ModalHeader
             modalHeaderTitle={args.modalHeaderTitle}
@@ -144,6 +171,7 @@ const MultiModalTemplate: StoryFn = (args) => {
             isHeaderSubtitle={args.isHeaderSubtitle}
             activeTab={activeTab}
             onTabChange={setActiveTab}
+            closeIconButtonClassName={args.closeIconButtonClassName}
           />
         }
         modalFooter={args.modalFooter}
@@ -163,6 +191,10 @@ const MultiModalTemplate: StoryFn = (args) => {
         isModalHeader={args.isMultiModalHeader}
         isModalFooter={args.isMultiModalFooter}
         isModalFooterBg={args.isMultiModalFooterBg}
+        isHeaderBorderLine={args.isMultiHeaderBorderLine}
+        modalBgClassName={args.MultiModalBgClassName} // 중첩모달배경클래스
+        modalContentClassName={args.MultiModalContentClassName} // 중첩모달클래스
+        modalChildrenClassName={args.MultiModalChildrenClassName} // 중첩모달 내용클래스
         modalHeader={
           <ModalHeader
             modalHeaderTitle={args.MultiModalHeaderTitle}
@@ -173,6 +205,7 @@ const MultiModalTemplate: StoryFn = (args) => {
             isHeaderSubtitle={args.isMultiModalHeaderSubtitle}
             activeTab={multiActiveTab}
             onTabChange={setMultiActiveTab}
+            closeIconButtonClassName={args.MultiCloseIconButtonClassName}
           />
         }
         modalFooter={args.MultiModalFooter}
@@ -192,16 +225,25 @@ MultiModal.args = {
   isModalFooterBg: true,
   isHeaderModalTabs: true,
   isHeaderSubtitle: false,
+  isHeaderBorderLine: true,
   modalHeaderTitle: '모달',
   modalHeaderOnClose: () => alert('모달 닫기'),
   modalHeaderTabs: ['모달1', '모달2', '모달3'],
   modalHeaderSubtitle: '작은 글씨 표시랄랄라',
+  modalBgClassName: '', // 모달 배경 관련 스타일 적용
+  modalContentClassName: '', // 모달 스타일 적용
+  modalChildrenClassName: '', // 모달 children 영역에 스타일 적용
+  closeIconButtonClassName: '', // 닫기 아이콘 외부스타일 적용
   modalFooter: (
     <ModalFooter
       onApplyBtn={() => alert('적용하기 클릭')}
       onPreviewBtn={() => alert('미리보기 클릭')}
       applyBtnLabel="적용하기"
       previewBtnLabel="미리보기"
+      applyBtnVariant="fill_primary"
+      previewBtnVariant="fill_secondary"
+      applyBtnSize="medium"
+      previewBtnSize="medium"
     />
   ),
   children: [
@@ -226,16 +268,25 @@ MultiModal.args = {
   isMultiModalFooterBg: true,
   isMultiModalHeaderTabs: true,
   isMultiModalHeaderSubtitle: false,
+  isMultiHeaderBorderLine: true,
   MultiModalHeaderTitle: '중첩',
   MultiModalHeaderOnClose: () => alert('중첩 모달 닫기'),
   MultiModalHeaderTabs: ['중첩1', '중첩2'],
   MultiModalHeaderSubtitle: '중첩 모달 작은 글씨',
+  MultiModalBgClassName: '', // 중첩모달 배경 관련 스타일 적용
+  MultiModalContentClassName: '', // 중첩모달 스타일 적용
+  MultiModalChildrenClassName: '', // 중첩모달 children 영역에 스타일 적용
+  MultiCloseIconButtonClassName: '', // 닫기 아이콘 외부스타일 적용
   MultiModalFooter: (
     <ModalFooter
       onApplyBtn={() => alert('중첩적용하기 클릭')}
       onPreviewBtn={() => alert('중첩미리보기 클릭')}
       applyBtnLabel="중첩적용"
       previewBtnLabel="중첩미리"
+      applyBtnVariant="fill_primary"
+      previewBtnVariant="fill_secondary"
+      applyBtnSize="medium"
+      previewBtnSize="medium"
     />
   ),
   MultiModalChildren: [
