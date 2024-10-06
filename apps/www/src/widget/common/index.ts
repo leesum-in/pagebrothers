@@ -1,3 +1,4 @@
+export { default as Widget } from './Widget';
 export { default as WidgetButtons } from './WidgetButtons';
 export { default as WidgetModifyButton } from './WidgetModifyButton';
 export { default as WidgetStickerButton } from './WidgetStickerButton';

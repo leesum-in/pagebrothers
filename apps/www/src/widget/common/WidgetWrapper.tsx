@@ -21,6 +21,7 @@ function WidgetWrapper({
     >
       <WidgetButtons title={title} />
 
+      {/** 아래 두 div 는 조건에 따른 처리가 필요할 것 같습니다 */}
       <div className="border-t border-slate-200">
         <div className="font-serif text-[14px] leading-loose">
           <div className="relative overflow-hidden">{children}</div>
