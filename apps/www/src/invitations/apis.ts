@@ -12,7 +12,7 @@ export async function getTemplates(): Promise<ItemsResponse> {
 export async function getInvitation(id: string): Promise<IInvitation> {
   const url = `/v2/invitations/${id}`;
   return api.get<IInvitation, IInvitation>(url);
-
+}
 
 export async function getInvitations(): Promise<ItemsResponse> {
   const url = '/v2/invitations';
