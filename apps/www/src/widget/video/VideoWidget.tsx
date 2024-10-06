@@ -1,13 +1,16 @@
+import type { VideoWidgetConfig, WidgetItem } from '@/types/pageBrothers.type';
 import { WidgetWrapper } from '@/widget/common';
 
-function VideoWidget(): React.ReactNode {
+function VideoWidget(widgetItem: WidgetItem): React.ReactNode {
+  const url = (widgetItem.config as VideoWidgetConfig).url.replace('watch?v=', 'embed/');
+
   return (
     <WidgetWrapper title="동영상">
       <div className="relative no-interaction">
         <div style={{ paddingTop: '56.25%' }} />
         <iframe
           className="absolute inset-0 w-full h-full"
-          src="https://www.youtube.com/embed/GJDdBbgJafU"
+          src={url}
           title="YouTube video player"
           frameBorder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
