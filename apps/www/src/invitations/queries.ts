@@ -2,15 +2,14 @@ import type { UseQueryResult } from '@tanstack/react-query';
 import { useQuery } from '@tanstack/react-query';
 
 import type { ErrorResponse } from '@/types/error.type';
+import type { IInvitation } from '@/types/pageBrothers.type';
 
 import { getInvitation, getInvitations, getTemplates } from './apis';
 import { QUERY_KEY_INVITATION, QUERY_KEY_INVITATIONS, QUERY_KEY_TEMPLATES } from './constants';
-import type { InvitationResponse, ItemsResponse } from './types';
+import type { ItemsResponse } from './types';
 
-export function useInvitationQuery(
-  id: string,
-): UseQueryResult<InvitationResponse | null, ErrorResponse> {
-  return useQuery<InvitationResponse | null, ErrorResponse>({
+export function useInvitationQuery(id: string): UseQueryResult<IInvitation | null, ErrorResponse> {
+  return useQuery<IInvitation | null, ErrorResponse>({
     queryKey: [QUERY_KEY_INVITATION, id],
     queryFn: () => getInvitation(id),
     enabled: Boolean(id),
