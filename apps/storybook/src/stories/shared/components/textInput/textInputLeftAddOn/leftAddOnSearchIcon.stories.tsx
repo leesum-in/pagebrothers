@@ -1,4 +1,4 @@
-import { LeftAddOnSearchIcon } from '@shared/components/elements/textInputLeftAddOn';
+import { LeftAddOnSearchIcon } from '@shared/components';
 import { Meta, StoryFn } from '@storybook/react';
 
 export default {

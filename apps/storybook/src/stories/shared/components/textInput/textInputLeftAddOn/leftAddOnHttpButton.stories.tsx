@@ -1,4 +1,4 @@
-import { LeftAddOnHttpButton } from '@shared/components/elements/textInputLeftAddOn';
+import { LeftAddOnHttpButton } from '@shared/components';
 import { Meta, StoryFn } from '@storybook/react';
 
 export default {
