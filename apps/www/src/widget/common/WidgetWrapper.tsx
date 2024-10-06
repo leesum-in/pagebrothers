@@ -1,7 +1,6 @@
 import { type PropsWithChildren } from 'react';
 
-import WidgetModifyButtons from './WidgetModifyButtons';
-import WidgetTitleButton from './WidgetTitleButton';
+import WidgetButtons from './WidgetButtons';
 
 interface WidgetWrapperProps {
   title: string;
@@ -20,10 +19,7 @@ function WidgetWrapper({
       // aria-describedby="DndDescribedBy-0"
       className="relative overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-1 cursor-default w-[416px]"
     >
-      <div className="flex items-center justify-between p-4 font-bold text-slate-900">
-        <WidgetTitleButton title={title} />
-        <WidgetModifyButtons />
-      </div>
+      <WidgetButtons title={title} />
 
       <div className="border-t border-slate-200">
         <div className="font-serif text-[14px] leading-loose">

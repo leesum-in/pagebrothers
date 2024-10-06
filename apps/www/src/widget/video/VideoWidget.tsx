@@ -2,7 +2,7 @@ import { WidgetWrapper } from '@/widget/common';
 
 function VideoWidget(): React.ReactNode {
   return (
-    <WidgetWrapper title="Video">
+    <WidgetWrapper title="동영상">
       <div className="relative no-interaction">
         <div style={{ paddingTop: '56.25%' }} />
         <iframe
