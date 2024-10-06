@@ -1,4 +1,4 @@
-import Page from '../../../../www/app/(public)/page';
+import Page from '../../../../www/app/(main)/page';
 
 export default {
   title: 'www/Page',
