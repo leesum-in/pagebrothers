@@ -6,7 +6,7 @@ import {
 import { Meta, StoryFn } from '@storybook/react';
 
 export default {
-  title: 'Elements/RightAddOn',
+  title: 'Shared/Components/RightAddOn',
 } as Meta;
 
 // 새로운 옵션은 아래에 이어서 추가해주세요.

@@ -2,11 +2,10 @@ import { RightAddOnTimeDisplay } from '@repo/shared/src/components/textInput/tex
 import { Meta, StoryFn } from '@storybook/react';
 
 export default {
-  title: 'Shared/Components/Elements/RightAddOn',
+  title: 'Shared/Components/RightAddOn/RightAddOnTimeDisplay',
   component: RightAddOnTimeDisplay,
 } as Meta;
 
-const Template: StoryFn<typeof RightAddOnTimeDisplay> = (args) => <RightAddOnTimeDisplay />;
+const Template: StoryFn = () => <RightAddOnTimeDisplay />;
 
-export const rightAddOnTimeDisplay = Template.bind({});
-rightAddOnTimeDisplay.args = {};
+export const Default = Template.bind({});

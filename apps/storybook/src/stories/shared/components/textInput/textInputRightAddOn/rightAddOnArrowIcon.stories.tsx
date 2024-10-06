@@ -2,11 +2,10 @@ import { RightAddOnArrowIcon } from '@repo/shared/src/components/textInput/textI
 import { Meta, StoryFn } from '@storybook/react';
 
 export default {
-  title: 'Shared/Components/Elements/RightAddOn',
+  title: 'Shared/Components/RightAddOn/RightAddOnArrowIcon',
   component: RightAddOnArrowIcon,
 } as Meta;
 
-const Template: StoryFn<typeof RightAddOnArrowIcon> = (args) => <RightAddOnArrowIcon />;
+const Template: StoryFn = () => <RightAddOnArrowIcon />;
 
-export const rightAddOnArrowIcon = Template.bind({});
-rightAddOnArrowIcon.args = {};
+export const Default = Template.bind({});
