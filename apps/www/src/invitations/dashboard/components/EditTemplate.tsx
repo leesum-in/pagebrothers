@@ -32,7 +32,7 @@ function EditTemplate() {
           <div className="space-y-6">
             {/** 아래 그냥 예시입니다 */}
             {invitation?.widgets[1] ? (
-              <Widget widgetType="VIDEO" widgetItem={invitation.widgets[1]} />
+              <Widget widgetType={invitation.widgets[1].type} widgetItem={invitation.widgets[1]} />
             ) : null}
           </div>
         </div>
