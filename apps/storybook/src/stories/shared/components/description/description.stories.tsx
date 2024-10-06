@@ -2,10 +2,10 @@ import { Description } from '@repo/shared';
 import { Meta, StoryFn } from '@storybook/react';
 
 export default {
-  title: 'Shared/Components/Elements',
+  title: 'Shared/Components/Description',
   component: Description,
   argTypes: {
-    status: {
+    state: {
       control: {
         type: 'select',
         options: ['error', 'success', 'normal'],
