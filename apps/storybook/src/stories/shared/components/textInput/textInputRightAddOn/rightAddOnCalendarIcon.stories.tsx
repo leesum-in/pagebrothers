@@ -2,11 +2,10 @@ import { RightAddOnCalendarIcon } from '@repo/shared/src/components/textInput/te
 import { Meta, StoryFn } from '@storybook/react';
 
 export default {
-  title: 'Shared/Components/Elements/RightAddOn',
+  title: 'Shared/Components/RightAddOn/RightAddOnCalendarIcon',
   component: RightAddOnCalendarIcon,
 } as Meta;
 
-const Template: StoryFn<typeof RightAddOnCalendarIcon> = (args) => <RightAddOnCalendarIcon />;
+const Template: StoryFn = () => <RightAddOnCalendarIcon />;
 
-export const rightAddOnCalendarIcon = Template.bind({});
-rightAddOnCalendarIcon.args = {};
+export const Default = Template.bind({});

@@ -1,6 +1,7 @@
 'use client';
 
-import { ReactNode, useState } from 'react';
+import type { ReactNode } from 'react';
+import { useState } from 'react';
 import { cn } from '../../utils';
 
 interface TextInputProps {
@@ -17,7 +18,7 @@ interface TextInputProps {
   className?: string;
 }
 
-const TextInput = ({
+function TextInput({
   description = false,
   descriptionText = '피드백이나 부가 설명이 들어갑니다.',
   disabled = false,
@@ -29,7 +30,7 @@ const TextInput = ({
   value,
   onChange,
   className,
-}: TextInputProps) => {
+}: TextInputProps) {
   const [focused, setFocused] = useState(false);
 
   const inputClassName = cn(
@@ -44,13 +45,13 @@ const TextInput = ({
   return (
     <div className="w-full max-w-md px-4">
       <div className="flex flex-col">
-        {label && <label className="text-sm font-medium">{labelText}</label>}
+        {label ? <label className="text-sm font-medium">{labelText}</label> : null}
         <div className="relative mt-3">
-          {leftAddOn && (
+          {leftAddOn ? (
             <span className="absolute top-0 left-0 w-[3rem] h-full flex items-center justify-center">
               {leftAddOn}
             </span>
-          )}
+          ) : null}
 
           <input
             className={inputClassName}
@@ -62,16 +63,16 @@ const TextInput = ({
             onChange={(e) => onChange(e.target.value)}
           />
 
-          {rightAddOn && (
+          {rightAddOn ? (
             <span className="absolute top-0 right-0 w-[3.5rem] h-full flex items-center justify-center">
               {rightAddOn}
             </span>
-          )}
+          ) : null}
         </div>
-        {description && <p className="mt-2 text-p2 text-red-500">{descriptionText}</p>}
+        {description ? <p className="mt-2 text-p2 text-red-500">{descriptionText}</p> : null}
       </div>
     </div>
   );
-};
+}
 
 export default TextInput;

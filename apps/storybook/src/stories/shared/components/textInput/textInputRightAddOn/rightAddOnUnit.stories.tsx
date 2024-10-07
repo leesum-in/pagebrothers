@@ -2,11 +2,10 @@ import { RightAddOnUnit } from '@repo/shared/src/components/textInput/textInputR
 import { Meta, StoryFn } from '@storybook/react';
 
 export default {
-  title: 'Shared/Components/Elements/RightAddOn',
+  title: 'Shared/Components/RightAddOn/RightAddOnUnit',
   component: RightAddOnUnit,
 } as Meta;
 
-const Template: StoryFn<typeof RightAddOnUnit> = (args) => <RightAddOnUnit />;
+const Template: StoryFn = () => <RightAddOnUnit />;
 
-export const rightAddOnUnit = Template.bind({});
-rightAddOnUnit.args = {};
+export const Default = Template.bind({});
