@@ -6,7 +6,7 @@ export default {
   component: Label,
   argTypes: {
     label: { control: 'text' },
-    helpText: { control: 'text' },
+    addOn: { control: 'text' },
   },
 } as Meta;
 
@@ -15,6 +15,6 @@ const Template: StoryFn<typeof Label> = (args) => <Label {...args} />;
 export const Default = Template.bind({});
 
 Default.args = {
-  helpText: '(선택)',
+  addOn: '(선택)',
   label: '레이블',
 };
