@@ -1,12 +1,14 @@
+import { Description, Label } from '..';
+
 interface LongTextFieldProps {
   status: 'default' | 'hover' | 'focused' | 'completed' | 'error' | 'disabled';
   label?: boolean;
-  description?: boolean;
   labelText?: string;
+  description?: boolean;
+  descriptionText?: string;
+  placeholder?: string;
   value: string;
   onChange: (value: string) => void;
-  placeholder?: string;
-  descriptionText?: string;
 }
 
 const getTextFieldStyle = (status: LongTextFieldProps['status']) => {
@@ -27,23 +29,21 @@ const getTextFieldStyle = (status: LongTextFieldProps['status']) => {
 const LongTextField = ({
   status = 'default',
   label = true,
-  description = true,
   labelText = '',
+  description = true,
+  descriptionText = '',
+  placeholder,
   value,
   onChange,
-  placeholder,
-  descriptionText = '',
 }: LongTextFieldProps) => {
   return (
     <div>
       {label && (
         <div className="flex items-center w-full h-[2.5rem] gap-2">
-          <label className="text-p2b block text-slate-500">{labelText}</label>
+          <Label label={labelText} className="mb-2" />
         </div>
       )}
       <div
-        className={`w-full h-[8rem] max-w-full max-h-full rounded-md ${getTextFieldStyle(status)}`}
-        className={`w-full h-[8rem] max-w-full max-h-full rounded-md ${getTextFieldStyle(status)} hover:shadow-[0_4px_12px_0_rgba(19,32,57,0.1),_0_8px_20px_0_rgba(19,32,57,0.03)]`}
         className={`w-full h-[8rem] max-w-full max-h-full rounded-md ${getTextFieldStyle(status)} ${
           status !== 'disabled' &&
           'hover:shadow-[0_4px_12px_0_rgba(19,32,57,0.1),_0_8px_20px_0_rgba(19,32,57,0.03)]'
@@ -61,9 +61,10 @@ const LongTextField = ({
       </div>
       {description && (
         <div className="text-p2 flex items-center w-full h-[1.625rem] pt-1 gap-2">
-          <p className={status === 'error' ? 'text-red-500' : 'text-slate-500'}>
-            {descriptionText}
-          </p>
+          <Description
+            state={status === 'error' ? 'error' : 'normal'}
+            description={descriptionText}
+          />
         </div>
       )}
     </div>

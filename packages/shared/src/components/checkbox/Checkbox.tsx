@@ -1,4 +1,5 @@
 import { Checkbox as HeadlessUiCheckbox } from '@headlessui/react';
+import { Label } from '..';
 
 interface CheckboxProps {
   label: 'small' | 'large' | 'none';
@@ -9,7 +10,7 @@ interface CheckboxProps {
 }
 
 // default, disabled, checked & disabled 상태별 스타일
-const getCheckboxStateStyles = (checked: boolean, disabled: boolean) => {
+const getCheckboxStateStyle = (checked: boolean, disabled: boolean) => {
   if (disabled) {
     return checked ? 'bg-indigo-100 border-none' : 'bg-slate-50 border-[0.1rem] border-slate-100';
   }
@@ -17,7 +18,7 @@ const getCheckboxStateStyles = (checked: boolean, disabled: boolean) => {
 };
 
 // 사이즈별 체크박스 스타일
-const getCheckboxSizeStyles = (label: CheckboxProps['label']) => {
+const getCheckboxSizeStyle = (label: CheckboxProps['label']) => {
   switch (label) {
     case 'small':
       return 'w-[1.125rem] h-[1.125rem] border-[0.1rem] rounded-[0.25rem] gap-0';
@@ -29,8 +30,8 @@ const getCheckboxSizeStyles = (label: CheckboxProps['label']) => {
   }
 };
 
-// 사이즈별 텍스트 스타일
-const getLabelSizeStyles = (label: CheckboxProps['label']) => {
+// 라벨별 텍스트 스타일
+const getTextStyle = (label: CheckboxProps['label']) => {
   switch (label) {
     case 'small':
       return 'text-p2 text-justify';
@@ -50,12 +51,12 @@ const Checkbox = ({
   onChange,
 }: CheckboxProps) => {
   return (
-    <div className="flex items-center">
+    <div className={`flex items-center ${disabled ? 'opacity-50 cursor-not-allowed' : null}`}>
       <HeadlessUiCheckbox
         checked={checked}
         onChange={(value) => onChange(value)}
         disabled={disabled}
-        className={`group block ${getCheckboxSizeStyles(label)} ${getCheckboxStateStyles(checked, disabled)} ${
+        className={`group block ${getCheckboxSizeStyle(label)} ${getCheckboxStateStyle(checked, disabled)} ${
           disabled ? 'cursor-not-allowed' : 'cursor-pointer'
         }`}
       >
@@ -68,11 +69,7 @@ const Checkbox = ({
           <path d="M3 8L6 11L11 3.5" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       </HeadlessUiCheckbox>
-      <span
-        className={`ml-2 text-slate-600 ${getLabelSizeStyles(label)} ${disabled ? 'opacity-50' : ''}`}
-      >
-        {labelText}
-      </span>
+      <Label label={labelText} className={`ml-2 ${getTextStyle(label)}`} />
     </div>
   );
 };
