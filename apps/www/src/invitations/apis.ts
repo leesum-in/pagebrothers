@@ -9,9 +9,9 @@ export async function getTemplates(): Promise<ItemsResponse> {
   return api.get<ItemsResponse, ItemsResponse>(url);
 }
 
-export async function getInvitation(id: string): Promise<InvitationResponse> {
+export async function getInvitation(id: string): Promise<IInvitation> {
   const url = `/v2/invitations/${id}`;
-  return api.get<InvitationResponse, InvitationResponse>(url);
+  return api.get<IInvitation, IInvitation>(url);
 }
 
 export async function getInvitations(): Promise<ItemsResponse> {

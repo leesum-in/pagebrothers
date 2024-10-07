@@ -23,7 +23,7 @@ function HeaderDropDownMenu(): React.ReactNode {
         <Button
           variants="fill_white"
           size="medium"
-          className="flex h-12 w-full justify-start px-4 hover:bg-slate-50"
+          className="flex h-12 w-full justify-start px-4 hover:bg-slate-50 border-none"
           onClick={logOut}
         >
           로그아웃

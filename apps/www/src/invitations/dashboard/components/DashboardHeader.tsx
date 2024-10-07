@@ -22,7 +22,7 @@ function DashboardHeader() {
         <Button
           variants="fill_white"
           size="large"
-          className="desktop:h-12 desktop:rounded-md desktop:px-4 desktop:text-sm h-8 rounded-sm px-2 text-xs border border-slate-200 bg-slate-100 text-slate-900 hover:bg-slate-200 center-flex gap-2 font-bold shadow-1 transition-colors disabled:opacity-40"
+          className="desktop:h-12 desktop:rounded-md desktop:px-4 desktop:text-sm h-8 rounded-sm px-2 text-xs border border-slate-200 bg-slate-100 text-slate-900 hover:bg-slate-200 center-flex gap-2 font-bold shadow-1 transition-colors disabled:opacity-40 drop-shadow-none"
         >
           새 청첩장 만들기
         </Button>

@@ -6,16 +6,11 @@ import { useEffect } from 'react';
 import { useInvitationQuery } from '@/invitations/queries';
 import ErrorTemplate from '@/ui/error/ErrorTemplate';
 import { PageWrapper } from '@/ui/wrapper';
-import { VideoWidget } from '@/widget/video';
+import { Widget } from '@/widget/common';
 
 function EditTemplate() {
   const { id } = useParams<{ id: string }>();
   const { data: invitation, isPending, error } = useInvitationQuery(id);
-
-  // 에러 시 정말 throw Error 해서는 안되고 그냥 client 에서 처리해야 하는것 같아요
-  // useEffect(() => {
-  //   if (error) throw new Error('error');
-  // }, [error]);
 
   useEffect(() => {
     if (invitation) console.log('invitation ====>', invitation);
@@ -35,7 +30,10 @@ function EditTemplate() {
       <div className="desktop:flex-1">
         <div className="mx-auto w-full max-w-[26rem]">
           <div className="space-y-6">
-            <VideoWidget />
+            {/** 아래 그냥 예시입니다 */}
+            {invitation?.widgets[1] ? (
+              <Widget widgetType={invitation.widgets[1].type} widgetItem={invitation.widgets[1]} />
+            ) : null}
           </div>
         </div>
       </div>
