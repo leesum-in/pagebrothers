@@ -43,6 +43,7 @@ const LongTextField = ({
       )}
       <div
         className={`w-full h-[8rem] max-w-full max-h-full rounded-md ${getTextFieldStyle(status)}`}
+        className={`w-full h-[8rem] max-w-full max-h-full rounded-md ${getTextFieldStyle(status)} hover:shadow-[0_4px_12px_0_rgba(19,32,57,0.1),_0_8px_20px_0_rgba(19,32,57,0.03)]`}
       >
         <textarea
           className={`text-p1 w-full h-full max-w-full max-h-full ${
