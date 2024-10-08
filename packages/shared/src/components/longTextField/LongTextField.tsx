@@ -28,7 +28,7 @@ const getTextFieldStyle = (status: LongTextFieldProps['status']) => {
   return `${baseStyles} ${statusStyles[status]}`;
 };
 
-const LongTextField = ({
+function LongTextField({
   status = 'default',
   label = true,
   labelText = '',
@@ -38,7 +38,7 @@ const LongTextField = ({
   value,
   onChange,
   className,
-}: LongTextFieldProps) => {
+}: LongTextFieldProps) {
   return (
     <div>
       {label && (
@@ -76,6 +76,6 @@ const LongTextField = ({
       )}
     </div>
   );
-};
+}
 
 export default LongTextField;

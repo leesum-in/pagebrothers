@@ -37,13 +37,7 @@ const getCircleStyles = (disabled: boolean, enabled: boolean) => {
   }
 };
 
-const Toggle = ({
-  label = 'left',
-  toggleOn,
-  disabled = false,
-  labelText,
-  onChange,
-}: ToggleProps) => {
+function Toggle({ label = 'left', toggleOn, disabled = false, labelText, onChange }: ToggleProps) {
   return (
     <Switch.Group
       as="div"
@@ -65,6 +59,6 @@ const Toggle = ({
       {label === 'right' && labelText && <Label label={labelText} className="ml-5" />}
     </Switch.Group>
   );
-};
+}
 
 export default Toggle;

@@ -43,13 +43,7 @@ const getTextStyle = (label: CheckboxProps['label']) => {
   }
 };
 
-const Checkbox = ({
-  label,
-  checked,
-  disabled = false,
-  labelText = '',
-  onChange,
-}: CheckboxProps) => {
+function Checkbox({ label, checked, disabled = false, labelText = '', onChange }: CheckboxProps) {
   return (
     <div className={`flex items-center ${disabled ? 'opacity-50 cursor-not-allowed' : null}`}>
       <HeadlessUiCheckbox
@@ -72,6 +66,6 @@ const Checkbox = ({
       <Label label={labelText} className={`ml-2 ${getTextStyle(label)}`} />
     </div>
   );
-};
+}
 
 export default Checkbox;

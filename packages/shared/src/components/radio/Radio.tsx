@@ -47,7 +47,7 @@ const getSelectedCircleStyle = (label: 'small' | 'large' | 'none') => {
   }
 };
 
-const Radio = ({ label, selected, disabled = false, labelText = '', onChange }: RadioProps) => {
+function Radio({ label, selected, disabled = false, labelText = '', onChange }: RadioProps) {
   return (
     <div
       className={`flex items-center cursor-pointer ${disabled ? 'opacity-50 cursor-not-allowed' : null}`}
@@ -69,6 +69,6 @@ const Radio = ({ label, selected, disabled = false, labelText = '', onChange }: 
       />
     </div>
   );
-};
+}
 
 export default Radio;
