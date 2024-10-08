@@ -1,18 +1,13 @@
-import { useMemo } from 'react';
-
-import type { IInvitation } from '@/types/pageBrothers.type';
+import type { IInvitation, VideoWidgetConfig, WidgetItem } from '@/types/pageBrothers.type';
 import { WidgetWrapper } from '@/widget/common';
 
 interface VideoWidgetProps {
-  invitation: IInvitation;
+  invitation?: IInvitation;
+  widgetItem: WidgetItem;
 }
 
-function VideoWidget({ invitation }: VideoWidgetProps): React.ReactNode {
-  const url = useMemo(() => {
-    return invitation.widgets
-      .find((widget) => widget.type === 'VIDEO')
-      ?.config.url.replace('watch?v=', 'embed/');
-  }, [invitation]);
+function VideoWidget({ widgetItem }: VideoWidgetProps): React.ReactNode {
+  const url = (widgetItem.config as VideoWidgetConfig).url.replace('watch?v=', 'embed/');
 
   return (
     <WidgetWrapper title="동영상">
