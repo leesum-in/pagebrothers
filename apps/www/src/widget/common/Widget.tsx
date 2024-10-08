@@ -12,6 +12,9 @@ const components: Record<
   string,
   React.ComponentType<{ invitation?: IInvitation; widgetItem: WidgetItem }>
 > = {
+  INTRO: dynamic(() => import('../intro/IntroWidget'), {
+    ssr: false,
+  }),
   VIDEO: dynamic(() => import('../video/VideoWidget'), {
     ssr: false,
   }),

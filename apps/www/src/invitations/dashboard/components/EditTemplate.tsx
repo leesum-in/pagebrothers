@@ -31,6 +31,9 @@ function EditTemplate() {
         <div className="mx-auto w-full max-w-[26rem]">
           <div className="space-y-6">
             {/** 아래 그냥 예시입니다 */}
+            {invitation?.widgets[0] ? (
+              <Widget invitation={invitation} widgetItem={invitation.widgets[0]} />
+            ) : null}
             {invitation?.widgets[1] ? (
               <Widget invitation={invitation} widgetItem={invitation.widgets[1]} />
             ) : null}

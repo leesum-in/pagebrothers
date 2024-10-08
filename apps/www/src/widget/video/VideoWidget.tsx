@@ -1,6 +1,8 @@
 import type { IInvitation, VideoWidgetConfig, WidgetItem } from '@/types/pageBrothers.type';
 import { WidgetWrapper } from '@/widget/common';
 
+import { WIDGET_TYPE_KOREAN } from '../constants';
+
 interface VideoWidgetProps {
   invitation?: IInvitation;
   widgetItem: WidgetItem;
@@ -10,7 +12,7 @@ function VideoWidget({ widgetItem }: VideoWidgetProps): React.ReactNode {
   const url = (widgetItem.config as VideoWidgetConfig).url.replace('watch?v=', 'embed/');
 
   return (
-    <WidgetWrapper title="동영상">
+    <WidgetWrapper title={WIDGET_TYPE_KOREAN[widgetItem.type]}>
       <div className="relative no-interaction">
         <div style={{ paddingTop: '56.25%' }} />
         <iframe
