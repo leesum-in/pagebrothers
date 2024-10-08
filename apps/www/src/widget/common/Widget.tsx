@@ -1,23 +1,23 @@
 import dynamic from 'next/dynamic';
 import { memo } from 'react';
 
-import type { WidgetItem, WidgetType } from '@/types/pageBrothers.type';
+import type { IInvitation, WidgetType } from '@/types/pageBrothers.type';
 
 interface WidgetProps {
   widgetType: WidgetType;
-  widgetItem: WidgetItem;
+  invitation: IInvitation;
 }
 
-const components: Record<string, React.ComponentType<WidgetItem>> = {
+const components: Record<string, React.ComponentType<{ invitation: IInvitation }>> = {
   VIDEO: dynamic(() => import('../video/VideoWidget'), {
     ssr: false,
   }),
 };
 
-function Widget({ widgetType, widgetItem }: WidgetProps) {
+function Widget({ widgetType, invitation }: WidgetProps) {
   const Component = components[widgetType];
 
-  return <Component {...widgetItem} />;
+  return <Component invitation={invitation} />;
 }
 
 export default memo(Widget);
