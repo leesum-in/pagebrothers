@@ -1,4 +1,5 @@
 import { Description, Label } from '..';
+import { cn } from '../../utils';
 
 interface LongTextFieldProps {
   status: 'default' | 'hover' | 'focused' | 'completed' | 'error' | 'disabled';
@@ -9,6 +10,7 @@ interface LongTextFieldProps {
   placeholder?: string;
   value: string;
   onChange: (value: string) => void;
+  className?: string;
 }
 
 const getTextFieldStyle = (status: LongTextFieldProps['status']) => {
@@ -35,6 +37,7 @@ const LongTextField = ({
   placeholder,
   value,
   onChange,
+  className,
 }: LongTextFieldProps) => {
   return (
     <div>
@@ -50,9 +53,11 @@ const LongTextField = ({
         }`}
       >
         <textarea
-          className={`text-p1 w-full h-full max-w-full max-h-full ${
-            status === 'disabled' ? 'bg-slate-50' : 'bg-white'
-          } focus:outline-none border-none resize`}
+          className={cn(
+            `text-p1 w-full h-full max-w-full max-h-full focus:outline-none border-none resize ${
+              status === 'disabled' ? 'bg-slate-50' : 'bg-white'
+            } ${className}`,
+          )}
           value={value}
           onChange={(e) => onChange(e.target.value)}
           disabled={status === 'disabled'}
