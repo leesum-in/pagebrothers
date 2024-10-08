@@ -47,16 +47,18 @@ const LongTextField = ({
         </div>
       )}
       <div
-        className={`w-full h-[8rem] max-w-full max-h-full rounded-md ${getTextFieldStyle(status)} ${
+        className={cn(
+          'w-full h-[8rem] max-w-full max-h-full rounded-md',
+          getTextFieldStyle(status),
           status !== 'disabled' &&
-          'hover:shadow-[0_4px_12px_0_rgba(19,32,57,0.1),_0_8px_20px_0_rgba(19,32,57,0.03)]'
-        }`}
+            'hover:shadow-[0_4px_12px_0_rgba(19,32,57,0.1),_0_8px_20px_0_rgba(19,32,57,0.03)]',
+        )}
       >
         <textarea
           className={cn(
-            `text-p1 w-full h-full max-w-full max-h-full focus:outline-none border-none resize ${
-              status === 'disabled' ? 'bg-slate-50' : 'bg-white'
-            } ${className}`,
+            'text-p1 w-full h-full max-w-full max-h-full focus:outline-none border-none resize',
+            status === 'disabled' ? 'bg-slate-50' : 'bg-white',
+            className,
           )}
           value={value}
           onChange={(e) => onChange(e.target.value)}
