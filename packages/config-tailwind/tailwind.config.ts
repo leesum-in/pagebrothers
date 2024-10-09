@@ -114,6 +114,9 @@ const config: Omit<Config, 'content'> = {
         'gradient-slate-bot2top':
           'linear-gradient(180deg, rgba(248, 250, 252, 0) 0%, #F8FAFC 100%)',
       },
+      backgroundColor: {
+        'theme-black': 'rgb(15,23,42)',
+      },
       screens: {
         desktop: '820px',
       },
@@ -145,6 +148,14 @@ const config: Omit<Config, 'content'> = {
         }
       });
       const customUtilities: Record<string, Record<string, string>> = {
+        '.text-em-xs': {
+          fontSize: '.75em',
+          lineHeight: '1.6',
+        },
+        '.text-em-xl': {
+          fontSize: '1.25em',
+          lineHeight: '1.6',
+        },
         '.center-flex': {
           display: 'flex',
           'justify-content': 'center',
