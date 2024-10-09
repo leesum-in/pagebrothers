@@ -1,3 +1,5 @@
+import { Label } from '..';
+
 interface RadioProps {
   label: 'small' | 'large' | 'none';
   selected: boolean;
@@ -7,7 +9,7 @@ interface RadioProps {
 }
 
 // 라벨별 스타일
-const getRadioStateStyles = (label: 'small' | 'large' | 'none') => {
+const getRadioStateStyle = (label: 'small' | 'large' | 'none') => {
   switch (label) {
     case 'small':
       return 'w-[1.125rem] h-[1.125rem] p-[0.28125rem] gap-0 rounded-full border-[0.1rem] border-slate-100';
@@ -19,7 +21,7 @@ const getRadioStateStyles = (label: 'small' | 'large' | 'none') => {
   }
 };
 
-// 라벨별 텍스트 스타일
+// 라벨별 라벨 텍스트 스타일
 const getTextStyle = (label: 'small' | 'large' | 'none') => {
   switch (label) {
     case 'small':
@@ -45,14 +47,14 @@ const getSelectedCircleStyle = (label: 'small' | 'large' | 'none') => {
   }
 };
 
-const Radio = ({ label, selected, disabled = false, labelText = '', onChange }: RadioProps) => {
+function Radio({ label, selected, disabled = false, labelText = '', onChange }: RadioProps) {
   return (
     <div
-      className={`flex items-center cursor-pointer ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+      className={`flex items-center cursor-pointer ${disabled ? 'opacity-50 cursor-not-allowed' : null}`}
       onClick={() => !disabled && onChange(!selected)}
     >
       <div
-        className={`relative flex items-center justify-center ${getRadioStateStyles(label)} ${disabled ? 'cursor-not-allowed' : 'cursor-pointer'}`}
+        className={`relative flex items-center justify-center ${getRadioStateStyle(label)} ${disabled ? 'cursor-not-allowed' : 'cursor-pointer'}`}
       >
         {selected && (
           <div
@@ -61,11 +63,12 @@ const Radio = ({ label, selected, disabled = false, labelText = '', onChange }: 
           />
         )}
       </div>
-      <span className={`text-p1 ml-[0.5rem] text-slate-600 ${getTextStyle(label)}`}>
-        {labelText}
-      </span>
+      <Label
+        label={labelText}
+        className={`text-p1 ml-[0.5rem] text-slate-600 ${getTextStyle(label)}`}
+      />
     </div>
   );
-};
+}
 
 export default Radio;
