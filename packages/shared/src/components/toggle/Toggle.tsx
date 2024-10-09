@@ -1,4 +1,5 @@
 import { Switch } from '@headlessui/react';
+import { Label } from '..';
 
 interface ToggleProps {
   label?: 'left' | 'right' | 'none';
@@ -36,22 +37,13 @@ const getCircleStyles = (disabled: boolean, enabled: boolean) => {
   }
 };
 
-const Toggle = ({
-  label = 'left',
-  toggleOn,
-  disabled = false,
-  labelText = '',
-  onChange,
-}: ToggleProps) => {
+function Toggle({ label = 'left', toggleOn, disabled = false, labelText, onChange }: ToggleProps) {
   return (
-    <Switch.Group as="div" className="flex items-center">
-      {label === 'left' && labelText && (
-        <Switch.Label
-          className={`text-p1 mr-5 ${disabled ? 'text-slate-500 opacity-50' : 'text-slate-500'}`}
-        >
-          {labelText}
-        </Switch.Label>
-      )}
+    <Switch.Group
+      as="div"
+      className={`flex items-center ${disabled ? 'opacity-50 cursor-not-allowed' : null}`}
+    >
+      {label === 'left' && labelText && <Label label={labelText} className="mr-5" />}
       <Switch
         checked={toggleOn}
         onChange={onChange}
@@ -64,15 +56,9 @@ const Toggle = ({
           className={`absolute top-1/2 transform -translate-y-1/2 transition-transform ${getCircleStyles(disabled, toggleOn)}`}
         />
       </Switch>
-      {label === 'right' && labelText && (
-        <Switch.Label
-          className={`ml-5 ${disabled ? 'text-slate-500 opacity-50' : 'text-slate-500'}`}
-        >
-          {labelText}
-        </Switch.Label>
-      )}
+      {label === 'right' && labelText && <Label label={labelText} className="ml-5" />}
     </Switch.Group>
   );
-};
+}
 
 export default Toggle;

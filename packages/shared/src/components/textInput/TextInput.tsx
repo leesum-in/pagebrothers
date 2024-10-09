@@ -2,6 +2,7 @@
 
 import type { ReactNode } from 'react';
 import { useState } from 'react';
+import { Description, Label } from '..';
 import { cn } from '../../utils';
 
 interface TextInputProps {
@@ -45,7 +46,7 @@ function TextInput({
   return (
     <div className="w-full max-w-md px-4">
       <div className="flex flex-col">
-        {label ? <label className="text-sm font-medium">{labelText}</label> : null}
+        {label ? <Label label={labelText} className="text-sm font-medium" /> : null}
         <div className="relative mt-3">
           {leftAddOn ? (
             <span className="absolute top-0 left-0 w-[3rem] h-full flex items-center justify-center">
@@ -69,7 +70,13 @@ function TextInput({
             </span>
           ) : null}
         </div>
-        {description ? <p className="mt-2 text-p2 text-red-500">{descriptionText}</p> : null}
+        {description ? (
+          <Description
+            state="error"
+            description={descriptionText}
+            className="mt-2 text-p2 text-red-500"
+          />
+        ) : null}
       </div>
     </div>
   );
