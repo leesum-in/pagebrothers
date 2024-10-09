@@ -1,6 +1,6 @@
-import { HTMLAttributes } from 'react';
+import type { HTMLAttributes } from 'react';
 
-const CloseIcon = ({ className, ...rest }: HTMLAttributes<SVGElement>) => {
+function CloseIcon({ className, ...rest }: HTMLAttributes<SVGElement>) {
   return (
     <svg
       width="24"
@@ -15,10 +15,10 @@ const CloseIcon = ({ className, ...rest }: HTMLAttributes<SVGElement>) => {
       className={className}
       {...rest}
     >
-      <line x1="18" y1="6" x2="6" y2="18"></line>
-      <line x1="6" y1="6" x2="18" y2="18"></line>
+      <line x1="18" y1="6" x2="6" y2="18" />
+      <line x1="6" y1="6" x2="18" y2="18" />
     </svg>
   );
-};
+}
 
 export default CloseIcon;
