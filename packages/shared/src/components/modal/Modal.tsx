@@ -3,6 +3,7 @@
 import { Transition, TransitionChild } from '@headlessui/react';
 import { type PropsWithChildren } from 'react';
 import { createPortal } from 'react-dom';
+import { CloseIcon } from '../../assets/icons';
 import { cn } from '../../utils';
 
 interface ModalProps extends PropsWithChildren {
@@ -49,7 +50,10 @@ function Modal({
             'data-[leave]:duration-200 data-[leave]:data-[closed]:opacity-0',
           ],
         )}
-        onClick={onCloseModal}
+        onClick={(e) => {
+          const target = e.target as HTMLElement;
+          !target.closest('form') && onCloseModal();
+        }}
       >
         <div
           className={cn(
@@ -80,6 +84,15 @@ function Modal({
                     className={`sticky top-0 z-10 flex gap-4 border-b border-slate-100 bg-white px-6 text-slate-900 desktop:gap-6 desktop:px-8 desktop:pt-4 ${headerUnderline}`}
                   >
                     {modalHeader}
+                    <section className="center-flex ml-auto translate-x-4 desktop:items-start">
+                      <button
+                        type="button"
+                        className="center-flex h-12 w-12"
+                        onClick={onCloseModal}
+                      >
+                        <CloseIcon />
+                      </button>
+                    </section>
                   </header>
                 ) : null}
                 <div className={cn('px-6 py-4 desktop:px-8 desktop:py-6', modalChildrenClassName)}>
