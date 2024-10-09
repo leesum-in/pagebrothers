@@ -3,6 +3,8 @@
 import { Modal } from '@repo/shared';
 import { useParams } from 'next/navigation';
 import { useEffect } from 'react';
+import type { FieldValues, SubmitHandler } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { useShallow } from 'zustand/shallow';
 
 import { useInvitationQuery } from '@/invitations/queries';
@@ -15,15 +17,23 @@ import useModalStore from '@/widget/zustand';
 function EditTemplate() {
   const { id } = useParams<{ id: string }>();
   const { data: invitation, isPending, error } = useInvitationQuery(id);
-  const { modalState, closeModal } = useModalStore(
+  const { modalState, closeModal, setInvitationId, onSubmit } = useModalStore(
     useShallow((state: ModalStore) => ({
       modalState: state.modalState,
       closeModal: state.closeModal,
+      setInvitationId: state.setInvitationId,
+      onSubmit: state.onSubmit,
     })),
   );
+  const { handleSubmit } = useForm();
+
   useEffect(() => {
-    if (invitation) console.log('invitation ====>', invitation);
-  }, [invitation]);
+    console.log('invitation ====>', invitation);
+
+    if (invitation) {
+      setInvitationId(invitation.id);
+    }
+  }, [invitation, setInvitationId]);
 
   if (isPending) {
     // 로딩 중일 때 표시할 컴포넌트 수정 요망
@@ -39,14 +49,11 @@ function EditTemplate() {
       <Modal
         isModalOpen={modalState.isOpen}
         onCloseModal={closeModal}
-        onSubmit={(e) => {
-          e.preventDefault();
-          console.log('submit');
-        }}
-        modalHeader={<WidgetModalHeader type={modalState.type} />}
+        onSubmit={handleSubmit(onSubmit as SubmitHandler<FieldValues>)}
+        modalHeader={modalState.widget ? <WidgetModalHeader type={modalState.widget.type} /> : null}
         modalFooter={<WidgetModalFooter />}
       >
-        <WidgetModal type={modalState.type} />
+        <WidgetModal widget={modalState.widget ? modalState.widget : null} />
       </Modal>
 
       <PageWrapper>

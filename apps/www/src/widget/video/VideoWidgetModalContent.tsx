@@ -1,4 +1,60 @@
-function VideoWidgetModalContent(): React.ReactNode {
+'use client';
+
+import { useCallback, useEffect } from 'react';
+import type { SubmitHandler } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
+import { useShallow } from 'zustand/shallow';
+
+import { useInvitationConfigMutation } from '@/invitations/mutations';
+import type { ConfigData } from '@/invitations/types';
+import type { VideoWidgetConfig, WidgetItem } from '@/types/pageBrothers.type';
+
+import type { ModalStore, VideoWidgetForm } from '../zustand';
+import useModalStore from '../zustand';
+
+interface VideoWidgetModalContentProps {
+  widget: WidgetItem;
+}
+
+function VideoWidgetModalContent({ widget }: VideoWidgetModalContentProps): React.ReactNode {
+  const { register, watch } = useForm<VideoWidgetForm>();
+  const { setOnSubmit, closeModal } = useModalStore(
+    useShallow((state: ModalStore) => ({
+      setOnSubmit: state.setOnSubmit,
+      closeModal: state.closeModal,
+    })),
+  );
+
+  const { invitationId } = useModalStore(
+    useShallow((state: ModalStore) => ({
+      invitationId: state.invitationId,
+    })),
+  );
+
+  const { mutate: putInvitationConfig } = useInvitationConfigMutation(invitationId);
+
+  const onSubmit: SubmitHandler<VideoWidgetForm> = useCallback(() => {
+    const configPayloadData: ConfigData = {
+      id: widget.id,
+      type: 'VIDEO',
+      index: 0,
+      config: {
+        url: watch('url'),
+        aspectWidth: watch('aspectWidth'),
+        aspectHeight: watch('aspectHeight'),
+      },
+      stickers: [],
+    };
+    console.log('payload ====>', configPayloadData);
+    putInvitationConfig(configPayloadData);
+
+    closeModal();
+  }, [widget, watch, closeModal, putInvitationConfig]);
+
+  useEffect(() => {
+    setOnSubmit(onSubmit);
+  }, [setOnSubmit, onSubmit]);
+
   return (
     <div className="space-y-8">
       <div className="space-y-2 ">
@@ -20,7 +76,8 @@ function VideoWidgetModalContent(): React.ReactNode {
               spellCheck="false"
               autoComplete="off"
               placeholder="Youtube, Vimeo 동영상 주소"
-              name="url"
+              defaultValue={(widget.config as VideoWidgetConfig).url}
+              {...register('url')}
             />
             <div className="flex flex-none items-center" />
           </label>
@@ -44,7 +101,8 @@ function VideoWidgetModalContent(): React.ReactNode {
                 autoComplete="off"
                 type="number"
                 placeholder="가로"
-                name="aspectWidth"
+                defaultValue={(widget.config as VideoWidgetConfig).aspectWidth}
+                {...register('aspectWidth')}
               />
               <div className="flex flex-none items-center" />
             </label>
@@ -58,7 +116,8 @@ function VideoWidgetModalContent(): React.ReactNode {
                 autoComplete="off"
                 type="number"
                 placeholder="세로"
-                name="aspectHeight"
+                defaultValue={(widget.config as VideoWidgetConfig).aspectHeight}
+                {...register('aspectHeight')}
               />
               <div className="flex flex-none items-center" />
             </label>
