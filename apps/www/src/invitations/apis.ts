@@ -26,7 +26,7 @@ export async function postInvitation(
   return api.post<InvitationResponse, InvitationResponse>(url, invitation);
 }
 
-export async function postInvitationConfig(configPayload: ConfigPayload): Promise<ConfigData> {
+export async function putInvitationConfig(configPayload: ConfigPayload): Promise<ConfigData> {
   const url = `/widgets/${configPayload.configData.id}/config`;
-  return api.post<ConfigData, ConfigData>(url, configPayload.configData);
+  return api.put<ConfigData, ConfigData>(url, configPayload.configData);
 }
