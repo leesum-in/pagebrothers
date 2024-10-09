@@ -44,6 +44,8 @@ module.exports = {
     '@typescript-eslint/no-confusing-void-expression': 'off', // void return 끄기
     'jsx-a11y/click-events-have-key-events': 'off', // click-events-have-key-events 끄기
     'jsx-a11y/no-noninteractive-element-interactions': 'off', // no-noninteractive-element-interactions 끄기
+    'jsx-a11y/no-static-element-interactions': 'off', // no-static-element-interactions 끄기
+    'import/no-extraneous-dependencies': 'off', // 추가 의존성 끄기
   },
   overrides: [
     {
