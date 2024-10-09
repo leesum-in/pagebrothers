@@ -46,6 +46,7 @@ module.exports = {
     'jsx-a11y/no-noninteractive-element-interactions': 'off', // no-noninteractive-element-interactions 끄기
     'jsx-a11y/no-static-element-interactions': 'off', // no-static-element-interactions 끄기
     'import/no-extraneous-dependencies': 'off', // 추가 의존성 끄기
+    'import/no-cycle': 'off', // 순환 의존성 끄기
   },
   overrides: [
     {
