@@ -106,6 +106,9 @@ const config: Omit<Config, 'content'> = {
         // c - regular
         c: ['12px', { lineHeight: '19.2px', letterSpacing: '-0.02em', fontWeight: '400' }],
         ce: ['12px', { lineHeight: '19.2px', letterSpacing: '0.04em', fontWeight: '400' }],
+        // ??????? 이건 왜 다르죠??
+        xl: ['1.25rem', { lineHeight: '1.6' }],
+        sm: ['.875rem', { lineHeight: '1.6' }],
       },
       backgroundImage: {
         gradient: 'linear-gradient(90deg, #4338CA 0%, #EF4444 100%)',
