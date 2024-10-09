@@ -1,3 +1,4 @@
+import sharedConfig from '@repo/tailwind-config';
 import type { Config } from 'tailwindcss';
 import plugin from 'tailwindcss/plugin';
 
@@ -77,5 +78,6 @@ const config: Config = {
       addUtilities(fontUtilities);
     }),
   ],
+  presets: [sharedConfig],
 };
 export default config;
