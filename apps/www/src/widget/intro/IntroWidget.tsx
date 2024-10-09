@@ -1,8 +1,6 @@
 import type { IInvitation, IntroWidgetConfig, WidgetItem } from '@/types/pageBrothers.type';
 import { WidgetWrapper } from '@/widget/common';
 
-import { WIDGET_TYPE_KOREAN } from '../constants';
-
 interface IntroWidgetProps {
   invitation?: IInvitation;
   widgetItem: WidgetItem;
@@ -11,7 +9,7 @@ interface IntroWidgetProps {
 function IntroWidget({ invitation, widgetItem }: IntroWidgetProps): React.ReactNode {
   const { subTitle, title, coverImage } = widgetItem.config as IntroWidgetConfig;
   return (
-    <WidgetWrapper title={WIDGET_TYPE_KOREAN[widgetItem.type]}>
+    <WidgetWrapper widgetItem={widgetItem}>
       <div className="no-interaction">
         <div className="relative space-y-6 bg-theme-colored/5 py-12 leading-relaxed">
           <header className="space-y-1 text-center">

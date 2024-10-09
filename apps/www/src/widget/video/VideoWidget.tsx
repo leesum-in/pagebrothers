@@ -1,18 +1,30 @@
-import type { IInvitation, VideoWidgetConfig, WidgetItem } from '@/types/pageBrothers.type';
+import { memo, useMemo } from 'react';
+
+import type { VideoWidgetConfig, WidgetItem } from '@/types/pageBrothers.type';
 import { WidgetWrapper } from '@/widget/common';
 
 interface VideoWidgetProps {
-  invitation?: IInvitation;
   widgetItem: WidgetItem;
 }
 
 function VideoWidget({ widgetItem }: VideoWidgetProps): React.ReactNode {
-  const url = (widgetItem.config as VideoWidgetConfig).url.replace('watch?v=', 'embed/');
+  const url = useMemo(
+    () => (widgetItem.config as VideoWidgetConfig).url.replace('watch?v=', 'embed/'),
+    [widgetItem],
+  );
 
   return (
-    <WidgetWrapper type={widgetItem.type}>
+    <WidgetWrapper widgetItem={widgetItem}>
       <div className="relative no-interaction">
-        <div style={{ paddingTop: '56.25%' }} />
+        <div
+          style={{
+            paddingTop: `${
+              ((widgetItem.config as VideoWidgetConfig).aspectHeight /
+                (widgetItem.config as VideoWidgetConfig).aspectWidth) *
+              100
+            }%`,
+          }}
+        />
         <iframe
           className="absolute inset-0 w-full h-full"
           src={url}
@@ -25,4 +37,4 @@ function VideoWidget({ widgetItem }: VideoWidgetProps): React.ReactNode {
   );
 }
 
-export default VideoWidget;
+export default memo(VideoWidget);

@@ -2,19 +2,19 @@
 
 import { Button } from '@repo/shared';
 
-import type { WidgetType } from '@/types/pageBrothers.type';
+import type { WidgetItem } from '@/types/pageBrothers.type';
 
 import useModalStore from '../zustand';
 
 interface WidgetModifyButtonProps {
-  type: WidgetType;
+  widgetItem: WidgetItem;
 }
 
-function WidgetModifyButton({ type }: WidgetModifyButtonProps): React.ReactNode {
+function WidgetModifyButton({ widgetItem }: WidgetModifyButtonProps): React.ReactNode {
   const { openModal } = useModalStore();
 
   const handleButtonClick = () => {
-    openModal(type);
+    openModal(widgetItem);
   };
 
   return (

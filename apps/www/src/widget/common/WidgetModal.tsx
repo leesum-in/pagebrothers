@@ -1,19 +1,17 @@
 import { memo } from 'react';
 
-import type { WidgetType } from '@/types/pageBrothers.type';
+import type { WidgetItem } from '@/types/pageBrothers.type';
 
 import { VideoWidgetModalContent } from '../video';
 
 interface WidgetModalProps {
-  type: WidgetType | null;
+  widget: WidgetItem | null;
 }
 
-function WidgetModal({ type }: WidgetModalProps): React.ReactNode {
-  if (!type) return null;
+function WidgetModal({ widget }: WidgetModalProps): React.ReactNode {
+  if (!widget) return null;
 
-  if (type === 'VIDEO') {
-    return <VideoWidgetModalContent />;
-  }
+  if (widget.type === 'VIDEO') return <VideoWidgetModalContent widget={widget} />;
 
   return null;
 }

@@ -1,24 +1,27 @@
 import { type PropsWithChildren } from 'react';
 
-import type { WidgetType } from '@/types/pageBrothers.type';
+import type { WidgetItem } from '@/types/pageBrothers.type';
 
 import WidgetButtons from './WidgetButtons';
 
 interface WidgetWrapperProps {
-  type: WidgetType;
+  widgetItem: WidgetItem;
 }
 
-function WidgetWrapper({ children, type }: PropsWithChildren<WidgetWrapperProps>): React.ReactNode {
+function WidgetWrapper({
+  children,
+  widgetItem,
+}: PropsWithChildren<WidgetWrapperProps>): React.ReactNode {
   return (
     <div
-      role="button"
-      tabIndex={0}
-      aria-disabled={false}
+      // role="button"
+      // tabIndex={0}
+      // aria-disabled={false}
       // aria-roledescription="sortable"
       // aria-describedby="DndDescribedBy-0"
       className="relative overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-1 cursor-default w-[416px]"
     >
-      <WidgetButtons type={type} />
+      <WidgetButtons widgetItem={widgetItem} />
 
       <div className="border-t border-slate-200">
         {/** 아래 div에 컬러 스키마 클래스네임 추가 */}
