@@ -172,6 +172,44 @@ const config: Omit<Config, 'content'> = {
           '-ms-user-select': 'none',
           'user-select': 'none',
         },
+        '.scroll-lock-layer': {
+          position: 'fixed',
+          top: '0',
+          right: '0',
+          bottom: '0',
+          left: '0',
+          margin: 'auto',
+          overflow: 'auto',
+          'overscroll-behavior': 'none',
+        },
+        '.scroll-lock-layer:before': {
+          position: 'absolute',
+          top: '0',
+          right: '0',
+          left: '0',
+          bottom: '-1px',
+          content: 'var(--tw-content)',
+          display: 'block',
+        },
+        '.scroll-lock-layer-children': {
+          bottom: '-1px !important',
+        },
+        '*, :after, :before': {
+          maxHeight: '99999px',
+          '--tw-ring-color': 'rgba(0, 0, 0, .05)',
+          '--tw-border-opacity': '1',
+        },
+        body: {
+          display: 'flex',
+          minHeight: '100%',
+          flexDirection: 'column',
+          fontSize: '1rem',
+          lineHeight: '1.6',
+          '--tw-text-opacity': '1',
+          color: 'rgb(15 23 42 / var(--tw-text-opacity))',
+          wordBreak: 'keep-all',
+          overflowWrap: 'anywhere',
+        },
       };
       addUtilities(fontUtilities);
       addUtilities(customUtilities);
