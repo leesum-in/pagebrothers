@@ -1,7 +1,12 @@
-import type { VideoWidgetConfig, WidgetItem } from '@/types/pageBrothers.type';
+import type { IInvitation, VideoWidgetConfig, WidgetItem } from '@/types/pageBrothers.type';
 import { WidgetWrapper } from '@/widget/common';
 
-function VideoWidget(widgetItem: WidgetItem): React.ReactNode {
+interface VideoWidgetProps {
+  invitation?: IInvitation;
+  widgetItem: WidgetItem;
+}
+
+function VideoWidget({ widgetItem }: VideoWidgetProps): React.ReactNode {
   const url = (widgetItem.config as VideoWidgetConfig).url.replace('watch?v=', 'embed/');
 
   return (
