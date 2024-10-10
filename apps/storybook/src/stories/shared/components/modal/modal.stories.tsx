@@ -1,10 +1,10 @@
-import { Modal, ModalFooter, ModalHeader } from '@repo/shared';
+import { ModalFooter, ModalHeader, ModalOld } from '@repo/shared';
 import { Meta, StoryFn } from '@storybook/react';
 import { useState } from 'react';
 
 export default {
   title: 'Shared/Components/Modal', //스토리북 왼쪽 UI구조
-  component: Modal, //연결할 컴포넌트
+  component: ModalOld, //연결할 컴포넌트
 } as Meta;
 
 const Template: StoryFn = (args) => {
@@ -19,7 +19,7 @@ const Template: StoryFn = (args) => {
       >
         모달창 열기
       </button>
-      <Modal
+      <ModalOld
         isModalOpen={isModalOpen}
         onCloseModal={() => setIsModalOpen(false)}
         isModalHeader={args.isModalHeader}
@@ -46,7 +46,7 @@ const Template: StoryFn = (args) => {
         // {...args} // args로 전달된 props를 모달에 전달
       >
         {args.children && args.children[activeTab]} {/* children도 args로 동적으로 전달 */}
-      </Modal>
+      </ModalOld>
     </>
   );
 };
@@ -151,7 +151,7 @@ const MultiModalTemplate: StoryFn = (args) => {
       >
         모달창 열기
       </button>
-      <Modal
+      <ModalOld
         isModalOpen={isModalOpen}
         onCloseModal={() => setIsModalOpen(false)}
         isModalHeader={args.isModalHeader}
@@ -184,8 +184,8 @@ const MultiModalTemplate: StoryFn = (args) => {
           중첩 모달 열기
         </button>
         {args.children && args.children[activeTab]}
-      </Modal>
-      <Modal
+      </ModalOld>
+      <ModalOld
         isModalOpen={isMultiModalOpen}
         onCloseModal={() => setIsMultiModalOpen(false)}
         isModalHeader={args.isMultiModalHeader}
@@ -213,7 +213,7 @@ const MultiModalTemplate: StoryFn = (args) => {
         isMultiModal={true} // 중첩 모달 props
       >
         {args.MultiModalChildren && args.MultiModalChildren[multiActiveTab]}
-      </Modal>
+      </ModalOld>
     </>
   );
 };

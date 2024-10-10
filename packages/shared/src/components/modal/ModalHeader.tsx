@@ -1,5 +1,5 @@
-import { cn } from '../../../src/utils';
 import CloseIcon from '../../assets/icons/CloseIcon';
+import { cn } from '../../utils';
 
 interface ModalHeaderProps {
   modalHeaderTitle: string;
@@ -13,7 +13,7 @@ interface ModalHeaderProps {
   closeIconButtonClassName?: string;
 }
 
-const ModalHeader = ({
+function ModalHeader({
   modalHeaderTitle,
   modalHeaderOnClose,
   modalHeaderTabs = [],
@@ -23,7 +23,7 @@ const ModalHeader = ({
   activeTab,
   onTabChange,
   closeIconButtonClassName,
-}: ModalHeaderProps) => {
+}: ModalHeaderProps) {
   const handleTabClick = (index: number) => {
     onTabChange(index); // 탭을 클릭할 때 활성화된 탭의 인덱스를 업데이트
   };
@@ -39,21 +39,22 @@ const ModalHeader = ({
           className={`py-4 ${isHeaderSubtitle ? 'desktop:pb-0 desktop:pt-2' : 'desktop:pb-4 desktop:pt-2'}`}
         >
           <div className="font-sans text-p1b desktop:text-h4b">{modalHeaderTitle}</div>
-          {isHeaderSubtitle && modalHeaderSubtitle && (
+          {isHeaderSubtitle && modalHeaderSubtitle ? (
             <div className="mt-1 text-slate-500 font-sans text-p2">{modalHeaderSubtitle}</div>
-          )}
+          ) : null}
         </div>
-        {isHeaderModalTabs && modalHeaderTabs.length > 0 && (
+        {isHeaderModalTabs && modalHeaderTabs.length > 0 ? (
           <div className="flex ">
             {modalHeaderTabs.map((tab, index) => (
               <button
                 key={index}
+                type="button"
                 onClick={() => handleTabClick(index)}
-                className={`${
+                className={
                   activeTab === index
                     ? 'text-indigo-700 p-2 desktop:p-3 desktop:pb-4'
                     : 'text-slate-400 p-2 desktop:p-3 desktop:pb-4'
-                }`}
+                }
               >
                 <span
                   className={`font-sans text-p1b ${
@@ -67,7 +68,7 @@ const ModalHeader = ({
               </button>
             ))}
           </div>
-        )}
+        ) : null}
         <div className="flex ml-auto translate-x-4 items-center desktop:items-start">
           <button
             type="button"
@@ -80,6 +81,6 @@ const ModalHeader = ({
       </div>
     </div>
   );
-};
+}
 
 export default ModalHeader;
