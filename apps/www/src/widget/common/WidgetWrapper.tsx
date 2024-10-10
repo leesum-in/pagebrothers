@@ -6,12 +6,16 @@ import WidgetButtons from './WidgetButtons';
 
 interface WidgetWrapperProps {
   widgetItem: WidgetItem;
+  isMultiModal?: boolean;
 }
 
 function WidgetWrapper({
   children,
   widgetItem,
+  isMultiModal = false,
 }: PropsWithChildren<WidgetWrapperProps>): React.ReactNode {
+  if (isMultiModal) return <div className="relative overflow-hidden">{children}</div>;
+
   return (
     <div
       // role="button"

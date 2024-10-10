@@ -52,7 +52,10 @@ function Modal({
         )}
         onClick={(e) => {
           const target = e.target as HTMLElement;
-          !target.closest('form') && onCloseModal();
+          !target.closest('form') &&
+            !target.dataset.multi &&
+            !target.dataset.preview &&
+            onCloseModal();
         }}
       >
         <div
@@ -77,36 +80,53 @@ function Modal({
               modalContentClassName,
             )}
           >
-            <form onSubmit={onSubmit}>
-              <div className="bg-slate-50">
-                {modalHeader ? (
-                  <header
-                    className={`sticky top-0 z-10 flex gap-4 border-b border-slate-100 bg-white px-6 text-slate-900 desktop:gap-6 desktop:px-8 desktop:pt-4 ${headerUnderline}`}
+            {isMultiModal ? (
+              <>
+                <div className="sticky top-0 z-20 flex h-0 justify-end" data-multi>
+                  <button
+                    type="button"
+                    className="center-flex m-3 h-12 w-12 rounded-full border border-slate-100 bg-white shadow-1"
+                    onClick={onCloseModal}
                   >
-                    {modalHeader}
-                    <section className="center-flex ml-auto translate-x-4 desktop:items-start">
-                      <button
-                        type="button"
-                        className="center-flex h-12 w-12"
-                        onClick={onCloseModal}
-                      >
-                        <CloseIcon />
-                      </button>
-                    </section>
-                  </header>
-                ) : null}
-                <div className={cn('px-6 py-4 desktop:px-8 desktop:py-6', modalChildrenClassName)}>
-                  {children}
+                    <CloseIcon />
+                  </button>
                 </div>
-                {modalFooter ? (
-                  <footer
-                    className={`sticky bottom-0 flex justify-end gap-4 bg-gradient-to-t from-slate-50/100 to-slate-50/0 px-6 pb-4 empty:hidden desktop:px-8 desktop:pb-6 ${footerBackground}`}
+                {children}
+              </>
+            ) : (
+              <form onSubmit={onSubmit}>
+                <div className="bg-slate-50">
+                  {modalHeader ? (
+                    <header
+                      className={`sticky top-0 z-10 flex gap-4 border-b border-slate-100 bg-white px-6 text-slate-900 desktop:gap-6 desktop:px-8 desktop:pt-4 ${headerUnderline}`}
+                    >
+                      {modalHeader}
+                      <section className="center-flex ml-auto translate-x-4 desktop:items-start">
+                        <button
+                          type="button"
+                          className="center-flex h-12 w-12"
+                          onClick={onCloseModal}
+                        >
+                          <CloseIcon />
+                        </button>
+                      </section>
+                    </header>
+                  ) : null}
+                  <div
+                    className={cn('px-6 py-4 desktop:px-8 desktop:py-6', modalChildrenClassName)}
                   >
-                    {modalFooter}
-                  </footer>
-                ) : null}
-              </div>
-            </form>
+                    {children}
+                  </div>
+                  {modalFooter ? (
+                    <footer
+                      className={`sticky bottom-0 flex justify-end gap-4 bg-gradient-to-t from-slate-50/100 to-slate-50/0 px-6 pb-4 empty:hidden desktop:px-8 desktop:pb-6 ${footerBackground}`}
+                    >
+                      {modalFooter}
+                    </footer>
+                  ) : null}
+                </div>
+              </form>
+            )}
           </div>
         </TransitionChild>
       </div>

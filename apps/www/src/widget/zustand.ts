@@ -16,10 +16,16 @@ export type ModalStore = {
     isOpen: boolean;
     widget: WidgetItem | null;
   };
+  multiModalState: {
+    isOpen: boolean;
+    widget: WidgetItem | null;
+  };
   invitationId: string;
   onSubmit: SubmitHandler<SubmitHandlers>;
-  openModal: (type: WidgetItem) => void;
+  openModal: (widget: WidgetItem) => void;
+  openMultiModal: (widget: WidgetItem) => void;
   closeModal: () => void;
+  closeMultiModal: () => void;
   setOnSubmit: (onSubmit: SubmitHandler<SubmitHandlers>) => void;
   setInvitationId: (invitationId: string) => void;
 };
@@ -29,14 +35,28 @@ const useModalStore = create<ModalStore>((set) => ({
     isOpen: false,
     widget: null,
   },
+  multiModalState: {
+    isOpen: false,
+    widget: null,
+  },
   invitationId: '',
   onSubmit: () => {},
   openModal: (widget: WidgetItem) => {
     set((state: ModalStore) => ({ modalState: { ...state.modalState, isOpen: true, widget } }));
   },
+  openMultiModal: (widget: WidgetItem) => {
+    set((state: ModalStore) => ({
+      multiModalState: { ...state.multiModalState, isOpen: true, widget },
+    }));
+  },
   closeModal: () => {
     set((state: ModalStore) => ({
       modalState: { ...state.modalState, isOpen: false, widget: null },
+    }));
+  },
+  closeMultiModal: () => {
+    set((state: ModalStore) => ({
+      multiModalState: { ...state.multiModalState, isOpen: false, widget: null },
     }));
   },
   setOnSubmit: (onSubmit: SubmitHandler<SubmitHandlers>) => {

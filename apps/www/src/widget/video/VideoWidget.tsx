@@ -5,16 +5,17 @@ import { WidgetWrapper } from '@/widget/common';
 
 interface VideoWidgetProps {
   widgetItem: WidgetItem;
+  isMultiModal?: boolean;
 }
 
-function VideoWidget({ widgetItem }: VideoWidgetProps): React.ReactNode {
+function VideoWidget({ widgetItem, isMultiModal = false }: VideoWidgetProps): React.ReactNode {
   const url = useMemo(
     () => (widgetItem.config as VideoWidgetConfig).url.replace('watch?v=', 'embed/'),
     [widgetItem],
   );
 
   return (
-    <WidgetWrapper widgetItem={widgetItem}>
+    <WidgetWrapper widgetItem={widgetItem} isMultiModal={isMultiModal}>
       <div className="relative no-interaction">
         <div
           style={{

@@ -4,10 +4,20 @@ import { WidgetWrapper } from '@/widget/common';
 interface IntroWidgetProps {
   invitation?: IInvitation;
   widgetItem: WidgetItem;
+  isMultiModal?: boolean;
 }
 
-function IntroWidget({ invitation, widgetItem }: IntroWidgetProps): React.ReactNode {
+function IntroWidget({
+  invitation,
+  widgetItem,
+  isMultiModal = false,
+}: IntroWidgetProps): React.ReactNode {
   const { subTitle, title, coverImage } = widgetItem.config as IntroWidgetConfig;
+
+  // 아래 추후 수정 요망
+  if (isMultiModal) {
+    return <div>MultiModal</div>;
+  }
   return (
     <WidgetWrapper widgetItem={widgetItem}>
       <div className="no-interaction">

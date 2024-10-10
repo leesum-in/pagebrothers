@@ -17,19 +17,21 @@ import useModalStore from '@/widget/zustand';
 function EditTemplate() {
   const { id } = useParams<{ id: string }>();
   const { data: invitation, isPending, error } = useInvitationQuery(id);
-  const { modalState, closeModal, setInvitationId, onSubmit } = useModalStore(
-    useShallow((state: ModalStore) => ({
-      modalState: state.modalState,
-      closeModal: state.closeModal,
-      setInvitationId: state.setInvitationId,
-      onSubmit: state.onSubmit,
-    })),
-  );
+  const { modalState, multiModalState, closeModal, closeMultiModal, setInvitationId, onSubmit } =
+    useModalStore(
+      useShallow((state: ModalStore) => ({
+        multiModalState: state.multiModalState,
+        modalState: state.modalState,
+        closeModal: state.closeModal,
+        closeMultiModal: state.closeMultiModal,
+        setInvitationId: state.setInvitationId,
+        onSubmit: state.onSubmit,
+      })),
+    );
   const { handleSubmit } = useForm();
 
   useEffect(() => {
     console.log('invitation ====>', invitation);
-
     if (invitation) {
       setInvitationId(invitation.id);
     }
@@ -51,9 +53,14 @@ function EditTemplate() {
         onCloseModal={closeModal}
         onSubmit={handleSubmit(onSubmit as SubmitHandler<FieldValues>)}
         modalHeader={modalState.widget ? <WidgetModalHeader type={modalState.widget.type} /> : null}
-        modalFooter={<WidgetModalFooter />}
+        modalFooter={modalState.widget ? <WidgetModalFooter widget={modalState.widget} /> : null}
       >
         <WidgetModal widget={modalState.widget ? modalState.widget : null} />
+      </Modal>
+      <Modal isModalOpen={multiModalState.isOpen} onCloseModal={closeMultiModal} isMultiModal>
+        {multiModalState.widget ? (
+          <Widget widgetItem={multiModalState.widget} isMultiModal />
+        ) : null}
       </Modal>
 
       <PageWrapper>
