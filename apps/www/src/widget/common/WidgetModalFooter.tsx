@@ -1,5 +1,7 @@
 'use client';
 
+import { Button } from '@repo/shared';
+
 import type { WidgetItem } from '@/types/pageBrothers.type';
 
 import useModalStore from '../zustand';
@@ -18,20 +20,24 @@ function WidgetModalFooter({ widget }: WidgetModalFooterProps): React.ReactNode 
 
   return (
     <>
-      <button
+      <Button
+        variants="fill_secondary"
+        size="medium"
         data-preview
         type="button"
-        className="h-12 rounded-md px-4 text-sm border border-slate-200 bg-slate-100 text-slate-900 hover:bg-slate-200 center-flex gap-2 font-bold shadow-1 transition-colors disabled:opacity-40"
+        className="center-flex gap-2 font-bold drop-shadow-none transition-colors "
         onClick={handlePreviewClick}
       >
         미리보기
-      </button>
-      <button
+      </Button>
+      <Button
+        variants="fill_primary"
+        size="medium"
         type="submit"
-        className="h-12 rounded-md px-4 text-sm bg-indigo-600 text-white hover:bg-indigo-700 focus:ring center-flex gap-2 font-bold shadow-1 transition-colors disabled:opacity-40"
+        className="focus:ring center-flex gap-2 font-bold drop-shadow-none transition-colors "
       >
         적용하기
-      </button>
+      </Button>
     </>
   );
 }
