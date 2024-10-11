@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form';
 import { useShallow } from 'zustand/shallow';
 
 import { useInvitationConfigMutation } from '@/invitations/mutations';
-import type { ConfigData } from '@/invitations/types';
+import type { ConfigPayload } from '@/invitations/types';
 import type { VideoWidgetConfig, WidgetItem } from '@/types/pageBrothers.type';
 
 import type { ModalStore, VideoWidgetForm } from '../zustand';
@@ -34,7 +34,7 @@ function VideoWidgetModalContent({ widget }: VideoWidgetModalContentProps): Reac
   const { mutate: putInvitationConfig } = useInvitationConfigMutation(invitationId);
 
   const onSubmit: SubmitHandler<VideoWidgetForm> = useCallback(() => {
-    const configPayloadData: ConfigData = {
+    const configPayloadData: ConfigPayload = {
       id: widget.id,
       type: 'VIDEO',
       index: 0,

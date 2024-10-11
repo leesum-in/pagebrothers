@@ -20,12 +20,7 @@ export interface ISticker {
   widgetId: string;
 }
 
-export type ConfigData = {
+export type ConfigPayload = {
   index: number;
   stickers: ISticker[];
 } & WidgetItem;
-
-export type ConfigPayload = {
-  configData: ConfigData;
-  invitationId: string;
-};

@@ -4,7 +4,7 @@ import type { IInvitation } from '@/types/pageBrothers.type';
 
 import { postInvitation, putInvitationConfig } from './apis';
 import { QUERY_KEY_INVITATION } from './constants';
-import type { ConfigData, InvitationResponse } from './types';
+import type { ConfigPayload, InvitationResponse } from './types';
 
 export function useInvitationMutation(): UseMutationResult<
   InvitationResponse,
@@ -22,10 +22,10 @@ export function useInvitationMutation(): UseMutationResult<
 
 export function useInvitationConfigMutation(
   invitationId: string,
-): UseMutationResult<ConfigData, Error, ConfigData> {
+): UseMutationResult<ConfigPayload, Error, ConfigPayload> {
   const queryClient = useQueryClient();
-  return useMutation<ConfigData, Error, ConfigData>({
-    mutationFn: (configData: ConfigData) => putInvitationConfig({ configData, invitationId }),
+  return useMutation<ConfigPayload, Error, ConfigPayload>({
+    mutationFn: (configData: ConfigPayload) => putInvitationConfig(configData),
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: [QUERY_KEY_INVITATION, invitationId] });
     },
