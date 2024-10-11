@@ -38,7 +38,9 @@ export function useAuth(): UseAuth {
   }, [isPending]);
 
   useEffect(() => {
-    console.log(error);
+    if (error) {
+      console.log(error);
+    }
   }, [error]);
 
   // 나중에 삭제할 임시 코드 me 있는지 추적하기 위해

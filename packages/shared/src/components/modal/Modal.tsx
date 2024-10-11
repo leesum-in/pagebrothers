@@ -1,15 +1,17 @@
-import ReactDOM from 'react-dom';
-import { cn } from '../../../src/utils';
+'use client';
 
-interface ModalProps {
+import { Transition, TransitionChild } from '@headlessui/react';
+import { type PropsWithChildren } from 'react';
+import { createPortal } from 'react-dom';
+import { CloseIcon } from '../../assets/icons';
+import { cn } from '../../utils';
+
+interface ModalProps extends PropsWithChildren {
   isModalOpen: boolean;
   onCloseModal: () => void;
-  children: React.ReactNode;
+  onSubmit?: (e: React.FormEvent<HTMLFormElement>) => void;
   modalHeader?: React.ReactNode;
   modalFooter?: React.ReactNode;
-  isModalHeader?: boolean;
-  isModalFooter?: boolean;
-  zIndex?: number;
   isMultiModal?: boolean;
   isModalFooterBg?: boolean;
   modalBgClassName?: string;
@@ -18,72 +20,144 @@ interface ModalProps {
   isHeaderBorderLine?: boolean;
 }
 
-const Modal = ({
+function Modal({
   isModalOpen,
   onCloseModal,
+  onSubmit,
   children,
-  isModalHeader,
-  isModalFooter,
   modalHeader,
   modalFooter,
-  zIndex = 50,
   isMultiModal = false,
   isModalFooterBg = false,
   modalBgClassName,
   modalContentClassName,
   modalChildrenClassName,
   isHeaderBorderLine = true,
-}: ModalProps) => {
-  const modalBackground = cn(
-    `fixed inset-0 bg-slate-500/50 flex justify-center items-end desktop:items-center z-[${zIndex}] transform transition-opacity duration-300`,
-    {
-      'pointer-events-auto backdrop-blur-sm opacity-100': isModalOpen,
-      'pointer-events-none opacity-0': !isModalOpen,
-    },
-    modalBgClassName,
-  );
-
-  const multiModalWidth = isMultiModal ? 'max-w-sm' : 'desktop:w-[480px]';
-
-  const modalContent = cn(
-    `relative bg-white w-full ${multiModalWidth} max-h-[90vh] rounded-t-2xl desktop:rounded-2xl shadow-lg flex flex-col overflow-y-auto transform transition-all duration-300`,
-    {
-      'opacity-100 translate-y-0': isModalOpen,
-      'opacity-0 translate-y-full desktop:translate-y-4': !isModalOpen,
-    },
-    modalContentClassName,
-  );
-
+}: ModalProps) {
   const footerBackground = isModalFooterBg
     ? 'bg-gradient-to-t from-slate-200 to-transparent'
     : 'bg-transparent';
 
   const headerUnderline = isHeaderBorderLine ? 'border-b border-slate-100' : 'border-none';
 
-  return ReactDOM.createPortal(
-    <>
-      <div className={modalBackground} onClick={onCloseModal}>
-        <div className={modalContent} onClick={(e) => e.stopPropagation()}>
-          {isModalHeader && (
-            <div className={`sticky top-0 bg-white ${headerUnderline} z-10`}>{modalHeader}</div>
+  return createPortal(
+    <Transition show={isModalOpen}>
+      <div
+        className={cn(
+          'scroll-lock-layer center-flex z-40 items-end desktop:items-center transition duration-200',
+          [
+            'data-[enter]:duration-200 data-[enter]:data-[closed]:opacity-0',
+            'data-[leave]:duration-200 data-[leave]:data-[closed]:opacity-0',
+          ],
+        )}
+        onClick={(e) => {
+          const target = e.target as HTMLElement;
+          !target.closest('form') &&
+            !target.dataset.multi &&
+            !target.dataset.preview &&
+            onCloseModal();
+        }}
+      >
+        <div
+          className={cn(
+            'pointer-events-none opacity-0 scroll-lock-layer-children absolute inset-0 isolate bg-slate-500/50 backdrop-blur-sm',
+            {
+              'pointer-events-auto backdrop-blur-sm opacity-100': isModalOpen,
+            },
+            modalBgClassName,
           )}
+        />
+        <TransitionChild>
           <div
-            className={cn('flex-grow px-6 py-4 desktop:px-8 desktop:py-6', modalChildrenClassName)}
+            className={cn(
+              'translate-y-0 scroll-lock-layer-children relative isolate max-h-[90%] w-full overflow-x-hidden rounded-t-2xl bg-white desktop:max-h-[calc(100vh-8rem)] desktop:w-[30rem] desktop:rounded-2xl transition duration-200',
+              [
+                'data-[closed]:translate-y-6',
+                'data-[enter]:translate-y-6',
+                'data-[leave]:translate-y-6',
+              ],
+              isMultiModal ? 'max-w-sm' : 'desktop:w-[480px]',
+              modalContentClassName,
+            )}
           >
-            {children}
+            {isMultiModal ? (
+              <>
+                <div className="sticky top-0 z-20 flex h-0 justify-end" data-multi>
+                  <button
+                    type="button"
+                    className="center-flex m-3 h-12 w-12 rounded-full border border-slate-100 bg-white shadow-1"
+                    onClick={onCloseModal}
+                  >
+                    <CloseIcon />
+                  </button>
+                </div>
+                {children}
+              </>
+            ) : (
+              <form onSubmit={onSubmit}>
+                <div className="bg-slate-50">
+                  {modalHeader ? (
+                    <header
+                      className={`sticky top-0 z-10 flex gap-4 border-b border-slate-100 bg-white px-6 text-slate-900 desktop:gap-6 desktop:px-8 desktop:pt-4 ${headerUnderline}`}
+                    >
+                      {modalHeader}
+                      <section className="center-flex ml-auto translate-x-4 desktop:items-start">
+                        <button
+                          type="button"
+                          className="center-flex h-12 w-12"
+                          onClick={onCloseModal}
+                        >
+                          <CloseIcon />
+                        </button>
+                      </section>
+                    </header>
+                  ) : null}
+                  <div
+                    className={cn('px-6 py-4 desktop:px-8 desktop:py-6', modalChildrenClassName)}
+                  >
+                    {children}
+                  </div>
+                  {modalFooter ? (
+                    <footer
+                      className={`sticky bottom-0 flex justify-end gap-4 bg-gradient-to-t from-slate-50/100 to-slate-50/0 px-6 pb-4 empty:hidden desktop:px-8 desktop:pb-6 ${footerBackground}`}
+                    >
+                      {modalFooter}
+                    </footer>
+                  ) : null}
+                </div>
+              </form>
+            )}
           </div>
-          {isModalFooter && (
-            <div
-              className={`sticky bottom-0 ${footerBackground} pb-4 px-6 desktop:pb-6 desktop:px-8 z-10`}
-            >
-              {modalFooter}
-            </div>
-          )}
-        </div>
+        </TransitionChild>
       </div>
-    </>,
+    </Transition>,
     document.body,
   );
-};
+}
 
 export default Modal;
+
+// return ReactDOM.createPortal(
+//   <>
+//     <div className={modalBackground} onClick={onCloseModal}>
+//       <div className={modalContent} onClick={(e) => e.stopPropagation()}>
+//         {isModalHeader && (
+//           <div className={`sticky top-0 bg-white ${headerUnderline} z-10`}>{modalHeader}</div>
+//         )}
+//         <div
+//           className={cn('flex-grow px-6 py-4 desktop:px-8 desktop:py-6', modalChildrenClassName)}
+//         >
+//           {children}
+//         </div>
+//         {isModalFooter && (
+//           <div
+//             className={`sticky bottom-0 ${footerBackground} pb-4 px-6 desktop:pb-6 desktop:px-8 z-10`}
+//           >
+//             {modalFooter}
+//           </div>
+//         )}
+//       </div>
+//     </div>
+//   </>,
+//   document.body,
+// );

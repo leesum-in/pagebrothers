@@ -1,17 +1,25 @@
 import type { IInvitation, IntroWidgetConfig, WidgetItem } from '@/types/pageBrothers.type';
 import { WidgetWrapper } from '@/widget/common';
 
-import { WIDGET_TYPE_KOREAN } from '../constants';
-
 interface IntroWidgetProps {
   invitation?: IInvitation;
   widgetItem: WidgetItem;
+  isMultiModal?: boolean;
 }
 
-function IntroWidget({ invitation, widgetItem }: IntroWidgetProps): React.ReactNode {
+function IntroWidget({
+  invitation,
+  widgetItem,
+  isMultiModal = false,
+}: IntroWidgetProps): React.ReactNode {
   const { subTitle, title, coverImage } = widgetItem.config as IntroWidgetConfig;
+
+  // 아래 추후 수정 요망
+  if (isMultiModal) {
+    return <div>MultiModal</div>;
+  }
   return (
-    <WidgetWrapper title={WIDGET_TYPE_KOREAN[widgetItem.type]}>
+    <WidgetWrapper widgetItem={widgetItem}>
       <div className="no-interaction">
         <div className="relative space-y-6 bg-theme-colored/5 py-12 leading-relaxed">
           <header className="space-y-1 text-center">

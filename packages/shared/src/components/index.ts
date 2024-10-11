@@ -1,3 +1,4 @@
+export { CloseIcon } from '../assets/icons';
 export { Button } from './button';
 export { Checkbox } from './checkbox';
 export { Description } from './description';

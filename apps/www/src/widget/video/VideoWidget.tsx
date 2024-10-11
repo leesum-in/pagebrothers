@@ -1,20 +1,31 @@
-import type { IInvitation, VideoWidgetConfig, WidgetItem } from '@/types/pageBrothers.type';
+import { memo, useMemo } from 'react';
+
+import type { VideoWidgetConfig, WidgetItem } from '@/types/pageBrothers.type';
 import { WidgetWrapper } from '@/widget/common';
 
-import { WIDGET_TYPE_KOREAN } from '../constants';
-
 interface VideoWidgetProps {
-  invitation?: IInvitation;
   widgetItem: WidgetItem;
+  isMultiModal?: boolean;
 }
 
-function VideoWidget({ widgetItem }: VideoWidgetProps): React.ReactNode {
-  const url = (widgetItem.config as VideoWidgetConfig).url.replace('watch?v=', 'embed/');
+function VideoWidget({ widgetItem, isMultiModal = false }: VideoWidgetProps): React.ReactNode {
+  const url = useMemo(
+    () => (widgetItem.config as VideoWidgetConfig).url.replace('watch?v=', 'embed/'),
+    [widgetItem],
+  );
 
   return (
-    <WidgetWrapper title={WIDGET_TYPE_KOREAN[widgetItem.type]}>
+    <WidgetWrapper widgetItem={widgetItem} isMultiModal={isMultiModal}>
       <div className="relative no-interaction">
-        <div style={{ paddingTop: '56.25%' }} />
+        <div
+          style={{
+            paddingTop: `${
+              ((widgetItem.config as VideoWidgetConfig).aspectHeight /
+                (widgetItem.config as VideoWidgetConfig).aspectWidth) *
+              100
+            }%`,
+          }}
+        />
         <iframe
           className="absolute inset-0 w-full h-full"
           src={url}
@@ -27,4 +38,4 @@ function VideoWidget({ widgetItem }: VideoWidgetProps): React.ReactNode {
   );
 }
 
-export default VideoWidget;
+export default memo(VideoWidget);

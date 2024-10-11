@@ -2,7 +2,7 @@ import { api } from '@repo/shared';
 
 import type { IInvitation } from '@/types/pageBrothers.type';
 
-import type { InvitationResponse, ItemsResponse } from './types';
+import type { ConfigPayload, InvitationResponse, ItemsResponse } from './types';
 
 export async function getTemplates(): Promise<ItemsResponse> {
   const url = '/v2/templates?stage=BEST';
@@ -24,4 +24,9 @@ export async function postInvitation(
 ): Promise<InvitationResponse> {
   const url = '/v2/invitations';
   return api.post<InvitationResponse, InvitationResponse>(url, invitation);
+}
+
+export async function putInvitationConfig(configData: ConfigPayload): Promise<ConfigPayload> {
+  const url = `/widgets/${configData.id}/config`;
+  return api.put<ConfigPayload, ConfigPayload>(url, configData);
 }
