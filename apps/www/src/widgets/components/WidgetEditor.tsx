@@ -1,8 +1,9 @@
 'use client';
 
-import ThemeSetting from '@/themeSetting/ThemeSetting';
 import { Button } from '@repo/shared';
 import { HiPlus } from 'react-icons/hi';
+
+import ThemeSetting from '@/themeSetting/ThemeSetting';
 
 interface WidgetEditorProps {
   onAddWidget?: () => void;

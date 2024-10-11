@@ -4,13 +4,18 @@ import { Button } from '@repo/shared';
 import CloseIcon from '@repo/shared/src/assets/icons/CloseIcon';
 import { useState } from 'react';
 
+const FONTS_LABEL: Record<string, string> = {
+  sans: '프리텐다드',
+  serif: '노토 세리프',
+  gowun: '고운 바탕',
+};
 function ThemeSetting() {
   const [colorScheme, setColorScheme] = useState('black');
   const [font, setFont] = useState('sans');
   const [textSize, setTextSize] = useState('md');
 
   return (
-    <div className="mx-auto w-full max-w-[26rem] desktop:max-w-[22.5rem] desktop:flex-none desktop:self-start sticky top-[5.5rem] hidden !w-[20rem] desktop:block">
+    <div className="mx-auto w-full max-w-[26rem] desktop:max-w-[22.5rem] desktop:flex-none desktop:self-start sticky top-[5.5rem] hidden desktop:block">
       <div className="rounded-2xl border border-slate-200 bg-white shadow-1">
         <header className="sticky top-0 z-10 border-b border-slate-100 bg-white desktop:bg-transparent">
           <div className="center-flex h-12 desktop:hidden">
@@ -71,18 +76,25 @@ function ThemeSetting() {
                   'indigo',
                   'violet',
                 ].map((scheme) => (
-                  <li key={scheme} className={`flex-none`}>
-                    <label className="block cursor-pointer text-center">
+                  <li key={scheme} className="flex-none">
+                    <label
+                      className="block cursor-pointer text-center"
+                      htmlFor={scheme}
+                      aria-label={scheme}
+                    >
                       <input
+                        id={scheme}
                         type="radio"
                         className="peer hidden"
                         name="design.brandColor"
                         value={scheme}
                         checked={colorScheme === scheme}
-                        onChange={() => setColorScheme(scheme)}
+                        onChange={() => {
+                          setColorScheme(scheme);
+                        }}
                       />
                       <div className="space-y-2 rounded-sm pt-3 pb-2 peer-checked:bg-white peer-checked:shadow-violet peer-checked:ring-slate-200">
-                        <div className="mx-auto flex h-8 w-8 rotate-45 flex-col overflow-hidden rounded-full border bg-white shadow-md"></div>
+                        <div className="mx-auto flex h-8 w-8 rotate-45 flex-col overflow-hidden rounded-full border bg-white shadow-md" />
                         <p className="scale-90 whitespace-nowrap text-xs font-bold leading-none tracking-wider text-theme-colored">
                           {scheme.toUpperCase()}
                         </p>
@@ -109,14 +121,12 @@ function ThemeSetting() {
                     className="peer absolute cursor-pointer opacity-0"
                     value={fontType}
                     checked={font === fontType}
-                    onChange={() => setFont(fontType)}
+                    onChange={() => {
+                      setFont(fontType);
+                    }}
                   />
                   <span className="center-flex h-full w-full rounded-md text-slate-500 peer-checked:border peer-checked:border-slate-200 peer-checked:bg-white peer-checked:font-bold peer-checked:text-slate-600">
-                    {fontType === 'sans'
-                      ? '프리텐다드'
-                      : fontType === 'serif'
-                        ? '노토 세리프'
-                        : '고운 바탕'}
+                    {FONTS_LABEL[fontType]}
                   </span>
                 </label>
               ))}
@@ -128,21 +138,27 @@ function ThemeSetting() {
             <p className="font-bold">Text Size</p>
             <div className="flex items-center rounded-lg border border-slate-200 bg-slate-100 p-1 text-sm h-10">
               {['sm', 'md', 'lg'].map((size) => (
-                <label key={size} className="group relative flex-1 cursor-pointer text-center h-8">
+                <label
+                  key={size}
+                  className="group relative flex-1 cursor-pointer text-center h-8"
+                  htmlFor={size}
+                  aria-label={size}
+                >
                   <input
+                    id={size}
                     name="design.textSize"
                     type="radio"
                     className="peer absolute cursor-pointer opacity-0"
                     value={size}
                     checked={textSize === size}
-                    onChange={() => setTextSize(size)}
+                    onChange={() => {
+                      setTextSize(size);
+                    }}
                   />
                   <span className="center-flex h-full w-full rounded-md text-slate-500 peer-checked:border peer-checked:border-slate-200 peer-checked:bg-white peer-checked:font-bold peer-checked:text-slate-600">
-                    <span
-                      className={`text-${size === 'sm' ? '[12px]' : size === 'md' ? '[14px]' : '[16px]'}`}
-                    >
-                      가A
-                    </span>
+                    {size === 'sm' && <span className="text-[12px]">가A</span>}
+                    {size === 'md' && <span className="text-[14px]">가A</span>}
+                    {size === 'lg' && <span className="text-[16px]">가A</span>}
                   </span>
                 </label>
               ))}
