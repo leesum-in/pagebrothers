@@ -46,6 +46,10 @@ function EditTemplate() {
     return <ErrorTemplate />;
   }
 
+  if (invitation?.widgets.length === 0) {
+    return <div>No widgets found</div>;
+  }
+
   return (
     <>
       <Modal
