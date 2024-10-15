@@ -6,10 +6,10 @@ import { useForm } from 'react-hook-form';
 import { useShallow } from 'zustand/shallow';
 
 import { useInvitationConfigMutation } from '@/invitations/mutations';
-import type { ConfigPayload } from '@/invitations/types';
+import type { ConfigPayload, WidgetConfigs } from '@/invitations/types';
 import type { VideoWidgetConfig, WidgetItem } from '@/types/pageBrothers.type';
 
-import type { ModalStore, VideoWidgetForm } from '../zustand';
+import type { ModalStore } from '../zustand';
 import useModalStore from '../zustand';
 
 interface VideoWidgetModalContentProps {
@@ -17,7 +17,7 @@ interface VideoWidgetModalContentProps {
 }
 
 function VideoWidgetModalContent({ widget }: VideoWidgetModalContentProps): React.ReactNode {
-  const { register, watch } = useForm<VideoWidgetForm>();
+  const { register, watch } = useForm<VideoWidgetConfig>();
   const { setOnSubmit, closeModal } = useModalStore(
     useShallow((state: ModalStore) => ({
       setOnSubmit: state.setOnSubmit,
@@ -33,11 +33,11 @@ function VideoWidgetModalContent({ widget }: VideoWidgetModalContentProps): Reac
 
   const { mutate: putInvitationConfig } = useInvitationConfigMutation(invitation?.id ?? '');
 
-  const onSubmit: SubmitHandler<VideoWidgetForm> = useCallback(() => {
+  const onSubmit: SubmitHandler<WidgetConfigs> = useCallback(() => {
     const configPayloadData: ConfigPayload = {
       id: widget.id,
       type: 'VIDEO',
-      index: 0,
+      index: invitation?.widgets.findIndex((item) => item.id === widget.id) ?? 0,
       config: {
         url: watch('url'),
         aspectWidth: watch('aspectWidth'),
@@ -49,7 +49,7 @@ function VideoWidgetModalContent({ widget }: VideoWidgetModalContentProps): Reac
     putInvitationConfig(configPayloadData);
 
     closeModal();
-  }, [widget, watch, closeModal, putInvitationConfig]);
+  }, [widget, watch, closeModal, putInvitationConfig, invitation]);
 
   useEffect(() => {
     setOnSubmit(onSubmit);
