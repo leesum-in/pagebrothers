@@ -1,32 +1,35 @@
 'use client';
 
 import { Button } from '@repo/shared';
+import { useParams } from 'next/navigation';
 import { useEffect, useMemo } from 'react';
 import { AiOutlinePlusCircle } from 'react-icons/ai';
 
+import { useInvitationQuery } from '@/invitations/queries';
 import type { WidgetItem } from '@/types/pageBrothers.type';
 
 import useModalStore from '../zustand';
 
 function WidgetNotFound() {
+  const { id } = useParams<{ id: string }>();
+  const { data: invitation } = useInvitationQuery(id);
   const { openModal } = useModalStore();
 
-  const introDefaultWidget: WidgetItem = useMemo(() => {
+  const introDefaultWidget: Partial<WidgetItem> = useMemo(() => {
     return {
-      id: crypto.randomUUID(),
       type: 'INTRO',
       config: {
-        title: '신랑 김철수, 신부 박영희',
+        title: `신랑 ${invitation?.owners[0].name}, 신부 ${invitation?.owners[1].name}`,
         layoutKey: 'IMAGE_ROUND_FRAME',
         subTitle: 'wedding day',
         coverImage: null,
-        align: 'CENTER',
-        customTextColor: '#000000',
+        align: 'LEFT',
+        customTextColor: '',
         showEventInformation: true,
         dateFormatKey: 'KO',
       },
     };
-  }, []);
+  }, [invitation]);
 
   const handleOpenClick = () => {
     openModal(introDefaultWidget);
