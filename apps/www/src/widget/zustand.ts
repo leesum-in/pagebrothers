@@ -1,7 +1,7 @@
 import type { SubmitHandler } from 'react-hook-form';
 import { create } from 'zustand';
 
-import type { WidgetItem } from '@/types/pageBrothers.type';
+import type { IInvitation, WidgetItem } from '@/types/pageBrothers.type';
 
 export type VideoWidgetForm = {
   url: string;
@@ -20,14 +20,14 @@ export type ModalStore = {
     isOpen: boolean;
     widget: WidgetItem | null;
   };
-  invitationId: string;
+  invitation: IInvitation | null;
   onSubmit: SubmitHandler<SubmitHandlers>;
   openModal: (widget: WidgetItem) => void;
   openMultiModal: (widget: WidgetItem) => void;
   closeModal: () => void;
   closeMultiModal: () => void;
   setOnSubmit: (onSubmit: SubmitHandler<SubmitHandlers>) => void;
-  setInvitationId: (invitationId: string) => void;
+  setInvitation: (invitation: IInvitation) => void;
 };
 
 const useModalStore = create<ModalStore>((set) => ({
@@ -39,7 +39,7 @@ const useModalStore = create<ModalStore>((set) => ({
     isOpen: false,
     widget: null,
   },
-  invitationId: '',
+  invitation: null,
   onSubmit: () => {},
   openModal: (widget: WidgetItem) => {
     set((state: ModalStore) => ({ modalState: { ...state.modalState, isOpen: true, widget } }));
@@ -62,8 +62,8 @@ const useModalStore = create<ModalStore>((set) => ({
   setOnSubmit: (onSubmit: SubmitHandler<SubmitHandlers>) => {
     set((state: ModalStore) => ({ ...state, onSubmit }));
   },
-  setInvitationId: (invitationId: string) => {
-    set((state: ModalStore) => ({ ...state, invitationId }));
+  setInvitation: (invitation: IInvitation) => {
+    set((state: ModalStore) => ({ ...state, invitation }));
   },
 }));
 

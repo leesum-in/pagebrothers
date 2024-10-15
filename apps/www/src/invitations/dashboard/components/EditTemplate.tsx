@@ -19,14 +19,14 @@ import WidgetNotFound from './WidgetNotFound';
 function EditTemplate() {
   const { id } = useParams<{ id: string }>();
   const { data: invitation, isPending, error } = useInvitationQuery(id);
-  const { modalState, multiModalState, closeModal, closeMultiModal, setInvitationId, onSubmit } =
+  const { modalState, multiModalState, closeModal, closeMultiModal, setInvitation, onSubmit } =
     useModalStore(
       useShallow((state: ModalStore) => ({
         multiModalState: state.multiModalState,
         modalState: state.modalState,
         closeModal: state.closeModal,
         closeMultiModal: state.closeMultiModal,
-        setInvitationId: state.setInvitationId,
+        setInvitation: state.setInvitation,
         onSubmit: state.onSubmit,
       })),
     );
@@ -35,9 +35,9 @@ function EditTemplate() {
   useEffect(() => {
     console.log('invitation ====>', invitation);
     if (invitation) {
-      setInvitationId(invitation.id);
+      setInvitation(invitation);
     }
-  }, [invitation, setInvitationId]);
+  }, [invitation, setInvitation]);
 
   if (isPending) {
     // 로딩 중일 때 표시할 컴포넌트 수정 요망

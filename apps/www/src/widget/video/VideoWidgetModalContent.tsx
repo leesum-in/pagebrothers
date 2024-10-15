@@ -25,13 +25,13 @@ function VideoWidgetModalContent({ widget }: VideoWidgetModalContentProps): Reac
     })),
   );
 
-  const { invitationId } = useModalStore(
+  const { invitation } = useModalStore(
     useShallow((state: ModalStore) => ({
-      invitationId: state.invitationId,
+      invitation: state.invitation,
     })),
   );
 
-  const { mutate: putInvitationConfig } = useInvitationConfigMutation(invitationId);
+  const { mutate: putInvitationConfig } = useInvitationConfigMutation(invitation?.id ?? '');
 
   const onSubmit: SubmitHandler<VideoWidgetForm> = useCallback(() => {
     const configPayloadData: ConfigPayload = {
