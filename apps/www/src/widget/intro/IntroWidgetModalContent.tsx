@@ -1,19 +1,30 @@
 'use client';
 
-import { useCallback, useEffect } from 'react';
-import type { SubmitHandler } from 'react-hook-form';
+import { useCallback, useEffect, useState } from 'react';
+import { useForm, type SubmitHandler } from 'react-hook-form';
 import { AiOutlinePlusCircle } from 'react-icons/ai';
 import { FaRegTrashAlt } from 'react-icons/fa';
-import { IoCheckmark } from 'react-icons/io5';
+import { IoCheckmark, IoSearchOutline } from 'react-icons/io5';
 import { MdOutlineCalendarToday } from 'react-icons/md';
 import { useShallow } from 'zustand/shallow';
 
-import { useInvitationConfigMutation } from '@/invitations/mutations';
+import {
+  useEventInfoMutation,
+  useInvitationConfigMutation,
+  useWidgetMutation,
+} from '@/invitations/mutations';
+import type {
+  ConfigPayload,
+  EventInfoData,
+  EventInfoPayload,
+  WidgetConfigs,
+  WidgetData,
+} from '@/invitations/types';
 import type { IntroLayoutKey, IntroWidgetConfig, WidgetItem } from '@/types/pageBrothers.type';
 
-import type { ModalStore, VideoWidgetForm } from '../zustand';
+import type { ModalStore } from '../zustand';
 import useModalStore from '../zustand';
-import Intro from './Intro';
+import IntroWidget from './IntroWidget';
 
 type LayoutKey = {
   key: IntroLayoutKey;
@@ -64,9 +75,9 @@ interface IntroWidgetModalContentProps {
 }
 
 function IntroWidgetModalContent({ widget }: IntroWidgetModalContentProps): React.ReactNode {
-  const { subTitle, title, coverImage } = widget.config as IntroWidgetConfig;
-
-  // const { register, watch } = useForm<VideoWidgetForm>();
+  const [isAddress, setIsAddress] = useState(false);
+  const { register, watch } = useForm<IntroWidgetConfig>();
+  const { register: registerEventInfo } = useForm<EventInfoPayload>();
   const { setOnSubmit, closeModal } = useModalStore(
     useShallow((state: ModalStore) => ({
       setOnSubmit: state.setOnSubmit,
@@ -81,13 +92,67 @@ function IntroWidgetModalContent({ widget }: IntroWidgetModalContentProps): Reac
   );
 
   const { mutate: putInvitationConfig } = useInvitationConfigMutation(invitation?.id ?? '');
+  const { mutate: postWidget } = useWidgetMutation(invitation?.id ?? '');
+  const { mutate: postEventInfo } = useEventInfoMutation(invitation?.id ?? '');
 
-  const onSubmit: SubmitHandler<VideoWidgetForm> = useCallback(() => {
-    // putInvitationConfig(configPayloadData);
+  const handleClickTrashCan = () => {
+    setIsAddress(false);
+  };
 
+  const onSubmit: SubmitHandler<WidgetConfigs> = useCallback(() => {
+    if (!invitation) return;
+    const config: IntroWidgetConfig = {
+      align: 'LEFT',
+      coverImage: null, // 임시 null
+      customTextColor: '',
+      subTitle: watch('subTitle'),
+      dateFormatKey: watch('dateFormatKey'),
+      layoutKey: watch('layoutKey'),
+      showEventInformation: watch('showEventInformation'),
+      title: watch('title'),
+    };
+
+    const eventInfoData: EventInfoData = {
+      id: invitation.id,
+      eventInfo: {
+        eventAt: invitation.eventAt,
+        location: {
+          address: invitation.location.address,
+          coord: invitation.location.coord,
+          placeDetail: invitation.location.placeDetail,
+          placeName: invitation.location.placeName,
+          mapType: invitation.location.mapType,
+          placeId: invitation.location.placeId,
+          roadAddress: invitation.location.roadAddress,
+        },
+      },
+    };
+    postEventInfo(eventInfoData);
+
+    if (!widget.id) {
+      const widgetData: WidgetData = {
+        id: invitation.id,
+        widget: {
+          index: 0,
+          type: 'INTRO',
+          config,
+        },
+      };
+      postWidget(widgetData);
+      closeModal();
+      return;
+    }
+
+    const configPayloadData: ConfigPayload = {
+      id: widget.id,
+      type: 'INTRO',
+      index: invitation.widgets.findIndex((item) => item.id === widget.id),
+      config,
+      stickers: [],
+    };
+    putInvitationConfig(configPayloadData);
     closeModal();
-    // }, [widget, watch, closeModal, putInvitationConfig]);
-  }, [widget, closeModal, putInvitationConfig]);
+  }, [widget, watch, closeModal, putInvitationConfig, invitation, postWidget, postEventInfo]);
 
   useEffect(() => {
     setOnSubmit(onSubmit);
@@ -110,14 +175,15 @@ function IntroWidgetModalContent({ widget }: IntroWidgetModalContentProps): Reac
             >
               {layoutKey.map((layout) => (
                 <label
-                  className="relative cursor-pointer w-[calc((100%_-_1rem)_/_2)] flex-none"
+                  className="relative cursor-pointer w-[calc((100%-1rem)/2)] flex-none"
                   key={layout.key}
                 >
                   <input
                     className="peer -z-10 hidden"
                     type="radio"
-                    name="layoutKey"
+                    {...register('layoutKey')}
                     value={layout.key}
+                    checked={(widget.config as IntroWidgetConfig).layoutKey === layout.key}
                   />
                   <div className="relative h-full rounded-lg border border-slate-200 bg-white p-4 text-sm text-slate-500 shadow-1 peer-checked:border-indigo-600 peer-checked:shadow-violet">
                     <div className="flex items-center justify-between font-bold">
@@ -148,6 +214,12 @@ function IntroWidgetModalContent({ widget }: IntroWidgetModalContentProps): Reac
               <div className="text-slate-400 empty:hidden">png, jpg / 최대 10mb</div>
             </div>
             <AiOutlinePlusCircle className="w-7 h-7" />
+            <input
+              className="absolute top-0 left-0 h-full w-full cursor-pointer opacity-0 file:cursor-pointer"
+              type="file"
+              accept="image/png, image/jpeg"
+              {...register('coverImage')}
+            />
           </div>
         </div>
       </div>
@@ -156,12 +228,7 @@ function IntroWidgetModalContent({ widget }: IntroWidgetModalContentProps): Reac
         <div className="[--theme-black:15,23,42] [--theme-inter:51,65,85] [--theme-colored:100,116,139] [--theme-block:0,0,0] font-serif text-[14px] leading-loose text-theme-black/60">
           <div>
             {invitation ? (
-              <Intro
-                subTitle={subTitle}
-                title={title}
-                coverImage={coverImage}
-                invitation={invitation}
-              />
+              <IntroWidget widgetItem={widget} invitation={invitation} widgetOnly />
             ) : null}
           </div>
         </div>
@@ -185,8 +252,10 @@ function IntroWidgetModalContent({ widget }: IntroWidgetModalContentProps): Reac
               className="block w-full resize-none bg-white px-4 py-3 text-slate-600 placeholder:text-slate-300 disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-300 undefined"
               spellCheck="false"
               autoComplete="off"
+              defaultValue={`신랑 ${invitation?.owners[0].name}, 신부 ${invitation?.owners[1].name}`}
+              value={watch('title')}
               rows={3}
-              name="title"
+              {...register('title')}
             />
             <div className="flex items-center" />
           </label>
@@ -209,7 +278,8 @@ function IntroWidgetModalContent({ widget }: IntroWidgetModalContentProps): Reac
               className="peer block h-12 w-full bg-white px-4 text-slate-600 placeholder:text-slate-300 disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-200 "
               spellCheck="false"
               autoComplete="off"
-              name="subTitle"
+              defaultValue={`신랑 ${invitation?.owners[0].name}, 신부 ${invitation?.owners[1].name}`}
+              {...register('subTitle')}
             />
             <div className="flex flex-none items-center" />
           </label>
@@ -226,9 +296,10 @@ function IntroWidgetModalContent({ widget }: IntroWidgetModalContentProps): Reac
             <div className="text-sm">
               <label className="center-flex relative flex cursor-pointer gap-2 text-sm leading-5 ">
                 <input
-                  name="showEventInformation"
                   className="no-interaction peer absolute flex-none opacity-0"
                   type="checkbox"
+                  checked={(widget.config as IntroWidgetConfig).showEventInformation}
+                  {...register('showEventInformation')}
                 />
                 <div className="relative h-6 w-12 rounded-full border border-slate-200 bg-slate-100 transition-[background-color] after:ml-[-1px] after:mt-[-1px] after:block after:h-6 after:w-6 after:rounded-full after:border after:border-slate-300 after:bg-white after:transition-[background-color,transform] peer-checked:border-indigo-600 peer-checked:bg-indigo-600 peer-checked:after:translate-x-full peer-checked:after:border-indigo-600 peer-focus:ring" />
               </label>
@@ -239,29 +310,77 @@ function IntroWidgetModalContent({ widget }: IntroWidgetModalContentProps): Reac
       </div>
 
       {/** 예식장 주소 */}
-      <div className="space-y-2 ">
-        <div>
-          <div className="flex items-center justify-between text-slate-600">
-            <div className="font-bold">예식장 주소</div>
-            <div className="text-sm" />
+      {isAddress ? (
+        <div className="flex flex-col space-y-2">
+          <div className="flex items-center rounded-lg border border-slate-200 bg-slate-100 p-1 text-sm h-12 ">
+            <label className="group relative flex-1 cursor-pointer text-center h-10">
+              <input
+                type="radio"
+                className="peer absolute cursor-pointer opacity-0"
+                value="KAKAO"
+              />
+              <span className="center-flex h-full w-full rounded-md text-slate-500 peer-checked:border peer-checked:border-slate-200 peer-checked:bg-white peer-checked:font-bold peer-checked:text-slate-600">
+                국내
+              </span>
+            </label>
+            <label className="group relative flex-1 cursor-pointer text-center h-10">
+              <input
+                type="radio"
+                className="peer absolute cursor-pointer opacity-0"
+                value="GOOGLE"
+              />
+              <span className="center-flex h-full w-full rounded-md text-slate-500 peer-checked:border peer-checked:border-slate-200 peer-checked:bg-white peer-checked:font-bold peer-checked:text-slate-600">
+                해외
+              </span>
+            </label>
+          </div>
+          <div className="relative">
+            <label className="relative flex items-center overflow-hidden rounded-md border bg-white focus-within:ring border-slate-200 ">
+              <div className="flex flex-none items-center">
+                <IoSearchOutline className="text-xl text-slate-400" />
+              </div>
+              <input
+                className="peer block h-12 w-full bg-white px-4 text-slate-600 placeholder:text-slate-300 disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-200 "
+                spellCheck="false"
+                autoComplete="off"
+                placeholder="예식장 이름이나 주소를 검색해주세요."
+                id="headlessui-combobox-input-:rf:"
+                role="combobox"
+                type="text"
+                aria-controls="headlessui-combobox-listbox-:r1:"
+                aria-expanded="false"
+                data-headlessui-state=""
+                value=""
+              />
+              <div className="flex flex-none items-center" />
+            </label>
           </div>
         </div>
-        <div>
-          <div className="relative flex w-full items-center justify-between rounded-md border border-slate-200 bg-slate-100 text-left">
-            <div className="w-0 flex-1 px-4">
-              <p className="truncate text-slate-600">서울 중구 세종대로 110</p>
-              <p className="truncate text-sm text-slate-400">서울특별시 중구 태평로1가 31</p>
+      ) : (
+        <div className="space-y-2">
+          <div>
+            <div className="flex items-center justify-between text-slate-600">
+              <div className="font-bold">예식장 주소</div>
+              <div className="text-sm" />
             </div>
-            <button
-              className="center-flex h-16 w-16 flex-none text-slate-500"
-              type="button"
-              tabIndex={-1}
-            >
-              <FaRegTrashAlt />
-            </button>
+          </div>
+          <div>
+            <div className="relative flex w-full items-center justify-between rounded-md border border-slate-200 bg-slate-100 text-left">
+              <div className="w-0 flex-1 px-4">
+                <p className="truncate text-slate-600">서울 중구 세종대로 110</p>
+                <p className="truncate text-sm text-slate-400">서울특별시 중구 태평로1가 31</p>
+              </div>
+              <button
+                className="center-flex h-16 w-16 flex-none text-slate-500"
+                type="button"
+                tabIndex={-1}
+              >
+                <FaRegTrashAlt onClick={handleClickTrashCan} />
+              </button>
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       {/** 예식장 이름 */}
       <div className="space-y-2 ">
@@ -278,7 +397,7 @@ function IntroWidgetModalContent({ widget }: IntroWidgetModalContentProps): Reac
               className="peer block h-12 w-full bg-white px-4 text-slate-600 placeholder:text-slate-300 disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-200 "
               spellCheck="false"
               autoComplete="off"
-              name="location.placeName"
+              {...registerEventInfo('location.placeName')}
             />
             <div className="flex flex-none items-center" />
           </label>
@@ -298,7 +417,7 @@ function IntroWidgetModalContent({ widget }: IntroWidgetModalContentProps): Reac
               className="peer block h-12 w-full bg-white px-4 text-slate-600 placeholder:text-slate-300 disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-200 "
               spellCheck="false"
               autoComplete="off"
-              name="eventAt"
+              {...registerEventInfo('eventAt')}
               placeholder="예식일을 선택해주세요."
               readOnly
               value="2024년 10월 11일 금요일 오전 1시 26분"
@@ -323,7 +442,13 @@ function IntroWidgetModalContent({ widget }: IntroWidgetModalContentProps): Reac
             <ul className="space-y-2">
               <li>
                 <label className="relative cursor-pointer">
-                  <input type="radio" className="peer hidden" name="dateFormatKey" value="KO" />
+                  <input
+                    type="radio"
+                    className="peer hidden"
+                    value="KO"
+                    checked={(widget.config as IntroWidgetConfig).dateFormatKey === 'KO'}
+                    {...register('dateFormatKey')}
+                  />
                   <div className="rounded-lg border border-slate-200 bg-white px-5 py-3 peer-checked:border-indigo-600">
                     <p className="font-bold text-slate-600">
                       2024년 10월 11일 금요일 오전 1시 26분
@@ -336,8 +461,11 @@ function IntroWidgetModalContent({ widget }: IntroWidgetModalContentProps): Reac
                   <input
                     type="radio"
                     className="peer hidden"
-                    name="dateFormatKey"
                     value="KO_EXCLUDE_TIME"
+                    checked={
+                      (widget.config as IntroWidgetConfig).dateFormatKey === 'KO_EXCLUDE_TIME'
+                    }
+                    {...register('dateFormatKey')}
                   />
                   <div className="rounded-lg border border-slate-200 bg-white px-5 py-3 peer-checked:border-indigo-600">
                     <p className="font-bold text-slate-600">2024년 10월 11일 금요일</p>
@@ -346,7 +474,13 @@ function IntroWidgetModalContent({ widget }: IntroWidgetModalContentProps): Reac
               </li>
               <li>
                 <label className="relative cursor-pointer">
-                  <input type="radio" className="peer hidden" name="dateFormatKey" value="EN" />
+                  <input
+                    type="radio"
+                    className="peer hidden"
+                    value="EN"
+                    checked={(widget.config as IntroWidgetConfig).dateFormatKey === 'EN'}
+                    {...register('dateFormatKey')}
+                  />
                   <div className="rounded-lg border border-slate-200 bg-white px-5 py-3 peer-checked:border-indigo-600">
                     <p className="font-bold text-slate-600">2024. 10. 11. (FRI) 1:26 AM</p>
                   </div>
@@ -357,8 +491,11 @@ function IntroWidgetModalContent({ widget }: IntroWidgetModalContentProps): Reac
                   <input
                     type="radio"
                     className="peer hidden"
-                    name="dateFormatKey"
                     value="EN_EXCLUDE_TIME"
+                    checked={
+                      (widget.config as IntroWidgetConfig).dateFormatKey === 'EN_EXCLUDE_TIME'
+                    }
+                    {...register('dateFormatKey')}
                   />
                   <div className="rounded-lg border border-slate-200 bg-white px-5 py-3 peer-checked:border-indigo-600">
                     <p className="font-bold text-slate-600">2024. 10. 11. (FRI)</p>
