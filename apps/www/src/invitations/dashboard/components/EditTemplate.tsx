@@ -14,6 +14,8 @@ import { Widget, WidgetModal, WidgetModalFooter, WidgetModalHeader } from '@/wid
 import type { ModalStore } from '@/widget/zustand';
 import useModalStore from '@/widget/zustand';
 
+import WidgetNotFound from './WidgetNotFound';
+
 function EditTemplate() {
   const { id } = useParams<{ id: string }>();
   const { data: invitation, isPending, error } = useInvitationQuery(id);
@@ -47,7 +49,7 @@ function EditTemplate() {
   }
 
   if (invitation?.widgets.length === 0) {
-    return <div>No widgets found</div>;
+    return <WidgetNotFound />;
   }
 
   return (
