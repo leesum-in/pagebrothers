@@ -20,7 +20,7 @@ function WidgetNotFound() {
                 size="medium"
                 className="mx-auto w-auto gap-2 h-12 rounded-md px-4 text-sm bg-indigo-600 text-white hover:bg-indigo-700 focus:ring center-flex font-bold shadow-1 transition-colors disabled:opacity-40"
               >
-                <AiOutlinePlusCircle />
+                <AiOutlinePlusCircle className="w-5 h-5" />
                 <span>인트로 위젯 추가하기</span>
               </Button>
             </div>

@@ -7,7 +7,11 @@ export const metadata: Metadata = {
 };
 
 function EditPage(): React.ReactNode {
-  return <EditTemplate />;
+  return (
+    <div className="flex flex-1 flex-col bg-slate-50">
+      <EditTemplate />
+    </div>
+  );
 }
 
 export default EditPage;

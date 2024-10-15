@@ -210,6 +210,9 @@ const config: Omit<Config, 'content'> = {
           wordBreak: 'keep-all',
           overflowWrap: 'anywhere',
         },
+        html: {
+          height: '100%',
+        },
       };
       addUtilities(fontUtilities);
       addUtilities(customUtilities);
