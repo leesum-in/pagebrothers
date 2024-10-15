@@ -2,17 +2,17 @@ import { useMutation, type UseMutationResult, useQueryClient } from '@tanstack/r
 
 import type { IInvitation } from '@/types/pageBrothers.type';
 
-import { postInvitation, putInvitationConfig } from './apis';
+import { postInvitation, postWidget, putEventInfo, putInvitationConfig } from './apis';
 import { QUERY_KEY_INVITATION } from './constants';
-import type { ConfigPayload, InvitationResponse } from './types';
+import type { ConfigPayload, EventInfoData, IdResponse, WidgetData } from './types';
 
 export function useInvitationMutation(): UseMutationResult<
-  InvitationResponse,
+  IdResponse,
   Error,
   Partial<IInvitation>
 > {
   const queryClient = useQueryClient();
-  return useMutation<InvitationResponse, Error, Partial<IInvitation>>({
+  return useMutation<IdResponse, Error, Partial<IInvitation>>({
     mutationFn: (invitation: Partial<IInvitation>) => postInvitation(invitation),
     onSuccess: (data) => {
       void queryClient.invalidateQueries({ queryKey: [QUERY_KEY_INVITATION, data.id] });
@@ -26,6 +26,30 @@ export function useInvitationConfigMutation(
   const queryClient = useQueryClient();
   return useMutation<ConfigPayload, Error, ConfigPayload>({
     mutationFn: (configData: ConfigPayload) => putInvitationConfig(configData),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: [QUERY_KEY_INVITATION, invitationId] });
+    },
+  });
+}
+
+export function useWidgetMutation(
+  invitationId: string,
+): UseMutationResult<IdResponse, Error, WidgetData> {
+  const queryClient = useQueryClient();
+  return useMutation<IdResponse, Error, WidgetData>({
+    mutationFn: (widgetData: WidgetData) => postWidget(widgetData),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: [QUERY_KEY_INVITATION, invitationId] });
+    },
+  });
+}
+
+export function useEventInfoMutation(
+  invitationId: string,
+): UseMutationResult<IInvitation, Error, EventInfoData> {
+  const queryClient = useQueryClient();
+  return useMutation<IInvitation, Error, EventInfoData>({
+    mutationFn: (eventInfoData: EventInfoData) => putEventInfo(eventInfoData),
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: [QUERY_KEY_INVITATION, invitationId] });
     },
