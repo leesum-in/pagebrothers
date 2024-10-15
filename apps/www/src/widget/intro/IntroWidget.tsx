@@ -18,17 +18,14 @@ function IntroWidget({
 }: IntroWidgetProps): React.ReactNode {
   const { subTitle, title, coverImage } = widgetItem.config as IntroWidgetConfig;
 
-  // 아래 추후 수정 요망
-  if (isMultiModal) {
-    return <div>MultiModal</div>;
-  }
-
-  if (widgetOnly) {
-    return <div>WidgetOnly</div>;
+  if (widgetOnly && invitation) {
+    return (
+      <Intro subTitle={subTitle} title={title} coverImage={coverImage} invitation={invitation} />
+    );
   }
 
   return (
-    <WidgetWrapper widgetItem={widgetItem}>
+    <WidgetWrapper widgetItem={widgetItem} isMultiModal={isMultiModal}>
       <div className="no-interaction">
         {invitation ? (
           <Intro
