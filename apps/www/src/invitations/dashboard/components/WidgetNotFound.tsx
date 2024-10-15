@@ -9,7 +9,8 @@ function WidgetNotFound() {
       <div className="desktop:flex-1 ">
         <div className="mx-auto w-full max-w-[26rem]">
           <div className="py-16 desktop:py-24">
-            <div className="mx-auto w-full max-w-[16rem] space-y-4 whitespace-pre-line text-center">
+            {/* 아래 max-w-[16rem] 였는데 줄바꿈 안되서 줄여봄 */}
+            <div className="mx-auto w-full max-w-[12rem] space-y-4 whitespace-pre-line text-center">
               <p className="text-2xl font-bold">차근차근 시작해볼까요?</p>
               <p className="text-slate-400">
                 여러가지 위젯들을 조합해서 나만의 청첩장을 꾸밀 수 있어요

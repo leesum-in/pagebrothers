@@ -108,7 +108,9 @@ const config: Omit<Config, 'content'> = {
         ce: ['12px', { lineHeight: '19.2px', letterSpacing: '0.04em', fontWeight: '400' }],
         // ??????? 이건 왜 다르죠??
         xl: ['1.25rem', { lineHeight: '1.6' }],
+        '2xl': ['1.5rem', { lineHeight: '1.4' }],
         sm: ['.875rem', { lineHeight: '1.6' }],
+        base: ['1rem', { lineHeight: '1.6' }],
       },
       backgroundImage: {
         gradient: 'linear-gradient(90deg, #4338CA 0%, #EF4444 100%)',
@@ -136,7 +138,7 @@ const config: Omit<Config, 'content'> = {
     },
   },
   plugins: [
-    plugin(function ({ addUtilities, theme }) {
+    plugin(function ({ addUtilities, theme, addComponents }) {
       const fontStyles = theme('fontSize') as Record<string, FontStyleValue>;
       const fontUtilities: Record<string, Record<string, string>> = {};
       Object.entries(fontStyles).forEach(([key, value]) => {
@@ -210,12 +212,24 @@ const config: Omit<Config, 'content'> = {
           wordBreak: 'keep-all',
           overflowWrap: 'anywhere',
         },
-        html: {
-          height: '100%',
-        },
       };
+
+      const customComponents = [
+        {
+          html: {
+            height: '100%',
+            fontSize: '14px',
+          },
+          '@media screen and (min-width: 375px)': {
+            html: {
+              fontSize: '16px',
+            },
+          },
+        },
+      ];
       addUtilities(fontUtilities);
       addUtilities(customUtilities);
+      addComponents(customComponents);
     }),
   ],
 };
