@@ -10,11 +10,15 @@ import { useShallow } from 'zustand/shallow';
 import { useInvitationQuery } from '@/invitations/queries';
 import ErrorTemplate from '@/ui/error/ErrorTemplate';
 import { PageWrapper } from '@/ui/wrapper';
-import { Widget, WidgetModal, WidgetModalFooter, WidgetModalHeader } from '@/widget/common';
+import {
+  Widget,
+  WidgetModal,
+  WidgetModalFooter,
+  WidgetModalHeader,
+  WidgetNotFound,
+} from '@/widget/common';
 import type { ModalStore } from '@/widget/zustand';
 import useModalStore from '@/widget/zustand';
-
-import WidgetNotFound from './WidgetNotFound';
 
 function EditTemplate() {
   const { id } = useParams<{ id: string }>();
@@ -48,10 +52,6 @@ function EditTemplate() {
     return <ErrorTemplate />;
   }
 
-  if (invitation?.widgets.length === 0) {
-    return <WidgetNotFound />;
-  }
-
   return (
     <>
       <Modal
@@ -69,22 +69,26 @@ function EditTemplate() {
         ) : null}
       </Modal>
 
-      <PageWrapper>
-        <div className="desktop:flex-1">
-          <div className="mx-auto w-full max-w-[26rem]">
-            <div className="space-y-6">
-              {/** 아래 그냥 예시입니다 */}
-              {invitation?.widgets[0] ? (
-                <Widget invitation={invitation} widgetItem={invitation.widgets[0]} />
-              ) : null}
-              {invitation?.widgets[1] ? (
-                <Widget invitation={invitation} widgetItem={invitation.widgets[1]} />
-              ) : null}
+      {invitation?.widgets.length === 0 ? (
+        <WidgetNotFound />
+      ) : (
+        <PageWrapper>
+          <div className="desktop:flex-1">
+            <div className="mx-auto w-full max-w-[26rem]">
+              <div className="space-y-6">
+                {/** 아래 그냥 예시입니다 */}
+                {invitation?.widgets[0] ? (
+                  <Widget invitation={invitation} widgetItem={invitation.widgets[0]} />
+                ) : null}
+                {invitation?.widgets[1] ? (
+                  <Widget invitation={invitation} widgetItem={invitation.widgets[1]} />
+                ) : null}
+              </div>
             </div>
           </div>
-        </div>
-        <div className="mx-auto w-full max-w-[26rem] desktop:max-w-[22.5rem] desktop:flex-none desktop:self-start sticky top-[5.5rem] hidden desktop:block" />
-      </PageWrapper>
+          <div className="mx-auto w-full max-w-[26rem] desktop:max-w-[22.5rem] desktop:flex-none desktop:self-start sticky top-[5.5rem] hidden desktop:block" />
+        </PageWrapper>
+      )}
     </>
   );
 }

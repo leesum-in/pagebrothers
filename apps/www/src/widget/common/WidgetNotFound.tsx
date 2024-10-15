@@ -1,9 +1,41 @@
 'use client';
 
 import { Button } from '@repo/shared';
+import { useEffect, useMemo } from 'react';
 import { AiOutlinePlusCircle } from 'react-icons/ai';
 
+import type { WidgetItem } from '@/types/pageBrothers.type';
+
+import useModalStore from '../zustand';
+
 function WidgetNotFound() {
+  const { openModal } = useModalStore();
+
+  const introDefaultWidget: WidgetItem = useMemo(() => {
+    return {
+      id: crypto.randomUUID(),
+      type: 'INTRO',
+      config: {
+        title: '신랑 김철수, 신부 박영희',
+        layoutKey: 'IMAGE_ROUND_FRAME',
+        subTitle: 'wedding day',
+        coverImage: null,
+        align: 'CENTER',
+        customTextColor: '#000000',
+        showEventInformation: true,
+        dateFormatKey: 'KO',
+      },
+    };
+  }, []);
+
+  const handleOpenClick = () => {
+    openModal(introDefaultWidget);
+  };
+
+  useEffect(() => {
+    openModal(introDefaultWidget);
+  }, [openModal, introDefaultWidget]);
+
   return (
     <div className="flex flex-1 flex-col gap-4 p-4 desktop:flex-row desktop:gap-8 desktop:p-8 ">
       <div className="desktop:flex-1 ">
@@ -20,6 +52,7 @@ function WidgetNotFound() {
                 variants="fill_primary"
                 size="medium"
                 className="mx-auto w-auto gap-2 h-12 rounded-md px-4 text-sm bg-indigo-600 text-white hover:bg-indigo-700 focus:ring center-flex font-bold shadow-1 transition-colors disabled:opacity-40"
+                onClick={handleOpenClick}
               >
                 <AiOutlinePlusCircle className="w-5 h-5" />
                 <span>인트로 위젯 추가하기</span>

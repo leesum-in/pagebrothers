@@ -11,15 +11,14 @@ export type VideoWidgetForm = {
 
 export type SubmitHandlers = VideoWidgetForm;
 
+export type ModalState = {
+  isOpen: boolean;
+  widget: WidgetItem | null;
+};
+
 export type ModalStore = {
-  modalState: {
-    isOpen: boolean;
-    widget: WidgetItem | null;
-  };
-  multiModalState: {
-    isOpen: boolean;
-    widget: WidgetItem | null;
-  };
+  modalState: ModalState;
+  multiModalState: ModalState;
   invitation: IInvitation | null;
   onSubmit: SubmitHandler<SubmitHandlers>;
   openModal: (widget: WidgetItem) => void;

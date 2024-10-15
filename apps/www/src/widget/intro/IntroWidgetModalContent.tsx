@@ -133,6 +133,7 @@ function IntroWidgetModalContent({ widget }: IntroWidgetModalContentProps): Reac
         </div>
       </div>
 
+      {/** 대표 이미지 */}
       <div className="space-y-2">
         <div>
           <div className="flex items-center justify-between text-slate-600">
@@ -146,8 +147,8 @@ function IntroWidgetModalContent({ widget }: IntroWidgetModalContentProps): Reac
               <div className="font-bold text-slate-500">이미지 업로드</div>
               <div className="text-slate-400 empty:hidden">png, jpg / 최대 10mb</div>
             </div>
+            <AiOutlinePlusCircle className="w-7 h-7" />
           </div>
-          <AiOutlinePlusCircle className="w-7 h-7" />
         </div>
       </div>
 
