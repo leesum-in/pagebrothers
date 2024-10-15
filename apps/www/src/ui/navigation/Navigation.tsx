@@ -1,6 +1,14 @@
+'use client';
+
 import Link from 'next/link';
+import { useParams } from 'next/navigation';
+
+import { useInvitationQuery } from '@/invitations/queries';
 
 function Navigation(): React.ReactNode {
+  const { id } = useParams<{ id: string }>();
+  const { data: invitation } = useInvitationQuery(id);
+
   return (
     <nav className="sticky top-0 z-20 flex h-12 flex-none items-center bg-white pl-2 text-sm desktop:h-14 desktop:pl-3 desktop:text-base">
       <div className="flex items-center gap-2 whitespace-nowrap px-2 font-bold desktop:px-4">
@@ -62,6 +70,62 @@ function Navigation(): React.ReactNode {
         </Link>
         <Link href="/dashboard">나의 청첩장</Link>
       </div>
+      <ul className="flex h-full items-center px-2 font-bold text-slate-400 desktop:px-4">
+        <li className="h-full">
+          <Link
+            className="center-flex h-full w-full px-2 text-indigo-700"
+            href={`/dashboard/${invitation?.id}/edit`}
+          >
+            <span>편집</span>
+          </Link>
+        </li>
+        <svg
+          stroke="currentColor"
+          fill="none"
+          strokeWidth="2"
+          viewBox="0 0 24 24"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="text-base desktop:text-xl"
+          height="1em"
+          width="1em"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <polyline points="9 18 15 12 9 6" />
+        </svg>
+        <li className="h-full">
+          <Link
+            className="center-flex h-full w-full px-2"
+            // href="/dashboard/0192792f-7ae5-3df8-25b5-70dd6d21cf35/share"
+            href="/"
+          >
+            공유 설정
+          </Link>
+        </li>
+        <svg
+          stroke="currentColor"
+          fill="none"
+          strokeWidth="2"
+          viewBox="0 0 24 24"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="text-base desktop:text-xl"
+          height="1em"
+          width="1em"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <polyline points="9 18 15 12 9 6" />
+        </svg>
+        <li className="h-full">
+          <Link
+            className="center-flex h-full w-full px-2"
+            // href="/dashboard/0192792f-7ae5-3df8-25b5-70dd6d21cf35/payments"
+            href="/"
+          >
+            결제
+          </Link>
+        </li>
+      </ul>
       <div className="ml-auto h-full" />
     </nav>
   );
