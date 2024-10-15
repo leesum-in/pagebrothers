@@ -1,31 +1,24 @@
 import type { SubmitHandler } from 'react-hook-form';
 import { create } from 'zustand';
 
+import type { WidgetConfigs } from '@/invitations/types';
 import type { IInvitation, WidgetItem } from '@/types/pageBrothers.type';
-
-export type VideoWidgetForm = {
-  url: string;
-  aspectWidth: number;
-  aspectHeight: number;
-};
-
-export type SubmitHandlers = VideoWidgetForm;
 
 export type ModalState = {
   isOpen: boolean;
-  widget: WidgetItem | null;
+  widget: WidgetItem | Partial<WidgetItem> | null;
 };
 
 export type ModalStore = {
   modalState: ModalState;
   multiModalState: ModalState;
   invitation: IInvitation | null;
-  onSubmit: SubmitHandler<SubmitHandlers>;
-  openModal: (widget: WidgetItem) => void;
-  openMultiModal: (widget: WidgetItem) => void;
+  onSubmit: SubmitHandler<WidgetConfigs>;
+  openModal: (widget: WidgetItem | Partial<WidgetItem>) => void;
+  openMultiModal: (widget: WidgetItem | Partial<WidgetItem>) => void;
   closeModal: () => void;
   closeMultiModal: () => void;
-  setOnSubmit: (onSubmit: SubmitHandler<SubmitHandlers>) => void;
+  setOnSubmit: (onSubmit: SubmitHandler<WidgetConfigs>) => void;
   setInvitation: (invitation: IInvitation) => void;
 };
 
@@ -40,10 +33,10 @@ const useModalStore = create<ModalStore>((set) => ({
   },
   invitation: null,
   onSubmit: () => {},
-  openModal: (widget: WidgetItem) => {
+  openModal: (widget: WidgetItem | Partial<WidgetItem>) => {
     set((state: ModalStore) => ({ modalState: { ...state.modalState, isOpen: true, widget } }));
   },
-  openMultiModal: (widget: WidgetItem) => {
+  openMultiModal: (widget: WidgetItem | Partial<WidgetItem>) => {
     set((state: ModalStore) => ({
       multiModalState: { ...state.multiModalState, isOpen: true, widget },
     }));
@@ -58,7 +51,7 @@ const useModalStore = create<ModalStore>((set) => ({
       multiModalState: { ...state.multiModalState, isOpen: false, widget: null },
     }));
   },
-  setOnSubmit: (onSubmit: SubmitHandler<SubmitHandlers>) => {
+  setOnSubmit: (onSubmit: SubmitHandler<WidgetConfigs>) => {
     set((state: ModalStore) => ({ ...state, onSubmit }));
   },
   setInvitation: (invitation: IInvitation) => {
