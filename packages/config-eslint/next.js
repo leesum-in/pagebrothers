@@ -41,6 +41,7 @@ module.exports = {
   globals: {
     React: true,
     JSX: true,
+    google: true,
   },
   // settings: {
   //   'import/resolver': {
