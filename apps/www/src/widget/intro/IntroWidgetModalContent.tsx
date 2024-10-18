@@ -2,9 +2,9 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import { useForm, type SubmitHandler } from 'react-hook-form';
-import { AiOutlinePlusCircle } from 'react-icons/ai';
 import { FaRegTrashAlt } from 'react-icons/fa';
 import { IoCheckmark, IoSearchOutline } from 'react-icons/io5';
+import { LuPlusCircle } from 'react-icons/lu';
 import { MdOutlineCalendarToday } from 'react-icons/md';
 import { useShallow } from 'zustand/shallow';
 
@@ -76,6 +76,10 @@ interface IntroWidgetModalContentProps {
 
 function IntroWidgetModalContent({ widget }: IntroWidgetModalContentProps): React.ReactNode {
   const [isAddress, setIsAddress] = useState(false);
+  const [search, setSearch] = useState({
+    engine: 'KAKAO',
+    value: '',
+  });
   const { register, watch } = useForm<IntroWidgetConfig>();
   const { register: registerEventInfo } = useForm<EventInfoPayload>();
   const { setOnSubmit, closeModal } = useModalStore(
@@ -96,7 +100,21 @@ function IntroWidgetModalContent({ widget }: IntroWidgetModalContentProps): Reac
   const { mutate: postEventInfo } = useEventInfoMutation(invitation?.id ?? '');
 
   const handleClickTrashCan = () => {
-    setIsAddress(false);
+    setIsAddress(true);
+  };
+
+  const handleChangeEngine = () => {
+    setSearch((prev) => ({
+      ...prev,
+      engine: prev.engine === 'KAKAO' ? 'GOOGLE' : 'KAKAO',
+    }));
+  };
+
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch((prev) => ({
+      ...prev,
+      value: e.target.value,
+    }));
   };
 
   const onSubmit: SubmitHandler<WidgetConfigs> = useCallback(() => {
@@ -213,7 +231,7 @@ function IntroWidgetModalContent({ widget }: IntroWidgetModalContentProps): Reac
               <div className="font-bold text-slate-500">이미지 업로드</div>
               <div className="text-slate-400 empty:hidden">png, jpg / 최대 10mb</div>
             </div>
-            <AiOutlinePlusCircle className="w-7 h-7" />
+            <LuPlusCircle className="ml-auto flex-none stroke-1 text-2xl" />
             <input
               className="absolute top-0 left-0 h-full w-full cursor-pointer opacity-0 file:cursor-pointer"
               type="file"
@@ -278,7 +296,6 @@ function IntroWidgetModalContent({ widget }: IntroWidgetModalContentProps): Reac
               className="peer block h-12 w-full bg-white px-4 text-slate-600 placeholder:text-slate-300 disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-200 "
               spellCheck="false"
               autoComplete="off"
-              defaultValue={`신랑 ${invitation?.owners[0].name}, 신부 ${invitation?.owners[1].name}`}
               {...register('subTitle')}
             />
             <div className="flex flex-none items-center" />
@@ -298,7 +315,6 @@ function IntroWidgetModalContent({ widget }: IntroWidgetModalContentProps): Reac
                 <input
                   className="no-interaction peer absolute flex-none opacity-0"
                   type="checkbox"
-                  checked={(widget.config as IntroWidgetConfig).showEventInformation}
                   {...register('showEventInformation')}
                 />
                 <div className="relative h-6 w-12 rounded-full border border-slate-200 bg-slate-100 transition-[background-color] after:ml-[-1px] after:mt-[-1px] after:block after:h-6 after:w-6 after:rounded-full after:border after:border-slate-300 after:bg-white after:transition-[background-color,transform] peer-checked:border-indigo-600 peer-checked:bg-indigo-600 peer-checked:after:translate-x-full peer-checked:after:border-indigo-600 peer-focus:ring" />
@@ -310,60 +326,65 @@ function IntroWidgetModalContent({ widget }: IntroWidgetModalContentProps): Reac
       </div>
 
       {/** 예식장 주소 */}
-      {isAddress ? (
-        <div className="flex flex-col space-y-2">
-          <div className="flex items-center rounded-lg border border-slate-200 bg-slate-100 p-1 text-sm h-12 ">
-            <label className="group relative flex-1 cursor-pointer text-center h-10">
-              <input
-                type="radio"
-                className="peer absolute cursor-pointer opacity-0"
-                value="KAKAO"
-              />
-              <span className="center-flex h-full w-full rounded-md text-slate-500 peer-checked:border peer-checked:border-slate-200 peer-checked:bg-white peer-checked:font-bold peer-checked:text-slate-600">
-                국내
-              </span>
-            </label>
-            <label className="group relative flex-1 cursor-pointer text-center h-10">
-              <input
-                type="radio"
-                className="peer absolute cursor-pointer opacity-0"
-                value="GOOGLE"
-              />
-              <span className="center-flex h-full w-full rounded-md text-slate-500 peer-checked:border peer-checked:border-slate-200 peer-checked:bg-white peer-checked:font-bold peer-checked:text-slate-600">
-                해외
-              </span>
-            </label>
-          </div>
-          <div className="relative">
-            <label className="relative flex items-center overflow-hidden rounded-md border bg-white focus-within:ring border-slate-200 ">
-              <div className="flex flex-none items-center">
-                <IoSearchOutline className="text-xl text-slate-400" />
-              </div>
-              <input
-                className="peer block h-12 w-full bg-white px-4 text-slate-600 placeholder:text-slate-300 disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-200 "
-                spellCheck="false"
-                autoComplete="off"
-                placeholder="예식장 이름이나 주소를 검색해주세요."
-                id="headlessui-combobox-input-:rf:"
-                role="combobox"
-                type="text"
-                aria-controls="headlessui-combobox-listbox-:r1:"
-                aria-expanded="false"
-                data-headlessui-state=""
-                value=""
-              />
-              <div className="flex flex-none items-center" />
-            </label>
+      <div className="space-y-2">
+        <div>
+          <div className="flex items-center justify-between text-slate-600">
+            <div className="font-bold">예식장 주소</div>
+            <div className="text-sm" />
           </div>
         </div>
-      ) : (
-        <div className="space-y-2">
-          <div>
-            <div className="flex items-center justify-between text-slate-600">
-              <div className="font-bold">예식장 주소</div>
-              <div className="text-sm" />
+        {isAddress ? (
+          <div className="flex flex-col space-y-2">
+            <div className="flex items-center rounded-lg border border-slate-200 bg-slate-100 p-1 text-sm h-12 ">
+              <label className="group relative flex-1 cursor-pointer text-center h-10">
+                <input
+                  type="radio"
+                  className="peer absolute cursor-pointer opacity-0"
+                  value={search.engine}
+                  onChange={handleChangeEngine}
+                  checked={search.engine === 'KAKAO'}
+                />
+                <span className="center-flex h-full w-full rounded-md text-slate-500 peer-checked:border peer-checked:border-slate-200 peer-checked:bg-white peer-checked:font-bold peer-checked:text-slate-600">
+                  국내
+                </span>
+              </label>
+              <label className="group relative flex-1 cursor-pointer text-center h-10">
+                <input
+                  type="radio"
+                  className="peer absolute cursor-pointer opacity-0"
+                  value={search.engine}
+                  onChange={handleChangeEngine}
+                  checked={search.engine === 'GOOGLE'}
+                />
+                <span className="center-flex h-full w-full rounded-md text-slate-500 peer-checked:border peer-checked:border-slate-200 peer-checked:bg-white peer-checked:font-bold peer-checked:text-slate-600">
+                  해외
+                </span>
+              </label>
+            </div>
+            <div className="relative">
+              <label className="relative flex items-center overflow-hidden rounded-md border bg-white focus-within:ring border-slate-200 ">
+                <div className="flex flex-none items-center">
+                  <IoSearchOutline className="ml-4 text-xl text-slate-400" />
+                </div>
+                <input
+                  className="peer block h-12 w-full bg-white px-4 text-slate-600 placeholder:text-slate-300 disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-200 "
+                  // spellCheck={false}
+                  // autoComplete="off"
+                  // placeholder="예식장 이름이나 주소를 검색해주세요."
+                  // id="headlessui-combobox-input-:rf:"
+                  // role="combobox"
+                  type="text"
+                  // aria-controls="headlessui-combobox-listbox-:r1:"
+                  // aria-expanded="false"
+                  // data-headlessui-state=""
+                  value={search.value || ''}
+                  onChange={handleSearch}
+                />
+                <div className="flex flex-none items-center" />
+              </label>
             </div>
           </div>
+        ) : (
           <div>
             <div className="relative flex w-full items-center justify-between rounded-md border border-slate-200 bg-slate-100 text-left">
               <div className="w-0 flex-1 px-4">
@@ -379,9 +400,8 @@ function IntroWidgetModalContent({ widget }: IntroWidgetModalContentProps): Reac
               </button>
             </div>
           </div>
-        </div>
-      )}
-
+        )}
+      </div>
       {/** 예식장 이름 */}
       <div className="space-y-2 ">
         <div>
@@ -397,6 +417,7 @@ function IntroWidgetModalContent({ widget }: IntroWidgetModalContentProps): Reac
               className="peer block h-12 w-full bg-white px-4 text-slate-600 placeholder:text-slate-300 disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-200 "
               spellCheck="false"
               autoComplete="off"
+              // value={watchEventInfo('location.placeName')}
               {...registerEventInfo('location.placeName')}
             />
             <div className="flex flex-none items-center" />
@@ -420,7 +441,7 @@ function IntroWidgetModalContent({ widget }: IntroWidgetModalContentProps): Reac
               {...registerEventInfo('eventAt')}
               placeholder="예식일을 선택해주세요."
               readOnly
-              value="2024년 10월 11일 금요일 오전 1시 26분"
+              // value={watchEventInfo('eventAt')}
             />
             <div className="flex flex-none items-center">
               <div className="center-flex h-12 w-12 text-slate-400">

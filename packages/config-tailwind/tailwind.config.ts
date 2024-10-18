@@ -212,6 +212,13 @@ const config: Omit<Config, 'content'> = {
           wordBreak: 'keep-all',
           overflowWrap: 'anywhere',
         },
+        'button,input,select,textarea': {
+          borderRadius: '0',
+          outline: '2px solid transparent',
+          outlineOffset: '2px',
+          letterSpacing: 'inherit',
+          font: 'inherit',
+        },
       };
 
       const customComponents = [
