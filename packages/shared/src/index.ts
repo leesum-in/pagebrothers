@@ -1,4 +1,4 @@
-export { default as api } from './api';
+export * from './apis';
 export * from './components';
 export * from './constants';
 export * from './examples';

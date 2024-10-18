@@ -22,4 +22,26 @@ api.interceptors.response.use(
     return Promise.reject(error);
   },
 );
-export default api;
+
+const kakaoApi = axios.create({
+  baseURL: 'https://dapi.kakao.com/v2',
+});
+
+kakaoApi.interceptors.request.use((config) => {
+  if (typeof window !== 'undefined') {
+    config.headers.set(
+      'Authorization',
+      `KakaoAK ${process.env.NEXT_PUBLIC_KAKAO_APP_REST_API_KEY}`,
+    );
+  }
+  return config;
+});
+
+kakaoApi.interceptors.response.use(
+  <T>(response: AxiosResponse<T>): T => response.data,
+  (error: AxiosError) => {
+    return Promise.reject(error);
+  },
+);
+
+export { api, kakaoApi };
