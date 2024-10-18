@@ -1,9 +1,10 @@
 'use client';
 
+import { APIProvider } from '@vis.gl/react-google-maps';
 import { useCallback, useEffect, useState } from 'react';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { FaRegTrashAlt } from 'react-icons/fa';
-import { IoCheckmark, IoSearchOutline } from 'react-icons/io5';
+import { IoCheckmark } from 'react-icons/io5';
 import { LuPlusCircle } from 'react-icons/lu';
 import { MdOutlineCalendarToday } from 'react-icons/md';
 import { useShallow } from 'zustand/shallow';
@@ -13,10 +14,12 @@ import {
   useInvitationConfigMutation,
   useWidgetMutation,
 } from '@/invitations/mutations';
+import { useKakaoAddressQuery, useKakaoKeywordQuery } from '@/invitations/queries';
 import type {
   ConfigPayload,
   EventInfoData,
   EventInfoPayload,
+  KaKaoKeywordDocument,
   WidgetConfigs,
   WidgetData,
 } from '@/invitations/types';
@@ -24,6 +27,7 @@ import type { IntroLayoutKey, IntroWidgetConfig, WidgetItem } from '@/types/page
 
 import type { ModalStore } from '../zustand';
 import useModalStore from '../zustand';
+import IntroComboBox from './IntroComboBox';
 import IntroWidget from './IntroWidget';
 
 type LayoutKey = {
@@ -70,16 +74,26 @@ const layoutKey: LayoutKey[] = [
   },
 ];
 
+export type IntroSearchQuery = {
+  engine: 'KAKAO' | 'GOOGLE';
+  value: string;
+};
+
 interface IntroWidgetModalContentProps {
   widget: WidgetItem;
 }
 
 function IntroWidgetModalContent({ widget }: IntroWidgetModalContentProps): React.ReactNode {
   const [isAddress, setIsAddress] = useState(false);
-  const [search, setSearch] = useState({
+  const [selectedPlaceKakao, setSelectedPlaceKakao] = useState<KaKaoKeywordDocument | null>(null);
+  const [selectedPlaceGoogle, setSelectedPlaceGoogle] = useState<
+    google.maps.places.AutocompletePrediction[] | null
+  >(null);
+  const [query, setQuery] = useState<IntroSearchQuery>({
     engine: 'KAKAO',
     value: '',
   });
+
   const { register, watch } = useForm<IntroWidgetConfig>();
   const { register: registerEventInfo } = useForm<EventInfoPayload>();
   const { setOnSubmit, closeModal } = useModalStore(
@@ -98,23 +112,42 @@ function IntroWidgetModalContent({ widget }: IntroWidgetModalContentProps): Reac
   const { mutate: putInvitationConfig } = useInvitationConfigMutation(invitation?.id ?? '');
   const { mutate: postWidget } = useWidgetMutation(invitation?.id ?? '');
   const { mutate: postEventInfo } = useEventInfoMutation(invitation?.id ?? '');
+  const { data: kakaoKeywordResults } = useKakaoKeywordQuery(query);
+  const { data: kakaoAddresses } = useKakaoAddressQuery(query);
 
   const handleClickTrashCan = () => {
     setIsAddress(true);
   };
 
   const handleChangeEngine = () => {
-    setSearch((prev) => ({
+    setQuery((prev) => ({
       ...prev,
       engine: prev.engine === 'KAKAO' ? 'GOOGLE' : 'KAKAO',
     }));
   };
 
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearch((prev) => ({
+  const handleChangeCombobox = (
+    value: google.maps.places.AutocompletePrediction[] | KaKaoKeywordDocument | null,
+  ) => {
+    if (Array.isArray(value) && value.length > 0 && 'place_id' in value[0]) {
+      setSelectedPlaceGoogle(value);
+    } else if (value && !Array.isArray(value)) {
+      setSelectedPlaceKakao(value);
+    }
+  };
+
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setQuery((prev) => ({
       ...prev,
-      value: e.target.value,
+      value: event.target.value,
     }));
+  };
+
+  const handleCloseCombobox = () => {
+    setQuery({
+      engine: 'KAKAO',
+      value: '',
+    });
   };
 
   const onSubmit: SubmitHandler<WidgetConfigs> = useCallback(() => {
@@ -175,6 +208,15 @@ function IntroWidgetModalContent({ widget }: IntroWidgetModalContentProps): Reac
   useEffect(() => {
     setOnSubmit(onSubmit);
   }, [setOnSubmit, onSubmit]);
+
+  useEffect(() => {
+    console.log(kakaoKeywordResults);
+    console.log(kakaoAddresses);
+  }, [kakaoKeywordResults, kakaoAddresses]);
+
+  useEffect(() => {
+    console.log(selectedPlaceGoogle);
+  }, [selectedPlaceGoogle]);
 
   return (
     <div className="space-y-8">
@@ -334,56 +376,46 @@ function IntroWidgetModalContent({ widget }: IntroWidgetModalContentProps): Reac
           </div>
         </div>
         {isAddress ? (
-          <div className="flex flex-col space-y-2">
-            <div className="flex items-center rounded-lg border border-slate-200 bg-slate-100 p-1 text-sm h-12 ">
-              <label className="group relative flex-1 cursor-pointer text-center h-10">
-                <input
-                  type="radio"
-                  className="peer absolute cursor-pointer opacity-0"
-                  value={search.engine}
-                  onChange={handleChangeEngine}
-                  checked={search.engine === 'KAKAO'}
-                />
-                <span className="center-flex h-full w-full rounded-md text-slate-500 peer-checked:border peer-checked:border-slate-200 peer-checked:bg-white peer-checked:font-bold peer-checked:text-slate-600">
-                  국내
-                </span>
-              </label>
-              <label className="group relative flex-1 cursor-pointer text-center h-10">
-                <input
-                  type="radio"
-                  className="peer absolute cursor-pointer opacity-0"
-                  value={search.engine}
-                  onChange={handleChangeEngine}
-                  checked={search.engine === 'GOOGLE'}
-                />
-                <span className="center-flex h-full w-full rounded-md text-slate-500 peer-checked:border peer-checked:border-slate-200 peer-checked:bg-white peer-checked:font-bold peer-checked:text-slate-600">
-                  해외
-                </span>
-              </label>
+          <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY || ''}>
+            <div className="flex flex-col space-y-2">
+              <div className="flex items-center rounded-lg border border-slate-200 bg-slate-100 p-1 text-sm h-12 ">
+                <label className="group relative flex-1 cursor-pointer text-center h-10">
+                  <input
+                    type="radio"
+                    className="peer absolute cursor-pointer opacity-0"
+                    value={query.engine}
+                    onChange={handleChangeEngine}
+                    checked={query.engine === 'KAKAO'}
+                  />
+                  <span className="center-flex h-full w-full rounded-md text-slate-500 peer-checked:border peer-checked:border-slate-200 peer-checked:bg-white peer-checked:font-bold peer-checked:text-slate-600">
+                    국내
+                  </span>
+                </label>
+                <label className="group relative flex-1 cursor-pointer text-center h-10">
+                  <input
+                    type="radio"
+                    className="peer absolute cursor-pointer opacity-0"
+                    value={query.engine}
+                    onChange={handleChangeEngine}
+                    checked={query.engine === 'GOOGLE'}
+                  />
+                  <span className="center-flex h-full w-full rounded-md text-slate-500 peer-checked:border peer-checked:border-slate-200 peer-checked:bg-white peer-checked:font-bold peer-checked:text-slate-600">
+                    해외
+                  </span>
+                </label>
+              </div>
+              <IntroComboBox
+                engine={query.engine}
+                selectedPlaceKakao={selectedPlaceKakao}
+                selectedPlaceGoogle={selectedPlaceGoogle}
+                kakaoKeywordResults={kakaoKeywordResults}
+                onPlaceSelect={setSelectedPlaceGoogle}
+                handleChangeCombobox={handleChangeCombobox}
+                handleCloseCombobox={handleCloseCombobox}
+                handleSearch={handleSearch}
+              />
             </div>
-            <div className="relative">
-              <label className="relative flex items-center overflow-hidden rounded-md border bg-white focus-within:ring border-slate-200 ">
-                <div className="flex flex-none items-center">
-                  <IoSearchOutline className="ml-4 text-xl text-slate-400" />
-                </div>
-                <input
-                  className="peer block h-12 w-full bg-white px-4 text-slate-600 placeholder:text-slate-300 disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-200 "
-                  // spellCheck={false}
-                  // autoComplete="off"
-                  // placeholder="예식장 이름이나 주소를 검색해주세요."
-                  // id="headlessui-combobox-input-:rf:"
-                  // role="combobox"
-                  type="text"
-                  // aria-controls="headlessui-combobox-listbox-:r1:"
-                  // aria-expanded="false"
-                  // data-headlessui-state=""
-                  value={search.value || ''}
-                  onChange={handleSearch}
-                />
-                <div className="flex flex-none items-center" />
-              </label>
-            </div>
-          </div>
+          </APIProvider>
         ) : (
           <div>
             <div className="relative flex w-full items-center justify-between rounded-md border border-slate-200 bg-slate-100 text-left">
