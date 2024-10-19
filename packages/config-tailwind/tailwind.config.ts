@@ -128,6 +128,9 @@ const config: Omit<Config, 'content'> = {
       maxWidth: {
         sm: '24rem',
       },
+      boxShadow: {
+        '1': 'var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)',
+      },
     },
     'no-interaction': {
       pointerEvents: 'none',
@@ -218,6 +221,12 @@ const config: Omit<Config, 'content'> = {
           outlineOffset: '2px',
           letterSpacing: 'inherit',
           font: 'inherit',
+        },
+        '.shadow-violet': {
+          '--tw-shadow': '0px 4px 24px rgba(99, 102, 241, .4)',
+          '--tw-shadow-colored': '0px 4px 24px var(--tw-shadow-color)',
+          'box-shadow':
+            'var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)',
         },
       };
 
