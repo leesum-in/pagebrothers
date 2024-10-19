@@ -11,7 +11,6 @@ interface WidgetModalProps {
 
 function WidgetModal({ widget }: WidgetModalProps): React.ReactNode {
   if (!widget) return null;
-
   if (widget.type === 'INTRO') return <IntroWidgetModalContent widget={widget} />;
   if (widget.type === 'VIDEO') return <VideoWidgetModalContent widget={widget} />;
 

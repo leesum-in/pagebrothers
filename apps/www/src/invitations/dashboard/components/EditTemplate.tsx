@@ -8,6 +8,7 @@ import { useForm } from 'react-hook-form';
 import { useShallow } from 'zustand/shallow';
 
 import { useInvitationQuery } from '@/invitations/queries';
+import type { WidgetItem } from '@/types/pageBrothers.type';
 import ErrorTemplate from '@/ui/error/ErrorTemplate';
 import { PageWrapper } from '@/ui/wrapper';
 import {
@@ -58,10 +59,12 @@ function EditTemplate() {
         isModalOpen={modalState.isOpen}
         onCloseModal={closeModal}
         onSubmit={handleSubmit(onSubmit as SubmitHandler<FieldValues>)}
-        modalHeader={modalState.widget ? <WidgetModalHeader type={modalState.widget.type} /> : null}
+        modalHeader={
+          modalState.widget?.type ? <WidgetModalHeader type={modalState.widget.type} /> : null
+        }
         modalFooter={modalState.widget ? <WidgetModalFooter widget={modalState.widget} /> : null}
       >
-        <WidgetModal widget={modalState.widget ? modalState.widget : null} />
+        <WidgetModal widget={modalState.widget as WidgetItem | null} />
       </Modal>
       <Modal isModalOpen={multiModalState.isOpen} onCloseModal={closeMultiModal} isMultiModal>
         {multiModalState.widget ? (

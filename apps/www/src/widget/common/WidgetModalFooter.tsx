@@ -7,7 +7,7 @@ import type { WidgetItem } from '@/types/pageBrothers.type';
 import useModalStore from '../zustand';
 
 interface WidgetModalFooterProps {
-  widget: WidgetItem;
+  widget: WidgetItem | Partial<WidgetItem>;
 }
 
 // 공용 버튼으로 수정 요망

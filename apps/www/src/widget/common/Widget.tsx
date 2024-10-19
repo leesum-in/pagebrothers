@@ -5,7 +5,7 @@ import type { IInvitation, WidgetItem } from '@/types/pageBrothers.type';
 
 interface WidgetProps {
   invitation?: IInvitation;
-  widgetItem: WidgetItem;
+  widgetItem: WidgetItem | Partial<WidgetItem>;
   isMultiModal?: boolean;
 }
 
@@ -22,9 +22,17 @@ const components: Record<
 };
 
 function Widget({ invitation, widgetItem, isMultiModal }: WidgetProps) {
-  const Component = components[widgetItem.type];
+  const Component = widgetItem.type && components[widgetItem.type as keyof typeof components];
 
-  return <Component invitation={invitation} widgetItem={widgetItem} isMultiModal={isMultiModal} />;
+  if (!Component) return null;
+
+  return (
+    <Component
+      invitation={invitation}
+      widgetItem={widgetItem as WidgetItem}
+      isMultiModal={isMultiModal}
+    />
+  );
 }
 
 export default memo(Widget);
