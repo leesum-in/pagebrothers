@@ -8,6 +8,7 @@ import { cn } from '../../utils';
 
 interface ModalProps extends PropsWithChildren {
   isModalOpen: boolean;
+  isDragging?: boolean;
   onCloseModal: () => void;
   onSubmit?: (e: React.FormEvent<HTMLFormElement>) => void;
   modalHeader?: React.ReactNode;
@@ -22,6 +23,7 @@ interface ModalProps extends PropsWithChildren {
 
 function Modal({
   isModalOpen,
+  isDragging,
   onCloseModal,
   onSubmit,
   children,
@@ -51,6 +53,7 @@ function Modal({
           ],
         )}
         onClick={(e) => {
+          if (isDragging) return;
           const target = e.target as HTMLElement;
           !target.closest('form') &&
             !target.dataset.multi &&

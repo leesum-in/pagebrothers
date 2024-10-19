@@ -13,6 +13,7 @@ export type ModalStore = {
   modalState: ModalState;
   multiModalState: ModalState;
   invitation: IInvitation | null;
+  isDragging: boolean;
   onSubmit: SubmitHandler<WidgetConfigs>;
   openModal: (widget: WidgetItem | Partial<WidgetItem>) => void;
   openMultiModal: (widget: WidgetItem | Partial<WidgetItem>) => void;
@@ -20,6 +21,7 @@ export type ModalStore = {
   closeMultiModal: () => void;
   setOnSubmit: (onSubmit: SubmitHandler<WidgetConfigs>) => void;
   setInvitation: (invitation: IInvitation) => void;
+  setIsDragging: (isDragging: boolean) => void;
 };
 
 const useModalStore = create<ModalStore>((set) => ({
@@ -31,6 +33,7 @@ const useModalStore = create<ModalStore>((set) => ({
     isOpen: false,
     widget: null,
   },
+  isDragging: false,
   invitation: null,
   onSubmit: () => {},
   openModal: (widget: WidgetItem | Partial<WidgetItem>) => {
@@ -56,6 +59,9 @@ const useModalStore = create<ModalStore>((set) => ({
   },
   setInvitation: (invitation: IInvitation) => {
     set((state: ModalStore) => ({ ...state, invitation }));
+  },
+  setIsDragging: (isDragging: boolean) => {
+    set((state: ModalStore) => ({ ...state, isDragging }));
   },
 }));
 
