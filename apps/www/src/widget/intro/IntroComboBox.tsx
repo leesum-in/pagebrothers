@@ -1,40 +1,50 @@
 'use client';
 
-import { Combobox, ComboboxInput, ComboboxOption, ComboboxOptions } from '@headlessui/react';
-import type { NoInfer } from '@tanstack/react-query';
+import {
+  ComboboxInput,
+  ComboboxOption,
+  ComboboxOptions,
+  Combobox as HeadlessCombobox,
+} from '@headlessui/react';
 import { useMapsLibrary } from '@vis.gl/react-google-maps';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { HiOutlineLocationMarker } from 'react-icons/hi';
 import { IoSearchOutline } from 'react-icons/io5';
 
-import type { KaKaoKeywordDocument, KakaoKeywordResponse } from '@/invitations/types';
+import { useKakaoAddressQuery, useKakaoKeywordQuery } from '@/invitations/queries';
+import type { KaKaoKeywordDocument } from '@/invitations/types';
+
+import type { IntroSearchEngine } from './IntroWidgetModalContent';
+
+type ComboboxValue = KaKaoKeywordDocument | google.maps.places.AutocompletePrediction | null;
 
 interface IntroLocationSearchProps {
-  selectedPlaceKakao?: KaKaoKeywordDocument | null;
-  selectedPlaceGoogle?: google.maps.places.AutocompletePrediction[] | null;
-  engine: 'KAKAO' | 'GOOGLE';
-  onPlaceSelect: (place: google.maps.places.AutocompletePrediction[] | null) => void;
-  kakaoKeywordResults: KakaoKeywordResponse | null | undefined;
-  handleChangeCombobox: (
-    value:
-      | NoInfer<google.maps.places.AutocompletePrediction[] | null>
-      | KaKaoKeywordDocument
-      | null,
-  ) => void;
-  handleCloseCombobox: () => void;
-  handleSearch: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  engine: IntroSearchEngine;
 }
 
-function IntroComboBox({
-  selectedPlaceKakao,
-  selectedPlaceGoogle,
-  kakaoKeywordResults,
-  engine,
-  onPlaceSelect,
-  handleCloseCombobox,
-  handleChangeCombobox,
-  handleSearch,
-}: IntroLocationSearchProps) {
+// value 프롭의 타입이 고정되어 버려서 직접 타입 지정해서 커스터마이징
+const TypedCombobox = HeadlessCombobox as unknown as (
+  props: React.ComponentProps<typeof HeadlessCombobox> & { value: ComboboxValue },
+) => JSX.Element;
+
+function IntroComboBox({ engine }: IntroLocationSearchProps) {
+  const [googlePlaces, setGooglePlaces] = useState<google.maps.places.AutocompletePrediction[]>([]);
+  const [selectedPlaceKakao, setSelectedPlaceKakao] = useState<KaKaoKeywordDocument | null>(null);
+  const [selectedPlaceGoogle, setSelectedPlaceGoogle] =
+    useState<google.maps.places.AutocompletePrediction | null>(null);
+  const [query, setQuery] = useState('');
+
+  const { data: kakaoKeywordResults } = useKakaoKeywordQuery(query);
+  const { data: kakaoAddresses } = useKakaoAddressQuery(query);
+
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setQuery(event.target.value);
+  };
+
+  const handleCloseCombobox = () => {
+    setQuery('');
+  };
+
   const places = useMapsLibrary('places');
 
   const [placeAutocomplete, setPlaceAutocomplete] =
@@ -45,22 +55,38 @@ function IntroComboBox({
   const handleInputChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!placeAutocomplete) return;
     const result = await placeAutocomplete.getPlacePredictions({ input: event.target.value });
-    onPlaceSelect(result.predictions);
+    setGooglePlaces(result.predictions);
     handleSearch(event);
   };
 
+  const handleChangeCombobox = (
+    value: google.maps.places.AutocompletePrediction | KaKaoKeywordDocument | null,
+  ) => {
+    if (!value) return;
+    if ('place_id' in value) {
+      setSelectedPlaceGoogle(value);
+    } else {
+      setSelectedPlaceKakao(value);
+    }
+  };
+
+  const value: ComboboxValue = useMemo(() => {
+    if (!selectedPlaceKakao && !selectedPlaceGoogle) return null;
+    return engine === 'KAKAO' ? selectedPlaceKakao : selectedPlaceGoogle;
+  }, [engine, selectedPlaceKakao, selectedPlaceGoogle]);
+
   useEffect(() => {
     if (!places || !inputRef.current) return;
-
     setPlaceAutocomplete(new places.AutocompleteService());
   }, [places]);
 
+  useEffect(() => {
+    console.log(kakaoKeywordResults);
+    console.log(kakaoAddresses);
+  }, [kakaoKeywordResults, kakaoAddresses]);
+
   return (
-    <Combobox
-      value={engine === 'KAKAO' ? selectedPlaceKakao : selectedPlaceGoogle}
-      onChange={handleChangeCombobox}
-      onClose={handleCloseCombobox}
-    >
+    <TypedCombobox value={value} onChange={handleChangeCombobox} onClose={handleCloseCombobox}>
       <div className="relative">
         <label className="relative flex items-center overflow-hidden rounded-md border bg-white focus-within:ring border-slate-200 ">
           <div className="flex flex-none items-center">
@@ -86,7 +112,7 @@ function IntroComboBox({
           as="ul"
         >
           <ul className="divide-y divide-slate-100">
-            {selectedPlaceGoogle?.map((place) => (
+            {googlePlaces.map((place) => (
               <ComboboxOption key={place.place_id} value={place} as="li">
                 <button
                   type="button"
@@ -113,7 +139,7 @@ function IntroComboBox({
           </ul>
         </ComboboxOptions>
       </div>
-    </Combobox>
+    </TypedCombobox>
   );
 }
 

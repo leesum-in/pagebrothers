@@ -4,7 +4,6 @@ import { APIProvider } from '@vis.gl/react-google-maps';
 import { useCallback, useEffect, useState } from 'react';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { FaRegTrashAlt } from 'react-icons/fa';
-import { IoCheckmark } from 'react-icons/io5';
 import { LuPlusCircle } from 'react-icons/lu';
 import { MdOutlineCalendarToday } from 'react-icons/md';
 import { useShallow } from 'zustand/shallow';
@@ -14,12 +13,10 @@ import {
   useInvitationConfigMutation,
   useWidgetMutation,
 } from '@/invitations/mutations';
-import { useKakaoAddressQuery, useKakaoKeywordQuery } from '@/invitations/queries';
 import type {
   ConfigPayload,
   EventInfoData,
   EventInfoPayload,
-  KaKaoKeywordDocument,
   WidgetConfigs,
   WidgetData,
 } from '@/invitations/types';
@@ -28,81 +25,30 @@ import type { IntroLayoutKey, IntroWidgetConfig, WidgetItem } from '@/types/page
 import type { ModalStore } from '../zustand';
 import useModalStore from '../zustand';
 import IntroComboBox from './IntroComboBox';
+import IntroSelectLayout from './IntroSelectLayout';
 import IntroWidget from './IntroWidget';
 
-type LayoutKey = {
-  key: IntroLayoutKey;
-  title: string;
-  description: string;
-};
-
-const layoutKey: LayoutKey[] = [
-  {
-    key: 'IMAGE_ROUND_FRAME',
-    title: '비행기 창문',
-    description: '비행기 창문 모양 프레임에 사진을 넣는 레이아웃',
-  },
-  {
-    key: 'IMAGE_ARCH_FRAME',
-    title: '아치 프레임',
-    description: '아치형 프레임에 사진을 넣는 레이아웃',
-  },
-  {
-    key: 'IMAGE_FLOW',
-    title: '표지형 A',
-    description: '텍스트 밑에 이미지를 배치하는 레이아웃',
-  },
-  {
-    key: 'IMAGE_FLOW_REVERSE',
-    title: '표지형 B',
-    description: '이미지 밑에 텍스트를 놓는 레이아웃',
-  },
-  {
-    key: 'IMAGE_BACKGROUND',
-    title: '배경 이미지',
-    description: '이미지 위에 텍스트를 얹는 레이아웃',
-  },
-  {
-    key: 'ONLY_TEXT',
-    title: '심플 텍스트',
-    description: '이미지 없이 텍스트만 쓰는 레이아웃',
-  },
-  {
-    key: 'ONLY_IMAGE',
-    title: '이미지 직접 업로드',
-    description: '텍스트 없이 이미지만 활용한 레이아웃',
-  },
-];
-
-export type IntroSearchQuery = {
-  engine: 'KAKAO' | 'GOOGLE';
-  value: string;
-};
-
+export type IntroSearchEngine = 'KAKAO' | 'GOOGLE';
 interface IntroWidgetModalContentProps {
   widget: WidgetItem;
 }
 
 function IntroWidgetModalContent({ widget }: IntroWidgetModalContentProps): React.ReactNode {
   const [isAddress, setIsAddress] = useState(false);
-  const [selectedPlaceKakao, setSelectedPlaceKakao] = useState<KaKaoKeywordDocument | null>(null);
-  const [selectedPlaceGoogle, setSelectedPlaceGoogle] = useState<
-    google.maps.places.AutocompletePrediction[] | null
-  >(null);
-  const [query, setQuery] = useState<IntroSearchQuery>({
-    engine: 'KAKAO',
-    value: '',
-  });
+  const [searchEngine, setSearchEngine] = useState<'KAKAO' | 'GOOGLE'>('KAKAO');
+  const [selectedLayout, setSelectedLayout] = useState<IntroLayoutKey>(
+    (widget.config as IntroWidgetConfig).layoutKey,
+  );
 
   const { register, watch } = useForm<IntroWidgetConfig>();
   const { register: registerEventInfo } = useForm<EventInfoPayload>();
+
   const { setOnSubmit, closeModal } = useModalStore(
     useShallow((state: ModalStore) => ({
       setOnSubmit: state.setOnSubmit,
       closeModal: state.closeModal,
     })),
   );
-
   const { invitation } = useModalStore(
     useShallow((state: ModalStore) => ({
       invitation: state.invitation,
@@ -112,42 +58,13 @@ function IntroWidgetModalContent({ widget }: IntroWidgetModalContentProps): Reac
   const { mutate: putInvitationConfig } = useInvitationConfigMutation(invitation?.id ?? '');
   const { mutate: postWidget } = useWidgetMutation(invitation?.id ?? '');
   const { mutate: postEventInfo } = useEventInfoMutation(invitation?.id ?? '');
-  const { data: kakaoKeywordResults } = useKakaoKeywordQuery(query);
-  const { data: kakaoAddresses } = useKakaoAddressQuery(query);
 
   const handleClickTrashCan = () => {
     setIsAddress(true);
   };
 
   const handleChangeEngine = () => {
-    setQuery((prev) => ({
-      ...prev,
-      engine: prev.engine === 'KAKAO' ? 'GOOGLE' : 'KAKAO',
-    }));
-  };
-
-  const handleChangeCombobox = (
-    value: google.maps.places.AutocompletePrediction[] | KaKaoKeywordDocument | null,
-  ) => {
-    if (Array.isArray(value) && value.length > 0 && 'place_id' in value[0]) {
-      setSelectedPlaceGoogle(value);
-    } else if (value && !Array.isArray(value)) {
-      setSelectedPlaceKakao(value);
-    }
-  };
-
-  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setQuery((prev) => ({
-      ...prev,
-      value: event.target.value,
-    }));
-  };
-
-  const handleCloseCombobox = () => {
-    setQuery({
-      engine: 'KAKAO',
-      value: '',
-    });
+    setSearchEngine((prev) => (prev === 'KAKAO' ? 'GOOGLE' : 'KAKAO'));
   };
 
   const onSubmit: SubmitHandler<WidgetConfigs> = useCallback(() => {
@@ -209,55 +126,9 @@ function IntroWidgetModalContent({ widget }: IntroWidgetModalContentProps): Reac
     setOnSubmit(onSubmit);
   }, [setOnSubmit, onSubmit]);
 
-  useEffect(() => {
-    console.log(kakaoKeywordResults);
-    console.log(kakaoAddresses);
-  }, [kakaoKeywordResults, kakaoAddresses]);
-
-  useEffect(() => {
-    console.log(selectedPlaceGoogle);
-  }, [selectedPlaceGoogle]);
-
   return (
     <div className="space-y-8">
-      <div className="space-y-2">
-        <div>
-          <div className="flex items-center justify-between text-slate-600">
-            <div className="font-bold">레이아웃</div>
-            <div className="text-sm" />
-          </div>
-        </div>
-        <div>
-          <div>
-            <div
-              className="flex items-stretch gap-2 desktop:gap-4"
-              style={{ transform: 'translate3d(0px, 0px, 0px)' }}
-            >
-              {layoutKey.map((layout) => (
-                <label
-                  className="relative cursor-pointer w-[calc((100%-1rem)/2)] flex-none"
-                  key={layout.key}
-                >
-                  <input
-                    className="peer -z-10 hidden"
-                    type="radio"
-                    {...register('layoutKey')}
-                    value={layout.key}
-                    checked={(widget.config as IntroWidgetConfig).layoutKey === layout.key}
-                  />
-                  <div className="relative h-full rounded-lg border border-slate-200 bg-white p-4 text-sm text-slate-500 shadow-1 peer-checked:border-indigo-600 peer-checked:shadow-violet">
-                    <div className="flex items-center justify-between font-bold">
-                      {layout.title}
-                    </div>
-                    <div className="mt-1">{layout.description}</div>
-                  </div>
-                  <IoCheckmark className="absolute top-4 right-4 hidden flex-none text-2xl text-indigo-700 peer-checked:block" />
-                </label>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
+      <IntroSelectLayout selectedLayout={selectedLayout} setSelectedLayout={setSelectedLayout} />
 
       {/** 대표 이미지 */}
       <div className="space-y-2">
@@ -383,9 +254,9 @@ function IntroWidgetModalContent({ widget }: IntroWidgetModalContentProps): Reac
                   <input
                     type="radio"
                     className="peer absolute cursor-pointer opacity-0"
-                    value={query.engine}
+                    value="KAKAO"
                     onChange={handleChangeEngine}
-                    checked={query.engine === 'KAKAO'}
+                    checked={searchEngine === 'KAKAO'}
                   />
                   <span className="center-flex h-full w-full rounded-md text-slate-500 peer-checked:border peer-checked:border-slate-200 peer-checked:bg-white peer-checked:font-bold peer-checked:text-slate-600">
                     국내
@@ -395,25 +266,16 @@ function IntroWidgetModalContent({ widget }: IntroWidgetModalContentProps): Reac
                   <input
                     type="radio"
                     className="peer absolute cursor-pointer opacity-0"
-                    value={query.engine}
+                    value="GOOGLE"
                     onChange={handleChangeEngine}
-                    checked={query.engine === 'GOOGLE'}
+                    checked={searchEngine === 'GOOGLE'}
                   />
                   <span className="center-flex h-full w-full rounded-md text-slate-500 peer-checked:border peer-checked:border-slate-200 peer-checked:bg-white peer-checked:font-bold peer-checked:text-slate-600">
                     해외
                   </span>
                 </label>
               </div>
-              <IntroComboBox
-                engine={query.engine}
-                selectedPlaceKakao={selectedPlaceKakao}
-                selectedPlaceGoogle={selectedPlaceGoogle}
-                kakaoKeywordResults={kakaoKeywordResults}
-                onPlaceSelect={setSelectedPlaceGoogle}
-                handleChangeCombobox={handleChangeCombobox}
-                handleCloseCombobox={handleCloseCombobox}
-                handleSearch={handleSearch}
-              />
+              <IntroComboBox engine={searchEngine} />
             </div>
           </APIProvider>
         ) : (
