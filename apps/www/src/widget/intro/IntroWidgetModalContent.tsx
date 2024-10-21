@@ -23,6 +23,7 @@ import type {
 } from '@/invitations/types';
 import type { IntroLayoutKey, IntroWidgetConfig, WidgetItem } from '@/types/pageBrothers.type';
 
+import { WidgetBreakLine } from '../common';
 import type { ModalStore } from '../zustand';
 import useModalStore from '../zustand';
 import IntroComboBox from './IntroComboBox';
@@ -39,7 +40,6 @@ function IntroWidgetModalContent({ widget }: IntroWidgetModalContentProps): Reac
   const [selectedLayout, setSelectedLayout] = useState<IntroLayoutKey>(
     (widget.config as IntroWidgetConfig).layoutKey,
   );
-
   const { register, watch } = useForm<IntroWidgetConfig>();
   const { register: registerEventInfo } = useForm<EventInfoPayload>();
 
@@ -54,7 +54,6 @@ function IntroWidgetModalContent({ widget }: IntroWidgetModalContentProps): Reac
       invitation: state.invitation,
     })),
   );
-
   const { mutate: putInvitationConfig } = useInvitationConfigMutation(invitation?.id ?? '');
   const { mutate: postWidget } = useWidgetMutation(invitation?.id ?? '');
   const { mutate: postEventInfo } = useEventInfoMutation(invitation?.id ?? '');
@@ -62,8 +61,6 @@ function IntroWidgetModalContent({ widget }: IntroWidgetModalContentProps): Reac
   const handleClickTrashCan = () => {
     setIsAddress(true);
   };
-
-  console.log(searchEngine);
 
   const handleChangeEngine = () => {
     setSearchEngine((prev) => (prev === 'KAKAO' ? 'GOOGLE' : 'KAKAO'));
@@ -130,7 +127,11 @@ function IntroWidgetModalContent({ widget }: IntroWidgetModalContentProps): Reac
 
   return (
     <div className="space-y-8">
-      <IntroSelectLayout selectedLayout={selectedLayout} setSelectedLayout={setSelectedLayout} />
+      <IntroSelectLayout
+        selectedLayout={selectedLayout}
+        setSelectedLayout={setSelectedLayout}
+        register={register}
+      />
 
       {/** 대표 이미지 */}
       <div className="space-y-2">
@@ -162,7 +163,7 @@ function IntroWidgetModalContent({ widget }: IntroWidgetModalContentProps): Reac
           <div>
             {invitation ? (
               <IntroWidget
-                widgetItem={widget}
+                widget={widget}
                 invitation={invitation}
                 widgetOnly
                 selectedLayout={selectedLayout}
@@ -172,7 +173,7 @@ function IntroWidgetModalContent({ widget }: IntroWidgetModalContentProps): Reac
         </div>
       </div>
 
-      <BreackLine />
+      <WidgetBreakLine />
 
       {/** 타이틀 */}
       <div className="space-y-2 ">
@@ -223,7 +224,7 @@ function IntroWidgetModalContent({ widget }: IntroWidgetModalContentProps): Reac
         </div>
       </div>
 
-      <BreackLine />
+      <WidgetBreakLine />
 
       {/** 예식 정보 표기 */}
       <div className="space-y-2 ">
@@ -354,94 +355,8 @@ function IntroWidgetModalContent({ widget }: IntroWidgetModalContentProps): Reac
       </div>
 
       {/** 표기법 */}
-      <div className="space-y-2 ">
-        <div>
-          <div className="flex items-center justify-between text-slate-600">
-            <div className="font-bold">표기법</div>
-            <div className="text-sm" />
-          </div>
-          <div>
-            <ul className="space-y-2">
-              <li>
-                <label className="relative cursor-pointer">
-                  <input
-                    type="radio"
-                    className="peer hidden"
-                    value="KO"
-                    checked={(widget.config as IntroWidgetConfig).dateFormatKey === 'KO'}
-                    {...register('dateFormatKey')}
-                  />
-                  <div className="rounded-lg border border-slate-200 bg-white px-5 py-3 peer-checked:border-indigo-600">
-                    <p className="font-bold text-slate-600">
-                      2024년 10월 11일 금요일 오전 1시 26분
-                    </p>
-                  </div>
-                </label>
-              </li>
-              <li>
-                <label className="relative cursor-pointer">
-                  <input
-                    type="radio"
-                    className="peer hidden"
-                    value="KO_EXCLUDE_TIME"
-                    checked={
-                      (widget.config as IntroWidgetConfig).dateFormatKey === 'KO_EXCLUDE_TIME'
-                    }
-                    {...register('dateFormatKey')}
-                  />
-                  <div className="rounded-lg border border-slate-200 bg-white px-5 py-3 peer-checked:border-indigo-600">
-                    <p className="font-bold text-slate-600">2024년 10월 11일 금요일</p>
-                  </div>
-                </label>
-              </li>
-              <li>
-                <label className="relative cursor-pointer">
-                  <input
-                    type="radio"
-                    className="peer hidden"
-                    value="EN"
-                    checked={(widget.config as IntroWidgetConfig).dateFormatKey === 'EN'}
-                    {...register('dateFormatKey')}
-                  />
-                  <div className="rounded-lg border border-slate-200 bg-white px-5 py-3 peer-checked:border-indigo-600">
-                    <p className="font-bold text-slate-600">2024. 10. 11. (FRI) 1:26 AM</p>
-                  </div>
-                </label>
-              </li>
-              <li>
-                <label className="relative cursor-pointer">
-                  <input
-                    type="radio"
-                    className="peer hidden"
-                    value="EN_EXCLUDE_TIME"
-                    checked={
-                      (widget.config as IntroWidgetConfig).dateFormatKey === 'EN_EXCLUDE_TIME'
-                    }
-                    {...register('dateFormatKey')}
-                  />
-                  <div className="rounded-lg border border-slate-200 bg-white px-5 py-3 peer-checked:border-indigo-600">
-                    <p className="font-bold text-slate-600">2024. 10. 11. (FRI)</p>
-                  </div>
-                </label>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
     </div>
   );
 }
 
 export default IntroWidgetModalContent;
-
-function BreackLine() {
-  return (
-    <div className="center-flex h-9 gap-2 text-slate-300">
-      <span className="h-px w-8 bg-current" />
-      <span className="aspect-square h-[3px] rounded-full bg-current" />
-      <span className="aspect-square h-[3px] rounded-full bg-current" />
-      <span className="aspect-square h-[3px] rounded-full bg-current" />
-      <span className="h-px w-8 bg-current" />
-    </div>
-  );
-}

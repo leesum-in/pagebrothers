@@ -1,6 +1,6 @@
 'use client';
 
-import { useForm } from 'react-hook-form';
+import type { UseFormRegister } from 'react-hook-form';
 import { IoCheckmark } from 'react-icons/io5';
 
 import type { IntroLayoutKey, IntroWidgetConfig } from '@/types/pageBrothers.type';
@@ -54,10 +54,14 @@ const layoutKey: LayoutKey[] = [
 interface IntroSelectLayoutProps {
   selectedLayout: IntroLayoutKey;
   setSelectedLayout: (layout: IntroLayoutKey) => void;
+  register: UseFormRegister<IntroWidgetConfig>;
 }
 
-function IntroSelectLayout({ selectedLayout, setSelectedLayout }: IntroSelectLayoutProps) {
-  const { register } = useForm<IntroWidgetConfig>();
+function IntroSelectLayout({
+  selectedLayout,
+  setSelectedLayout,
+  register,
+}: IntroSelectLayoutProps) {
   const {
     trackRef,
     handleMouseDown,
