@@ -1,4 +1,5 @@
 export { default as Widget } from './Widget';
+export { default as WidgetBreakLine } from './WidgetBreakLine';
 export { default as WidgetButtons } from './WidgetButtons';
 export { default as WidgetModal } from './WidgetModal';
 export { default as WidgetModalFooter } from './WidgetModalFooter';
