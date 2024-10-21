@@ -3,7 +3,6 @@ import { useQuery } from '@tanstack/react-query';
 
 import type { ErrorResponse } from '@/types/error.type';
 import type { IInvitation } from '@/types/pageBrothers.type';
-import type { IntroSearchQuery } from '@/widget/intro/IntroWidgetModalContent';
 
 import {
   getInvitation,
@@ -19,7 +18,12 @@ import {
   QUERY_KEY_KAKAO_KEYWORD,
   QUERY_KEY_TEMPLATES,
 } from './constants';
-import type { ItemsResponse, KakaoAddressResponse, KakaoKeywordResponse } from './types';
+import type {
+  IntroSearchQuery,
+  ItemsResponse,
+  KakaoAddressResponse,
+  KakaoKeywordResponse,
+} from './types';
 
 export function useInvitationQuery(id: string): UseQueryResult<IInvitation | null, ErrorResponse> {
   return useQuery<IInvitation | null, ErrorResponse>({

@@ -12,9 +12,7 @@ import { HiOutlineLocationMarker } from 'react-icons/hi';
 import { IoSearchOutline } from 'react-icons/io5';
 
 import { useKakaoAddressQuery, useKakaoKeywordQuery } from '@/invitations/queries';
-import type { KaKaoKeywordDocument } from '@/invitations/types';
-
-import type { IntroSearchEngine } from './IntroWidgetModalContent';
+import type { IntroSearchEngine, KaKaoKeywordDocument } from '@/invitations/types';
 
 type ComboboxValue = KaKaoKeywordDocument | google.maps.places.AutocompletePrediction | null;
 
@@ -34,8 +32,8 @@ function IntroComboBox({ engine }: IntroLocationSearchProps) {
     useState<google.maps.places.AutocompletePrediction | null>(null);
   const [query, setQuery] = useState('');
 
-  const { data: kakaoKeywordResults } = useKakaoKeywordQuery(query);
-  const { data: kakaoAddresses } = useKakaoAddressQuery(query);
+  const { data: kakaoKeywordResults } = useKakaoKeywordQuery({ value: query, engine });
+  const { data: kakaoAddresses } = useKakaoAddressQuery({ value: query, engine });
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(event.target.value);
@@ -53,6 +51,7 @@ function IntroComboBox({ engine }: IntroLocationSearchProps) {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleInputChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (!event.target.value) return;
     if (!placeAutocomplete) return;
     const result = await placeAutocomplete.getPlacePredictions({ input: event.target.value });
     setGooglePlaces(result.predictions);
@@ -63,9 +62,9 @@ function IntroComboBox({ engine }: IntroLocationSearchProps) {
     value: google.maps.places.AutocompletePrediction | KaKaoKeywordDocument | null,
   ) => {
     if (!value) return;
-    if ('place_id' in value) {
+    if ('place_id' in value && engine === 'GOOGLE') {
       setSelectedPlaceGoogle(value);
-    } else {
+    } else if ('id' in value && engine === 'KAKAO') {
       setSelectedPlaceKakao(value);
     }
   };
@@ -112,30 +111,32 @@ function IntroComboBox({ engine }: IntroLocationSearchProps) {
           as="ul"
         >
           <ul className="divide-y divide-slate-100">
-            {googlePlaces.map((place) => (
-              <ComboboxOption key={place.place_id} value={place} as="li">
-                <button
-                  type="button"
-                  className="relative w-full px-4 py-3 text-left hover:bg-slate-50"
-                >
-                  <p>{place.description.split(',')[0]}</p>
-                  <p className="text-slate-400">{place.description}</p>
-                  <HiOutlineLocationMarker className="absolute top-0 bottom-0 right-4 m-auto text-lg text-slate-300" />
-                </button>
-              </ComboboxOption>
-            ))}
-            {kakaoKeywordResults?.documents.map((document) => (
-              <ComboboxOption key={document.id} value={document} as="li">
-                <button
-                  type="button"
-                  className="relative w-full px-4 py-3 text-left hover:bg-slate-50"
-                >
-                  <p>{document.place_name}</p>
-                  <p className="text-slate-400">{document.address_name}</p>
-                  <HiOutlineLocationMarker className="absolute top-0 bottom-0 right-4 m-auto text-lg text-slate-300" />
-                </button>
-              </ComboboxOption>
-            ))}
+            {engine === 'GOOGLE' &&
+              googlePlaces.map((place) => (
+                <ComboboxOption key={place.place_id} value={place} as="li">
+                  <button
+                    type="button"
+                    className="relative w-full px-4 py-3 text-left hover:bg-slate-50"
+                  >
+                    <p>{place.description.split(',')[0]}</p>
+                    <p className="text-slate-400">{place.description}</p>
+                    <HiOutlineLocationMarker className="absolute top-0 bottom-0 right-4 m-auto text-lg text-slate-300" />
+                  </button>
+                </ComboboxOption>
+              ))}
+            {engine === 'KAKAO' &&
+              kakaoKeywordResults?.documents.map((document) => (
+                <ComboboxOption key={document.id} value={document} as="li">
+                  <button
+                    type="button"
+                    className="relative w-full px-4 py-3 text-left hover:bg-slate-50"
+                  >
+                    <p>{document.place_name}</p>
+                    <p className="text-slate-400">{document.address_name}</p>
+                    <HiOutlineLocationMarker className="absolute top-0 bottom-0 right-4 m-auto text-lg text-slate-300" />
+                  </button>
+                </ComboboxOption>
+              ))}
           </ul>
         </ComboboxOptions>
       </div>

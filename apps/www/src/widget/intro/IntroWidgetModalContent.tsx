@@ -17,6 +17,7 @@ import type {
   ConfigPayload,
   EventInfoData,
   EventInfoPayload,
+  IntroSearchEngine,
   WidgetConfigs,
   WidgetData,
 } from '@/invitations/types';
@@ -28,14 +29,13 @@ import IntroComboBox from './IntroComboBox';
 import IntroSelectLayout from './IntroSelectLayout';
 import IntroWidget from './IntroWidget';
 
-export type IntroSearchEngine = 'KAKAO' | 'GOOGLE';
 interface IntroWidgetModalContentProps {
   widget: WidgetItem;
 }
 
 function IntroWidgetModalContent({ widget }: IntroWidgetModalContentProps): React.ReactNode {
   const [isAddress, setIsAddress] = useState(false);
-  const [searchEngine, setSearchEngine] = useState<'KAKAO' | 'GOOGLE'>('KAKAO');
+  const [searchEngine, setSearchEngine] = useState<IntroSearchEngine>('KAKAO');
   const [selectedLayout, setSelectedLayout] = useState<IntroLayoutKey>(
     (widget.config as IntroWidgetConfig).layoutKey,
   );
@@ -62,6 +62,8 @@ function IntroWidgetModalContent({ widget }: IntroWidgetModalContentProps): Reac
   const handleClickTrashCan = () => {
     setIsAddress(true);
   };
+
+  console.log(searchEngine);
 
   const handleChangeEngine = () => {
     setSearchEngine((prev) => (prev === 'KAKAO' ? 'GOOGLE' : 'KAKAO'));

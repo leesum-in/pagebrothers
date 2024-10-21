@@ -136,3 +136,10 @@ export type KakaoKeywordResponse = {
   documents: KaKaoKeywordDocument[];
   meta: KaKaoResponseMeta;
 };
+
+export type IntroSearchEngine = 'KAKAO' | 'GOOGLE';
+
+export type IntroSearchQuery = {
+  value: string;
+  engine: IntroSearchEngine;
+};
