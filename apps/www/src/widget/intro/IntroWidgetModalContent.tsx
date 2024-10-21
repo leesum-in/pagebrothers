@@ -27,6 +27,7 @@ import { WidgetBreakLine } from '../common';
 import type { ModalStore } from '../zustand';
 import useModalStore from '../zustand';
 import IntroComboBox from './IntroComboBox';
+import IntroSelectDateFormatKey from './IntroSelectDateFormatKey';
 import IntroSelectLayout from './IntroSelectLayout';
 import IntroWidget from './IntroWidget';
 
@@ -42,7 +43,6 @@ function IntroWidgetModalContent({ widget }: IntroWidgetModalContentProps): Reac
   );
   const { register, watch } = useForm<IntroWidgetConfig>();
   const { register: registerEventInfo } = useForm<EventInfoPayload>();
-
   const { setOnSubmit, closeModal } = useModalStore(
     useShallow((state: ModalStore) => ({
       setOnSubmit: state.setOnSubmit,
@@ -355,6 +355,11 @@ function IntroWidgetModalContent({ widget }: IntroWidgetModalContentProps): Reac
       </div>
 
       {/** 표기법 */}
+      <IntroSelectDateFormatKey
+        register={register}
+        time={invitation?.eventAt ?? null}
+        watch={watch}
+      />
     </div>
   );
 }
