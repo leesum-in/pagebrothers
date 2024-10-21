@@ -159,7 +159,12 @@ function IntroWidgetModalContent({ widget }: IntroWidgetModalContentProps): Reac
         <div className="[--theme-black:15,23,42] [--theme-inter:51,65,85] [--theme-colored:100,116,139] [--theme-block:0,0,0] font-serif text-[14px] leading-loose text-theme-black/60">
           <div>
             {invitation ? (
-              <IntroWidget widgetItem={widget} invitation={invitation} widgetOnly />
+              <IntroWidget
+                widgetItem={widget}
+                invitation={invitation}
+                widgetOnly
+                selectedLayout={selectedLayout}
+              />
             ) : null}
           </div>
         </div>

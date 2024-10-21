@@ -1,4 +1,9 @@
-import type { IInvitation, IntroWidgetConfig, WidgetItem } from '@/types/pageBrothers.type';
+import type {
+  IInvitation,
+  IntroLayoutKey,
+  IntroWidgetConfig,
+  WidgetItem,
+} from '@/types/pageBrothers.type';
 import { WidgetWrapper } from '@/widget/common';
 
 import Intro from './Intro';
@@ -8,6 +13,7 @@ interface IntroWidgetProps {
   widgetItem: WidgetItem;
   isMultiModal?: boolean;
   widgetOnly?: boolean;
+  selectedLayout?: IntroLayoutKey;
 }
 
 function IntroWidget({
@@ -15,12 +21,19 @@ function IntroWidget({
   widgetItem,
   isMultiModal = false,
   widgetOnly = false,
+  selectedLayout,
 }: IntroWidgetProps): React.ReactNode {
   const { subTitle, title, coverImage } = widgetItem.config as IntroWidgetConfig;
 
-  if (widgetOnly && invitation) {
+  if (widgetOnly && invitation && selectedLayout) {
     return (
-      <Intro subTitle={subTitle} title={title} coverImage={coverImage} invitation={invitation} />
+      <Intro
+        subTitle={subTitle}
+        title={title}
+        coverImage={coverImage}
+        invitation={invitation}
+        selectedLayout={selectedLayout}
+      />
     );
   }
 
@@ -33,6 +46,7 @@ function IntroWidget({
             title={title}
             coverImage={coverImage}
             invitation={invitation}
+            selectedLayout={selectedLayout}
           />
         ) : null}
       </div>
