@@ -7,7 +7,7 @@ import {
   Combobox as HeadlessCombobox,
 } from '@headlessui/react';
 import { useMapsLibrary } from '@vis.gl/react-google-maps';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { memo, useEffect, useMemo, useRef, useState } from 'react';
 import { HiOutlineLocationMarker } from 'react-icons/hi';
 import { IoSearchOutline } from 'react-icons/io5';
 
@@ -25,7 +25,7 @@ const TypedCombobox = HeadlessCombobox as unknown as (
   props: React.ComponentProps<typeof HeadlessCombobox> & { value: ComboboxValue },
 ) => JSX.Element;
 
-function IntroComboBox({ engine }: IntroLocationSearchProps) {
+function ComboBox({ engine }: IntroLocationSearchProps) {
   const [googlePlaces, setGooglePlaces] = useState<google.maps.places.AutocompletePrediction[]>([]);
   const [selectedPlaceKakao, setSelectedPlaceKakao] = useState<KaKaoKeywordDocument | null>(null);
   const [selectedPlaceGoogle, setSelectedPlaceGoogle] =
@@ -144,4 +144,5 @@ function IntroComboBox({ engine }: IntroLocationSearchProps) {
   );
 }
 
+const IntroComboBox = memo(ComboBox);
 export default IntroComboBox;

@@ -1,3 +1,5 @@
+import { memo } from 'react';
+
 import type {
   IInvitation,
   IntroLayoutKey,
@@ -10,15 +12,15 @@ import Intro from './Intro';
 
 interface IntroWidgetProps {
   invitation?: IInvitation;
-  widgetItem: WidgetItem;
+  widget: WidgetItem;
   isMultiModal?: boolean;
   widgetOnly?: boolean;
   selectedLayout?: IntroLayoutKey;
 }
 
-function IntroWidget({
+function IntroWidgetComp({
   invitation,
-  widgetItem,
+  widget: widgetItem,
   isMultiModal = false,
   widgetOnly = false,
   selectedLayout,
@@ -54,4 +56,5 @@ function IntroWidget({
   );
 }
 
+const IntroWidget = memo(IntroWidgetComp);
 export default IntroWidget;
