@@ -1,4 +1,5 @@
 import type { IInvitation, MessageWidgetConfig, WidgetItem } from '@/types/pageBrothers.type';
+
 import { WidgetWrapper } from '../common';
 import { TEXT_ALIGN, TEXT_SIZE } from '../constants';
 
