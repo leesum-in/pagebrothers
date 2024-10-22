@@ -16,13 +16,13 @@ export const WIDGET_TYPE_KOREAN = {
   DDAY: 'D-DAY',
 };
 
-export const TEXT_ALIGN: { [key: string]: string } = {
+export const TEXT_ALIGN = {
   LEFT: 'text-start',
-  MIDDLE: 'text-center',
+  CENTER: 'text-center',
   RIGHT: 'text-end',
 };
 
-export const TEXT_SIZE: { [key: string]: string } = {
+export const TEXT_SIZE = {
   sm: 'text-base',
   md: 'text-md',
   lg: 'text-lg',
