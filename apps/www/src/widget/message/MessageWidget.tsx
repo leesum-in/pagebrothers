@@ -1,5 +1,6 @@
 import type { IInvitation, MessageWidgetConfig, WidgetItem } from '@/types/pageBrothers.type';
 import { WidgetWrapper } from '../common';
+import { TEXT_ALIGN, TEXT_SIZE } from '../constants';
 
 interface MessageWidgetProps {
   invitation?: IInvitation;
@@ -12,7 +13,9 @@ function MessageWidget({ widgetItem }: MessageWidgetProps): React.ReactNode {
   return (
     <WidgetWrapper widgetItem={widgetItem}>
       {title ? (
-        <div className="no-interaction space-y-6 p-8 text-center text-base text-slate-700/70">
+        <div
+          className={`no-interaction space-y-6 p-8 ${TEXT_ALIGN[align]} ${TEXT_SIZE[size]} text-slate-700/70`}
+        >
           {widgetTitle && <p className="text-[1.12em] font-black"> {widgetTitle}</p>}
           <div className="space-y-3">
             <p>{title}</p>

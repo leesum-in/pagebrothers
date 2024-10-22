@@ -15,3 +15,15 @@ export const WIDGET_TYPE_KOREAN = {
   SHARE: '카톡 공유',
   DDAY: 'D-DAY',
 };
+
+export const TEXT_ALIGN: { [key: string]: string } = {
+  LEFT: 'text-start',
+  MIDDLE: 'text-center',
+  RIGHT: 'text-end',
+};
+
+export const TEXT_SIZE: { [key: string]: string } = {
+  sm: 'text-base',
+  md: 'text-md',
+  lg: 'text-lg',
+};
