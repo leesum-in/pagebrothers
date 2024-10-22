@@ -6,7 +6,7 @@ export const WIDGET_TYPE_KOREAN = {
   GALLERY: '갤러리',
   GREETING: '인사말',
   INTRO: '인트로',
-  MESSAGE: '방명록',
+  MESSAGE: '안내 문구',
   QNA: '질문과 답변',
   VIDEO: '동영상',
   CALENDAR: '캘린더',
