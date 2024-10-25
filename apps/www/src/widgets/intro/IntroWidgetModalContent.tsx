@@ -39,17 +39,14 @@ function IntroWidgetModalContent({ widget }: IntroWidgetModalContentProps): Reac
   );
   const { register, watch } = useForm<IntroWidgetConfig>();
   const { register: registerEventInfo } = useForm<EventInfoPayload>();
-  const { setOnSubmit, closeModal } = useModalStore(
+  const { setOnSubmit, closeModal, invitation } = useModalStore(
     useShallow((state: ModalStore) => ({
       setOnSubmit: state.setOnSubmit,
       closeModal: state.closeModal,
-    })),
-  );
-  const { invitation } = useModalStore(
-    useShallow((state: ModalStore) => ({
       invitation: state.invitation,
     })),
   );
+
   const { mutate: putInvitationConfig } = useInvitationConfigMutation(invitation?.id ?? '');
   const { mutate: postWidget } = useWidgetMutation(invitation?.id ?? '');
   const { mutate: postEventInfo } = useEventInfoMutation(invitation?.id ?? '');
