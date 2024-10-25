@@ -83,11 +83,11 @@ function IntroSelectLayout({
       <div>
         <div
           onMouseDown={handleMouseDown}
-          onMouseMove={(e) => handleMouseMove(e as unknown as MouseEvent)}
-          onMouseUp={(e) => handleMouseUp(e as unknown as MouseEvent)}
+          onMouseMove={handleMouseMove}
+          onMouseUp={handleMouseUp}
           onTouchStart={handleTouchStart}
-          onTouchMove={(e) => handleTouchMove(e as unknown as TouchEvent)}
-          onTouchEnd={(e) => handleTouchEnd(e as unknown as TouchEvent)}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
         >
           <div className="flex items-stretch gap-2 desktop:gap-4" ref={trackRef}>
             {layoutKey.map((layout) => (
