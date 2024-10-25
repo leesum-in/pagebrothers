@@ -34,16 +34,11 @@ function ComboBox({ engine }: IntroLocationSearchProps) {
 
   const { data: kakaoKeywordResults } = useKakaoKeywordQuery({ value: query, engine });
   const { data: kakaoAddresses } = useKakaoAddressQuery({ value: query, engine });
-
-  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setQuery(event.target.value);
-  };
+  const places = useMapsLibrary('places');
 
   const handleCloseCombobox = () => {
     setQuery('');
   };
-
-  const places = useMapsLibrary('places');
 
   const [placeAutocomplete, setPlaceAutocomplete] =
     useState<google.maps.places.AutocompleteService | null>(null);
@@ -55,7 +50,7 @@ function ComboBox({ engine }: IntroLocationSearchProps) {
     if (!placeAutocomplete) return;
     const result = await placeAutocomplete.getPlacePredictions({ input: event.target.value });
     setGooglePlaces(result.predictions);
-    handleSearch(event);
+    setQuery(event.target.value);
   };
 
   const handleChangeCombobox = (
