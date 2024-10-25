@@ -7,7 +7,6 @@ import type { FieldValues, SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
 import { useShallow } from 'zustand/shallow';
 
-import { useInvitationQuery } from '@/invitations/queries';
 import type { WidgetItem } from '@/types/pageBrothers.type';
 import ErrorTemplate from '@/ui/error/ErrorTemplate';
 import { PageWrapper } from '@/ui/wrapper';
@@ -17,9 +16,11 @@ import {
   WidgetModalFooter,
   WidgetModalHeader,
   WidgetNotFound,
-} from '@/widget/common';
-import type { ModalStore } from '@/widget/zustand';
-import useModalStore from '@/widget/zustand';
+} from '@/widgets/components';
+
+import { useInvitationQuery } from '../queries';
+import type { ModalStore } from '../zustand';
+import useModalStore from '../zustand';
 
 function EditTemplate() {
   const { id } = useParams<{ id: string }>();

@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 
-import { StartTemplate } from '@/invitations/start/components';
+import { StartTemplate } from '@/widgets/components';
 
 export const metadata: Metadata = {
   title: '시작하기',

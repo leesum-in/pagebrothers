@@ -1,8 +1,9 @@
 import type { SubmitHandler } from 'react-hook-form';
 import { create } from 'zustand';
 
-import type { WidgetConfigs } from '@/invitations/types';
 import type { IInvitation, WidgetItem } from '@/types/pageBrothers.type';
+
+import type { WidgetConfigs } from './types';
 
 export type ModalState = {
   isOpen: boolean;

@@ -5,10 +5,10 @@ import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
 import { useShallow } from 'zustand/shallow';
 
-import { useInvitationConfigMutation } from '@/invitations/mutations';
-import type { ConfigPayload, WidgetConfigs } from '@/invitations/types';
 import type { VideoWidgetConfig, WidgetItem } from '@/types/pageBrothers.type';
 
+import { useInvitationConfigMutation } from '../mutations';
+import type { ConfigPayload, WidgetConfigs } from '../types';
 import type { ModalStore } from '../zustand';
 import useModalStore from '../zustand';
 

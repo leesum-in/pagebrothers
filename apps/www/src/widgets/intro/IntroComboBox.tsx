@@ -11,8 +11,8 @@ import { memo, useEffect, useMemo, useRef, useState } from 'react';
 import { HiOutlineLocationMarker } from 'react-icons/hi';
 import { IoSearchOutline } from 'react-icons/io5';
 
-import { useKakaoAddressQuery, useKakaoKeywordQuery } from '@/invitations/queries';
-import type { IntroSearchEngine, KaKaoKeywordDocument } from '@/invitations/types';
+import { useKakaoAddressQuery, useKakaoKeywordQuery } from '../queries';
+import type { IntroSearchEngine, KaKaoKeywordDocument } from '../types';
 
 type ComboboxValue = KaKaoKeywordDocument | google.maps.places.AutocompletePrediction | null;
 

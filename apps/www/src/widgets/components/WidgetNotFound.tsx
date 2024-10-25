@@ -5,9 +5,9 @@ import { useParams } from 'next/navigation';
 import { useEffect, useMemo } from 'react';
 import { AiOutlinePlusCircle } from 'react-icons/ai';
 
-import { useInvitationQuery } from '@/invitations/queries';
 import type { WidgetItem } from '@/types/pageBrothers.type';
 
+import { useInvitationQuery } from '../queries';
 import useModalStore from '../zustand';
 
 function WidgetNotFound() {

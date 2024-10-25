@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 
-import { useInvitationQuery } from '@/invitations/queries';
+import { useInvitationQuery } from '@/widgets/queries';
 
 function Navigation(): React.ReactNode {
   const { id } = useParams<{ id: string }>();

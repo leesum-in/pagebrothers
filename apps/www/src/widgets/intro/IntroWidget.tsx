@@ -6,13 +6,13 @@ import type {
   IntroWidgetConfig,
   WidgetItem,
 } from '@/types/pageBrothers.type';
-import { WidgetWrapper } from '@/widget/common';
 
+import { WidgetWrapper } from '../components';
 import Intro from './Intro';
 
 interface IntroWidgetProps {
   invitation?: IInvitation;
-  widget: WidgetItem;
+  widgetItem: WidgetItem;
   isMultiModal?: boolean;
   widgetOnly?: boolean;
   selectedLayout?: IntroLayoutKey;
@@ -20,7 +20,7 @@ interface IntroWidgetProps {
 
 function IntroWidgetComp({
   invitation,
-  widget: widgetItem,
+  widgetItem,
   isMultiModal = false,
   widgetOnly = false,
   selectedLayout,

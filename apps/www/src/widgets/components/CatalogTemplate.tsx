@@ -2,9 +2,9 @@
 
 import { useEffect } from 'react';
 
-import { useTemplatesQuery } from '@/invitations/queries';
 import { PageWrapper } from '@/ui/wrapper';
 
+import { useTemplatesQuery } from '../queries';
 import CatalogHeader from './CatalogHeader';
 
 // 이 컴포넌트는 폴더 위치 및 구조에 대한 논의가 필요합니다.

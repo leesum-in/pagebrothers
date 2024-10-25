@@ -8,11 +8,10 @@ import { LuPlusCircle } from 'react-icons/lu';
 import { MdOutlineCalendarToday } from 'react-icons/md';
 import { useShallow } from 'zustand/shallow';
 
-import {
-  useEventInfoMutation,
-  useInvitationConfigMutation,
-  useWidgetMutation,
-} from '@/invitations/mutations';
+import type { IntroLayoutKey, IntroWidgetConfig, WidgetItem } from '@/types/pageBrothers.type';
+
+import { WidgetBreakLine } from '../components';
+import { useEventInfoMutation, useInvitationConfigMutation, useWidgetMutation } from '../mutations';
 import type {
   ConfigPayload,
   EventInfoData,
@@ -20,10 +19,7 @@ import type {
   IntroSearchEngine,
   WidgetConfigs,
   WidgetData,
-} from '@/invitations/types';
-import type { IntroLayoutKey, IntroWidgetConfig, WidgetItem } from '@/types/pageBrothers.type';
-
-import { WidgetBreakLine } from '../common';
+} from '../types';
 import type { ModalStore } from '../zustand';
 import useModalStore from '../zustand';
 import IntroComboBox from './IntroComboBox';
@@ -163,7 +159,7 @@ function IntroWidgetModalContent({ widget }: IntroWidgetModalContentProps): Reac
           <div>
             {invitation ? (
               <IntroWidget
-                widget={widget}
+                widgetItem={widget}
                 invitation={invitation}
                 widgetOnly
                 selectedLayout={selectedLayout}

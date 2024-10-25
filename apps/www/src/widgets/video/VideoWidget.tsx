@@ -1,7 +1,8 @@
 import { memo, useMemo } from 'react';
 
 import type { VideoWidgetConfig, WidgetItem } from '@/types/pageBrothers.type';
-import { WidgetWrapper } from '@/widget/common';
+
+import { WidgetWrapper } from '../components';
 
 interface VideoWidgetProps {
   widgetItem: WidgetItem;

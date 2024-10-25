@@ -1,4 +1,9 @@
-// 아래 임시
+export const QUERY_KEY_INVITATION = 'invitation';
+export const QUERY_KEY_INVITATIONS = 'invitations';
+export const QUERY_KEY_TEMPLATES = 'templates';
+export const QUERY_KEY_KAKAO_KEYWORD = 'kakao_keyword';
+export const QUERY_KEY_KAKAO_ADDRESS = 'kakao_address';
+
 export const WIDGET_TYPE_KOREAN = {
   CONGRATULATION: '축의금 안내',
   LOCATION: '오시는 길',

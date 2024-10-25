@@ -2,8 +2,9 @@
 
 import { Button } from '@repo/shared';
 
-import { useInvitationMutation } from '@/invitations/mutations';
 import type { IInvitation } from '@/types/pageBrothers.type';
+
+import { useInvitationMutation } from '../mutations';
 
 function StartButton() {
   const { mutateAsync: makeInvitation } = useInvitationMutation();

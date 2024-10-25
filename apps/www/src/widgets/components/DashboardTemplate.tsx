@@ -3,9 +3,9 @@
 import Link from 'next/link';
 import { useEffect } from 'react';
 
-import { useInvitationsQuery } from '@/invitations/queries';
 import { PageWrapper } from '@/ui/wrapper';
 
+import { useInvitationsQuery } from '../queries';
 import DashboardHeader from './DashboardHeader';
 
 // 이 컴포넌트는 폴더 위치 및 구조에 대한 논의가 필요합니다.
