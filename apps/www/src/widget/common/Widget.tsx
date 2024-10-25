@@ -19,6 +19,9 @@ const components: Record<
   VIDEO: dynamic(() => import('../video/VideoWidget'), {
     ssr: false,
   }),
+  MESSAGE: dynamic(() => import('../message/MessageWidget'), {
+    ssr: false,
+  }),
 };
 
 function Widget({ invitation, widgetItem, isMultiModal }: WidgetProps) {

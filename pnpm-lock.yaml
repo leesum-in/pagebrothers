@@ -143,6 +143,9 @@ importers:
       react-dom:
         specifier: ^18
         version: 18.3.1(react@18.3.1)
+      www:
+        specifier: workspace:*
+        version: link:../www
     devDependencies:
       '@chromatic-com/storybook':
         specifier: ^1.9.0
