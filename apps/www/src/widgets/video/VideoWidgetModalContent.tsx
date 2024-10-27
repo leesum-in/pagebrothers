@@ -13,10 +13,10 @@ import type { ModalStore } from '../zustand';
 import useModalStore from '../zustand';
 
 interface VideoWidgetModalContentProps {
-  widget: WidgetItem;
+  widgetItem: WidgetItem;
 }
 
-function VideoWidgetModalContent({ widget }: VideoWidgetModalContentProps): React.ReactNode {
+function VideoWidgetModalContent({ widgetItem }: VideoWidgetModalContentProps): React.ReactNode {
   const { register, watch } = useForm<VideoWidgetConfig>();
   const { setOnSubmit, closeModal } = useModalStore(
     useShallow((state: ModalStore) => ({
@@ -35,9 +35,9 @@ function VideoWidgetModalContent({ widget }: VideoWidgetModalContentProps): Reac
 
   const onSubmit: SubmitHandler<WidgetConfigs> = useCallback(() => {
     const configPayloadData: ConfigPayload = {
-      id: widget.id,
+      id: widgetItem.id,
       type: 'VIDEO',
-      index: invitation?.widgets.findIndex((item) => item.id === widget.id) ?? 0,
+      index: invitation?.widgets.findIndex((item) => item.id === widgetItem.id) ?? 0,
       config: {
         url: watch('url'),
         aspectWidth: watch('aspectWidth'),
@@ -49,7 +49,7 @@ function VideoWidgetModalContent({ widget }: VideoWidgetModalContentProps): Reac
     putInvitationConfig(configPayloadData);
 
     closeModal();
-  }, [widget, watch, closeModal, putInvitationConfig, invitation]);
+  }, [widgetItem, watch, closeModal, putInvitationConfig, invitation]);
 
   useEffect(() => {
     setOnSubmit(onSubmit);
@@ -76,7 +76,7 @@ function VideoWidgetModalContent({ widget }: VideoWidgetModalContentProps): Reac
               spellCheck="false"
               autoComplete="off"
               placeholder="Youtube, Vimeo 동영상 주소"
-              defaultValue={(widget.config as VideoWidgetConfig).url}
+              defaultValue={(widgetItem.config as VideoWidgetConfig).url}
               {...register('url')}
             />
             <div className="flex flex-none items-center" />
@@ -101,7 +101,7 @@ function VideoWidgetModalContent({ widget }: VideoWidgetModalContentProps): Reac
                 autoComplete="off"
                 type="number"
                 placeholder="가로"
-                defaultValue={(widget.config as VideoWidgetConfig).aspectWidth}
+                defaultValue={(widgetItem.config as VideoWidgetConfig).aspectWidth}
                 {...register('aspectWidth')}
               />
               <div className="flex flex-none items-center" />
@@ -116,7 +116,7 @@ function VideoWidgetModalContent({ widget }: VideoWidgetModalContentProps): Reac
                 autoComplete="off"
                 type="number"
                 placeholder="세로"
-                defaultValue={(widget.config as VideoWidgetConfig).aspectHeight}
+                defaultValue={(widgetItem.config as VideoWidgetConfig).aspectHeight}
                 {...register('aspectHeight')}
               />
               <div className="flex flex-none items-center" />

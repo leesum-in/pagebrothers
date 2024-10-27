@@ -1,23 +1,30 @@
 import { IoArrowDown } from 'react-icons/io5';
 
-import type { IInvitation, IInvitationImage, IntroLayoutKey } from '@/types/pageBrothers.type';
+import type {
+  IInvitation,
+  IntroLayoutKey,
+  IntroWidgetConfig,
+  WidgetItem,
+} from '@/types/pageBrothers.type';
 
 interface IntroProps {
-  subTitle: string;
-  title: string;
-  coverImage: IInvitationImage | null;
+  widgetItem: WidgetItem;
   invitation: IInvitation;
   selectedLayout?: IntroLayoutKey;
 }
 
-function Intro({ subTitle, title, coverImage, invitation, selectedLayout }: IntroProps) {
+function Intro({ widgetItem, invitation, selectedLayout }: IntroProps) {
   if (selectedLayout === 'IMAGE_ROUND_FRAME')
     return (
       <div className="relative space-y-6 bg-theme-colored/5 py-12 leading-relaxed">
         <header className="space-y-1 text-center">
-          <p className="whitespace-nowrap text-em-xs text-theme-black/30">{subTitle}</p>
+          <p className="whitespace-nowrap text-em-xs text-theme-black/30">
+            {(widgetItem.config as IntroWidgetConfig).subTitle}
+          </p>
           <h1 className="whitespace-pre-line empty:hidden space-y-0 text-em-xl font-bold">
-            <p className="[&amp;>a]:text-theme-colored [&amp;>a]:underline">{title}</p>
+            <p className="[&amp;>a]:text-theme-colored [&amp;>a]:underline">
+              {(widgetItem.config as IntroWidgetConfig).title}
+            </p>
           </h1>
         </header>
         <div className="relative flex items-center">
@@ -33,7 +40,11 @@ function Intro({ subTitle, title, coverImage, invitation, selectedLayout }: Intr
 
           <div className="relative isolate mx-auto aspect-[3/4] flex-1 overflow-hidden rounded-full bg-theme-black/5 leading-0">
             <div className="flex h-full w-full items-center justify-center p-4 text-center leading-normal">
-              {coverImage ? <div /> : <p className="opacity-50">대표 이미지가 들어갈 자리에요</p>}
+              {(widgetItem.config as IntroWidgetConfig).coverImage ? (
+                <div />
+              ) : (
+                <p className="opacity-50">대표 이미지가 들어갈 자리에요</p>
+              )}
             </div>
           </div>
           <div className="center-flex h-10 w-10 flex-none -rotate-90">
@@ -59,9 +70,13 @@ function Intro({ subTitle, title, coverImage, invitation, selectedLayout }: Intr
     return (
       <div className="relative space-y-4 bg-theme-colored/5 py-12 leading-relaxed px-8">
         <header className="space-y-1 text-center">
-          <p className="whitespace-nowrap text-em-xs text-theme-black/30">{subTitle}</p>
+          <p className="whitespace-nowrap text-em-xs text-theme-black/30">
+            {(widgetItem.config as IntroWidgetConfig).subTitle}
+          </p>
           <h1 className="whitespace-pre-line empty:hidden space-y-0 text-em-xl font-bold">
-            <p className="[&amp;>a]:text-theme-colored [&amp;>a]:underline">{title}</p>
+            <p className="[&amp;>a]:text-theme-colored [&amp;>a]:underline">
+              {(widgetItem.config as IntroWidgetConfig).title}
+            </p>
           </h1>
         </header>
         <div className="relative flex items-center px-8">
@@ -86,9 +101,13 @@ function Intro({ subTitle, title, coverImage, invitation, selectedLayout }: Intr
         <div className="space-y-6 p-8">
           <header className="flex items-start justify-between">
             <h1 className="whitespace-pre-line empty:hidden space-y-0 text-em-xl font-bold leading-relaxed ">
-              <p className="[&amp;>a]:text-theme-colored [&amp;>a]:underline">{title}</p>
+              <p className="[&amp;>a]:text-theme-colored [&amp;>a]:underline">
+                {(widgetItem.config as IntroWidgetConfig).title}
+              </p>
             </h1>
-            <p className="whitespace-nowrap py-1 text-em-xs text-theme-black/30">{subTitle}</p>
+            <p className="whitespace-nowrap py-1 text-em-xs text-theme-black/30">
+              {(widgetItem.config as IntroWidgetConfig).subTitle}
+            </p>
           </header>
           <hr className="w-6 -rotate-45 border-theme-black/30" />
           <div>
@@ -115,7 +134,9 @@ function Intro({ subTitle, title, coverImage, invitation, selectedLayout }: Intr
             </div>
             <header className="p-8">
               <h1 className="whitespace-pre-line empty:hidden space-y-0 text-em-xl font-bold leading-relaxed ">
-                <p className="[&amp;>a]:text-theme-colored [&amp;>a]:underline">{title}</p>
+                <p className="[&amp;>a]:text-theme-colored [&amp;>a]:underline">
+                  {(widgetItem.config as IntroWidgetConfig).title}
+                </p>
               </h1>
               <div className="mt-2 text-theme-black/30">
                 <p>{invitation.eventAt}</p>
@@ -130,7 +151,7 @@ function Intro({ subTitle, title, coverImage, invitation, selectedLayout }: Intr
               className="right-0 mt-4 flex w-12 flex-none items-center whitespace-nowrap text-em-xs text-theme-black/30"
               style={{ writingMode: 'vertical-lr' }}
             >
-              {subTitle}
+              {(widgetItem.config as IntroWidgetConfig).subTitle}
             </p>
             <div className="w-[1px] flex-1 bg-gradient-to-b from-theme-black/20 to-theme-black/0" />
           </div>
@@ -145,9 +166,13 @@ function Intro({ subTitle, title, coverImage, invitation, selectedLayout }: Intr
         </div>
         <div className="absolute inset-0 bottom-auto p-8 text-left">
           <header className="space-y-1">
-            <p className="text-em-xs text-theme-black/30">{subTitle}</p>
+            <p className="text-em-xs text-theme-black/30">
+              {(widgetItem.config as IntroWidgetConfig).subTitle}
+            </p>
             <h1 className="whitespace-pre-line empty:hidden space-y-0 text-em-xl font-bold leading-relaxed ">
-              <p className="[&amp;>a]:text-theme-colored [&amp;>a]:underline">{title}</p>
+              <p className="[&amp;>a]:text-theme-colored [&amp;>a]:underline">
+                {(widgetItem.config as IntroWidgetConfig).title}
+              </p>
             </h1>
           </header>
         </div>
@@ -169,9 +194,13 @@ function Intro({ subTitle, title, coverImage, invitation, selectedLayout }: Intr
     return (
       <div className="relative aspect-square bg-gradient-to-br from-theme-black/90 to-theme-black/70 p-8 leading-relaxed text-left">
         <header className="space-y-1">
-          <p className="text-em-xs text-white/40">{subTitle}</p>
+          <p className="text-em-xs text-white/40">
+            {(widgetItem.config as IntroWidgetConfig).subTitle}
+          </p>
           <h1 className="whitespace-pre-line empty:hidden space-y-0 text-em-xl font-bold leading-relaxed text-white/80 ">
-            <p className="[&amp;>a]:text-theme-colored [&amp;>a]:underline">{title}</p>
+            <p className="[&amp;>a]:text-theme-colored [&amp;>a]:underline">
+              {(widgetItem.config as IntroWidgetConfig).title}
+            </p>
           </h1>
         </header>
         <div className="mt-4 text-white/40">

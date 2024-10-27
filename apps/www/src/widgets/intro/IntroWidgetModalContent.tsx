@@ -22,20 +22,20 @@ import type {
 } from '../types';
 import type { ModalStore } from '../zustand';
 import useModalStore from '../zustand';
+import Intro from './Intro';
 import IntroComboBox from './IntroComboBox';
 import IntroSelectDateFormatKey from './IntroSelectDateFormatKey';
 import IntroSelectLayout from './IntroSelectLayout';
-import IntroWidget from './IntroWidget';
 
 interface IntroWidgetModalContentProps {
-  widget: WidgetItem;
+  widgetItem: WidgetItem;
 }
 
-function IntroWidgetModalContent({ widget }: IntroWidgetModalContentProps): React.ReactNode {
+function IntroWidgetModalContent({ widgetItem }: IntroWidgetModalContentProps): React.ReactNode {
   const [isAddress, setIsAddress] = useState(false);
   const [searchEngine, setSearchEngine] = useState<IntroSearchEngine>('KAKAO');
   const [selectedLayout, setSelectedLayout] = useState<IntroLayoutKey>(
-    (widget.config as IntroWidgetConfig).layoutKey,
+    (widgetItem.config as IntroWidgetConfig).layoutKey,
   );
   const { register, watch } = useForm<IntroWidgetConfig>();
   const { register: registerEventInfo } = useForm<EventInfoPayload>();
@@ -89,7 +89,7 @@ function IntroWidgetModalContent({ widget }: IntroWidgetModalContentProps): Reac
     };
     postEventInfo(eventInfoData);
 
-    if (!widget.id) {
+    if (!widgetItem.id) {
       const widgetData: WidgetData = {
         id: invitation.id,
         widget: {
@@ -104,15 +104,15 @@ function IntroWidgetModalContent({ widget }: IntroWidgetModalContentProps): Reac
     }
 
     const configPayloadData: ConfigPayload = {
-      id: widget.id,
+      id: widgetItem.id,
       type: 'INTRO',
-      index: invitation.widgets.findIndex((item) => item.id === widget.id),
+      index: invitation.widgets.findIndex((item) => item.id === widgetItem.id),
       config,
       stickers: [],
     };
     putInvitationConfig(configPayloadData);
     closeModal();
-  }, [widget, watch, closeModal, putInvitationConfig, invitation, postWidget, postEventInfo]);
+  }, [widgetItem, watch, closeModal, putInvitationConfig, invitation, postWidget, postEventInfo]);
 
   useEffect(() => {
     setOnSubmit(onSubmit);
@@ -155,10 +155,9 @@ function IntroWidgetModalContent({ widget }: IntroWidgetModalContentProps): Reac
         <div className="[--theme-black:15,23,42] [--theme-inter:51,65,85] [--theme-colored:100,116,139] [--theme-block:0,0,0] font-serif text-[14px] leading-loose text-theme-black/60">
           <div>
             {invitation ? (
-              <IntroWidget
-                widgetItem={widget}
+              <Intro
+                widgetItem={widgetItem}
                 invitation={invitation}
-                widgetOnly
                 selectedLayout={selectedLayout}
               />
             ) : null}
