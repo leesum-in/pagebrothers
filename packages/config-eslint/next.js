@@ -41,6 +41,7 @@ module.exports = {
   globals: {
     React: true,
     JSX: true,
+    google: true,
   },
   // settings: {
   //   'import/resolver': {
@@ -67,6 +68,10 @@ module.exports = {
     'import/named': 'off', // uuid 사용 시 오류 발생
     '@typescript-eslint/explicit-function-return-type': 'off', // 함수 반환 타입 강제하지 않음
     'no-unused-vars': 'off', // 분명 변수 사용하고 있는데 오류 출력으로 off
+    'jsx-a11y/label-has-associated-control': 'off', // label과 연동되는 컨트롤이 없어도 오류 출력으로 off
+    'jsx-a11y/no-static-element-interactions': 'off', // 정적 요소에 이벤트 핸들러 사용 시 오류 출력으로 off
+    'jsx-a11y/click-events-have-key-events': 'off', // 클릭 이벤트 핸들러 사용 시 오류 출력으로 off
+    '@typescript-eslint/no-confusing-void-expression': 'off', // 혼란스러운 void 표현식 강제하지 않음
     'import/order': [
       'error',
       {

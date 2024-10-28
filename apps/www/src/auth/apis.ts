@@ -1,4 +1,4 @@
-import api from '@repo/shared/src/api';
+import { api } from '@repo/shared';
 
 import type { Me, RegisterData, SocialLoginResponse } from '@/auth/types';
 

@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 
-import { CatalogTemplate } from '@/invitations/catalog/components';
+import { CatalogTemplate } from '@/widgets/components';
 
 export const metadata: Metadata = {
   title: '디자인 고르기',

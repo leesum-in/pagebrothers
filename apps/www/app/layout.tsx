@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 
 import { gowunBatang, notoSerifKr, pretendard } from '@/fonts';
 import { QueryProvider } from '@/query';
+import LayoutWrapper from '@/ui/wrapper/LayoutWrapper';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -12,12 +13,12 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }): JSX.Element {
   return (
-    <html lang="kr">
+    <html lang="ko">
       <body
         className={`font-sans leading-relaxed tracking-tight text-slate-700 ${pretendard.variable} ${gowunBatang.variable} ${notoSerifKr.variable}`}
       >
         <QueryProvider>
-          <div className="flex min-h-full flex-1 flex-col">{children}</div>
+          <LayoutWrapper>{children}</LayoutWrapper>
         </QueryProvider>
       </body>
     </html>
