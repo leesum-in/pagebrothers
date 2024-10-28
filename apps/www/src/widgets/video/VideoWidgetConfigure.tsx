@@ -12,11 +12,11 @@ import type { ConfigPayload, WidgetConfigs } from '../types';
 import type { ModalStore } from '../zustand';
 import useModalStore from '../zustand';
 
-interface VideoWidgetModalContentProps {
+interface VideoWidgetConfigureProps {
   widgetItem: WidgetItem;
 }
 
-function VideoWidgetModalContent({ widgetItem }: VideoWidgetModalContentProps): React.ReactNode {
+function VideoWidgetConfigure({ widgetItem }: VideoWidgetConfigureProps): React.ReactNode {
   const { register, watch } = useForm<VideoWidgetConfig>();
   const { setOnSubmit, closeModal } = useModalStore(
     useShallow((state: ModalStore) => ({
@@ -128,4 +128,4 @@ function VideoWidgetModalContent({ widgetItem }: VideoWidgetModalContentProps): 
   );
 }
 
-export default VideoWidgetModalContent;
+export default VideoWidgetConfigure;

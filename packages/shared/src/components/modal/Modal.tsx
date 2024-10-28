@@ -139,28 +139,3 @@ function Modal({
 }
 
 export default Modal;
-
-// return ReactDOM.createPortal(
-//   <>
-//     <div className={modalBackground} onClick={onCloseModal}>
-//       <div className={modalContent} onClick={(e) => e.stopPropagation()}>
-//         {isModalHeader && (
-//           <div className={`sticky top-0 bg-white ${headerUnderline} z-10`}>{modalHeader}</div>
-//         )}
-//         <div
-//           className={cn('flex-grow px-6 py-4 desktop:px-8 desktop:py-6', modalChildrenClassName)}
-//         >
-//           {children}
-//         </div>
-//         {isModalFooter && (
-//           <div
-//             className={`sticky bottom-0 ${footerBackground} pb-4 px-6 desktop:pb-6 desktop:px-8 z-10`}
-//           >
-//             {modalFooter}
-//           </div>
-//         )}
-//       </div>
-//     </div>
-//   </>,
-//   document.body,
-// );

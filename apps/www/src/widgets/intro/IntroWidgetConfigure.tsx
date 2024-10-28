@@ -27,11 +27,11 @@ import IntroComboBox from './IntroComboBox';
 import IntroSelectDateFormatKey from './IntroSelectDateFormatKey';
 import IntroSelectLayout from './IntroSelectLayout';
 
-interface IntroWidgetModalContentProps {
+interface IntroWidgetConfigureProps {
   widgetItem: WidgetItem;
 }
 
-function IntroWidgetModalContent({ widgetItem }: IntroWidgetModalContentProps): React.ReactNode {
+function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.ReactNode {
   const [isAddress, setIsAddress] = useState(false);
   const [searchEngine, setSearchEngine] = useState<IntroSearchEngine>('KAKAO');
   const [selectedLayout, setSelectedLayout] = useState<IntroLayoutKey>(
@@ -356,4 +356,4 @@ function IntroWidgetModalContent({ widgetItem }: IntroWidgetModalContentProps): 
   );
 }
 
-export default IntroWidgetModalContent;
+export default IntroWidgetConfigure;
