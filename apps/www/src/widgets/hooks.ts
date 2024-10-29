@@ -4,6 +4,8 @@ import { useShallow } from 'zustand/shallow';
 import type { ModalStore } from './zustand';
 import useModalStore from './zustand';
 
+const BOUNCE_FACTOR = 0.3; // 튕김 효과의 강도를 설정 (0.1 ~ 0.5 사이)
+
 const useCarousel = () => {
   const { setIsDragging, isDragging } = useModalStore(
     useShallow((state: ModalStore) => ({
@@ -15,7 +17,6 @@ const useCarousel = () => {
   const [currentTranslate, setCurrentTranslate] = useState(0);
   const [prevTranslate, setPrevTranslate] = useState(0);
   const [maxTranslate, setMaxTranslate] = useState(0);
-  const [isOutsideClick, setIsOutsideClick] = useState(false);
 
   const trackRef = useRef<HTMLDivElement | null>(null);
   const isMouseDownRef = useRef(false); // 클릭 상태 추적용 ref
@@ -47,20 +48,17 @@ const useCarousel = () => {
       if (!trackRef.current) return;
       const currentPosition = 'clientX' in e ? e.clientX : e.touches[0].clientX;
       const diff = currentPosition - startPos;
-      const nextTranslate = prevTranslate + diff;
+      let nextTranslate = prevTranslate + diff;
 
-      // 이동 범위를 최소/최대로 제한
+      // 좌우 끝에 도달했을 때 탄성 효과 적용
       if (nextTranslate > 0) {
-        setCurrentTranslate(0); // 첫 슬라이드 이전으로 가지 않게 제한
+        nextTranslate *= BOUNCE_FACTOR; // 왼쪽 끝에서 튕김 효과
       } else if (nextTranslate < maxTranslate) {
-        setCurrentTranslate(maxTranslate); // 마지막 슬라이드 이후로 가지 않게 제한
-      } else {
-        setCurrentTranslate(nextTranslate);
+        nextTranslate = maxTranslate + (nextTranslate - maxTranslate) * BOUNCE_FACTOR; // 오른쪽 끝에서 튕김 효과
       }
-
-      trackRef.current.style.transform = `translate3d(${currentTranslate}px, 0, 0)`;
+      setCurrentTranslate(nextTranslate);
     },
-    [currentTranslate, setCurrentTranslate, maxTranslate, prevTranslate, startPos],
+    [setCurrentTranslate, maxTranslate, prevTranslate, startPos],
   );
 
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -71,29 +69,38 @@ const useCarousel = () => {
   const handleMouseMove = useCallback(
     (e: MouseEvent | React.MouseEvent<HTMLDivElement>) => {
       calculateDiff(e);
-      if (!trackRef.current?.contains(e.target as HTMLElement)) {
-        setIsOutsideClick(true);
-      } else {
-        setIsOutsideClick(false);
-      }
       if (isMouseDownRef.current && diffRef.current !== 0) setIsDragging(true);
       if (!isDragging || !trackRef.current) return;
       translate(e);
     },
-    [isDragging, setIsOutsideClick, translate, setIsDragging, calculateDiff],
+    [isDragging, translate, setIsDragging, calculateDiff],
   );
 
   const handleMouseUp = useCallback(
     (e: MouseEvent | React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>) => {
+      if (!trackRef.current) return;
+      // 드래깅이 끝나면 현재 위치가 범위를 넘었을 경우 제자리로 돌아오게 설정
+      if (currentTranslate > 0) {
+        setCurrentTranslate(0); // 왼쪽 끝으로 돌아가기
+      } else if (currentTranslate < maxTranslate) {
+        setCurrentTranslate(maxTranslate); // 오른쪽 끝으로 돌아가기
+      }
+      trackRef.current.style.transition = 'transform 0.3s ease-out';
+
+      // 애니메이션이 끝나면 트랜지션 초기화
+      setTimeout(() => {
+        if (!trackRef.current) return;
+        trackRef.current.style.transition = '';
+      }, 300);
+
+      setPrevTranslate(currentTranslate);
       isMouseDownRef.current = false;
-      if (trackRef.current?.contains(e.target as HTMLElement) && !isOutsideClick) {
+      if (trackRef.current.contains(e.target as HTMLElement)) {
         setIsDragging(false);
-        setPrevTranslate(currentTranslate);
       } else {
         setTimeout(() => {
           setIsDragging(false);
-          setPrevTranslate(currentTranslate);
-        }, 100);
+        }, 0);
       }
 
       setTimeout(() => {
@@ -104,8 +111,10 @@ const useCarousel = () => {
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('mouseup', handleMouseUp);
     },
-    [currentTranslate, handleMouseMove, setIsDragging, isOutsideClick],
+    [currentTranslate, handleMouseMove, setIsDragging, maxTranslate],
   );
+
+  console.log('currentTranslate ====>', currentTranslate);
 
   // 터치 이벤트 처리 추가 (모바일 대응)
   const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
@@ -116,29 +125,38 @@ const useCarousel = () => {
   const handleTouchMove = useCallback(
     (e: TouchEvent | React.TouchEvent<HTMLDivElement>) => {
       calculateDiff(e);
-      if (!trackRef.current?.contains(e.target as HTMLElement)) {
-        setIsOutsideClick(true);
-      } else {
-        setIsOutsideClick(false);
-      }
       if (isMouseDownRef.current && diffRef.current !== 0) setIsDragging(true);
       if (!isDragging || !trackRef.current) return;
       translate(e);
     },
-    [isDragging, setIsOutsideClick, translate, calculateDiff, setIsDragging],
+    [isDragging, translate, calculateDiff, setIsDragging],
   );
 
   const handleTouchEnd = useCallback(
     (e: TouchEvent | React.TouchEvent<HTMLDivElement>) => {
+      if (!trackRef.current) return;
+      // 드래깅이 끝나면 현재 위치가 범위를 넘었을 경우 제자리로 돌아오게 설정
+      if (currentTranslate > 0) {
+        setCurrentTranslate(0); // 왼쪽 끝으로 돌아가기
+      } else if (currentTranslate < maxTranslate) {
+        setCurrentTranslate(maxTranslate); // 오른쪽 끝으로 돌아가기
+      }
+      trackRef.current.style.transition = 'transform 0.3s ease-out';
+
+      // 애니메이션이 끝나면 트랜지션 초기화
+      setTimeout(() => {
+        if (!trackRef.current) return;
+        trackRef.current.style.transition = '';
+      }, 300);
+      setPrevTranslate(currentTranslate);
+
       isMouseDownRef.current = false;
-      if (trackRef.current?.contains(e.target as HTMLElement) && !isOutsideClick) {
+      if (trackRef.current.contains(e.target as HTMLElement)) {
         setIsDragging(false);
-        setPrevTranslate(currentTranslate);
       } else {
         setTimeout(() => {
           setIsDragging(false);
-          setPrevTranslate(currentTranslate);
-        }, 100);
+        }, 0);
       }
 
       setTimeout(() => {
@@ -149,7 +167,7 @@ const useCarousel = () => {
       window.removeEventListener('touchmove', handleTouchMove);
       window.removeEventListener('touchend', handleTouchEnd);
     },
-    [currentTranslate, setIsDragging, isOutsideClick, handleTouchMove],
+    [currentTranslate, setIsDragging, handleTouchMove, maxTranslate],
   );
 
   const handleInputClick = useCallback(
@@ -161,6 +179,12 @@ const useCarousel = () => {
       },
     [isDragging],
   );
+
+  useEffect(() => {
+    if (trackRef.current) {
+      trackRef.current.style.transform = `translate3d(${currentTranslate}px, 0, 0)`;
+    }
+  }, [currentTranslate]);
 
   useEffect(() => {
     if (isDragging) {
