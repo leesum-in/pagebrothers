@@ -152,7 +152,7 @@ function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.
       </div>
 
       <div className="overflow-hidden rounded-lg border border-slate-200 bg-white">
-        <div className="[--theme-black:15,23,42] [--theme-inter:51,65,85] [--theme-colored:100,116,139] [--theme-block:0,0,0] font-serif text-[14px] leading-loose text-theme-black/60">
+        <div className="[--theme-black:15,23,42] [--theme-inter:51,65,85] [--theme-colored:100,116,139] [--theme-block:0,0,0] font-noto text-[14px] leading-loose text-theme-black/60">
           <div>
             {invitation ? (
               <Intro
