@@ -70,6 +70,7 @@ function IntroSelectLayout({
     handleTouchStart,
     handleTouchMove,
     handleTouchEnd,
+    handleInputClick,
   } = useCarousel();
 
   return (
@@ -101,9 +102,7 @@ function IntroSelectLayout({
                   {...register('layoutKey')}
                   value={layout.key}
                   checked={selectedLayout === layout.key}
-                  onClick={() => {
-                    setSelectedLayout(layout.key);
-                  }}
+                  onClick={handleInputClick(setSelectedLayout, layout.key)}
                 />
                 <div className="relative h-full rounded-lg border border-slate-200 bg-white p-4 text-sm text-slate-500 shadow-1 peer-checked:border-indigo-600 peer-checked:shadow-violet">
                   <div className="flex items-center justify-between font-bold">{layout.title}</div>

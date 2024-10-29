@@ -18,6 +18,23 @@ const useCarousel = () => {
   const [isOutsideClick, setIsOutsideClick] = useState(false);
 
   const trackRef = useRef<HTMLDivElement | null>(null);
+  const isMouseDownRef = useRef(false); // 클릭 상태 추적용 ref
+  const diffRef = useRef(0);
+
+  const calculateDiff = useCallback(
+    (
+      e:
+        | MouseEvent
+        | TouchEvent
+        | React.MouseEvent<HTMLDivElement>
+        | React.TouchEvent<HTMLDivElement>,
+    ) => {
+      if (!isMouseDownRef.current) return;
+      const currentPosition = 'clientX' in e ? e.clientX : e.touches[0].clientX;
+      diffRef.current = currentPosition - startPos;
+    },
+    [startPos],
+  );
 
   const translate = useCallback(
     (
@@ -47,26 +64,28 @@ const useCarousel = () => {
   );
 
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
-    setIsDragging(true);
+    isMouseDownRef.current = true;
     setStartPos(e.clientX);
   };
 
   const handleMouseMove = useCallback(
     (e: MouseEvent | React.MouseEvent<HTMLDivElement>) => {
-      // e.target이 trackRef 범위 밖이면 드래그 중지
+      calculateDiff(e);
       if (!trackRef.current?.contains(e.target as HTMLElement)) {
         setIsOutsideClick(true);
       } else {
         setIsOutsideClick(false);
       }
+      if (isMouseDownRef.current && diffRef.current !== 0) setIsDragging(true);
       if (!isDragging || !trackRef.current) return;
       translate(e);
     },
-    [isDragging, setIsOutsideClick, translate],
+    [isDragging, setIsOutsideClick, translate, setIsDragging, calculateDiff],
   );
 
   const handleMouseUp = useCallback(
     (e: MouseEvent | React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>) => {
+      isMouseDownRef.current = false;
       if (trackRef.current?.contains(e.target as HTMLElement) && !isOutsideClick) {
         setIsDragging(false);
         setPrevTranslate(currentTranslate);
@@ -76,6 +95,10 @@ const useCarousel = () => {
           setPrevTranslate(currentTranslate);
         }, 100);
       }
+
+      setTimeout(() => {
+        diffRef.current = 0;
+      }, 0);
 
       // 전역 이벤트 제거
       window.removeEventListener('mousemove', handleMouseMove);
@@ -92,20 +115,22 @@ const useCarousel = () => {
 
   const handleTouchMove = useCallback(
     (e: TouchEvent | React.TouchEvent<HTMLDivElement>) => {
-      // e.target이 trackRef 범위 밖이면 드래그 중지
+      calculateDiff(e);
       if (!trackRef.current?.contains(e.target as HTMLElement)) {
         setIsOutsideClick(true);
       } else {
         setIsOutsideClick(false);
       }
+      if (isMouseDownRef.current && diffRef.current !== 0) setIsDragging(true);
       if (!isDragging || !trackRef.current) return;
       translate(e);
     },
-    [isDragging, setIsOutsideClick, translate],
+    [isDragging, setIsOutsideClick, translate, calculateDiff, setIsDragging],
   );
 
   const handleTouchEnd = useCallback(
     (e: TouchEvent | React.TouchEvent<HTMLDivElement>) => {
+      isMouseDownRef.current = false;
       if (trackRef.current?.contains(e.target as HTMLElement) && !isOutsideClick) {
         setIsDragging(false);
         setPrevTranslate(currentTranslate);
@@ -116,11 +141,25 @@ const useCarousel = () => {
         }, 100);
       }
 
+      setTimeout(() => {
+        diffRef.current = 0;
+      }, 0);
+
       // 전역 이벤트 제거
       window.removeEventListener('touchmove', handleTouchMove);
       window.removeEventListener('touchend', handleTouchEnd);
     },
     [currentTranslate, setIsDragging, isOutsideClick, handleTouchMove],
+  );
+
+  const handleInputClick = useCallback(
+    <T>(setState: (option: T) => void, option: T) =>
+      () => {
+        if (!isDragging && diffRef.current === 0) {
+          setState(option);
+        }
+      },
+    [isDragging],
   );
 
   useEffect(() => {
@@ -164,6 +203,7 @@ const useCarousel = () => {
     handleTouchStart,
     handleTouchMove,
     handleTouchEnd,
+    handleInputClick,
   };
 };
 
