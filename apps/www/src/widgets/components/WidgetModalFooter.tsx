@@ -7,15 +7,15 @@ import type { WidgetItem } from '@/types/pageBrothers.type';
 import useModalStore from '../zustand';
 
 interface WidgetModalFooterProps {
-  widget: WidgetItem | Partial<WidgetItem>;
+  widgetItem: WidgetItem | Partial<WidgetItem>;
 }
 
 // 공용 버튼으로 수정 요망
-function WidgetModalFooter({ widget }: WidgetModalFooterProps): React.ReactNode {
+function WidgetModalFooter({ widgetItem }: WidgetModalFooterProps): React.ReactNode {
   const { openMultiModal } = useModalStore();
 
   const handlePreviewClick = () => {
-    openMultiModal(widget);
+    openMultiModal({ widget: widgetItem });
   };
 
   return (

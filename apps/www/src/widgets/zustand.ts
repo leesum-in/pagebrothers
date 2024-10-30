@@ -10,14 +10,24 @@ export type ModalState = {
   widget: WidgetItem | Partial<WidgetItem> | null;
 };
 
+export type MultiModalState = {
+  calendar?: boolean;
+} & ModalState;
+
 export type ModalStore = {
   modalState: ModalState;
-  multiModalState: ModalState;
+  multiModalState: MultiModalState;
   invitation: IInvitation | null;
   isDragging: boolean;
   onSubmit: SubmitHandler<WidgetConfigs>;
   openModal: (widget: WidgetItem | Partial<WidgetItem>) => void;
-  openMultiModal: (widget: WidgetItem | Partial<WidgetItem>) => void;
+  openMultiModal: ({
+    widget,
+    calendar,
+  }: {
+    widget: WidgetItem | Partial<WidgetItem> | null;
+    calendar?: boolean;
+  }) => void;
   closeModal: () => void;
   closeMultiModal: () => void;
   setOnSubmit: (onSubmit: SubmitHandler<WidgetConfigs>) => void;
@@ -33,6 +43,7 @@ const useModalStore = create<ModalStore>((set) => ({
   multiModalState: {
     isOpen: false,
     widget: null,
+    calendar: false,
   },
   isDragging: false,
   invitation: null,
@@ -40,9 +51,20 @@ const useModalStore = create<ModalStore>((set) => ({
   openModal: (widget: WidgetItem | Partial<WidgetItem>) => {
     set((state: ModalStore) => ({ modalState: { ...state.modalState, isOpen: true, widget } }));
   },
-  openMultiModal: (widget: WidgetItem | Partial<WidgetItem>) => {
+  openMultiModal: ({
+    widget,
+    calendar,
+  }: {
+    widget: WidgetItem | Partial<WidgetItem> | null;
+    calendar?: boolean;
+  }) => {
     set((state: ModalStore) => ({
-      multiModalState: { ...state.multiModalState, isOpen: true, widget },
+      multiModalState: {
+        ...state.multiModalState,
+        isOpen: true,
+        widget,
+        calendar: calendar ? calendar : false,
+      },
     }));
   },
   closeModal: () => {
@@ -52,7 +74,7 @@ const useModalStore = create<ModalStore>((set) => ({
   },
   closeMultiModal: () => {
     set((state: ModalStore) => ({
-      multiModalState: { ...state.multiModalState, isOpen: false, widget: null },
+      multiModalState: { ...state.multiModalState, isOpen: false, widget: null, calendar: false },
     }));
   },
   setOnSubmit: (onSubmit: SubmitHandler<WidgetConfigs>) => {

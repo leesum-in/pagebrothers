@@ -33,17 +33,19 @@ interface IntroWidgetConfigureProps {
 
 function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.ReactNode {
   const [isAddress, setIsAddress] = useState(false);
+  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const [searchEngine, setSearchEngine] = useState<IntroSearchEngine>('KAKAO');
   const [selectedLayout, setSelectedLayout] = useState<IntroLayoutKey>(
     (widgetItem.config as IntroWidgetConfig).layoutKey,
   );
   const { register, watch } = useForm<IntroWidgetConfig>();
   const { register: registerEventInfo } = useForm<EventInfoPayload>();
-  const { setOnSubmit, closeModal, invitation } = useModalStore(
+  const { setOnSubmit, closeModal, invitation, openMultiModal } = useModalStore(
     useShallow((state: ModalStore) => ({
       setOnSubmit: state.setOnSubmit,
       closeModal: state.closeModal,
       invitation: state.invitation,
+      openMultiModal: state.openMultiModal,
     })),
   );
 
@@ -57,6 +59,10 @@ function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.
 
   const handleChangeEngine = () => {
     setSearchEngine((prev) => (prev === 'KAKAO' ? 'GOOGLE' : 'KAKAO'));
+  };
+
+  const handleClickCalendar = () => {
+    openMultiModal({ widget: null, calendar: true });
   };
 
   const onSubmit: SubmitHandler<WidgetConfigs> = useCallback(() => {
@@ -296,6 +302,7 @@ function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.
           </div>
         )}
       </div>
+
       {/** 예식장 이름 */}
       <div className="space-y-2 ">
         <div>
@@ -326,6 +333,8 @@ function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.
             <div className="font-bold">예식 일시</div>
             <div className="text-sm" />
           </div>
+        </div>
+        <div onClick={handleClickCalendar}>
           <label className="relative flex items-center overflow-hidden rounded-md border bg-white focus-within:ring border-slate-200 ">
             <div className="flex flex-none items-center" />
             <input

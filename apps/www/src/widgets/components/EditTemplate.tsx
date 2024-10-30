@@ -18,6 +18,7 @@ import {
   WidgetNotFound,
 } from '@/widgets/components';
 
+import IntroCalendar from '../intro/IntroCalendar';
 import { useInvitationQuery } from '../queries';
 import type { ModalStore } from '../zustand';
 import useModalStore from '../zustand';
@@ -72,7 +73,9 @@ function EditTemplate() {
         modalHeader={
           modalState.widget?.type ? <WidgetModalHeader type={modalState.widget.type} /> : null
         }
-        modalFooter={modalState.widget ? <WidgetModalFooter widget={modalState.widget} /> : null}
+        modalFooter={
+          modalState.widget ? <WidgetModalFooter widgetItem={modalState.widget} /> : null
+        }
       >
         <WidgetModal widget={modalState.widget as WidgetItem | null} />
       </Modal>
@@ -82,6 +85,7 @@ function EditTemplate() {
         onCloseModal={closeMultiModal}
         isMultiModal
       >
+        {multiModalState.calendar ? <IntroCalendar /> : null}
         {multiModalState.widget ? (
           <Widget widgetItem={multiModalState.widget} isMultiModal />
         ) : null}
