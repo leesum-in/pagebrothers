@@ -5,7 +5,7 @@ import { IoCheckmark } from 'react-icons/io5';
 
 import type { IntroLayoutKey, IntroWidgetConfig } from '@/types/pageBrothers.type';
 
-import { useCarousel } from '../hooks';
+import { useSlider } from '../hooks';
 
 type LayoutKey = {
   key: IntroLayoutKey;
@@ -64,14 +64,11 @@ function IntroSelectLayout({
 }: IntroSelectLayoutProps) {
   const {
     trackRef,
-    handleMouseDown,
-    handleMouseMove,
-    handleMouseUp,
-    handleTouchStart,
-    handleTouchMove,
-    handleTouchEnd,
+    handleMouseDownTouchStart,
+    handleMouseMoveTouchMove,
+    handleMouseUpTouchEnd,
     handleInputClick,
-  } = useCarousel();
+  } = useSlider();
 
   return (
     <div className="space-y-2 select-none">
@@ -83,12 +80,12 @@ function IntroSelectLayout({
       </div>
       <div>
         <div
-          onMouseDown={handleMouseDown}
-          onMouseMove={handleMouseMove}
-          onMouseUp={handleMouseUp}
-          onTouchStart={handleTouchStart}
-          onTouchMove={handleTouchMove}
-          onTouchEnd={handleTouchEnd}
+          onMouseDown={handleMouseDownTouchStart}
+          onMouseMove={handleMouseMoveTouchMove}
+          onMouseUp={handleMouseUpTouchEnd}
+          onTouchStart={handleMouseDownTouchStart}
+          onTouchMove={handleMouseMoveTouchMove}
+          onTouchEnd={handleMouseUpTouchEnd}
         >
           <div className="flex items-stretch gap-2 desktop:gap-4" ref={trackRef}>
             {layoutKey.map((layout) => (
@@ -104,7 +101,7 @@ function IntroSelectLayout({
                   checked={selectedLayout === layout.key}
                   onClick={handleInputClick(setSelectedLayout, layout.key)}
                 />
-                <div className="relative h-full rounded-lg border border-slate-200 bg-white p-4 text-sm text-slate-500 shadow-1 peer-checked:border-indigo-600 peer-checked:shadow-violet">
+                <div className="layout-key relative h-full rounded-lg border border-slate-200 bg-white p-4 text-sm text-slate-500 shadow-1 peer-checked:border-indigo-600 peer-checked:shadow-violet">
                   <div className="flex items-center justify-between font-bold">{layout.title}</div>
                   <div className="mt-1">{layout.description}</div>
                 </div>
