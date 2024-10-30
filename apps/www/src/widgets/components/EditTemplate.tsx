@@ -84,6 +84,7 @@ function EditTemplate() {
         isDragging={isDragging}
         onCloseModal={closeMultiModal}
         isMultiModal
+        isCalendar={multiModalState.calendar}
       >
         {multiModalState.calendar ? <IntroCalendar /> : null}
         {multiModalState.widget ? (
