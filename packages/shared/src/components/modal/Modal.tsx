@@ -78,7 +78,7 @@ function Modal({
           <div
             id="multi-modal"
             className={cn(
-              'translate-y-0 scroll-lock-layer-children relative isolate max-h-[90%] w-full overflow-x-hidden rounded-t-2xl bg-white desktop:max-h-[calc(100vh-8rem)] desktop:w-[30rem] desktop:rounded-2xl transition duration-200',
+              'translate-y-0 scroll-lock-layer-children relative isolate max-h-[90%] w-full overflow-x-hidden rounded-t-2xl bg-white desktop:max-h-[calc(100vh-8rem)] desktop:w-[30rem] desktop:rounded-2xl transition duration-200 opacity-100',
               [
                 'data-[closed]:translate-y-6',
                 'data-[enter]:translate-y-6',
