@@ -9,6 +9,8 @@ import type { ReactDatePickerCustomHeaderProps } from 'react-datepicker';
 import DatePicker from 'react-datepicker';
 
 import type { IInvitation } from '@/types/pageBrothers.type';
+import Before from '@/ui/svgs/Before';
+import Next from '@/ui/svgs/Next';
 import '../react-datepicker.css';
 
 const months = [
@@ -138,21 +140,7 @@ function DatePickerCalendarHeader({
         onClick={decreaseYear}
         disabled={getMonth(date) === getMonth(selectedDay) || prevYearButtonDisabled}
       >
-        <svg
-          stroke="currentColor"
-          fill="none"
-          strokeWidth="2"
-          viewBox="0 0 24 24"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="text-xl"
-          height="1em"
-          width="1em"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <polyline points="11 17 6 12 11 7" />
-          <polyline points="18 17 13 12 18 7" />
-        </svg>
+        <Before className="text-xl" isDouble />
       </button>
 
       <button
@@ -160,57 +148,17 @@ function DatePickerCalendarHeader({
         onClick={decreaseMonth}
         disabled={getMonth(date) === getMonth(selectedDay) || prevMonthButtonDisabled}
       >
-        <svg
-          stroke="currentColor"
-          fill="none"
-          strokeWidth="2"
-          viewBox="0 0 24 24"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="text-xl"
-          height="1em"
-          width="1em"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <polyline points="15 18 9 12 15 6" />
-        </svg>
+        <Before className="text-xl" />
       </button>
 
       <div className="flex-1 text-center">{`${getYear(date)}년 ${months[getMonth(date)]}`}</div>
 
       <button type="button" onClick={increaseMonth} disabled={nextMonthButtonDisabled}>
-        <svg
-          stroke="currentColor"
-          fill="none"
-          strokeWidth="2"
-          viewBox="0 0 24 24"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="text-xl"
-          height="1em"
-          width="1em"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <polyline points="9 18 15 12 9 6" />
-        </svg>
+        <Next className="text-xl" />
       </button>
 
       <button type="button" onClick={increaseYear} disabled={nextYearButtonDisabled}>
-        <svg
-          stroke="currentColor"
-          fill="none"
-          strokeWidth="2"
-          viewBox="0 0 24 24"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="text-xl"
-          height="1em"
-          width="1em"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <polyline points="13 17 18 12 13 7" />
-          <polyline points="6 17 11 12 6 7" />
-        </svg>
+        <Next className="text-xl" isDouble />
       </button>
     </div>
   );
