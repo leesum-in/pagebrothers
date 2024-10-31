@@ -33,7 +33,7 @@ export function formatDate(time: string | null, dateFormatKey: IntroDateFormatKe
 
   // dateFormatKey에 따른 날짜 형식 반환
   if (dateFormatKey === 'KO') {
-    return `${year}년 ${month}월 ${day}일 ${weekdayKR} ${ampmKR} ${hours12}시 ${minutes}분`;
+    return `${year}년 ${month}월 ${day}일 ${weekdayKR} ${ampmKR} ${hours12}시 ${minutes ? `${minutes}분` : ''}`;
   } else if (dateFormatKey === 'KO_EXCLUDE_TIME') {
     return `${year}년 ${month}월 ${day}일 ${weekdayKR}`;
   } else if (dateFormatKey === 'EN') {
