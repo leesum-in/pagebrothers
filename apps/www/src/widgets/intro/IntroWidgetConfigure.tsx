@@ -20,6 +20,7 @@ import type {
   WidgetConfigs,
   WidgetData,
 } from '../types';
+import { formatDate } from '../utils';
 import type { ModalStore } from '../zustand';
 import useModalStore from '../zustand';
 import Intro from './Intro';
@@ -33,13 +34,12 @@ interface IntroWidgetConfigureProps {
 
 function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.ReactNode {
   const [isAddress, setIsAddress] = useState(false);
-  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const [searchEngine, setSearchEngine] = useState<IntroSearchEngine>('KAKAO');
   const [selectedLayout, setSelectedLayout] = useState<IntroLayoutKey>(
     (widgetItem.config as IntroWidgetConfig).layoutKey,
   );
-  const { register, watch } = useForm<IntroWidgetConfig>();
-  const { register: registerEventInfo } = useForm<EventInfoPayload>();
+  const { register: registerWidget, watch: watchWidget } = useForm<IntroWidgetConfig>();
+  const { register: registerEventInfo, watch: watchEventInfo } = useForm<EventInfoPayload>();
   const { setOnSubmit, closeModal, invitation, openMultiModal } = useModalStore(
     useShallow((state: ModalStore) => ({
       setOnSubmit: state.setOnSubmit,
@@ -71,11 +71,11 @@ function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.
       align: 'LEFT',
       coverImage: null, // 임시 null
       customTextColor: '',
-      subTitle: watch('subTitle'),
-      dateFormatKey: watch('dateFormatKey'),
-      layoutKey: watch('layoutKey'),
-      showEventInformation: watch('showEventInformation'),
-      title: watch('title'),
+      subTitle: watchWidget('subTitle'),
+      dateFormatKey: watchWidget('dateFormatKey'),
+      layoutKey: watchWidget('layoutKey'),
+      showEventInformation: watchWidget('showEventInformation'),
+      title: watchWidget('title'),
     };
 
     const eventInfoData: EventInfoData = {
@@ -118,7 +118,15 @@ function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.
     };
     putInvitationConfig(configPayloadData);
     closeModal();
-  }, [widgetItem, watch, closeModal, putInvitationConfig, invitation, postWidget, postEventInfo]);
+  }, [
+    widgetItem,
+    watchWidget,
+    closeModal,
+    putInvitationConfig,
+    invitation,
+    postWidget,
+    postEventInfo,
+  ]);
 
   useEffect(() => {
     setOnSubmit(onSubmit);
@@ -129,7 +137,7 @@ function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.
       <IntroSelectLayout
         selectedLayout={selectedLayout}
         setSelectedLayout={setSelectedLayout}
-        register={register}
+        register={registerWidget}
       />
 
       {/** 대표 이미지 */}
@@ -151,7 +159,7 @@ function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.
               className="absolute top-0 left-0 h-full w-full cursor-pointer opacity-0 file:cursor-pointer"
               type="file"
               accept="image/png, image/jpeg"
-              {...register('coverImage')}
+              {...registerWidget('coverImage')}
             />
           </div>
         </div>
@@ -190,9 +198,9 @@ function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.
               spellCheck="false"
               autoComplete="off"
               defaultValue={`신랑 ${invitation?.owners[0].name}, 신부 ${invitation?.owners[1].name}`}
-              value={watch('title')}
+              value={watchWidget('title')}
               rows={3}
-              {...register('title')}
+              {...registerWidget('title')}
             />
             <div className="flex items-center" />
           </label>
@@ -215,7 +223,7 @@ function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.
               className="peer block h-12 w-full bg-white px-4 text-slate-600 placeholder:text-slate-300 disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-200 "
               spellCheck="false"
               autoComplete="off"
-              {...register('subTitle')}
+              {...registerWidget('subTitle')}
             />
             <div className="flex flex-none items-center" />
           </label>
@@ -234,7 +242,7 @@ function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.
                 <input
                   className="no-interaction peer absolute flex-none opacity-0"
                   type="checkbox"
-                  {...register('showEventInformation')}
+                  {...registerWidget('showEventInformation')}
                 />
                 <div className="relative h-6 w-12 rounded-full border border-slate-200 bg-slate-100 transition-[background-color] after:ml-[-1px] after:mt-[-1px] after:block after:h-6 after:w-6 after:rounded-full after:border after:border-slate-300 after:bg-white after:transition-[background-color,transform] peer-checked:border-indigo-600 peer-checked:bg-indigo-600 peer-checked:after:translate-x-full peer-checked:after:border-indigo-600 peer-focus:ring" />
               </label>
@@ -344,7 +352,8 @@ function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.
               {...registerEventInfo('eventAt')}
               placeholder="예식일을 선택해주세요."
               readOnly
-              // value={watchEventInfo('eventAt')}
+              defaultValue={formatDate(invitation?.eventAt ?? null, 'KO')}
+              value={watchEventInfo('eventAt')}
             />
             <div className="flex flex-none items-center">
               <div className="center-flex h-12 w-12 text-slate-400">
@@ -357,9 +366,9 @@ function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.
 
       {/** 표기법 */}
       <IntroSelectDateFormatKey
-        register={register}
+        register={registerWidget}
         time={invitation?.eventAt ?? null}
-        watch={watch}
+        watch={watchWidget}
       />
     </div>
   );

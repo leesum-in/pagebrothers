@@ -86,7 +86,7 @@ function EditTemplate() {
         isMultiModal
         isCalendar={multiModalState.calendar}
       >
-        {multiModalState.calendar ? <IntroCalendar /> : null}
+        {multiModalState.calendar && invitation ? <IntroCalendar invitation={invitation} /> : null}
         {multiModalState.widget ? (
           <Widget widgetItem={multiModalState.widget} isMultiModal />
         ) : null}

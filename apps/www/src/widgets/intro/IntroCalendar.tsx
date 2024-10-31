@@ -1,12 +1,14 @@
 'use client';
 
 import { cn } from '@repo/shared';
-import { getDate, getMonth, getYear } from 'date-fns';
+import { getDate, getMonth, getYear, setHours, setMinutes } from 'date-fns';
+import { ko } from 'date-fns/locale';
 import type { PropsWithChildren } from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { ReactDatePickerCustomHeaderProps } from 'react-datepicker';
 import DatePicker from 'react-datepicker';
 
+import type { IInvitation } from '@/types/pageBrothers.type';
 import '../react-datepicker.css';
 
 const months = [
@@ -24,41 +26,78 @@ const months = [
   '12월',
 ];
 
-function IntroCalendar() {
-  const [selected, setSelected] = useState<Date | undefined>();
+interface IntroCalendarProps {
+  invitation: IInvitation;
+}
+
+function IntroCalendar({ invitation }: IntroCalendarProps) {
+  const [selectedDay, setSelectedDay] = useState<Date | undefined>(new Date(invitation.eventAt));
+  const [selectedTime, setSelectedTime] = useState<Date | undefined>(new Date(invitation.eventAt));
 
   const handleOnChange = (date: Date | null) => {
-    if (date) setSelected(date);
-    console.log('asdt');
+    if (date) setSelectedDay(date);
   };
+
+  const handleOnChangeTime = (date: Date | null) => {
+    if (date) setSelectedTime(date);
+  };
+
+  useEffect(() => {
+    const selectedTimeToCenter = document.querySelector(
+      '.react-datepicker__time-list-item--selected',
+    );
+    if (selectedTimeToCenter) {
+      selectedTimeToCenter.scrollIntoView({
+        behavior: 'instant',
+        block: 'center',
+        inline: 'center',
+      });
+    }
+  }, [selectedTime]);
 
   return (
     <div>
       <div className="react-datepicker custom-calendar text-slate-600" style={{ height: 348 }}>
         <DatePicker
-          selected={selected}
+          selected={selectedDay}
           onChange={handleOnChange}
-          calendarContainer={DatePickerContainer}
-          renderCustomHeader={DatePickerHeader}
+          calendarContainer={DatePickerCalendarContainer}
+          renderCustomHeader={(props) =>
+            DatePickerCalendarHeader({ ...props, selectedDay: selectedDay ?? new Date() })
+          }
           dayClassName={(date) =>
             cn(
-              getDate(date) < Math.random() * 31 ? 'random' : '',
-              selected && getDate(date) === getDate(selected)
-                ? 'react-datepicker__day--selected'
+              selectedDay && getDate(date) < getDate(selectedDay) && 'opacity-25',
+              selectedDay && getDate(date) === getDate(selectedDay)
+                ? 'text-indigo-600 font-bold'
                 : '',
             )
           }
           renderDayContents={DatePickerDay}
+          locale={ko}
           inline
         />
         <DatePicker
-          selected={selected}
-          onChange={handleOnChange}
-          calendarContainer={DatePickerContainer}
+          selected={selectedTime}
+          onChange={handleOnChangeTime}
+          calendarContainer={DatePickerTimeContainer}
           showTimeSelect
           showTimeSelectOnly
-          dateFormat="MMMM d, yyyy h:mm aa"
+          timeClassName={(date) =>
+            cn(
+              'react-datepicker__time-list-item',
+              date.getMinutes() === 0 && date.getSeconds() === 0 && 'font-extrabold',
+              selectedTime &&
+                date.getMinutes() === selectedTime.getMinutes() &&
+                date.getHours() === selectedTime.getHours() &&
+                'text-white bg-indigo-600 font-bold',
+            )
+          }
+          timeIntervals={10}
+          timeCaption="시간"
           timeFormat="HH:mm"
+          minTime={setHours(setMinutes(new Date(), 50), 9)}
+          maxTime={setHours(setMinutes(new Date(), 0), 23)}
           inline
         />
       </div>
@@ -72,11 +111,15 @@ function DatePickerDay(day: number, date: Date) {
   return <span>{getDate(date)}</span>;
 }
 
-function DatePickerContainer({ children }: PropsWithChildren) {
-  return <section>{children}</section>;
+function DatePickerCalendarContainer({ children }: PropsWithChildren) {
+  return <section id="calendar">{children}</section>;
 }
 
-function DatePickerHeader({
+function DatePickerTimeContainer({ children }: PropsWithChildren) {
+  return <section id="time">{children}</section>;
+}
+
+function DatePickerCalendarHeader({
   date,
   increaseYear,
   decreaseYear,
@@ -86,10 +129,15 @@ function DatePickerHeader({
   nextYearButtonDisabled,
   prevMonthButtonDisabled,
   nextMonthButtonDisabled,
-}: ReactDatePickerCustomHeaderProps) {
+  selectedDay,
+}: ReactDatePickerCustomHeaderProps & { selectedDay: Date }) {
   return (
     <div className="react-datepicker__header--month">
-      <button type="button" onClick={decreaseYear} disabled={prevYearButtonDisabled}>
+      <button
+        type="button"
+        onClick={decreaseYear}
+        disabled={getMonth(date) === getMonth(selectedDay) || prevYearButtonDisabled}
+      >
         <svg
           stroke="currentColor"
           fill="none"
@@ -107,7 +155,11 @@ function DatePickerHeader({
         </svg>
       </button>
 
-      <button type="button" onClick={decreaseMonth} disabled={prevMonthButtonDisabled}>
+      <button
+        type="button"
+        onClick={decreaseMonth}
+        disabled={getMonth(date) === getMonth(selectedDay) || prevMonthButtonDisabled}
+      >
         <svg
           stroke="currentColor"
           fill="none"
