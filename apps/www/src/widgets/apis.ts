@@ -1,6 +1,6 @@
 import { api, kakaoApi } from '@repo/shared';
 
-import type { IInvitation } from '@/types/pageBrothers.type';
+import type { IInvitation, IInvitationImageData } from '@/types/pageBrothers.type';
 
 import type {
   ConfigPayload,
@@ -57,4 +57,9 @@ export async function getKakaoAddress(query: string): Promise<KakaoAddressRespon
   const encodedQuery = encodeURIComponent(query);
   const url = `/local/search/address.json?query=${encodedQuery}&size=5`;
   return kakaoApi.get<KakaoAddressResponse, KakaoAddressResponse>(url, { params: { query } });
+}
+
+export async function postImage(imageData: FormData, id: string): Promise<IInvitationImageData> {
+  const url = `/invitations/${id}/images`;
+  return api.post<IInvitationImageData, IInvitationImageData>(url, imageData);
 }

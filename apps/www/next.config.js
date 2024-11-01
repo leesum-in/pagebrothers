@@ -4,6 +4,14 @@ const path = require('node:path');
 module.exports = {
   reactStrictMode: true,
   transpilePackages: ['@repo/shared'],
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'yy-static.pagesisters.cc',
+      },
+    ],
+  },
   webpack: (config) => {
     // Grab the existing rule that handles SVG imports
     const fileLoaderRule = config.module.rules.find((rule) => rule.test?.test?.('.svg'));

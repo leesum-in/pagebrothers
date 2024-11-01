@@ -1,7 +1,9 @@
+import Image from 'next/image';
 import { IoArrowDown } from 'react-icons/io5';
 
 import type {
   IInvitation,
+  IInvitationImageData,
   IntroLayoutKey,
   IntroWidgetConfig,
   WidgetItem,
@@ -11,9 +13,10 @@ interface IntroProps {
   widgetItem: WidgetItem;
   invitation: IInvitation;
   selectedLayout?: IntroLayoutKey;
+  imageData?: IInvitationImageData | null;
 }
 
-function Intro({ widgetItem, invitation, selectedLayout }: IntroProps) {
+function Intro({ widgetItem, invitation, selectedLayout, imageData }: IntroProps) {
   if (selectedLayout === 'IMAGE_ROUND_FRAME')
     return (
       <div className="relative space-y-6 bg-theme-colored/5 py-12 leading-relaxed">
@@ -39,13 +42,22 @@ function Intro({ widgetItem, invitation, selectedLayout }: IntroProps) {
           </div>
 
           <div className="relative isolate mx-auto aspect-[3/4] flex-1 overflow-hidden rounded-full bg-theme-black/5 leading-0">
-            <div className="flex h-full w-full items-center justify-center p-4 text-center leading-normal">
-              {(widgetItem.config as IntroWidgetConfig).coverImage ? (
-                <div />
-              ) : (
+            {!imageData ? (
+              <div className="flex h-full w-full items-center justify-center p-4 text-center leading-normal">
                 <p className="opacity-50">대표 이미지가 들어갈 자리에요</p>
-              )}
-            </div>
+              </div>
+            ) : (
+              <div className="relative h-full w-full object-cover ">
+                <div className="absolute top-0 left-0 right-0 bottom-0 z-[1] select-none" />
+                <Image
+                  src={imageData.url}
+                  alt="image"
+                  className="relative h-full w-full bg-white object-cover"
+                  width={imageData.dimensions.width}
+                  height={imageData.dimensions.height}
+                />
+              </div>
+            )}
           </div>
           <div className="center-flex h-10 w-10 flex-none -rotate-90">
             <div className="center-flex h-9 gap-2 text-slate-300 ">

@@ -46,3 +46,34 @@ export function getWidgetIndex(invitation: IInvitation | null, type: WidgetType)
   if (!invitation) return null;
   return invitation.widgets.findIndex((item) => item.type === type);
 }
+
+// FileReader를 사용하여 파일을 Data URL로 읽어오는 함수
+const readFileAsDataURL = (file: File): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      resolve(reader.result as string);
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+};
+
+export async function getImageSize(file: File): Promise<{ width: number; height: number }> {
+  try {
+    const imageDataUrl = await readFileAsDataURL(file);
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => {
+        resolve({
+          width: img.naturalWidth,
+          height: img.naturalHeight,
+        });
+      };
+      img.onerror = () => reject(new Error('이미지 로드 중 오류가 발생했습니다.'));
+      img.src = imageDataUrl;
+    });
+  } catch (error) {
+    throw new Error('파일을 읽는 중 오류가 발생했습니다.');
+  }
+}

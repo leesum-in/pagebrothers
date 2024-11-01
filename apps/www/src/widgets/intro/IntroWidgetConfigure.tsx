@@ -1,6 +1,8 @@
 'use client';
 
+import { cn } from '@repo/shared';
 import { APIProvider } from '@vis.gl/react-google-maps';
+import Image from 'next/image';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useFormContext, type SubmitHandler } from 'react-hook-form';
 import { FaRegTrashAlt } from 'react-icons/fa';
@@ -9,6 +11,7 @@ import { MdOutlineCalendarToday } from 'react-icons/md';
 import { useShallow } from 'zustand/shallow';
 
 import type {
+  IInvitationImageData,
   IntroDateFormatKey,
   IntroLayoutKey,
   IntroWidgetConfig,
@@ -16,7 +19,12 @@ import type {
 } from '@/types/pageBrothers.type';
 
 import { WidgetBreakLine } from '../components';
-import { useEventInfoMutation, useInvitationConfigMutation, useWidgetMutation } from '../mutations';
+import {
+  useEventInfoMutation,
+  useInvitationConfigMutation,
+  useInvitationImageMutation,
+  useWidgetMutation,
+} from '../mutations';
 import type {
   ConfigPayload,
   EventInfoData,
@@ -24,7 +32,7 @@ import type {
   IntroSearchEngine,
   WidgetData,
 } from '../types';
-import { formatDate, getWidgetIndex } from '../utils';
+import { formatDate, getImageSize, getWidgetIndex } from '../utils';
 import type { ModalStore } from '../zustand';
 import useModalStore from '../zustand';
 import Intro from './Intro';
@@ -46,6 +54,7 @@ function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.
     (widgetItem.config as IntroWidgetConfig).showEventInformation,
   );
   const { watch, register } = useFormContext<HookFormValues>();
+  const [imageData, setImageData] = useState<IInvitationImageData | null>(null);
   const { setOnSubmit, closeModal, invitation, openMultiModal } = useModalStore(
     useShallow((state: ModalStore) => ({
       setOnSubmit: state.setOnSubmit,
@@ -58,6 +67,7 @@ function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.
   const { mutate: putInvitationConfig } = useInvitationConfigMutation(invitation?.id ?? '');
   const { mutate: postWidget } = useWidgetMutation(invitation?.id ?? '');
   const { mutate: postEventInfo } = useEventInfoMutation(invitation?.id ?? '');
+  const { mutateAsync: postInvitationImage } = useInvitationImageMutation(invitation?.id ?? '');
 
   const handleClickTrashCan = () => {
     setIsAddress(true);
@@ -73,6 +83,19 @@ function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.
 
   const handleClickEventInformation = () => {
     setIsShowEventInformation((prev) => !prev);
+  };
+
+  const handleChangeFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputFile = e.target.files?.[0];
+    if (inputFile) {
+      const { width, height } = await getImageSize(inputFile);
+      const formData = new FormData();
+      formData.append('file', inputFile);
+      formData.append('width', width.toString());
+      formData.append('height', height.toString());
+      const response = await postInvitationImage(formData);
+      setImageData(response);
+    }
   };
 
   const widgetIndex = useMemo(
@@ -154,8 +177,6 @@ function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.
     setOnSubmit(onSubmit);
   }, [setOnSubmit, onSubmit]);
 
-  console.log('widgetIndex ====>', widgetIndex);
-
   if (widgetIndex === null || widgetIndex === -1) return <div>Loading...</div>;
 
   return (
@@ -176,18 +197,57 @@ function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.
           </div>
         </div>
         <div>
-          <div className="relative flex h-[4.5rem] items-center overflow-hidden rounded-lg border border-dashed border-slate-300 px-4">
-            <div className="flex-1 text-sm">
-              <div className="font-bold text-slate-500">이미지 업로드</div>
-              <div className="text-slate-400 empty:hidden">png, jpg / 최대 10mb</div>
-            </div>
-            <LuPlusCircle className="ml-auto flex-none stroke-1 text-2xl" />
-            <input
-              className="absolute top-0 left-0 h-full w-full cursor-pointer opacity-0 file:cursor-pointer"
-              type="file"
-              accept="image/png, image/jpeg"
-              {...register(`invitation.widgets.${widgetIndex}.config.coverImage`)}
-            />
+          <div
+            className={cn(
+              'center-flex relative h-[4.5rem] overflow-hidden rounded-lg border border-dashed border-slate-300',
+              imageData ? 'bg-white' : 'px-4',
+            )}
+          >
+            {imageData ? (
+              <div className="center-flex relative flex-1 gap-4">
+                <div className="relative h-[4.5rem] w-[4.5rem] flex-none bg-slate-200 object-contain">
+                  <Image
+                    src={imageData.url}
+                    alt="uploaded"
+                    className="relative h-[4.5rem] w-[4.5rem] flex-none bg-white object-contain"
+                    width={imageData.dimensions.width}
+                    height={imageData.dimensions.height}
+                  />
+                </div>
+                <div className="w-0 flex-1 text-sm">
+                  <div className="truncate font-bold text-slate-500">이미지 등록됨</div>
+                  <div className="truncate text-slate-400 empty:hidden">{imageData.id}</div>
+                </div>
+                <div className="center-flex gap-6 pr-4">
+                  <button
+                    type="button"
+                    className=" h-12 rounded-md px-0 text-sm  text-indigo-600 hover:text-indigo-700 center-flex gap-2 font-bold shadow-1 transition-colors disabled:opacity-40"
+                  >
+                    편집
+                  </button>
+                  <button
+                    type="button"
+                    className=" h-12 rounded-md px-0 text-sm  text-slate-500 hover:text-slate-600 center-flex gap-2 font-bold shadow-1 transition-colors disabled:opacity-40"
+                  >
+                    삭제
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <>
+                <div className="flex-1 text-sm">
+                  <div className="font-bold text-slate-500">이미지 업로드</div>
+                  <div className="text-slate-400 empty:hidden">png, jpg / 최대 10mb</div>
+                </div>
+                <LuPlusCircle className="ml-auto flex-none stroke-1 text-2xl" />
+                <input
+                  className="absolute top-0 left-0 h-full w-full cursor-pointer opacity-0 file:cursor-pointer"
+                  type="file"
+                  accept="image/png, image/jpeg"
+                  onChange={handleChangeFile}
+                />
+              </>
+            )}
           </div>
         </div>
       </div>
@@ -200,6 +260,7 @@ function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.
                 widgetItem={widgetItem}
                 invitation={invitation}
                 selectedLayout={selectedLayout}
+                imageData={imageData}
               />
             ) : null}
           </div>
