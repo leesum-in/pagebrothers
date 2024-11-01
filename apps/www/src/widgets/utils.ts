@@ -1,4 +1,4 @@
-import type { IntroDateFormatKey } from '@/types/pageBrothers.type';
+import type { IInvitation, IntroDateFormatKey, WidgetType } from '@/types/pageBrothers.type';
 
 export function formatDate(time: string | null, dateFormatKey: IntroDateFormatKey): string {
   const date = time ? new Date(time) : new Date();
@@ -40,4 +40,9 @@ export function formatDate(time: string | null, dateFormatKey: IntroDateFormatKe
     return `${year}. ${padZero(month)}. ${padZero(day)}. (${weekdayEN}) ${hours12}:${padZero(minutes)} ${ampmEN}`;
   }
   return `${year}. ${padZero(month)}. ${padZero(day)}. (${weekdayEN})`;
+}
+
+export function getWidgetIndex(invitation: IInvitation | null, type: WidgetType) {
+  if (!invitation) return null;
+  return invitation.widgets.findIndex((item) => item.type === type);
 }
