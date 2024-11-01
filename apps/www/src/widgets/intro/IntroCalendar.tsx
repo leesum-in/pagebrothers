@@ -60,7 +60,6 @@ function IntroCalendar({ invitation }: IntroCalendarProps) {
   }, [selectedTime]);
 
   useEffect(() => {
-    console.log('selectedDay ====>', selectedDay);
     setValue('invitation.eventAt', selectedDay);
   }, [selectedDay, selectedTime, setValue]);
 

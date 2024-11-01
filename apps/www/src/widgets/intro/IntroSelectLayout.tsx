@@ -3,9 +3,10 @@
 import type { UseFormRegister } from 'react-hook-form';
 import { IoCheckmark } from 'react-icons/io5';
 
-import type { IntroLayoutKey, IntroWidgetConfig } from '@/types/pageBrothers.type';
+import type { IntroLayoutKey } from '@/types/pageBrothers.type';
 
 import { useSlider } from '../hooks';
+import type { HookFormValues } from '../types';
 
 type LayoutKey = {
   key: IntroLayoutKey;
@@ -54,13 +55,15 @@ const layoutKey: LayoutKey[] = [
 interface IntroSelectLayoutProps {
   selectedLayout: IntroLayoutKey;
   setSelectedLayout: (layout: IntroLayoutKey) => void;
-  register: UseFormRegister<IntroWidgetConfig>;
+  register: UseFormRegister<HookFormValues>;
+  widgetIndex: number;
 }
 
 function IntroSelectLayout({
   selectedLayout,
   setSelectedLayout,
   register,
+  widgetIndex,
 }: IntroSelectLayoutProps) {
   const {
     trackRef,
@@ -96,7 +99,7 @@ function IntroSelectLayout({
                 <input
                   className="peer -z-10 hidden"
                   type="radio"
-                  {...register('layoutKey')}
+                  {...register(`invitation.widgets.${widgetIndex}.config.layoutKey`)}
                   value={layout.key}
                   checked={selectedLayout === layout.key}
                   onClick={handleInputClick(setSelectedLayout, layout.key)}

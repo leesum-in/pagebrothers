@@ -3,7 +3,7 @@ import { create } from 'zustand';
 
 import type { IInvitation, WidgetItem } from '@/types/pageBrothers.type';
 
-import type { WidgetConfigs } from './types';
+import type { HookFormValues } from './types';
 
 export type ModalState = {
   isOpen: boolean;
@@ -19,7 +19,7 @@ export type ModalStore = {
   multiModalState: MultiModalState;
   invitation: IInvitation | null;
   isDragging: boolean;
-  onSubmit: SubmitHandler<WidgetConfigs>;
+  onSubmit: SubmitHandler<HookFormValues>;
   openModal: (widget: WidgetItem | Partial<WidgetItem>) => void;
   openMultiModal: ({
     widget,
@@ -30,7 +30,7 @@ export type ModalStore = {
   }) => void;
   closeModal: () => void;
   closeMultiModal: () => void;
-  setOnSubmit: (onSubmit: SubmitHandler<WidgetConfigs>) => void;
+  setOnSubmit: (onSubmit: SubmitHandler<HookFormValues>) => void;
   setInvitation: (invitation: IInvitation) => void;
   setIsDragging: (isDragging: boolean) => void;
 };
@@ -77,7 +77,7 @@ const useModalStore = create<ModalStore>((set) => ({
       multiModalState: { ...state.multiModalState, isOpen: false, widget: null, calendar: false },
     }));
   },
-  setOnSubmit: (onSubmit: SubmitHandler<WidgetConfigs>) => {
+  setOnSubmit: (onSubmit: SubmitHandler<HookFormValues>) => {
     set((state: ModalStore) => ({ ...state, onSubmit }));
   },
   setInvitation: (invitation: IInvitation) => {

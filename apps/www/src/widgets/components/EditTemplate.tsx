@@ -20,6 +20,7 @@ import {
 
 import IntroCalendar from '../intro/IntroCalendar';
 import { useInvitationQuery } from '../queries';
+import type { HookFormValues } from '../types';
 import type { ModalStore } from '../zustand';
 import useModalStore from '../zustand';
 
@@ -45,9 +46,9 @@ function EditTemplate() {
       onSubmit: state.onSubmit,
     })),
   );
-  const methods = useForm({
+  const methods = useForm<HookFormValues>({
     defaultValues: {
-      invitation,
+      invitation: null,
     },
   });
 
