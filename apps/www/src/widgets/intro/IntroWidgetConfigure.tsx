@@ -154,7 +154,9 @@ function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.
     setOnSubmit(onSubmit);
   }, [setOnSubmit, onSubmit]);
 
-  if (!widgetIndex) return <div>Loading...</div>;
+  console.log('widgetIndex ====>', widgetIndex);
+
+  if (widgetIndex === null || widgetIndex === -1) return <div>Loading...</div>;
 
   return (
     <div className="space-y-8">
