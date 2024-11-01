@@ -2,7 +2,7 @@
 
 import { APIProvider } from '@vis.gl/react-google-maps';
 import { useCallback, useEffect, useState } from 'react';
-import { useForm, type SubmitHandler } from 'react-hook-form';
+import { useForm, useFormContext, type SubmitHandler } from 'react-hook-form';
 import { FaRegTrashAlt } from 'react-icons/fa';
 import { LuPlusCircle } from 'react-icons/lu';
 import { MdOutlineCalendarToday } from 'react-icons/md';
@@ -40,6 +40,7 @@ function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.
   );
   const { register: registerWidget, watch: watchWidget } = useForm<IntroWidgetConfig>();
   const { register: registerEventInfo, watch: watchEventInfo } = useForm<EventInfoPayload>();
+  const { watch: watchInvitation } = useFormContext();
   const { setOnSubmit, closeModal, invitation, openMultiModal } = useModalStore(
     useShallow((state: ModalStore) => ({
       setOnSubmit: state.setOnSubmit,
@@ -81,7 +82,7 @@ function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.
     const eventInfoData: EventInfoData = {
       id: invitation.id,
       eventInfo: {
-        eventAt: invitation.eventAt,
+        eventAt: watchEventInfo('eventAt'),
         location: {
           address: invitation.location.address,
           coord: invitation.location.coord,
@@ -121,6 +122,7 @@ function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.
   }, [
     widgetItem,
     watchWidget,
+    watchEventInfo,
     closeModal,
     putInvitationConfig,
     invitation,
@@ -132,6 +134,7 @@ function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.
     setOnSubmit(onSubmit);
   }, [setOnSubmit, onSubmit]);
 
+  console.log(watchInvitation('invitation.eventAt'));
   return (
     <div className="space-y-8">
       <IntroSelectLayout
@@ -198,7 +201,7 @@ function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.
               spellCheck="false"
               autoComplete="off"
               defaultValue={`신랑 ${invitation?.owners[0].name}, 신부 ${invitation?.owners[1].name}`}
-              value={watchWidget('title')}
+              // value={watchWidget('title')}
               rows={3}
               {...registerWidget('title')}
             />
@@ -223,6 +226,8 @@ function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.
               className="peer block h-12 w-full bg-white px-4 text-slate-600 placeholder:text-slate-300 disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-200 "
               spellCheck="false"
               autoComplete="off"
+              defaultValue={(widgetItem.config as IntroWidgetConfig).subTitle}
+              // value={watchWidget('subTitle')}
               {...registerWidget('subTitle')}
             />
             <div className="flex flex-none items-center" />
@@ -326,8 +331,33 @@ function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.
               className="peer block h-12 w-full bg-white px-4 text-slate-600 placeholder:text-slate-300 disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-200 "
               spellCheck="false"
               autoComplete="off"
+              defaultValue={invitation?.location.placeName}
               // value={watchEventInfo('location.placeName')}
               {...registerEventInfo('location.placeName')}
+            />
+            <div className="flex flex-none items-center" />
+          </label>
+        </div>
+      </div>
+
+      {/** 홀이름 */}
+      <div className="space-y-2 ">
+        <div>
+          <div className="flex items-center justify-between text-slate-600">
+            <div className="font-bold">홀 이름</div>
+            <div className="text-sm" />
+          </div>
+        </div>
+        <div>
+          <label className="relative flex items-center overflow-hidden rounded-md border bg-white focus-within:ring border-slate-200 ">
+            <div className="flex flex-none items-center" />
+            <input
+              className="peer block h-12 w-full bg-white px-4 text-slate-600 placeholder:text-slate-300 disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-200 "
+              spellCheck="false"
+              autoComplete="off"
+              defaultValue={invitation?.location.placeDetail}
+              // value={watchEventInfo('location.placeDetail')}
+              {...registerEventInfo('location.placeDetail')}
             />
             <div className="flex flex-none items-center" />
           </label>
@@ -353,7 +383,7 @@ function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.
               placeholder="예식일을 선택해주세요."
               readOnly
               defaultValue={formatDate(invitation?.eventAt ?? null, 'KO')}
-              value={watchEventInfo('eventAt')}
+              // value={watchEventInfo('eventAt')}
             />
             <div className="flex flex-none items-center">
               <div className="center-flex h-12 w-12 text-slate-400">

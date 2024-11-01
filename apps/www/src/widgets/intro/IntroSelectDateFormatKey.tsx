@@ -1,3 +1,5 @@
+'use client';
+
 import type { UseFormRegister, UseFormWatch } from 'react-hook-form';
 
 import type { IntroWidgetConfig } from '@/types/pageBrothers.type';

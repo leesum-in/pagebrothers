@@ -7,10 +7,10 @@ import type { PropsWithChildren } from 'react';
 import { useEffect, useState } from 'react';
 import type { ReactDatePickerCustomHeaderProps } from 'react-datepicker';
 import DatePicker from 'react-datepicker';
+import { useFormContext } from 'react-hook-form';
 
 import type { IInvitation } from '@/types/pageBrothers.type';
-import Before from '@/ui/svgs/Before';
-import Next from '@/ui/svgs/Next';
+import { Before, Next } from '@/ui/svgs';
 import '../react-datepicker.css';
 
 const months = [
@@ -33,6 +33,8 @@ interface IntroCalendarProps {
 }
 
 function IntroCalendar({ invitation }: IntroCalendarProps) {
+  const { setValue } = useFormContext();
+
   const [selectedDay, setSelectedDay] = useState<Date | undefined>(new Date(invitation.eventAt));
   const [selectedTime, setSelectedTime] = useState<Date | undefined>(new Date(invitation.eventAt));
 
@@ -56,6 +58,11 @@ function IntroCalendar({ invitation }: IntroCalendarProps) {
       });
     }
   }, [selectedTime]);
+
+  useEffect(() => {
+    console.log('selectedDay ====>', selectedDay);
+    setValue('invitation.eventAt', selectedDay);
+  }, [selectedDay, selectedTime, setValue]);
 
   return (
     <div>
