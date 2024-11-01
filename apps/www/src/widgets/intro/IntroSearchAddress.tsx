@@ -8,16 +8,18 @@ import {
 } from '@headlessui/react';
 import { useMapsLibrary } from '@vis.gl/react-google-maps';
 import { memo, useEffect, useMemo, useRef, useState } from 'react';
+import { useFormContext } from 'react-hook-form';
 import { HiOutlineLocationMarker } from 'react-icons/hi';
 import { IoSearchOutline } from 'react-icons/io5';
 
-import { useKakaoAddressQuery, useKakaoKeywordQuery } from '../queries';
+import { useKakaoKeywordQuery } from '../queries';
 import type { IntroSearchEngine, KaKaoKeywordDocument } from '../types';
 
 type ComboboxValue = KaKaoKeywordDocument | google.maps.places.AutocompletePrediction | null;
 
 interface IntroLocationSearchProps {
   engine: IntroSearchEngine;
+  setIsAddress: (value: boolean) => void;
 }
 
 // value 프롭의 타입이 고정되어 버려서 직접 타입 지정해서 커스터마이징
@@ -25,7 +27,9 @@ const TypedCombobox = HeadlessCombobox as unknown as (
   props: React.ComponentProps<typeof HeadlessCombobox> & { value: ComboboxValue },
 ) => JSX.Element;
 
-function ComboBox({ engine }: IntroLocationSearchProps) {
+function ComboBox({ engine, setIsAddress }: IntroLocationSearchProps) {
+  const { setValue } = useFormContext();
+
   const [googlePlaces, setGooglePlaces] = useState<google.maps.places.AutocompletePrediction[]>([]);
   const [selectedPlaceKakao, setSelectedPlaceKakao] = useState<KaKaoKeywordDocument | null>(null);
   const [selectedPlaceGoogle, setSelectedPlaceGoogle] =
@@ -33,7 +37,6 @@ function ComboBox({ engine }: IntroLocationSearchProps) {
   const [query, setQuery] = useState('');
 
   const { data: kakaoKeywordResults } = useKakaoKeywordQuery({ value: query, engine });
-  const { data: kakaoAddresses } = useKakaoAddressQuery({ value: query, engine });
   const places = useMapsLibrary('places');
 
   const handleCloseCombobox = () => {
@@ -75,9 +78,29 @@ function ComboBox({ engine }: IntroLocationSearchProps) {
   }, [places]);
 
   useEffect(() => {
-    console.log(kakaoKeywordResults);
-    console.log(kakaoAddresses);
-  }, [kakaoKeywordResults, kakaoAddresses]);
+    if (selectedPlaceGoogle) {
+      console.log(selectedPlaceGoogle);
+      setValue('invitation.location.address', selectedPlaceGoogle.description);
+      setValue('invitation.location.roadAddress', '');
+      setValue('invitation.location.coord.0', 0);
+      setValue('invitation.location.coord.1', 0);
+      setValue('invitation.location.placeName', selectedPlaceGoogle.terms[0].value);
+      setValue('invitation.location.placeDetail', '');
+      setIsAddress(false);
+    }
+  }, [selectedPlaceGoogle, setValue, setIsAddress]);
+
+  useEffect(() => {
+    if (selectedPlaceKakao) {
+      setValue('invitation.location.address', selectedPlaceKakao.address_name);
+      setValue('invitation.location.roadAddress', selectedPlaceKakao.road_address_name);
+      setValue('invitation.location.coord.0', selectedPlaceKakao.x);
+      setValue('invitation.location.coord.1', selectedPlaceKakao.y);
+      setValue('invitation.location.placeName', selectedPlaceKakao.place_name);
+      setValue('invitation.location.placeDetail', '');
+      setIsAddress(false);
+    }
+  }, [selectedPlaceKakao, setValue, setIsAddress]);
 
   return (
     <TypedCombobox value={value} onChange={handleChangeCombobox} onClose={handleCloseCombobox}>
@@ -139,5 +162,5 @@ function ComboBox({ engine }: IntroLocationSearchProps) {
   );
 }
 
-const IntroComboBox = memo(ComboBox);
-export default IntroComboBox;
+const IntroSearchAddress = memo(ComboBox);
+export default IntroSearchAddress;

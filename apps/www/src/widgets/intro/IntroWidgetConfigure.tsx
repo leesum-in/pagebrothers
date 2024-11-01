@@ -17,12 +17,18 @@ import type {
 
 import { WidgetBreakLine } from '../components';
 import { useEventInfoMutation, useInvitationConfigMutation, useWidgetMutation } from '../mutations';
-import type { ConfigPayload, EventInfoData, HookFormValues, IntroSearchEngine } from '../types';
+import type {
+  ConfigPayload,
+  EventInfoData,
+  HookFormValues,
+  IntroSearchEngine,
+  WidgetData,
+} from '../types';
 import { formatDate, getWidgetIndex } from '../utils';
 import type { ModalStore } from '../zustand';
 import useModalStore from '../zustand';
 import Intro from './Intro';
-import IntroComboBox from './IntroComboBox';
+import IntroSearchAddress from './IntroSearchAddress';
 import IntroSelectDateFormatKey from './IntroSelectDateFormatKey';
 import IntroSelectLayout from './IntroSelectLayout';
 
@@ -35,6 +41,9 @@ function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.
   const [searchEngine, setSearchEngine] = useState<IntroSearchEngine>('KAKAO');
   const [selectedLayout, setSelectedLayout] = useState<IntroLayoutKey>(
     (widgetItem.config as IntroWidgetConfig).layoutKey,
+  );
+  const [isShowEventInformation, setIsShowEventInformation] = useState(
+    (widgetItem.config as IntroWidgetConfig).showEventInformation,
   );
   const { watch, register } = useFormContext<HookFormValues>();
   const { setOnSubmit, closeModal, invitation, openMultiModal } = useModalStore(
@@ -60,6 +69,10 @@ function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.
 
   const handleClickCalendar = () => {
     openMultiModal({ widget: null, calendar: true });
+  };
+
+  const handleClickEventInformation = () => {
+    setIsShowEventInformation((prev) => !prev);
   };
 
   const widgetIndex = useMemo(
@@ -98,23 +111,23 @@ function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.
         },
       },
     };
-    // postEventInfo(eventInfoData);
+    postEventInfo(eventInfoData);
 
     console.log('eventInfoData ====>', eventInfoData);
 
-    // if (!widgetItem.id) {
-    //   const widgetData: WidgetData = {
-    //     id: invitation.id,
-    //     widget: {
-    //       index: 0,
-    //       type: 'INTRO',
-    //       config,
-    //     },
-    //   };
-    //   postWidget(widgetData);
-    //   closeModal();
-    //   return;
-    // }
+    if (!widgetItem.id) {
+      const widgetData: WidgetData = {
+        id: invitation.id,
+        widget: {
+          index: 0,
+          type: 'INTRO',
+          config,
+        },
+      };
+      postWidget(widgetData);
+      closeModal();
+      return;
+    }
 
     const configPayloadData: ConfigPayload = {
       id: widgetItem.id,
@@ -124,8 +137,8 @@ function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.
       stickers: [],
     };
     console.log('configPayloadData ====>', configPayloadData);
-    // putInvitationConfig(configPayloadData);
-    // closeModal();
+    putInvitationConfig(configPayloadData);
+    closeModal();
   }, [
     widgetItem,
     watch,
@@ -210,7 +223,6 @@ function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.
               spellCheck="false"
               autoComplete="off"
               defaultValue={`신랑 ${invitation?.owners[0].name}, 신부 ${invitation?.owners[1].name}`}
-              // value={watchWidget('title')}
               rows={3}
               {...register(`invitation.widgets.${widgetIndex}.config.title`)}
             />
@@ -236,7 +248,6 @@ function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.
               spellCheck="false"
               autoComplete="off"
               defaultValue={(widgetItem.config as IntroWidgetConfig).subTitle}
-              // value={watchWidget('subTitle')}
               {...register(`invitation.widgets.${widgetIndex}.config.subTitle`)}
             />
             <div className="flex flex-none items-center" />
@@ -256,6 +267,8 @@ function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.
                 <input
                   className="no-interaction peer absolute flex-none opacity-0"
                   type="checkbox"
+                  checked={isShowEventInformation}
+                  onClick={handleClickEventInformation}
                   {...register(`invitation.widgets.${widgetIndex}.config.showEventInformation`)}
                 />
                 <div className="relative h-6 w-12 rounded-full border border-slate-200 bg-slate-100 transition-[background-color] after:ml-[-1px] after:mt-[-1px] after:block after:h-6 after:w-6 after:rounded-full after:border after:border-slate-300 after:bg-white after:transition-[background-color,transform] peer-checked:border-indigo-600 peer-checked:bg-indigo-600 peer-checked:after:translate-x-full peer-checked:after:border-indigo-600 peer-focus:ring" />
@@ -266,150 +279,158 @@ function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.
         </div>
       </div>
 
-      {/** 예식장 주소 */}
-      <div className="space-y-2">
-        <div>
-          <div className="flex items-center justify-between text-slate-600">
-            <div className="font-bold">예식장 주소</div>
-            <div className="text-sm" />
-          </div>
-        </div>
-        {isAddress ? (
-          <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY || ''}>
-            <div className="flex flex-col space-y-2">
-              <div className="flex items-center rounded-lg border border-slate-200 bg-slate-100 p-1 text-sm h-12 ">
-                <label className="group relative flex-1 cursor-pointer text-center h-10">
-                  <input
-                    type="radio"
-                    className="peer absolute cursor-pointer opacity-0"
-                    value="KAKAO"
-                    onChange={handleChangeEngine}
-                    checked={searchEngine === 'KAKAO'}
-                  />
-                  <span className="center-flex h-full w-full rounded-md text-slate-500 peer-checked:border peer-checked:border-slate-200 peer-checked:bg-white peer-checked:font-bold peer-checked:text-slate-600">
-                    국내
-                  </span>
-                </label>
-                <label className="group relative flex-1 cursor-pointer text-center h-10">
-                  <input
-                    type="radio"
-                    className="peer absolute cursor-pointer opacity-0"
-                    value="GOOGLE"
-                    onChange={handleChangeEngine}
-                    checked={searchEngine === 'GOOGLE'}
-                  />
-                  <span className="center-flex h-full w-full rounded-md text-slate-500 peer-checked:border peer-checked:border-slate-200 peer-checked:bg-white peer-checked:font-bold peer-checked:text-slate-600">
-                    해외
-                  </span>
-                </label>
-              </div>
-              <IntroComboBox engine={searchEngine} />
-            </div>
-          </APIProvider>
-        ) : (
-          <div>
-            <div className="relative flex w-full items-center justify-between rounded-md border border-slate-200 bg-slate-100 text-left">
-              <div className="w-0 flex-1 px-4">
-                <p className="truncate text-slate-600">서울 중구 세종대로 110</p>
-                <p className="truncate text-sm text-slate-400">서울특별시 중구 태평로1가 31</p>
-              </div>
-              <button
-                className="center-flex h-16 w-16 flex-none text-slate-500"
-                type="button"
-                tabIndex={-1}
-              >
-                <FaRegTrashAlt onClick={handleClickTrashCan} />
-              </button>
-            </div>
-          </div>
-        )}
-      </div>
-
-      {/** 예식장 이름 */}
-      <div className="space-y-2 ">
-        <div>
-          <div className="flex items-center justify-between text-slate-600">
-            <div className="font-bold">예식장 이름</div>
-            <div className="text-sm" />
-          </div>
-        </div>
-        <div>
-          <label className="relative flex items-center overflow-hidden rounded-md border bg-white focus-within:ring border-slate-200 ">
-            <div className="flex flex-none items-center" />
-            <input
-              className="peer block h-12 w-full bg-white px-4 text-slate-600 placeholder:text-slate-300 disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-200 "
-              spellCheck="false"
-              autoComplete="off"
-              defaultValue={invitation?.location.placeName}
-              // value={watchEventInfo('location.placeName')}
-              {...register('invitation.location.placeName')}
-            />
-            <div className="flex flex-none items-center" />
-          </label>
-        </div>
-      </div>
-
-      {/** 홀이름 */}
-      <div className="space-y-2 ">
-        <div>
-          <div className="flex items-center justify-between text-slate-600">
-            <div className="font-bold">홀 이름</div>
-            <div className="text-sm" />
-          </div>
-        </div>
-        <div>
-          <label className="relative flex items-center overflow-hidden rounded-md border bg-white focus-within:ring border-slate-200 ">
-            <div className="flex flex-none items-center" />
-            <input
-              className="peer block h-12 w-full bg-white px-4 text-slate-600 placeholder:text-slate-300 disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-200 "
-              spellCheck="false"
-              autoComplete="off"
-              defaultValue={invitation?.location.placeDetail}
-              // value={watchEventInfo('location.placeDetail')}
-              {...register('invitation.location.placeDetail')}
-            />
-            <div className="flex flex-none items-center" />
-          </label>
-        </div>
-      </div>
-
-      {/** 예식 일시 */}
-      <div className="space-y-2 ">
-        <div>
-          <div className="flex items-center justify-between text-slate-600">
-            <div className="font-bold">예식 일시</div>
-            <div className="text-sm" />
-          </div>
-        </div>
-        <div onClick={handleClickCalendar}>
-          <label className="relative flex items-center overflow-hidden rounded-md border bg-white focus-within:ring border-slate-200 ">
-            <div className="flex flex-none items-center" />
-            <input
-              className="peer block h-12 w-full bg-white px-4 text-slate-600 placeholder:text-slate-300 disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-200 "
-              spellCheck="false"
-              autoComplete="off"
-              {...register('invitation.eventAt')}
-              placeholder="예식일을 선택해주세요."
-              readOnly
-              defaultValue={formatDate(invitation?.eventAt ?? null, 'KO')}
-              // value={watchEventInfo('eventAt')}
-            />
-            <div className="flex flex-none items-center">
-              <div className="center-flex h-12 w-12 text-slate-400">
-                <MdOutlineCalendarToday />
+      {isShowEventInformation ? (
+        <>
+          {/** 예식장 주소 */}
+          <div className="space-y-2">
+            <div>
+              <div className="flex items-center justify-between text-slate-600">
+                <div className="font-bold">예식장 주소</div>
+                <div className="text-sm" />
               </div>
             </div>
-          </label>
-        </div>
-      </div>
+            {isAddress ? (
+              <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY || ''}>
+                <div className="flex flex-col space-y-2">
+                  <div className="flex items-center rounded-lg border border-slate-200 bg-slate-100 p-1 text-sm h-12 ">
+                    <label className="group relative flex-1 cursor-pointer text-center h-10">
+                      <input
+                        type="radio"
+                        className="peer absolute cursor-pointer opacity-0"
+                        value="KAKAO"
+                        onChange={handleChangeEngine}
+                        checked={searchEngine === 'KAKAO'}
+                      />
+                      <span className="center-flex h-full w-full rounded-md text-slate-500 peer-checked:border peer-checked:border-slate-200 peer-checked:bg-white peer-checked:font-bold peer-checked:text-slate-600">
+                        국내
+                      </span>
+                    </label>
+                    <label className="group relative flex-1 cursor-pointer text-center h-10">
+                      <input
+                        type="radio"
+                        className="peer absolute cursor-pointer opacity-0"
+                        value="GOOGLE"
+                        onChange={handleChangeEngine}
+                        checked={searchEngine === 'GOOGLE'}
+                      />
+                      <span className="center-flex h-full w-full rounded-md text-slate-500 peer-checked:border peer-checked:border-slate-200 peer-checked:bg-white peer-checked:font-bold peer-checked:text-slate-600">
+                        해외
+                      </span>
+                    </label>
+                  </div>
+                  <IntroSearchAddress engine={searchEngine} setIsAddress={setIsAddress} />
+                </div>
+              </APIProvider>
+            ) : (
+              <div>
+                <div className="relative flex w-full items-center justify-between rounded-md border border-slate-200 bg-slate-100 text-left">
+                  <div className="w-0 flex-1 px-4">
+                    <p className="truncate text-slate-600">
+                      {watch('invitation.location.address')}
+                    </p>
+                    <p className="truncate text-sm text-slate-400">
+                      {watch('invitation.location.roadAddress')}
+                    </p>
+                  </div>
+                  <button
+                    className="center-flex h-16 w-16 flex-none text-slate-500"
+                    type="button"
+                    tabIndex={-1}
+                  >
+                    <FaRegTrashAlt onClick={handleClickTrashCan} />
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
 
-      {/** 표기법 */}
-      <IntroSelectDateFormatKey
-        register={register}
-        time={invitation?.eventAt ?? null}
-        watch={watch}
-        widgetIndex={widgetIndex}
-      />
+          {!isAddress ? (
+            <>
+              {/** 예식장 이름 */}
+              <div className="space-y-2 ">
+                <div>
+                  <div className="flex items-center justify-between text-slate-600">
+                    <div className="font-bold">예식장 이름</div>
+                    <div className="text-sm" />
+                  </div>
+                </div>
+                <div>
+                  <label className="relative flex items-center overflow-hidden rounded-md border bg-white focus-within:ring border-slate-200 ">
+                    <div className="flex flex-none items-center" />
+                    <input
+                      className="peer block h-12 w-full bg-white px-4 text-slate-600 placeholder:text-slate-300 disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-200 "
+                      spellCheck="false"
+                      autoComplete="off"
+                      value={watch('invitation.location.placeName')}
+                      {...register('invitation.location.placeName')}
+                    />
+                    <div className="flex flex-none items-center" />
+                  </label>
+                </div>
+              </div>
+
+              {/** 홀이름 */}
+              <div className="space-y-2 ">
+                <div>
+                  <div className="flex items-center justify-between text-slate-600">
+                    <div className="font-bold">홀 이름</div>
+                    <div className="text-sm" />
+                  </div>
+                </div>
+                <div>
+                  <label className="relative flex items-center overflow-hidden rounded-md border bg-white focus-within:ring border-slate-200 ">
+                    <div className="flex flex-none items-center" />
+                    <input
+                      className="peer block h-12 w-full bg-white px-4 text-slate-600 placeholder:text-slate-300 disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-200 "
+                      spellCheck="false"
+                      autoComplete="off"
+                      value={watch('invitation.location.placeDetail')}
+                      {...register('invitation.location.placeDetail')}
+                    />
+                    <div className="flex flex-none items-center" />
+                  </label>
+                </div>
+              </div>
+            </>
+          ) : null}
+
+          {/** 예식 일시 */}
+          <div className="space-y-2 ">
+            <div>
+              <div className="flex items-center justify-between text-slate-600">
+                <div className="font-bold">예식 일시</div>
+                <div className="text-sm" />
+              </div>
+            </div>
+            <div onClick={handleClickCalendar}>
+              <label className="relative flex items-center overflow-hidden rounded-md border bg-white focus-within:ring border-slate-200 ">
+                <div className="flex flex-none items-center" />
+                <input
+                  className="peer block h-12 w-full bg-white px-4 text-slate-600 placeholder:text-slate-300 disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-200 "
+                  spellCheck="false"
+                  autoComplete="off"
+                  placeholder="예식일을 선택해주세요."
+                  readOnly
+                  value={formatDate(watch('invitation.eventAt'), 'KO')}
+                />
+                <div className="flex flex-none items-center">
+                  <div className="center-flex h-12 w-12 text-slate-400">
+                    <MdOutlineCalendarToday />
+                  </div>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          {/** 표기법 */}
+          <IntroSelectDateFormatKey
+            register={register}
+            time={invitation?.eventAt ?? null}
+            watch={watch}
+            widgetIndex={widgetIndex}
+          />
+        </>
+      ) : null}
     </div>
   );
 }

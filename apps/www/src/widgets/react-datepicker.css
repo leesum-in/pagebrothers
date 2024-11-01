@@ -866,10 +866,6 @@ h2.react-datepicker__current-month {
 .react-datepicker__day--outside-month {
   opacity: 0.25;
 }
-.react-datepicker__day--disabled {
-  opacity: 0.25;
-  cursor: default;
-}
 .react-datepicker__day--outside-month {
   opacity: 0.25;
 }
@@ -878,6 +874,10 @@ h2.react-datepicker__current-month {
   position: relative;
   padding: 0.5rem;
   cursor: pointer;
+}
+.react-datepicker__day--disabled {
+  opacity: 0.25;
+  cursor: default;
 }
 .react-datepicker__day--selected > span {
   position: relative;

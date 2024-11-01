@@ -1,7 +1,18 @@
 'use client';
 
 import { cn } from '@repo/shared';
-import { getDate, getMonth, getYear, setHours, setMinutes } from 'date-fns';
+import {
+  format,
+  getDate,
+  getMonth,
+  getYear,
+  isBefore,
+  isSameDay,
+  setHours,
+  setMinutes,
+  setSeconds,
+  startOfDay,
+} from 'date-fns';
 import { ko } from 'date-fns/locale';
 import type { PropsWithChildren } from 'react';
 import { useEffect, useState } from 'react';
@@ -11,7 +22,9 @@ import { useFormContext } from 'react-hook-form';
 
 import type { IInvitation } from '@/types/pageBrothers.type';
 import { Before, Next } from '@/ui/svgs';
+
 import '../react-datepicker.css';
+import useModalStore from '../zustand';
 
 const months = [
   '1월',
@@ -38,12 +51,15 @@ function IntroCalendar({ invitation }: IntroCalendarProps) {
   const [selectedDay, setSelectedDay] = useState<Date | undefined>(new Date(invitation.eventAt));
   const [selectedTime, setSelectedTime] = useState<Date | undefined>(new Date(invitation.eventAt));
 
+  const { closeMultiModal } = useModalStore();
+
   const handleOnChange = (date: Date | null) => {
     if (date) setSelectedDay(date);
   };
 
   const handleOnChangeTime = (date: Date | null) => {
     if (date) setSelectedTime(date);
+    closeMultiModal();
   };
 
   useEffect(() => {
@@ -60,7 +76,20 @@ function IntroCalendar({ invitation }: IntroCalendarProps) {
   }, [selectedTime]);
 
   useEffect(() => {
-    setValue('invitation.eventAt', selectedDay);
+    if (selectedDay && selectedTime) {
+      const date = selectedDay;
+      const hours = selectedTime.getHours();
+      const minutes = selectedTime.getMinutes();
+      const seconds = selectedTime.getSeconds();
+
+      let combinedDateTime = setHours(date, hours);
+      combinedDateTime = setMinutes(combinedDateTime, minutes);
+      combinedDateTime = setSeconds(combinedDateTime, seconds);
+
+      const formatted = format(combinedDateTime, "yyyy-MM-dd'T'HH:mm:ss");
+
+      setValue('invitation.eventAt', formatted);
+    }
   }, [selectedDay, selectedTime, setValue]);
 
   return (
@@ -73,12 +102,14 @@ function IntroCalendar({ invitation }: IntroCalendarProps) {
           renderCustomHeader={(props) =>
             DatePickerCalendarHeader({ ...props, selectedDay: selectedDay ?? new Date() })
           }
+          minDate={new Date()}
           dayClassName={(date) =>
             cn(
-              selectedDay && getDate(date) < getDate(selectedDay) && 'opacity-25',
-              selectedDay && getDate(date) === getDate(selectedDay)
-                ? 'text-indigo-600 font-bold'
-                : '',
+              cn(
+                isBefore(startOfDay(date), startOfDay(new Date())) &&
+                  'opacity-25 react-datepicker__day--disabled',
+                selectedDay && isSameDay(date, selectedDay) && 'text-indigo-600 font-bold',
+              ),
             )
           }
           renderDayContents={DatePickerDay}
