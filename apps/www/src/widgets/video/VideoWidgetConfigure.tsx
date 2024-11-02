@@ -6,6 +6,7 @@ import { useFormContext } from 'react-hook-form';
 import { useShallow } from 'zustand/shallow';
 
 import type { VideoWidgetConfig, WidgetItem } from '@/types/pageBrothers.type';
+import { FixedLoader } from '@/ui/loader';
 
 import { useInvitationConfigMutation } from '../mutations';
 import type { ConfigPayload, HookFormValues } from '../types';
@@ -19,15 +20,10 @@ interface VideoWidgetConfigureProps {
 
 function VideoWidgetConfigure({ widgetItem }: VideoWidgetConfigureProps): React.ReactNode {
   const { register } = useFormContext<HookFormValues>();
-  const { setOnSubmit, closeModal } = useModalStore(
+  const { invitation, setOnSubmit, closeModal } = useModalStore(
     useShallow((state: ModalStore) => ({
       setOnSubmit: state.setOnSubmit,
       closeModal: state.closeModal,
-    })),
-  );
-
-  const { invitation } = useModalStore(
-    useShallow((state: ModalStore) => ({
       invitation: state.invitation,
     })),
   );
@@ -75,7 +71,7 @@ function VideoWidgetConfigure({ widgetItem }: VideoWidgetConfigureProps): React.
     setOnSubmit(onSubmit);
   }, [setOnSubmit, onSubmit]);
 
-  if (!widgetIndex) return <div>Loading...</div>;
+  if (!widgetIndex) return <FixedLoader />;
 
   return (
     <div className="space-y-8">

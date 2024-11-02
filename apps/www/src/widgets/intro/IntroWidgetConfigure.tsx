@@ -17,6 +17,7 @@ import type {
   IntroWidgetConfig,
   WidgetItem,
 } from '@/types/pageBrothers.type';
+import { FixedLoader } from '@/ui/loader';
 
 import { WidgetBreakLine } from '../components';
 import {
@@ -178,7 +179,7 @@ function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.
     setOnSubmit(onSubmit);
   }, [setOnSubmit, onSubmit]);
 
-  if (widgetIndex === null || widgetIndex === -1) return <div>Loading...</div>;
+  if (widgetIndex === null || widgetIndex === -1) return <FixedLoader />;
 
   return (
     <div className="space-y-8">

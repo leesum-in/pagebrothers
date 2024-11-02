@@ -9,6 +9,7 @@ import { useShallow } from 'zustand/shallow';
 
 import type { WidgetItem } from '@/types/pageBrothers.type';
 import ErrorTemplate from '@/ui/error/ErrorTemplate';
+import { FixedLoader } from '@/ui/loader';
 import { PageWrapper } from '@/ui/wrapper';
 import {
   Widget,
@@ -61,8 +62,7 @@ function EditTemplate() {
   }, [invitation, setInvitation, methods]);
 
   if (isPending || !invitation) {
-    // 로딩 중일 때 표시할 컴포넌트 수정 요망
-    return <div>Loading...</div>;
+    return <FixedLoader />;
   }
 
   if (error) {
