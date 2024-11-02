@@ -1,3 +1,4 @@
+import type { Dispatch, SetStateAction } from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useShallow } from 'zustand/shallow';
 
@@ -129,10 +130,10 @@ const useSlider = () => {
   );
 
   const handleInputClick = useCallback(
-    <T>(setState: (option: T) => void, option: T) =>
+    <T>(setState: Dispatch<SetStateAction<T>>, option: Partial<T>) =>
       () => {
         if (isDragging) return;
-        if (isInputClickRef.current) setState(option);
+        if (isInputClickRef.current) setState((prev) => ({ ...prev, ...option }));
       },
     [isDragging],
   );

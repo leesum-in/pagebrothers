@@ -1,9 +1,10 @@
 'use client';
 
+import type { Dispatch, SetStateAction } from 'react';
 import type { UseFormRegister } from 'react-hook-form';
 import { IoCheckmark } from 'react-icons/io5';
 
-import type { IntroLayoutKey } from '@/types/pageBrothers.type';
+import type { IntroLayoutKey, IntroWidgetConfig } from '@/types/pageBrothers.type';
 
 import { useSlider } from '../hooks';
 import type { HookFormValues } from '../types';
@@ -54,7 +55,7 @@ const layoutKey: LayoutKey[] = [
 
 interface IntroSelectLayoutProps {
   selectedLayout: IntroLayoutKey;
-  setSelectedLayout: (layout: IntroLayoutKey) => void;
+  setSelectedLayout: Dispatch<SetStateAction<IntroWidgetConfig>>;
   register: UseFormRegister<HookFormValues>;
   widgetIndex: number;
 }
@@ -102,7 +103,9 @@ function IntroSelectLayout({
                   {...register(`invitation.widgets.${widgetIndex}.config.layoutKey`)}
                   value={layout.key}
                   checked={selectedLayout === layout.key}
-                  onClick={handleInputClick(setSelectedLayout, layout.key)}
+                  onClick={handleInputClick<IntroWidgetConfig>(setSelectedLayout, {
+                    layoutKey: layout.key,
+                  })}
                 />
                 <div className="layout-key relative h-full rounded-lg border border-slate-200 bg-white p-4 text-sm text-slate-500 shadow-1 peer-checked:border-indigo-600 peer-checked:shadow-violet">
                   <div className="flex items-center justify-between font-bold">{layout.title}</div>

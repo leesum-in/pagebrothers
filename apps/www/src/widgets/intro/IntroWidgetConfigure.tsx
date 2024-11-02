@@ -11,13 +11,12 @@ import { MdOutlineCalendarToday } from 'react-icons/md';
 import { useShallow } from 'zustand/shallow';
 
 import type {
-  IInvitationImageData,
   IntroDateFormatKey,
   IntroLayoutKey,
   IntroWidgetConfig,
   WidgetItem,
 } from '@/types/pageBrothers.type';
-import { FixedLoader } from '@/ui/loader';
+import { FixedLoader, Loader } from '@/ui/loader';
 
 import { WidgetBreakLine } from '../components';
 import {
@@ -48,14 +47,11 @@ interface IntroWidgetConfigureProps {
 function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.ReactNode {
   const [isAddress, setIsAddress] = useState(false);
   const [searchEngine, setSearchEngine] = useState<IntroSearchEngine>('KAKAO');
-  const [selectedLayout, setSelectedLayout] = useState<IntroLayoutKey>(
-    (widgetItem.config as IntroWidgetConfig).layoutKey,
+  const [introWidgetConfig, setIntroWidgetConfig] = useState<IntroWidgetConfig>(
+    widgetItem.config as IntroWidgetConfig,
   );
-  const [isShowEventInformation, setIsShowEventInformation] = useState(
-    (widgetItem.config as IntroWidgetConfig).showEventInformation,
-  );
+  const [isImageLoading, setIsImageLoading] = useState(false);
   const { watch, register } = useFormContext<HookFormValues>();
-  const [imageData, setImageData] = useState<IInvitationImageData | null>(null);
   const { setOnSubmit, closeModal, invitation, openMultiModal } = useModalStore(
     useShallow((state: ModalStore) => ({
       setOnSubmit: state.setOnSubmit,
@@ -83,20 +79,26 @@ function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.
   };
 
   const handleClickEventInformation = () => {
-    setIsShowEventInformation((prev) => !prev);
+    setIntroWidgetConfig((prev) => ({ ...prev, showEventInformation: !prev.showEventInformation }));
   };
 
   const handleChangeFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputFile = e.target.files?.[0];
     if (inputFile) {
+      setIsImageLoading(true);
       const { width, height } = await getImageSize(inputFile);
       const formData = new FormData();
       formData.append('file', inputFile);
       formData.append('width', width.toString());
       formData.append('height', height.toString());
       const response = await postInvitationImage(formData);
-      setImageData(response);
+      setIntroWidgetConfig((prev) => ({ ...prev, coverImage: response }));
+      setIsImageLoading(false);
     }
+  };
+
+  const handleClickDeleteImage = () => {
+    setIntroWidgetConfig((prev) => ({ ...prev, coverImage: null }));
   };
 
   const widgetIndex = useMemo(
@@ -109,7 +111,7 @@ function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.
 
     const config: IntroWidgetConfig = {
       align: 'LEFT',
-      coverImage: imageData ? imageData : null,
+      coverImage: introWidgetConfig.coverImage,
       customTextColor: '',
       subTitle: String(watch(`invitation.widgets.${widgetIndex}.config.subTitle`)),
       dateFormatKey: watch(
@@ -172,7 +174,7 @@ function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.
     postWidget,
     postEventInfo,
     widgetIndex,
-    imageData,
+    introWidgetConfig,
   ]);
 
   useEffect(() => {
@@ -184,8 +186,8 @@ function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.
   return (
     <div className="space-y-8">
       <IntroSelectLayout
-        selectedLayout={selectedLayout}
-        setSelectedLayout={setSelectedLayout}
+        selectedLayout={introWidgetConfig.layoutKey}
+        setSelectedLayout={setIntroWidgetConfig}
         register={register}
         widgetIndex={widgetIndex}
       />
@@ -202,23 +204,26 @@ function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.
           <div
             className={cn(
               'center-flex relative h-[4.5rem] overflow-hidden rounded-lg border border-dashed border-slate-300',
-              imageData ? 'bg-white' : 'px-4',
+              introWidgetConfig.coverImage ? 'bg-white' : 'px-4',
             )}
           >
-            {imageData ? (
+            {isImageLoading ? <Loader /> : null}
+            {introWidgetConfig.coverImage ? (
               <div className="center-flex relative flex-1 gap-4">
                 <div className="relative h-[4.5rem] w-[4.5rem] flex-none bg-slate-200 object-contain">
                   <Image
-                    src={imageData.url}
+                    src={introWidgetConfig.coverImage.url}
                     alt="uploaded"
                     className="relative h-[4.5rem] w-[4.5rem] flex-none bg-white object-contain"
-                    width={imageData.dimensions.width}
-                    height={imageData.dimensions.height}
+                    width={introWidgetConfig.coverImage.dimensions.width}
+                    height={introWidgetConfig.coverImage.dimensions.height}
                   />
                 </div>
                 <div className="w-0 flex-1 text-sm">
                   <div className="truncate font-bold text-slate-500">이미지 등록됨</div>
-                  <div className="truncate text-slate-400 empty:hidden">{imageData.id}</div>
+                  <div className="truncate text-slate-400 empty:hidden">
+                    {introWidgetConfig.coverImage.id}
+                  </div>
                 </div>
                 <div className="center-flex gap-6 pr-4">
                   <button
@@ -230,12 +235,14 @@ function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.
                   <button
                     type="button"
                     className=" h-12 rounded-md px-0 text-sm  text-slate-500 hover:text-slate-600 center-flex gap-2 font-bold shadow-1 transition-colors disabled:opacity-40"
+                    onClick={handleClickDeleteImage}
                   >
                     삭제
                   </button>
                 </div>
               </div>
-            ) : (
+            ) : null}
+            {!introWidgetConfig.coverImage && !isImageLoading ? (
               <>
                 <div className="flex-1 text-sm">
                   <div className="font-bold text-slate-500">이미지 업로드</div>
@@ -249,7 +256,7 @@ function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.
                   onChange={handleChangeFile}
                 />
               </>
-            )}
+            ) : null}
           </div>
         </div>
       </div>
@@ -257,18 +264,7 @@ function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.
       <div className="overflow-hidden rounded-lg border border-slate-200 bg-white">
         <div className="[--theme-black:15,23,42] [--theme-inter:51,65,85] [--theme-colored:100,116,139] [--theme-block:0,0,0] font-noto text-[14px] leading-loose text-theme-black/60">
           <div>
-            {invitation ? (
-              <Intro
-                widgetItem={widgetItem}
-                invitation={invitation}
-                selectedLayout={selectedLayout}
-                imageData={
-                  imageData
-                    ? imageData
-                    : (invitation.widgets[0].config as IntroWidgetConfig).coverImage
-                }
-              />
-            ) : null}
+            {invitation ? <Intro config={introWidgetConfig} invitation={invitation} /> : null}
           </div>
         </div>
       </div>
@@ -336,7 +332,7 @@ function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.
                 <input
                   className="no-interaction peer absolute flex-none opacity-0"
                   type="checkbox"
-                  checked={isShowEventInformation}
+                  checked={introWidgetConfig.showEventInformation}
                   onClick={handleClickEventInformation}
                   {...register(`invitation.widgets.${widgetIndex}.config.showEventInformation`)}
                 />
@@ -348,7 +344,7 @@ function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.
         </div>
       </div>
 
-      {isShowEventInformation ? (
+      {introWidgetConfig.showEventInformation ? (
         <>
           {/** 예식장 주소 */}
           <div className="space-y-2">

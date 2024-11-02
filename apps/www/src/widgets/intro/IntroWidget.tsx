@@ -20,16 +20,7 @@ function IntroWidgetComp({
     <WidgetWrapper widgetItem={widgetItem} isMultiModal={isMultiModal}>
       <div className="no-interaction">
         {invitation ? (
-          <Intro
-            widgetItem={widgetItem}
-            invitation={invitation}
-            selectedLayout={(widgetItem.config as IntroWidgetConfig).layoutKey}
-            imageData={
-              (widgetItem.config as IntroWidgetConfig).coverImage
-                ? (widgetItem.config as IntroWidgetConfig).coverImage
-                : null
-            }
-          />
+          <Intro config={widgetItem.config as IntroWidgetConfig} invitation={invitation} />
         ) : null}
       </div>
     </WidgetWrapper>
