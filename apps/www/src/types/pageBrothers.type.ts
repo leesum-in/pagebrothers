@@ -382,7 +382,7 @@ export interface IntroWidgetConfig {
   title: string; // = config.title || {owners[].role} {owners[].name}
   layoutKey: IntroLayoutKey;
   subTitle: string;
-  coverImage: IInvitationImage | null;
+  coverImage: IInvitationImageData | null; // IInvitationImageData 타입으로 변경(오은)
   align: Align;
   customTextColor: string;
   showEventInformation: boolean; // = true

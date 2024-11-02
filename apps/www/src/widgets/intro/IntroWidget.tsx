@@ -24,6 +24,11 @@ function IntroWidgetComp({
             widgetItem={widgetItem}
             invitation={invitation}
             selectedLayout={(widgetItem.config as IntroWidgetConfig).layoutKey}
+            imageData={
+              (widgetItem.config as IntroWidgetConfig).coverImage
+                ? (widgetItem.config as IntroWidgetConfig).coverImage
+                : null
+            }
           />
         ) : null}
       </div>

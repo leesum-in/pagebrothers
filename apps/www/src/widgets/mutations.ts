@@ -59,11 +59,11 @@ export function useEventInfoMutation(
 export function useInvitationImageMutation(
   invitationId: string,
 ): UseMutationResult<IInvitationImageData, Error, FormData> {
-  // const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
   return useMutation<IInvitationImageData, Error, FormData>({
     mutationFn: (imageData: FormData) => postImage(imageData, invitationId),
-    // onSuccess: () => {
-    //   void queryClient.invalidateQueries({ queryKey: [QUERY_KEY_INVITATION, invitationId] });
-    // },
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: [QUERY_KEY_INVITATION, invitationId] });
+    },
   });
 }

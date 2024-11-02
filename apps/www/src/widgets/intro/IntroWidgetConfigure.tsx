@@ -104,11 +104,11 @@ function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.
   );
 
   const onSubmit: SubmitHandler<HookFormValues> = useCallback(() => {
-    if (!invitation || !widgetIndex) return;
+    if (!invitation || widgetIndex === null || widgetIndex === -1) return;
 
     const config: IntroWidgetConfig = {
       align: 'LEFT',
-      coverImage: null,
+      coverImage: imageData ? imageData : null,
       customTextColor: '',
       subTitle: String(watch(`invitation.widgets.${widgetIndex}.config.subTitle`)),
       dateFormatKey: watch(
@@ -171,6 +171,7 @@ function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.
     postWidget,
     postEventInfo,
     widgetIndex,
+    imageData,
   ]);
 
   useEffect(() => {
@@ -260,7 +261,11 @@ function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.
                 widgetItem={widgetItem}
                 invitation={invitation}
                 selectedLayout={selectedLayout}
-                imageData={imageData}
+                imageData={
+                  imageData
+                    ? imageData
+                    : (invitation.widgets[0].config as IntroWidgetConfig).coverImage
+                }
               />
             ) : null}
           </div>
