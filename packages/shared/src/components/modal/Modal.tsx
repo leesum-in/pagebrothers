@@ -14,6 +14,7 @@ interface ModalProps extends PropsWithChildren {
   modalHeader?: React.ReactNode;
   modalFooter?: React.ReactNode;
   isMultiModal?: boolean;
+  isCalendar?: boolean;
   isModalFooterBg?: boolean;
   modalBgClassName?: string;
   modalContentClassName?: string;
@@ -31,6 +32,7 @@ function Modal({
   modalFooter,
   isMultiModal = false,
   isModalFooterBg = false,
+  isCalendar = false,
   modalBgClassName,
   modalContentClassName,
   modalChildrenClassName,
@@ -42,6 +44,15 @@ function Modal({
 
   const headerUnderline = isHeaderBorderLine ? 'border-b border-slate-100' : 'border-none';
 
+  const handleModalClose = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (isDragging) return;
+    const target = e.target as HTMLElement;
+    !target.closest('form') &&
+      !target.closest('#multi-modal') &&
+      !target.dataset.preview &&
+      onCloseModal();
+  };
+
   return createPortal(
     <Transition show={isModalOpen}>
       <div
@@ -52,14 +63,7 @@ function Modal({
             'data-[leave]:duration-200 data-[leave]:data-[closed]:opacity-0',
           ],
         )}
-        onClick={(e) => {
-          if (isDragging) return;
-          const target = e.target as HTMLElement;
-          !target.closest('form') &&
-            !target.dataset.multi &&
-            !target.dataset.preview &&
-            onCloseModal();
-        }}
+        onClick={handleModalClose}
       >
         <div
           className={cn(
@@ -72,8 +76,9 @@ function Modal({
         />
         <TransitionChild>
           <div
+            id="multi-modal"
             className={cn(
-              'translate-y-0 scroll-lock-layer-children relative isolate max-h-[90%] w-full overflow-x-hidden rounded-t-2xl bg-white desktop:max-h-[calc(100vh-8rem)] desktop:w-[30rem] desktop:rounded-2xl transition duration-200',
+              'translate-y-0 scroll-lock-layer-children relative isolate max-h-[90%] w-full overflow-x-hidden rounded-t-2xl bg-white desktop:max-h-[calc(100vh-8rem)] desktop:w-[30rem] desktop:rounded-2xl transition duration-200 opacity-100',
               [
                 'data-[closed]:translate-y-6',
                 'data-[enter]:translate-y-6',
@@ -85,15 +90,17 @@ function Modal({
           >
             {isMultiModal ? (
               <>
-                <div className="sticky top-0 z-20 flex h-0 justify-end" data-multi>
-                  <button
-                    type="button"
-                    className="center-flex m-3 h-12 w-12 rounded-full border border-slate-100 bg-white shadow-1"
-                    onClick={onCloseModal}
-                  >
-                    <CloseIcon />
-                  </button>
-                </div>
+                {!isCalendar ? (
+                  <div className="sticky top-0 z-20 flex h-0 justify-end">
+                    <button
+                      type="button"
+                      className="center-flex m-3 h-12 w-12 rounded-full border border-slate-100 bg-white shadow-1"
+                      onClick={onCloseModal}
+                    >
+                      <CloseIcon />
+                    </button>
+                  </div>
+                ) : null}
                 {children}
               </>
             ) : (

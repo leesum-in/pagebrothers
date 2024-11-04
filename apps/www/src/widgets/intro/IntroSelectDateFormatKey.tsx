@@ -1,16 +1,23 @@
+'use client';
+
 import type { UseFormRegister, UseFormWatch } from 'react-hook-form';
 
-import type { IntroWidgetConfig } from '@/types/pageBrothers.type';
-
+import type { HookFormValues } from '../types';
 import { formatDate } from '../utils';
 
 interface IntroSelectDateFormatKeyProps {
-  register: UseFormRegister<IntroWidgetConfig>;
+  register: UseFormRegister<HookFormValues>;
   time: string | null;
-  watch: UseFormWatch<IntroWidgetConfig>;
+  watch: UseFormWatch<HookFormValues>;
+  widgetIndex: number;
 }
 
-function IntroSelectDateFormatKey({ register, time, watch }: IntroSelectDateFormatKeyProps) {
+function IntroSelectDateFormatKey({
+  register,
+  time,
+  watch,
+  widgetIndex,
+}: IntroSelectDateFormatKeyProps) {
   return (
     <div className="space-y-2 ">
       <div>
@@ -26,8 +33,11 @@ function IntroSelectDateFormatKey({ register, time, watch }: IntroSelectDateForm
                   type="radio"
                   className="peer hidden"
                   value="KO"
-                  checked={watch('dateFormatKey') === 'KO' || !watch('dateFormatKey')}
-                  {...register('dateFormatKey')}
+                  checked={
+                    watch(`invitation.widgets.${widgetIndex}.config.dateFormatKey`) === 'KO' ||
+                    !watch(`invitation.widgets.${widgetIndex}.config.dateFormatKey`)
+                  }
+                  {...register(`invitation.widgets.${widgetIndex}.config.dateFormatKey`)}
                 />
                 <div className="rounded-lg border border-slate-200 bg-white px-5 py-3 peer-checked:border-indigo-600">
                   <p className="font-bold text-slate-600">{formatDate(time, 'KO')}</p>
@@ -40,8 +50,11 @@ function IntroSelectDateFormatKey({ register, time, watch }: IntroSelectDateForm
                   type="radio"
                   className="peer hidden"
                   value="KO_EXCLUDE_TIME"
-                  checked={watch('dateFormatKey') === 'KO_EXCLUDE_TIME'}
-                  {...register('dateFormatKey')}
+                  checked={
+                    watch(`invitation.widgets.${widgetIndex}.config.dateFormatKey`) ===
+                    'KO_EXCLUDE_TIME'
+                  }
+                  {...register(`invitation.widgets.${widgetIndex}.config.dateFormatKey`)}
                 />
                 <div className="rounded-lg border border-slate-200 bg-white px-5 py-3 peer-checked:border-indigo-600">
                   <p className="font-bold text-slate-600">{formatDate(time, 'KO_EXCLUDE_TIME')}</p>
@@ -54,8 +67,8 @@ function IntroSelectDateFormatKey({ register, time, watch }: IntroSelectDateForm
                   type="radio"
                   className="peer hidden"
                   value="EN"
-                  checked={watch('dateFormatKey') === 'EN'}
-                  {...register('dateFormatKey')}
+                  checked={watch(`invitation.widgets.${widgetIndex}.config.dateFormatKey`) === 'EN'}
+                  {...register(`invitation.widgets.${widgetIndex}.config.dateFormatKey`)}
                 />
                 <div className="rounded-lg border border-slate-200 bg-white px-5 py-3 peer-checked:border-indigo-600">
                   <p className="font-bold text-slate-600">{formatDate(time, 'EN')}</p>
@@ -68,8 +81,11 @@ function IntroSelectDateFormatKey({ register, time, watch }: IntroSelectDateForm
                   type="radio"
                   className="peer hidden"
                   value="EN_EXCLUDE_TIME"
-                  checked={watch('dateFormatKey') === 'EN_EXCLUDE_TIME'}
-                  {...register('dateFormatKey')}
+                  checked={
+                    watch(`invitation.widgets.${widgetIndex}.config.dateFormatKey`) ===
+                    'EN_EXCLUDE_TIME'
+                  }
+                  {...register(`invitation.widgets.${widgetIndex}.config.dateFormatKey`)}
                 />
                 <div className="rounded-lg border border-slate-200 bg-white px-5 py-3 peer-checked:border-indigo-600">
                   <p className="font-bold text-slate-600">{formatDate(time, 'EN_EXCLUDE_TIME')}</p>

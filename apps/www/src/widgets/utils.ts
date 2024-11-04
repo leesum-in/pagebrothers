@@ -1,4 +1,6 @@
-import type { IntroDateFormatKey } from '@/types/pageBrothers.type';
+import { setHours, setMinutes, setSeconds } from 'date-fns';
+
+import type { IInvitation, IntroDateFormatKey, WidgetType } from '@/types/pageBrothers.type';
 
 export function formatDate(time: string | null, dateFormatKey: IntroDateFormatKey): string {
   const date = time ? new Date(time) : new Date();
@@ -33,11 +35,60 @@ export function formatDate(time: string | null, dateFormatKey: IntroDateFormatKe
 
   // dateFormatKey에 따른 날짜 형식 반환
   if (dateFormatKey === 'KO') {
-    return `${year}년 ${month}월 ${day}일 ${weekdayKR} ${ampmKR} ${hours12}시 ${minutes}분`;
+    return `${year}년 ${month}월 ${day}일 ${weekdayKR} ${ampmKR} ${hours12}시 ${minutes ? `${minutes}분` : ''}`;
   } else if (dateFormatKey === 'KO_EXCLUDE_TIME') {
     return `${year}년 ${month}월 ${day}일 ${weekdayKR}`;
   } else if (dateFormatKey === 'EN') {
     return `${year}. ${padZero(month)}. ${padZero(day)}. (${weekdayEN}) ${hours12}:${padZero(minutes)} ${ampmEN}`;
   }
   return `${year}. ${padZero(month)}. ${padZero(day)}. (${weekdayEN})`;
+}
+
+export function getWidgetIndex(invitation: IInvitation | null, type: WidgetType) {
+  if (!invitation) return null;
+  const index = invitation.widgets.findIndex((item) => item.type === type);
+  return index === -1 ? 0 : index;
+}
+
+export function getCombinedDateTime(date: Date, time: Date) {
+  const hours = time.getHours();
+  const minutes = time.getMinutes();
+  const seconds = time.getSeconds();
+
+  let combinedDateTime = setHours(date, hours);
+  combinedDateTime = setMinutes(combinedDateTime, minutes);
+  combinedDateTime = setSeconds(combinedDateTime, seconds);
+
+  return combinedDateTime;
+}
+
+// FileReader를 사용하여 파일을 Data URL로 읽어오는 함수
+const readFileAsDataURL = (file: File): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      resolve(reader.result as string);
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+};
+
+export async function getImageSize(file: File): Promise<{ width: number; height: number }> {
+  try {
+    const imageDataUrl = await readFileAsDataURL(file);
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => {
+        resolve({
+          width: img.naturalWidth,
+          height: img.naturalHeight,
+        });
+      };
+      img.onerror = () => reject(new Error('이미지 로드 중 오류가 발생했습니다.'));
+      img.src = imageDataUrl;
+    });
+  } catch (error) {
+    throw new Error('파일을 읽는 중 오류가 발생했습니다.');
+  }
 }

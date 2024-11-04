@@ -1,7 +1,7 @@
 import { Button } from '@repo/shared';
 
 import type { WidgetType } from '@/types/pageBrothers.type';
-import Move from '@/ui/svgs/Move.svg';
+import { Move } from '@/ui/svgs';
 
 import { WIDGET_TYPE_KOREAN } from '../constants';
 

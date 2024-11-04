@@ -8,16 +8,21 @@ import {
 } from '@headlessui/react';
 import { useMapsLibrary } from '@vis.gl/react-google-maps';
 import { memo, useEffect, useMemo, useRef, useState } from 'react';
+import { useFormContext } from 'react-hook-form';
 import { HiOutlineLocationMarker } from 'react-icons/hi';
 import { IoSearchOutline } from 'react-icons/io5';
 
-import { useKakaoAddressQuery, useKakaoKeywordQuery } from '../queries';
+import { Loader } from '@/ui/loader';
+import debounce from '@/utils/debounce';
+
+import { useKakaoKeywordQuery } from '../queries';
 import type { IntroSearchEngine, KaKaoKeywordDocument } from '../types';
 
 type ComboboxValue = KaKaoKeywordDocument | google.maps.places.AutocompletePrediction | null;
 
 interface IntroLocationSearchProps {
   engine: IntroSearchEngine;
+  setIsAddress: (value: boolean) => void;
 }
 
 // value 프롭의 타입이 고정되어 버려서 직접 타입 지정해서 커스터마이징
@@ -25,32 +30,52 @@ const TypedCombobox = HeadlessCombobox as unknown as (
   props: React.ComponentProps<typeof HeadlessCombobox> & { value: ComboboxValue },
 ) => JSX.Element;
 
-function ComboBox({ engine }: IntroLocationSearchProps) {
+function ComboBox({ engine, setIsAddress }: IntroLocationSearchProps) {
+  const { setValue } = useFormContext();
+
   const [googlePlaces, setGooglePlaces] = useState<google.maps.places.AutocompletePrediction[]>([]);
   const [selectedPlaceKakao, setSelectedPlaceKakao] = useState<KaKaoKeywordDocument | null>(null);
   const [selectedPlaceGoogle, setSelectedPlaceGoogle] =
     useState<google.maps.places.AutocompletePrediction | null>(null);
-  const [query, setQuery] = useState('');
+  const [kakaoQuery, setKakaoQuery] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const { data: kakaoKeywordResults } = useKakaoKeywordQuery({
+    value: kakaoQuery,
+    engine,
+  });
 
-  const { data: kakaoKeywordResults } = useKakaoKeywordQuery({ value: query, engine });
-  const { data: kakaoAddresses } = useKakaoAddressQuery({ value: query, engine });
   const places = useMapsLibrary('places');
 
+  const inputRef = useRef<HTMLInputElement>(null);
+  const placeAutocompleteRef = useRef<google.maps.places.AutocompleteService | null>(null);
+
   const handleCloseCombobox = () => {
-    setQuery('');
+    setKakaoQuery('');
   };
 
-  const [placeAutocomplete, setPlaceAutocomplete] =
-    useState<google.maps.places.AutocompleteService | null>(null);
-
-  const inputRef = useRef<HTMLInputElement>(null);
-
-  const handleInputChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!event.target.value) return;
-    if (!placeAutocomplete) return;
-    const result = await placeAutocomplete.getPlacePredictions({ input: event.target.value });
-    setGooglePlaces(result.predictions);
-    setQuery(event.target.value);
+    setIsLoading(true);
+    const debounced = debounce(async () => {
+      if (!placeAutocompleteRef.current) return;
+      try {
+        setIsLoading(true);
+        if (engine === 'GOOGLE') {
+          const result = await placeAutocompleteRef.current.getPlacePredictions({
+            input: event.target.value,
+          });
+          setGooglePlaces(result.predictions);
+        } else {
+          setKakaoQuery(event.target.value);
+        }
+      } catch (error) {
+        // 에러시 처리 추후 수정 필요
+        console.error(error);
+      } finally {
+        setIsLoading(false);
+      }
+    }, 500);
+    debounced();
   };
 
   const handleChangeCombobox = (
@@ -71,13 +96,33 @@ function ComboBox({ engine }: IntroLocationSearchProps) {
 
   useEffect(() => {
     if (!places || !inputRef.current) return;
-    setPlaceAutocomplete(new places.AutocompleteService());
+    placeAutocompleteRef.current = new places.AutocompleteService();
   }, [places]);
 
   useEffect(() => {
-    console.log(kakaoKeywordResults);
-    console.log(kakaoAddresses);
-  }, [kakaoKeywordResults, kakaoAddresses]);
+    if (selectedPlaceGoogle) {
+      console.log(selectedPlaceGoogle);
+      setValue('invitation.location.address', selectedPlaceGoogle.description);
+      setValue('invitation.location.roadAddress', '');
+      setValue('invitation.location.coord.0', 0);
+      setValue('invitation.location.coord.1', 0);
+      setValue('invitation.location.placeName', selectedPlaceGoogle.terms[0].value);
+      setValue('invitation.location.placeDetail', '');
+      setIsAddress(false);
+    }
+  }, [selectedPlaceGoogle, setValue, setIsAddress]);
+
+  useEffect(() => {
+    if (selectedPlaceKakao) {
+      setValue('invitation.location.address', selectedPlaceKakao.address_name);
+      setValue('invitation.location.roadAddress', selectedPlaceKakao.road_address_name);
+      setValue('invitation.location.coord.0', selectedPlaceKakao.x);
+      setValue('invitation.location.coord.1', selectedPlaceKakao.y);
+      setValue('invitation.location.placeName', selectedPlaceKakao.place_name);
+      setValue('invitation.location.placeDetail', '');
+      setIsAddress(false);
+    }
+  }, [selectedPlaceKakao, setValue, setIsAddress]);
 
   return (
     <TypedCombobox value={value} onChange={handleChangeCombobox} onClose={handleCloseCombobox}>
@@ -106,7 +151,13 @@ function ComboBox({ engine }: IntroLocationSearchProps) {
           as="ul"
         >
           <ul className="divide-y divide-slate-100">
+            {isLoading ? (
+              <ul className="relative w-full px-4 py-3 text-left hover:bg-slate-50 flex justify-center items-center">
+                <Loader />
+              </ul>
+            ) : null}
             {engine === 'GOOGLE' &&
+              !isLoading &&
               googlePlaces.map((place) => (
                 <ComboboxOption key={place.place_id} value={place} as="li">
                   <button
@@ -120,6 +171,7 @@ function ComboBox({ engine }: IntroLocationSearchProps) {
                 </ComboboxOption>
               ))}
             {engine === 'KAKAO' &&
+              !isLoading &&
               kakaoKeywordResults?.documents.map((document) => (
                 <ComboboxOption key={document.id} value={document} as="li">
                   <button
@@ -139,5 +191,5 @@ function ComboBox({ engine }: IntroLocationSearchProps) {
   );
 }
 
-const IntroComboBox = memo(ComboBox);
-export default IntroComboBox;
+const IntroSearchAddress = memo(ComboBox);
+export default IntroSearchAddress;

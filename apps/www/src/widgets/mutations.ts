@@ -1,8 +1,8 @@
 import { useMutation, type UseMutationResult, useQueryClient } from '@tanstack/react-query';
 
-import type { IInvitation } from '@/types/pageBrothers.type';
+import type { IInvitation, IInvitationImageData } from '@/types/pageBrothers.type';
 
-import { postInvitation, postWidget, putEventInfo, putInvitationConfig } from './apis';
+import { postImage, postInvitation, postWidget, putEventInfo, putInvitationConfig } from './apis';
 import { QUERY_KEY_INVITATION } from './constants';
 import type { ConfigPayload, EventInfoData, IdResponse, WidgetData } from './types';
 
@@ -50,6 +50,18 @@ export function useEventInfoMutation(
   const queryClient = useQueryClient();
   return useMutation<IInvitation, Error, EventInfoData>({
     mutationFn: (eventInfoData: EventInfoData) => putEventInfo(eventInfoData),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: [QUERY_KEY_INVITATION, invitationId] });
+    },
+  });
+}
+
+export function useInvitationImageMutation(
+  invitationId: string,
+): UseMutationResult<IInvitationImageData, Error, FormData> {
+  const queryClient = useQueryClient();
+  return useMutation<IInvitationImageData, Error, FormData>({
+    mutationFn: (imageData: FormData) => postImage(imageData, invitationId),
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: [QUERY_KEY_INVITATION, invitationId] });
     },

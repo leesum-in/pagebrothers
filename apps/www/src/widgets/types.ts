@@ -143,3 +143,5 @@ export type IntroSearchQuery = {
   value: string;
   engine: IntroSearchEngine;
 };
+
+export type HookFormValues = { invitation: IInvitation | null };

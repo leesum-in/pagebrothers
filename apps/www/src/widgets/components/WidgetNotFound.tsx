@@ -1,19 +1,22 @@
 'use client';
 
 import { Button } from '@repo/shared';
-import { useParams } from 'next/navigation';
 import { useEffect, useMemo } from 'react';
 import { AiOutlinePlusCircle } from 'react-icons/ai';
+import { useShallow } from 'zustand/shallow';
 
 import type { WidgetItem } from '@/types/pageBrothers.type';
 
-import { useInvitationQuery } from '../queries';
+import type { ModalStore } from '../zustand';
 import useModalStore from '../zustand';
 
 function WidgetNotFound() {
-  const { id } = useParams<{ id: string }>();
-  const { data: invitation } = useInvitationQuery(id);
-  const { openModal } = useModalStore();
+  const { openModal, invitation } = useModalStore(
+    useShallow((state: ModalStore) => ({
+      openModal: state.openModal,
+      invitation: state.invitation,
+    })),
+  );
 
   const introDefaultWidget: Partial<WidgetItem> = useMemo(() => {
     return {
