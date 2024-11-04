@@ -71,7 +71,7 @@ function VideoWidgetConfigure({ widgetItem }: VideoWidgetConfigureProps): React.
     setOnSubmit(onSubmit);
   }, [setOnSubmit, onSubmit]);
 
-  if (!widgetIndex) return <FixedLoader />;
+  if (widgetIndex === null) return <FixedLoader />;
 
   return (
     <div className="space-y-8">

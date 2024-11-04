@@ -181,7 +181,7 @@ function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.
     setOnSubmit(onSubmit);
   }, [setOnSubmit, onSubmit]);
 
-  if (widgetIndex === null || widgetIndex === -1) return <FixedLoader />;
+  if (widgetIndex === null) return <FixedLoader />;
 
   return (
     <div className="space-y-8">
