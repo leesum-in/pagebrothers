@@ -10,7 +10,6 @@ import {
   isSameDay,
   setHours,
   setMinutes,
-  setSeconds,
   startOfDay,
 } from 'date-fns';
 import { ko } from 'date-fns/locale';
@@ -24,6 +23,7 @@ import type { IInvitation } from '@/types/pageBrothers.type';
 import { Before, Next } from '@/ui/svgs';
 
 import '../react-datepicker.css';
+import { getCombinedDateTime } from '../utils';
 import useModalStore from '../zustand';
 
 const months = [
@@ -50,6 +50,7 @@ function IntroCalendar({ invitation }: IntroCalendarProps) {
 
   const [selectedDay, setSelectedDay] = useState<Date | undefined>(new Date(invitation.eventAt));
   const [selectedTime, setSelectedTime] = useState<Date | undefined>(new Date(invitation.eventAt));
+  const [isTimeClicked, setIsTimeClicked] = useState<boolean>(false);
 
   const { closeMultiModal } = useModalStore();
 
@@ -59,7 +60,7 @@ function IntroCalendar({ invitation }: IntroCalendarProps) {
 
   const handleOnChangeTime = (date: Date | null) => {
     if (date) setSelectedTime(date);
-    closeMultiModal();
+    setIsTimeClicked(true);
   };
 
   useEffect(() => {
@@ -76,21 +77,24 @@ function IntroCalendar({ invitation }: IntroCalendarProps) {
   }, [selectedTime]);
 
   useEffect(() => {
+    if (!isTimeClicked) return;
     if (selectedDay && selectedTime) {
-      const date = selectedDay;
-      const hours = selectedTime.getHours();
-      const minutes = selectedTime.getMinutes();
-      const seconds = selectedTime.getSeconds();
+      const originDate = getCombinedDateTime(
+        new Date(invitation.eventAt),
+        new Date(invitation.eventAt),
+      );
+      const combinedDateTime = getCombinedDateTime(selectedDay, selectedTime);
 
-      let combinedDateTime = setHours(date, hours);
-      combinedDateTime = setMinutes(combinedDateTime, minutes);
-      combinedDateTime = setSeconds(combinedDateTime, seconds);
-
-      const formatted = format(combinedDateTime, "yyyy-MM-dd'T'HH:mm:ss");
-
-      setValue('invitation.eventAt', formatted);
+      const datesAreEqual = isSameDay(originDate, combinedDateTime);
+      if (!datesAreEqual) {
+        const formatted = format(combinedDateTime, "yyyy-MM-dd'T'HH:mm:ss");
+        setValue('invitation.eventAt', formatted);
+        closeMultiModal();
+        return;
+      }
+      closeMultiModal();
     }
-  }, [selectedDay, selectedTime, setValue]);
+  }, [selectedDay, selectedTime, setValue, closeMultiModal, invitation, isTimeClicked]);
 
   return (
     <div>

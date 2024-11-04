@@ -1,3 +1,5 @@
+import { setHours, setMinutes, setSeconds } from 'date-fns';
+
 import type { IInvitation, IntroDateFormatKey, WidgetType } from '@/types/pageBrothers.type';
 
 export function formatDate(time: string | null, dateFormatKey: IntroDateFormatKey): string {
@@ -44,7 +46,20 @@ export function formatDate(time: string | null, dateFormatKey: IntroDateFormatKe
 
 export function getWidgetIndex(invitation: IInvitation | null, type: WidgetType) {
   if (!invitation) return null;
-  return invitation.widgets.findIndex((item) => item.type === type);
+  const index = invitation.widgets.findIndex((item) => item.type === type);
+  return index === -1 ? 0 : index;
+}
+
+export function getCombinedDateTime(date: Date, time: Date) {
+  const hours = time.getHours();
+  const minutes = time.getMinutes();
+  const seconds = time.getSeconds();
+
+  let combinedDateTime = setHours(date, hours);
+  combinedDateTime = setMinutes(combinedDateTime, minutes);
+  combinedDateTime = setSeconds(combinedDateTime, seconds);
+
+  return combinedDateTime;
 }
 
 // FileReader를 사용하여 파일을 Data URL로 읽어오는 함수
