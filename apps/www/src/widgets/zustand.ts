@@ -68,14 +68,20 @@ const useModalStore = create<ModalStore>((set) => ({
     }));
   },
   closeModal: () => {
-    set((state: ModalStore) => ({
-      modalState: { ...state.modalState, isOpen: false, widget: null },
-    }));
+    set((state: ModalStore) => ({ modalState: { ...state.modalState, isOpen: false } }));
+    setTimeout(() => {
+      set((state: ModalStore) => ({
+        modalState: { ...state.modalState, widget: null },
+      }));
+    }, 300);
   },
   closeMultiModal: () => {
-    set((state: ModalStore) => ({
-      multiModalState: { ...state.multiModalState, isOpen: false, widget: null, calendar: false },
-    }));
+    set((state: ModalStore) => ({ multiModalState: { ...state.multiModalState, isOpen: false } }));
+    setTimeout(() => {
+      set((state: ModalStore) => ({
+        multiModalState: { ...state.multiModalState, widget: null, calendar: false },
+      }));
+    }, 300);
   },
   setOnSubmit: (onSubmit: SubmitHandler<HookFormValues>) => {
     set((state: ModalStore) => ({ ...state, onSubmit }));
