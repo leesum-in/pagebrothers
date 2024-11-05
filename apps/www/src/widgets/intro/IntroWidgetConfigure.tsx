@@ -1,6 +1,6 @@
 'use client';
 
-import { cn, Label } from '@repo/shared';
+import { Button, cn, Label } from '@repo/shared';
 import { APIProvider } from '@vis.gl/react-google-maps';
 import Image from 'next/image';
 import { useCallback, useEffect, useMemo, useState } from 'react';
@@ -223,19 +223,23 @@ function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.
                   </div>
                 </div>
                 <div className="center-flex gap-6 pr-4">
-                  <button
+                  <Button
                     type="button"
-                    className=" h-12 rounded-md px-0 text-sm  text-indigo-600 hover:text-indigo-700 center-flex gap-2 font-bold shadow-1 transition-colors disabled:opacity-40"
+                    variants="text_secondary"
+                    size="medium"
+                    className="h-12 rounded-md px-0 text-sm  text-indigo-600 hover:text-indigo-700 center-flex gap-2 font-bold shadow-1 transition-colors disabled:opacity-40"
                   >
                     편집
-                  </button>
-                  <button
+                  </Button>
+                  <Button
                     type="button"
-                    className=" h-12 rounded-md px-0 text-sm  text-slate-500 hover:text-slate-600 center-flex gap-2 font-bold shadow-1 transition-colors disabled:opacity-40"
+                    variants="text_secondary"
+                    size="medium"
+                    className="h-12 rounded-md px-0 text-sm  text-slate-500 hover:text-slate-600 center-flex gap-2 font-bold shadow-1 transition-colors disabled:opacity-40"
                     onClick={handleClickDeleteImage}
                   >
                     삭제
-                  </button>
+                  </Button>
                 </div>
               </div>
             ) : null}
@@ -387,13 +391,14 @@ function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.
                       {watch('invitation.location.roadAddress')}
                     </p>
                   </div>
-                  <button
-                    className="center-flex h-16 w-16 flex-none text-slate-500"
+                  <Button
                     type="button"
-                    tabIndex={-1}
+                    variants="text_secondary"
+                    size="medium"
+                    className="center-flex h-16 w-16 flex-none text-slate-500"
                   >
                     <FaRegTrashAlt onClick={handleClickTrashCan} />
-                  </button>
+                  </Button>
                 </div>
               </div>
             )}

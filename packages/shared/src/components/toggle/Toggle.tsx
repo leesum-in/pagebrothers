@@ -43,7 +43,7 @@ function Toggle({ label = 'left', toggleOn, disabled = false, labelText, onChang
       as="div"
       className={`flex items-center ${disabled ? 'opacity-50 cursor-not-allowed' : null}`}
     >
-      {label === 'left' && labelText && <Label label={labelText} className="mr-5" />}
+      {label === 'left' && Boolean(labelText) && <Label label={labelText} className="mr-5" />}
       <Switch
         checked={toggleOn}
         onChange={onChange}
@@ -56,7 +56,7 @@ function Toggle({ label = 'left', toggleOn, disabled = false, labelText, onChang
           className={`absolute top-1/2 transform -translate-y-1/2 transition-transform ${getCircleStyles(disabled, toggleOn)}`}
         />
       </Switch>
-      {label === 'right' && labelText && <Label label={labelText} className="ml-5" />}
+      {label === 'right' && Boolean(labelText) && <Label label={labelText} className="ml-5" />}
     </Switch.Group>
   );
 }
