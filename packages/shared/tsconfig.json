@@ -3,10 +3,11 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
+      "@/*": ["src/*"],
       "*.svg": ["./svg.d.ts"]
     },
     "types": ["node"]
   },
-  "include": ["."],
+  "include": [".", "**/*.ts", "**/*.tsx"],
   "exclude": ["dist", "build", "node_modules"]
 }

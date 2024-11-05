@@ -1,11 +1,11 @@
 'use client';
 
+import type { VideoWidgetConfig, WidgetItem } from '@repo/shared/src/types/pageBrothers.type';
 import { useCallback, useEffect, useMemo } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useFormContext } from 'react-hook-form';
 import { useShallow } from 'zustand/shallow';
 
-import type { VideoWidgetConfig, WidgetItem } from '@/types/pageBrothers.type';
 import { FixedLoader } from '@/ui/loader';
 
 import { useInvitationConfigMutation } from '../mutations';

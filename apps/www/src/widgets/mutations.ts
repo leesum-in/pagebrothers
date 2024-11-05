@@ -1,6 +1,5 @@
+import type { IInvitation, IInvitationImageData } from '@repo/shared/src/types/pageBrothers.type';
 import { useMutation, type UseMutationResult, useQueryClient } from '@tanstack/react-query';
-
-import type { IInvitation, IInvitationImageData } from '@/types/pageBrothers.type';
 
 import { postImage, postInvitation, postWidget, putEventInfo, putInvitationConfig } from './apis';
 import { QUERY_KEY_INVITATION } from './constants';

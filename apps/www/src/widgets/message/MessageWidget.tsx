@@ -1,4 +1,8 @@
-import type { IInvitation, MessageWidgetConfig, WidgetItem } from '@/types/pageBrothers.type';
+import type {
+  IInvitation,
+  MessageWidgetConfig,
+  WidgetItem,
+} from '@repo/shared/src/types/pageBrothers.type';
 
 import { WidgetWrapper } from '../components';
 import { TEXT_ALIGN, TEXT_SIZE } from '../constants';

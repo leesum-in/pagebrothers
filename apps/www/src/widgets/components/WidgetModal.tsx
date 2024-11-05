@@ -1,6 +1,5 @@
+import type { WidgetItem } from '@repo/shared/src/types/pageBrothers.type';
 import { memo } from 'react';
-
-import type { WidgetItem } from '@/types/pageBrothers.type';
 
 import { IntroWidgetConfigure } from '../intro';
 import { VideoWidgetConfigure } from '../video';

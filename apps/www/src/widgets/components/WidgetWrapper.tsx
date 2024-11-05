@@ -1,6 +1,5 @@
+import type { WidgetItem } from '@repo/shared/src/types/pageBrothers.type';
 import { type PropsWithChildren } from 'react';
-
-import type { WidgetItem } from '@/types/pageBrothers.type';
 
 import WidgetButtons from './WidgetButtons';
 

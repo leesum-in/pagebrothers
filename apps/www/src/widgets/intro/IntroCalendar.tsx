@@ -1,6 +1,7 @@
 'use client';
 
 import { cn } from '@repo/shared';
+import type { IInvitation } from '@repo/shared/src/types/pageBrothers.type';
 import {
   format,
   getDate,
@@ -19,7 +20,6 @@ import type { ReactDatePickerCustomHeaderProps } from 'react-datepicker';
 import DatePicker from 'react-datepicker';
 import { useFormContext } from 'react-hook-form';
 
-import type { IInvitation } from '@/types/pageBrothers.type';
 import { Before, Next } from '@/ui/svgs';
 
 import '../react-datepicker.css';

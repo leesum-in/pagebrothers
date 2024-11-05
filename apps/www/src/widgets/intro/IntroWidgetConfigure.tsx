@@ -1,6 +1,13 @@
 'use client';
 
 import { Button, cn, Label } from '@repo/shared';
+import Intro from '@repo/shared/src/components/widgets/intro/Intro';
+import type {
+  IntroDateFormatKey,
+  IntroLayoutKey,
+  IntroWidgetConfig,
+  WidgetItem,
+} from '@repo/shared/src/types/pageBrothers.type';
 import { APIProvider } from '@vis.gl/react-google-maps';
 import Image from 'next/image';
 import { useCallback, useEffect, useMemo, useState } from 'react';
@@ -10,12 +17,6 @@ import { LuPlusCircle } from 'react-icons/lu';
 import { MdOutlineCalendarToday } from 'react-icons/md';
 import { useShallow } from 'zustand/shallow';
 
-import type {
-  IntroDateFormatKey,
-  IntroLayoutKey,
-  IntroWidgetConfig,
-  WidgetItem,
-} from '@/types/pageBrothers.type';
 import { FixedLoader, Loader } from '@/ui/loader';
 
 import { WidgetBreakLine } from '../components';
@@ -35,7 +36,6 @@ import type {
 import { formatDate, getImageSize, getWidgetIndex } from '../utils';
 import type { ModalStore } from '../zustand';
 import useModalStore from '../zustand';
-import Intro from './Intro';
 import IntroSearchAddress from './IntroSearchAddress';
 import IntroSelectDateFormatKey from './IntroSelectDateFormatKey';
 import IntroSelectLayout from './IntroSelectLayout';

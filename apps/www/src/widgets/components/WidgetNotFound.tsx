@@ -1,11 +1,10 @@
 'use client';
 
 import { Button } from '@repo/shared';
+import type { WidgetItem } from '@repo/shared/src/types/pageBrothers.type';
 import { useEffect, useMemo } from 'react';
 import { AiOutlinePlusCircle } from 'react-icons/ai';
 import { useShallow } from 'zustand/shallow';
-
-import type { WidgetItem } from '@/types/pageBrothers.type';
 
 import type { ModalStore } from '../zustand';
 import useModalStore from '../zustand';

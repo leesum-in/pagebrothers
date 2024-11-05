@@ -7,6 +7,13 @@
       "@/*": ["src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "../../packages/shared/src/components/widgets/intro/Intro.tsx",
+    "../../packages/shared/src/components/widgets/video/Video.tsx"
+  ],
   "exclude": ["node_modules"]
 }

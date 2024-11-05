@@ -1,12 +1,10 @@
-import Image from 'next/image';
 import { IoArrowDown } from 'react-icons/io5';
-
 import type {
   IInvitation,
   IInvitationImageData,
   IntroLayoutKey,
   IntroWidgetConfig,
-} from '@/types/pageBrothers.type';
+} from '../../../types/pageBrothers.type';
 
 interface IntroProps {
   config: IntroWidgetConfig;
@@ -253,13 +251,12 @@ function IntroImage({
 
 function IntroImageOnly({ imageData }: { imageData: IInvitationImageData }) {
   return (
-    <Image
+    <img
       src={imageData.url}
-      alt="image"
+      alt="intro"
       className="relative h-full w-full bg-white object-cover"
       width={imageData.dimensions.width}
       height={imageData.dimensions.height}
-      priority
     />
   );
 }

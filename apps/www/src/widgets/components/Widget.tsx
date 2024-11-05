@@ -1,7 +1,6 @@
+import type { IInvitation, WidgetItem } from '@repo/shared/src/types/pageBrothers.type';
 import dynamic from 'next/dynamic';
 import { memo } from 'react';
-
-import type { IInvitation, WidgetItem } from '@/types/pageBrothers.type';
 
 interface WidgetProps {
   invitation?: IInvitation;

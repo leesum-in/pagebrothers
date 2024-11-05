@@ -1,7 +1,6 @@
+import type { IInvitation, WidgetItem } from '@repo/shared/src/types/pageBrothers.type';
 import type { SubmitHandler } from 'react-hook-form';
 import { create } from 'zustand';
-
-import type { IInvitation, WidgetItem } from '@/types/pageBrothers.type';
 
 import type { HookFormValues } from './types';
 

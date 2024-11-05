@@ -1,4 +1,4 @@
-export { default as Intro } from './Intro';
+export { default as Intro } from '@repo/shared/src/components/widgets/intro/Intro';
 export { default as IntroSearchAddress } from './IntroSearchAddress';
 export { default as IntroSelectDateFormatKey } from './IntroSelectDateFormatKey';
 export { default as IntroSelectLayout } from './IntroSelectLayout';

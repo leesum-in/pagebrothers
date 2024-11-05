@@ -1,4 +1,4 @@
-import type { WidgetItem } from '@/types/pageBrothers.type';
+import type { WidgetItem } from '@repo/shared/src/types/pageBrothers.type';
 
 import WidgetModifyButton from './WidgetModifyButton';
 import WidgetStickerButton from './WidgetStickerButton';

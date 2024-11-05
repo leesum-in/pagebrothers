@@ -8,3 +8,4 @@ export * from './modal';
 export { Radio } from './radio';
 export * from './textInput';
 export { Toggle } from './toggle';
+export * from './widgets';
