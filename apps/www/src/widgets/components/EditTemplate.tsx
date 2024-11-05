@@ -83,7 +83,7 @@ function EditTemplate() {
           modalState.widget ? <WidgetModalFooter widgetItem={modalState.widget} /> : null
         }
       >
-        <WidgetModal widget={modalState.widget as WidgetItem | null} />
+        <WidgetModal widgetItem={modalState.widget as WidgetItem | null} />
       </Modal>
       <Modal
         isModalOpen={multiModalState.isOpen}

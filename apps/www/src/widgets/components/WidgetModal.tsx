@@ -6,13 +6,13 @@ import { IntroWidgetConfigure } from '../intro';
 import { VideoWidgetConfigure } from '../video';
 
 interface WidgetModalProps {
-  widget: WidgetItem | null;
+  widgetItem: WidgetItem | null;
 }
 
-function WidgetModal({ widget }: WidgetModalProps): React.ReactNode {
-  if (!widget) return null;
-  if (widget.type === 'INTRO') return <IntroWidgetConfigure widgetItem={widget} />;
-  if (widget.type === 'VIDEO') return <VideoWidgetConfigure widgetItem={widget} />;
+function WidgetModal({ widgetItem }: WidgetModalProps): React.ReactNode {
+  if (!widgetItem) return null;
+  if (widgetItem.type === 'INTRO') return <IntroWidgetConfigure widgetItem={widgetItem} />;
+  if (widgetItem.type === 'VIDEO') return <VideoWidgetConfigure widgetItem={widgetItem} />;
 
   return null;
 }

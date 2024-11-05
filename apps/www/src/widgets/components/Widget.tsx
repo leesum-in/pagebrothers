@@ -25,12 +25,12 @@ const components: Record<
 };
 
 function Widget({ invitation, widgetItem, isMultiModal }: WidgetProps) {
-  const Component = widgetItem.type && components[widgetItem.type as keyof typeof components];
+  const WidgetComponent = widgetItem.type && components[widgetItem.type as keyof typeof components];
 
-  if (!Component) return null;
+  if (!WidgetComponent) return null;
 
   return (
-    <Component
+    <WidgetComponent
       invitation={invitation}
       widgetItem={widgetItem as WidgetItem}
       isMultiModal={isMultiModal}
