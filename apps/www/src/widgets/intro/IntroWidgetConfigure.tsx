@@ -355,7 +355,7 @@ function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.
               </div>
             </div>
             {isAddress ? (
-              <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY || ''}>
+              <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY ?? ''}>
                 <div className="flex flex-col space-y-2">
                   <div className="flex items-center rounded-lg border border-slate-200 bg-slate-100 p-1 text-sm h-12 ">
                     <label className="group relative flex-1 cursor-pointer text-center h-10">
