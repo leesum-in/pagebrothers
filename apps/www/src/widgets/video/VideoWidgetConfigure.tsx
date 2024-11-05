@@ -15,7 +15,7 @@ import type { ModalStore } from '../zustand';
 import useModalStore from '../zustand';
 
 interface VideoWidgetConfigureProps {
-  widgetItem: WidgetItem;
+  widgetItem: WidgetItem | Omit<WidgetItem, 'id'>;
 }
 
 function VideoWidgetConfigure({ widgetItem }: VideoWidgetConfigureProps): React.ReactNode {
@@ -37,7 +37,7 @@ function VideoWidgetConfigure({ widgetItem }: VideoWidgetConfigureProps): React.
 
   const onSubmit: SubmitHandler<HookFormValues> = useCallback(
     (data) => {
-      if (!invitation || !data.invitation) return;
+      if (!invitation || !data.invitation || !('id' in widgetItem)) return;
 
       const widgets = data.invitation.widgets;
       const videoWidget = widgets.find((widget) => widget.type === 'VIDEO');

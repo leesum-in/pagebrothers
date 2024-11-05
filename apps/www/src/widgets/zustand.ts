@@ -7,7 +7,7 @@ import type { HookFormValues } from './types';
 
 export type ModalState = {
   isOpen: boolean;
-  widget: WidgetItem | Partial<WidgetItem> | null;
+  widget: WidgetItem | Omit<WidgetItem, 'id'> | null;
 };
 
 export type MultiModalState = {
@@ -20,12 +20,12 @@ export type ModalStore = {
   invitation: IInvitation | null;
   isDragging: boolean;
   onSubmit: SubmitHandler<HookFormValues>;
-  openModal: (widget: WidgetItem | Partial<WidgetItem>) => void;
+  openModal: (widget: WidgetItem | Omit<WidgetItem, 'id'>) => void;
   openMultiModal: ({
     widget,
     calendar,
   }: {
-    widget: WidgetItem | Partial<WidgetItem> | null;
+    widget: WidgetItem | Omit<WidgetItem, 'id'> | null;
     calendar?: boolean;
   }) => void;
   closeModal: () => void;
@@ -48,14 +48,14 @@ const useModalStore = create<ModalStore>((set) => ({
   isDragging: false,
   invitation: null,
   onSubmit: () => {},
-  openModal: (widget: WidgetItem | Partial<WidgetItem>) => {
+  openModal: (widget: WidgetItem | Omit<WidgetItem, 'id'>) => {
     set((state: ModalStore) => ({ modalState: { ...state.modalState, isOpen: true, widget } }));
   },
   openMultiModal: ({
     widget,
     calendar,
   }: {
-    widget: WidgetItem | Partial<WidgetItem> | null;
+    widget: WidgetItem | Omit<WidgetItem, 'id'> | null;
     calendar?: boolean;
   }) => {
     set((state: ModalStore) => ({

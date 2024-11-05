@@ -11,8 +11,8 @@ interface ModalProps extends PropsWithChildren {
   isDragging?: boolean;
   onCloseModal: () => void;
   onSubmit?: (e: React.FormEvent<HTMLFormElement>) => void;
-  modalHeader?: React.ReactNode;
-  modalFooter?: React.ReactNode;
+  modalHeader?: React.ReactNode | null;
+  modalFooter?: React.ReactNode | null;
   isMultiModal?: boolean;
   isCalendar?: boolean;
   isModalFooterBg?: boolean;

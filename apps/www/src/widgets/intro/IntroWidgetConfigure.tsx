@@ -41,7 +41,7 @@ import IntroSelectDateFormatKey from './IntroSelectDateFormatKey';
 import IntroSelectLayout from './IntroSelectLayout';
 
 interface IntroWidgetConfigureProps {
-  widgetItem: WidgetItem;
+  widgetItem: WidgetItem | Omit<WidgetItem, 'id'>;
 }
 
 function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.ReactNode {
@@ -141,7 +141,7 @@ function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.
 
     console.log('eventInfoData ====>', eventInfoData);
 
-    if (!widgetItem.id) {
+    if (!('id' in widgetItem)) {
       const widgetData: WidgetData = {
         id: invitation.id,
         widget: {

@@ -259,6 +259,7 @@ function IntroImageOnly({ imageData }: { imageData: IInvitationImageData }) {
       className="relative h-full w-full bg-white object-cover"
       width={imageData.dimensions.width}
       height={imageData.dimensions.height}
+      priority
     />
   );
 }

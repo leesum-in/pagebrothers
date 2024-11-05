@@ -7,7 +7,6 @@ import type { FieldValues, SubmitHandler } from 'react-hook-form';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useShallow } from 'zustand/shallow';
 
-import type { WidgetItem } from '@/types/pageBrothers.type';
 import ErrorTemplate from '@/ui/error/ErrorTemplate';
 import { FixedLoader } from '@/ui/loader';
 import { PageWrapper } from '@/ui/wrapper';
@@ -83,7 +82,7 @@ function EditTemplate() {
           modalState.widget ? <WidgetModalFooter widgetItem={modalState.widget} /> : null
         }
       >
-        <WidgetModal widgetItem={modalState.widget as WidgetItem | null} />
+        <WidgetModal widgetItem={modalState.widget ? modalState.widget : null} />
       </Modal>
       <Modal
         isModalOpen={multiModalState.isOpen}

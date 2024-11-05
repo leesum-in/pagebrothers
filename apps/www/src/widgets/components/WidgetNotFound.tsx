@@ -18,7 +18,7 @@ function WidgetNotFound() {
     })),
   );
 
-  const introDefaultWidget: Partial<WidgetItem> = useMemo(() => {
+  const introDefaultWidget: Omit<WidgetItem, 'id'> = useMemo(() => {
     return {
       type: 'INTRO',
       config: {

@@ -6,7 +6,7 @@ import { IntroWidgetConfigure } from '../intro';
 import { VideoWidgetConfigure } from '../video';
 
 interface WidgetModalProps {
-  widgetItem: WidgetItem | null;
+  widgetItem: WidgetItem | Omit<WidgetItem, 'id'> | null;
 }
 
 function WidgetModal({ widgetItem }: WidgetModalProps): React.ReactNode {
