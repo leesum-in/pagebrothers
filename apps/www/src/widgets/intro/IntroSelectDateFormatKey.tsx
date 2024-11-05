@@ -1,5 +1,6 @@
 'use client';
 
+import { Label } from '@repo/shared';
 import type { UseFormRegister, UseFormWatch } from 'react-hook-form';
 
 import type { HookFormValues } from '../types';
@@ -21,10 +22,7 @@ function IntroSelectDateFormatKey({
   return (
     <div className="space-y-2 ">
       <div>
-        <div className="flex items-center justify-between text-slate-600">
-          <div className="font-bold">표기법</div>
-          <div className="text-sm" />
-        </div>
+        <Label label="표기법" />
         <div>
           <ul className="space-y-2">
             <li>

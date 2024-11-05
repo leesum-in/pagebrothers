@@ -1,5 +1,6 @@
 'use client';
 
+import { Label } from '@repo/shared';
 import type { Dispatch, SetStateAction } from 'react';
 import type { UseFormRegister } from 'react-hook-form';
 import { IoCheckmark } from 'react-icons/io5';
@@ -77,10 +78,7 @@ function IntroSelectLayout({
   return (
     <div className="space-y-2 select-none">
       <div>
-        <div className="flex items-center justify-between text-slate-600">
-          <div className="font-bold">레이아웃</div>
-          <div className="text-sm" />
-        </div>
+        <Label label="레이아웃" />
       </div>
       <div>
         <div
