@@ -57,19 +57,16 @@ function Modal({
     <Transition show={isModalOpen}>
       <div
         className={cn(
-          'scroll-lock-layer center-flex z-40 items-end desktop:items-center transition duration-200',
-          [
-            'data-[enter]:duration-200 data-[enter]:data-[closed]:opacity-0',
-            'data-[leave]:duration-200 data-[leave]:data-[closed]:opacity-0',
-          ],
+          'scroll-lock-layer center-flex z-40 items-end desktop:items-center opacity-100 duration-300 transition-opacity',
+          ['data-[closed]:opacity-0', 'data-[enter]:opacity-0', 'data-[leave]:opacity-0'],
         )}
         onClick={handleModalClose}
       >
         <div
           className={cn(
-            'pointer-events-none opacity-0 scroll-lock-layer-children absolute inset-0 isolate bg-slate-500/50 backdrop-blur-sm',
+            'scroll-lock-layer-children absolute inset-0 isolate bg-slate-500/50 backdrop-blur-sm',
             {
-              'pointer-events-auto backdrop-blur-sm opacity-100': isModalOpen,
+              'pointer-events-auto': isModalOpen,
             },
             modalBgClassName,
           )}
@@ -78,11 +75,11 @@ function Modal({
           <div
             id="multi-modal"
             className={cn(
-              'translate-y-0 scroll-lock-layer-children relative isolate max-h-[90%] w-full overflow-x-hidden rounded-t-2xl bg-white desktop:max-h-[calc(100vh-8rem)] desktop:w-[30rem] desktop:rounded-2xl transition duration-200 opacity-100',
+              'translate-y-0 desktop:translate-y-4 scroll-lock-layer-children relative isolate max-h-[90%] w-full overflow-x-hidden rounded-t-2xl bg-white desktop:max-h-[calc(100vh-8rem)] desktop:w-[30rem] desktop:rounded-2xl opacity-100 transition-all duration-300',
               [
-                'data-[closed]:translate-y-6',
-                'data-[enter]:translate-y-6',
-                'data-[leave]:translate-y-6',
+                'data-[closed]:translate-y-full data-[closed]:desktop:translate-y-4',
+                'data-[enter]:translate-y-full data-[enter]:desktop:translate-y-4',
+                'data-[leave]:translate-y-full data-[leave]:desktop:translate-y-4 ',
               ],
               isMultiModal ? 'max-w-sm' : 'desktop:w-[480px]',
               modalContentClassName,
