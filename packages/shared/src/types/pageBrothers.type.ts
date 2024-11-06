@@ -122,8 +122,8 @@ export interface IInvitationEditor {
 
 /** INVITATION : LOCATION */
 export interface IInvitationLocation {
-  mapType?: string;
-  placeId?: string;
+  mapType?: string | null;
+  placeId?: string | null;
   address: string;
   roadAddress: string;
   placeName: string;
@@ -159,7 +159,7 @@ export interface IInvitationImageData {
     width: number;
     height: number;
   };
-  cropData?: IInvitationImageCropData;
+  cropData?: IInvitationImageCropData | null;
 }
 
 export interface IInvitationImageCropBoxData {
