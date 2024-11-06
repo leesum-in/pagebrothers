@@ -5,7 +5,7 @@ import { FcGoogle } from 'react-icons/fc';
 import { LuArrowRight } from 'react-icons/lu';
 import { RiKakaoTalkFill } from 'react-icons/ri';
 
-import Naver from '@/ui/svgs/Naver';
+import { Naver } from '@/ui/svgs';
 
 import { useAuth } from '../hooks';
 import type { SocialLoginType } from '../types';
