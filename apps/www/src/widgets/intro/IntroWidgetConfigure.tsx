@@ -1,6 +1,6 @@
 'use client';
 
-import { Button, cn, Label } from '@repo/shared';
+import { Button, cn, Label, LabelWithSub } from '@repo/shared';
 import Intro from '@repo/shared/src/components/widgets/intro/Intro';
 import type {
   IntroDateFormatKey,
@@ -277,8 +277,7 @@ function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.
       {/** 타이틀 */}
       <div className="space-y-2 ">
         <div>
-          <Label label="타이틀" />
-          <div className="text-sm text-slate-400">보통 신랑과 신부 이름을 많이 씁니다.</div>
+          <LabelWithSub label="타이틀" subLabel="보통 신랑과 신부 이름을 많이 씁니다." />
         </div>
         <div>
           <label className="relative flex items-center overflow-hidden rounded-lg border focus-within:ring border-slate-200">
@@ -299,8 +298,7 @@ function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.
       {/** 꾸미기 문구 */}
       <div className="space-y-2 ">
         <div>
-          <Label label="꾸미기 문구" />
-          <div className="text-sm text-slate-400">제목과 함께 사용되는 작은 문구입니다.</div>
+          <LabelWithSub label="꾸미기 문구" subLabel="제목과 함께 사용되는 작은 문구입니다." />
         </div>
         <div>
           <label className="relative flex items-center overflow-hidden rounded-md border bg-white focus-within:ring border-slate-200 ">
