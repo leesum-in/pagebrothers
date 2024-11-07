@@ -17,7 +17,7 @@ interface VideoWidgetConfigureProps {
   widgetItem: WidgetItem | Omit<WidgetItem, 'id'>;
 }
 
-function VideoWidgetConfigure({ widgetItem }: VideoWidgetConfigureProps): React.ReactNode {
+function VideoWidgetConfigure({ widgetItem }: VideoWidgetConfigureProps) {
   const { register } = useFormContext<HookFormValues>();
   const { invitation, setOnSubmit, closeModal } = useModalStore(
     useShallow((state: ModalStore) => ({
