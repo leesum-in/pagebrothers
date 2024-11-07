@@ -46,13 +46,18 @@ const config: StorybookConfig = {
     if (config.resolve) {
       config.resolve.alias = {
         ...config.resolve.alias,
-        '@shared': resolve(__dirname, '../../packages/shared/src'),
-        '@/www': resolve(__dirname, '../../apps/www/src'),
-        '@/www/auth': resolve(__dirname, '../../apps/www/src/auth'),
-        '@/www/ui': resolve(__dirname, '../../apps/www/src/ui'),
-        '@/www/widgets': resolve(__dirname, '../../apps/www/src/widgets'),
-        '@/www/utils': resolve(__dirname, '../../apps/www/src/utils'),
+        '@shared': resolve(__dirname, '../../../packages/shared/src'),
+        '@/www': resolve(__dirname, '../../../apps/www/src'),
+        '@/www/auth': resolve(__dirname, '../../../apps/www/src/auth'),
+        '@/www/ui': resolve(__dirname, '../../../apps/www/src/ui'),
+        '@/www/widgets': resolve(__dirname, '../../../apps/www/src/widgets'),
+        '@/www/utils': resolve(__dirname, '../../../apps/www/src/utils'),
+        // react-dom을 모노레포 루트 node_modules에서 참조하도록 설정
+        'react-dom': resolve(__dirname, '../../../node_modules/react-dom'),
+        'react-hook-form': resolve(__dirname, '../../../apps/www/node_modules/react-hook-form'),
+        // 'react-hook-form': resolve(__dirname, '../../../apps/storybook/src/mock/MockFormProvider'),
       };
+      // config.resolve.modules = [resolve(__dirname, '../../apps/www/node_modules'), 'node_modules'];
     }
     return config;
   },
