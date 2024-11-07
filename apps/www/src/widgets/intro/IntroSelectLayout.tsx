@@ -6,8 +6,8 @@ import type { Dispatch, SetStateAction } from 'react';
 import type { UseFormRegister } from 'react-hook-form';
 import { IoCheckmark } from 'react-icons/io5';
 
-import { useSlider } from '../hooks';
-import type { HookFormValues } from '../types';
+import { useSlider } from '@/www/widgets/hooks';
+import type { HookFormValues } from '@/www/widgets/types';
 
 type LayoutKey = {
   key: IntroLayoutKey;

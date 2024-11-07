@@ -1,9 +1,8 @@
 import { Button } from '@repo/shared';
 import type { WidgetType } from '@repo/shared/src/types/pageBrothers.type';
 
-import { Move } from '@/ui/svgs';
-
-import { WIDGET_TYPE_KOREAN } from '../constants';
+import { Move } from '@/www/ui/svgs';
+import { WIDGET_TYPE_KOREAN } from '@/www/widgets/constants';
 
 interface WidgetTitleButtonProps {
   type: WidgetType;

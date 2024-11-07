@@ -23,7 +23,7 @@ const components: Record<
   }),
 };
 
-function Widget({ invitation, widgetItem, isMultiModal }: WidgetProps) {
+function UnmemoizedWidget({ invitation, widgetItem, isMultiModal }: WidgetProps) {
   const WidgetComponent = components[widgetItem.type as keyof typeof components];
 
   return (
@@ -35,4 +35,5 @@ function Widget({ invitation, widgetItem, isMultiModal }: WidgetProps) {
   );
 }
 
-export default memo(Widget);
+const Widget = memo(UnmemoizedWidget);
+export default Widget;

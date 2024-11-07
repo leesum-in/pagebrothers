@@ -1,7 +1,7 @@
 import type { WidgetItem } from '@repo/shared/src/types/pageBrothers.type';
 import { type PropsWithChildren } from 'react';
 
-import WidgetButtons from './WidgetButtons';
+import { WidgetButtons } from '@/www/widgets/components';
 
 interface WidgetWrapperProps {
   widgetItem?: WidgetItem;
@@ -12,7 +12,7 @@ function WidgetWrapper({
   children,
   widgetItem,
   isMultiModal = false,
-}: PropsWithChildren<WidgetWrapperProps>): React.ReactNode {
+}: PropsWithChildren<WidgetWrapperProps>) {
   if (isMultiModal) return <div className="relative overflow-hidden">{children}</div>;
 
   return (

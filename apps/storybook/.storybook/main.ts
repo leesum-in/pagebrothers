@@ -48,10 +48,10 @@ const config: StorybookConfig = {
         ...config.resolve.alias,
         '@shared': resolve(__dirname, '../../packages/shared/src'),
         '@/www': resolve(__dirname, '../../apps/www/src'),
-        '@/auth': resolve(__dirname, '../../apps/www/src/auth'),
-        '@/ui': resolve(__dirname, '../../apps/www/src/ui'),
-        '@/widgets': resolve(__dirname, '../../apps/www/src/widgets'),
-        '@/utils': resolve(__dirname, '../../apps/www/src/utils'),
+        '@/www/auth': resolve(__dirname, '../../apps/www/src/auth'),
+        '@/www/ui': resolve(__dirname, '../../apps/www/src/ui'),
+        '@/www/widgets': resolve(__dirname, '../../apps/www/src/widgets'),
+        '@/www/utils': resolve(__dirname, '../../apps/www/src/utils'),
       };
     }
     return config;

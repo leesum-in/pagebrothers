@@ -4,12 +4,11 @@ import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-import { Check } from '@/ui/svgs';
-
-import { useAuth } from '../hooks';
-import { useRegisterMutation } from '../mutations';
-import type { SocialLoginType } from '../types';
-import AuthWrapper from './AuthWrapper';
+import { AuthWrapper } from '@/www/auth';
+import { useAuth } from '@/www/auth/hooks';
+import { useRegisterMutation } from '@/www/auth/mutations';
+import type { SocialLoginType } from '@/www/auth/types';
+import { Check } from '@/www/ui/svgs';
 
 const registerList = [
   {

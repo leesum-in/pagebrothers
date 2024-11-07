@@ -6,13 +6,12 @@ import type { SubmitHandler } from 'react-hook-form';
 import { useFormContext } from 'react-hook-form';
 import { useShallow } from 'zustand/shallow';
 
-import { FixedLoader } from '@/ui/loader';
-
-import { useInvitationConfigMutation } from '../mutations';
-import type { ConfigPayload, HookFormValues } from '../types';
-import { getWidgetIndex } from '../utils';
-import type { ModalStore } from '../zustand';
-import useModalStore from '../zustand';
+import { FixedLoader } from '@/www/ui/loader';
+import { useInvitationConfigMutation } from '@/www/widgets/mutations';
+import type { ConfigPayload, HookFormValues } from '@/www/widgets/types';
+import { getWidgetIndex } from '@/www/widgets/utils';
+import type { ModalStore } from '@/www/widgets/zustand';
+import useModalStore from '@/www/widgets/zustand';
 
 interface VideoWidgetConfigureProps {
   widgetItem: WidgetItem | Omit<WidgetItem, 'id'>;

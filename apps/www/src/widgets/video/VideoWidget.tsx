@@ -2,7 +2,7 @@ import Video from '@repo/shared/src/components/widgets/video/Video';
 import type { VideoWidgetConfig, WidgetItem } from '@repo/shared/src/types/pageBrothers.type';
 import { memo } from 'react';
 
-import { WidgetWrapper } from '../components';
+import { WidgetWrapper } from '@/www/widgets/components';
 
 interface VideoWidgetProps {
   widgetItem: WidgetItem;

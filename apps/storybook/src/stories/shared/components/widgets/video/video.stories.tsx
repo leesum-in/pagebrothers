@@ -1,6 +1,6 @@
 import { Video } from '@shared/components';
 import { Meta, StoryFn } from '@storybook/react';
-import { WidgetWrapper } from '@www/widgets/components';
+import { WidgetWrapper } from '@/www/widgets/components';
 
 export default {
   title: 'Shared/Components/Widgets/Video',

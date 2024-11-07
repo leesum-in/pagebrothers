@@ -2,7 +2,7 @@ import type { IInvitation, WidgetItem } from '@repo/shared/src/types/pageBrother
 import type { SubmitHandler } from 'react-hook-form';
 import { create } from 'zustand';
 
-import type { HookFormValues } from './types';
+import type { HookFormValues } from '@/www/widgets/types';
 
 export type ModalState = {
   isOpen: boolean;

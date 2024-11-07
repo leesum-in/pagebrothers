@@ -3,7 +3,7 @@
 import { cn } from '@repo/shared';
 import type { UseFormRegister } from 'react-hook-form';
 
-import type { HookFormValues } from '../types';
+import type { HookFormValues } from '@/www/widgets/types';
 
 interface WidgetLabelWithInputProps {
   defaultValue?: string;

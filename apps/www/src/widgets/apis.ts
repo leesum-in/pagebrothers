@@ -9,7 +9,7 @@ import type {
   KakaoAddressResponse,
   KakaoKeywordResponse,
   WidgetData,
-} from './types';
+} from '@/www/widgets/types';
 
 export async function getTemplates(): Promise<ItemsResponse> {
   const url = '/v2/templates?stage=BEST';

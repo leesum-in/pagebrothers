@@ -3,7 +3,7 @@
 import { Button } from '@repo/shared';
 import type { WidgetItem } from '@repo/shared/src/types/pageBrothers.type';
 
-import useModalStore from '../zustand';
+import useModalStore from '@/www/widgets/zustand';
 
 interface WidgetModifyButtonProps {
   widgetItem: WidgetItem;

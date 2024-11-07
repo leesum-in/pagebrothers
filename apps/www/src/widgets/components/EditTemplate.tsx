@@ -7,22 +7,19 @@ import type { FieldValues, SubmitHandler } from 'react-hook-form';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useShallow } from 'zustand/shallow';
 
-import ErrorTemplate from '@/ui/error/ErrorTemplate';
-import { FixedLoader } from '@/ui/loader';
-import { PageWrapper } from '@/ui/wrapper';
+import { ErrorTemplate, FixedLoader, PageWrapper } from '@/www/ui';
 import {
   Widget,
   WidgetModal,
   WidgetModalFooter,
   WidgetModalHeader,
   WidgetNotFound,
-} from '@/widgets/components';
-
-import IntroCalendar from '../intro/IntroCalendar';
-import { useInvitationQuery } from '../queries';
-import type { HookFormValues } from '../types';
-import type { ModalStore } from '../zustand';
-import useModalStore from '../zustand';
+} from '@/www/widgets/components';
+import { IntroCalendar } from '@/www/widgets/intro';
+import { useInvitationQuery } from '@/www/widgets/queries';
+import type { HookFormValues } from '@/www/widgets/types';
+import type { ModalStore } from '@/www/widgets/zustand';
+import useModalStore from '@/www/widgets/zustand';
 
 function EditTemplate() {
   const { id } = useParams<{ id: string }>();

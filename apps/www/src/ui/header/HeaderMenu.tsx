@@ -4,9 +4,8 @@ import { Menu, MenuButton } from '@headlessui/react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-import { useAuth } from '@/auth/hooks';
-
-import HeaderDropDownMenu from './HeaderDropDownMenu';
+import { useAuth } from '@/www/auth';
+import { HeaderDropDownMenu } from '@/www/ui/header';
 
 function HeaderMenu(): React.ReactNode {
   const { me } = useAuth();

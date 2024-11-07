@@ -17,25 +17,24 @@ import { LuPlusCircle } from 'react-icons/lu';
 import { MdOutlineCalendarToday } from 'react-icons/md';
 import { useShallow } from 'zustand/shallow';
 
-import { FixedLoader, Loader } from '@/ui/loader';
-
-import { WidgetBreakLine, WidgetLabelWithInput } from '../components';
+import { FixedLoader, Loader } from '@/www/ui/loader';
+import { WidgetBreakLine, WidgetLabelWithInput } from '@/www/widgets/components';
 import {
   useEventInfoMutation,
   useInvitationConfigMutation,
   useInvitationImageMutation,
   useWidgetMutation,
-} from '../mutations';
+} from '@/www/widgets/mutations';
 import type {
   ConfigPayload,
   EventInfoData,
   HookFormValues,
   IntroSearchEngine,
   WidgetData,
-} from '../types';
-import { formatDate, getImageSize, getWidgetIndex } from '../utils';
-import type { ModalStore } from '../zustand';
-import useModalStore from '../zustand';
+} from '@/www/widgets/types';
+import { formatDate, getImageSize, getWidgetIndex } from '@/www/widgets/utils';
+import type { ModalStore } from '@/www/widgets/zustand';
+import useModalStore from '@/www/widgets/zustand';
 
 import { IntroSearchAddress, IntroSelectDateFormatKey, IntroSelectLayout } from '.';
 

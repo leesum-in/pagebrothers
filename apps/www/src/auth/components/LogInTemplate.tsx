@@ -1,7 +1,5 @@
-import SocialLoginButton from '@/auth/components/SocialLoginButton';
-
-import { SOCIAL_LOGIN_TYPES } from '../types';
-import AuthWrapper from './AuthWrapper';
+import { AuthWrapper, SocialLoginButton } from '@/www/auth';
+import { SOCIAL_LOGIN_TYPES } from '@/www/auth/types';
 
 function LogInTemplate(): React.ReactNode {
   return (

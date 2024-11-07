@@ -1,8 +1,10 @@
 import type { WidgetItem } from '@repo/shared/src/types/pageBrothers.type';
 
-import WidgetModifyButton from './WidgetModifyButton';
-import WidgetStickerButton from './WidgetStickerButton';
-import WidgetTitleButton from './WidgetTitleButton';
+import {
+  WidgetModifyButton,
+  WidgetStickerButton,
+  WidgetTitleButton,
+} from '@/www/widgets/components';
 
 interface WidgetButtonsProps {
   widgetItem: WidgetItem;

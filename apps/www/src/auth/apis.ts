@@ -1,6 +1,6 @@
 import { api } from '@repo/shared';
 
-import type { Me, RegisterData, SocialLoginResponse } from '@/auth/types';
+import type { Me, RegisterData, SocialLoginResponse } from '@/www/auth/types';
 
 export async function getMeFromClient(): Promise<Me | null> {
   const url = '/user/me';

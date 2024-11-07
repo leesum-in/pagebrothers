@@ -1,6 +1,6 @@
+import { WidgetWrapper } from '@/www/widgets/components';
 import { Intro } from '@shared/components';
 import { Meta, StoryFn } from '@storybook/react';
-import { WidgetWrapper } from '@www/widgets/components';
 
 export default {
   title: 'Shared/Components/Widgets/Intro',

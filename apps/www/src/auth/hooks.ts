@@ -4,10 +4,9 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
-import type { Me } from '@/auth/types';
-
-import { QUERY_KEY_ME } from './constants';
-import { useMeQuery } from './queries';
+import { QUERY_KEY_ME } from '@/www/auth/constants';
+import { useMeQuery } from '@/www/auth/queries';
+import type { Me } from '@/www/auth/types';
 
 interface UseAuth {
   me: Me | null;

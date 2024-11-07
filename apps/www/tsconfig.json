@@ -4,7 +4,7 @@
     "plugins": [{ "name": "next" }],
     "baseUrl": "./",
     "paths": {
-      "@/*": ["src/*"]
+      "@/www/*": ["src/*"]
     }
   },
   "include": [

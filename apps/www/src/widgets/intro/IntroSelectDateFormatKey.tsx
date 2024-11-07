@@ -3,8 +3,8 @@
 import { Label } from '@repo/shared';
 import type { UseFormRegister, UseFormWatch } from 'react-hook-form';
 
-import type { HookFormValues } from '../types';
-import { formatDate } from '../utils';
+import type { HookFormValues } from '@/www/widgets/types';
+import { formatDate } from '@/www/widgets/utils';
 
 interface IntroSelectDateFormatKeyProps {
   register: UseFormRegister<HookFormValues>;

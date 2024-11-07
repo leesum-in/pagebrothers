@@ -15,14 +15,13 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      // "@/*": ["../../packages/shared/src/*"] // <<< 이미 쓰고있을경우
-      "@shared/*": ["../../packages/shared/src/*"], // 충돌 방지용 alias 이름설정. @shared/xxxx/xxxx 이런식으로 사용
-      "@www/*": ["../www/src/*"],
+      "@shared/*": ["../../packages/shared/src/*"],
+      "@/www/*": ["../../apps/www/src/*"],
       "@repo/tailwind-config": ["../../packages/config-tailwind/tailwind.config.ts"],
-      "@/auth/*": ["../../apps/www/src/auth/*"],
-      "@/ui/*": ["../../apps/www/src/ui/*"],
-      "@/widgets/*": ["../../apps/www/src/widgets/*"],
-      "@/utils/*": ["../../apps/www/src/utils/*"]
+      "@/www/auth/*": ["../../apps/www/src/auth/*"],
+      "@/www/ui/*": ["../../apps/www/src/ui/*"],
+      "@/www/widgets/*": ["../../apps/www/src/widgets/*"],
+      "@/www/utils/*": ["../../apps/www/src/utils/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

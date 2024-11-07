@@ -1,6 +1,6 @@
 import type { WidgetType } from '@repo/shared/src/types/pageBrothers.type';
 
-import { WIDGET_TYPE_KOREAN } from '../constants';
+import { WIDGET_TYPE_KOREAN } from '@/www/widgets/constants';
 
 interface WidgetModalHeaderProps {
   type: WidgetType;

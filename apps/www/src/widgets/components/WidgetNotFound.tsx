@@ -6,8 +6,8 @@ import { useEffect, useMemo } from 'react';
 import { AiOutlinePlusCircle } from 'react-icons/ai';
 import { useShallow } from 'zustand/shallow';
 
-import type { ModalStore } from '../zustand';
-import useModalStore from '../zustand';
+import type { ModalStore } from '@/www/widgets/zustand';
+import useModalStore from '@/www/widgets/zustand';
 
 function WidgetNotFound() {
   const { openModal, invitation } = useModalStore(

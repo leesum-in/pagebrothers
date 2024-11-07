@@ -12,11 +12,10 @@ import { useFormContext } from 'react-hook-form';
 import { HiOutlineLocationMarker } from 'react-icons/hi';
 import { IoSearchOutline } from 'react-icons/io5';
 
-import { Loader } from '@/ui/loader';
-import debounce from '@/utils/debounce';
-
-import { useKakaoKeywordQuery } from '../queries';
-import type { IntroSearchEngine, KaKaoKeywordDocument } from '../types';
+import { Loader } from '@/www/ui/loader';
+import debounce from '@/www/utils/debounce';
+import { useKakaoKeywordQuery } from '@/www/widgets/queries';
+import type { IntroSearchEngine, KaKaoKeywordDocument } from '@/www/widgets/types';
 
 type ComboboxValue = KaKaoKeywordDocument | google.maps.places.AutocompletePrediction | null;
 

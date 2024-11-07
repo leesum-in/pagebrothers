@@ -1,9 +1,15 @@
 import type { IInvitation, IInvitationImageData } from '@repo/shared/src/types/pageBrothers.type';
 import { useMutation, type UseMutationResult, useQueryClient } from '@tanstack/react-query';
 
-import { postImage, postInvitation, postWidget, putEventInfo, putInvitationConfig } from './apis';
-import { QUERY_KEY_INVITATION } from './constants';
-import type { ConfigPayload, EventInfoData, IdResponse, WidgetData } from './types';
+import {
+  postImage,
+  postInvitation,
+  postWidget,
+  putEventInfo,
+  putInvitationConfig,
+} from '@/www/widgets/apis';
+import { QUERY_KEY_INVITATION } from '@/www/widgets/constants';
+import type { ConfigPayload, EventInfoData, IdResponse, WidgetData } from '@/www/widgets/types';
 
 export function useInvitationMutation(): UseMutationResult<
   IdResponse,

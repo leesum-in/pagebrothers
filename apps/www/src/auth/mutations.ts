@@ -1,8 +1,8 @@
 import { useMutation, type UseMutationResult, useQueryClient } from '@tanstack/react-query';
 
-import { postRegister } from './apis';
-import { QUERY_KEY_ME } from './constants';
-import type { RegisterData, SocialLoginResponse } from './types';
+import { postRegister } from '@/www/auth/apis';
+import { QUERY_KEY_ME } from '@/www/auth/constants';
+import type { RegisterData, SocialLoginResponse } from '@/www/auth/types';
 
 export function useRegisterMutation(): UseMutationResult<SocialLoginResponse, Error, RegisterData> {
   const queryClient = useQueryClient();

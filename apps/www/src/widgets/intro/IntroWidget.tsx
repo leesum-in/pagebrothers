@@ -1,4 +1,4 @@
-import Intro from '@repo/shared/src/components/widgets/intro/Intro';
+import { Intro } from '@repo/shared';
 import type {
   IInvitation,
   IntroWidgetConfig,
@@ -6,7 +6,7 @@ import type {
 } from '@repo/shared/src/types/pageBrothers.type';
 import { memo } from 'react';
 
-import { WidgetWrapper } from '../components';
+import { WidgetWrapper } from '@/www/widgets/components';
 
 interface IntroWidgetProps {
   widgetItem: WidgetItem;

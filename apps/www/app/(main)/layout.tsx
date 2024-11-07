@@ -1,7 +1,7 @@
 import { Suspense, type PropsWithChildren } from 'react';
 
-import { Header } from '@/ui/header';
-import { FixedLoader } from '@/ui/loader';
+import { Header } from '@/www/ui/header';
+import { FixedLoader } from '@/www/ui/loader';
 
 function PublicLayout({ children }: PropsWithChildren): React.ReactNode {
   return (
