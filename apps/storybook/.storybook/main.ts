@@ -55,7 +55,6 @@ const config: StorybookConfig = {
         // react-dom을 모노레포 루트 node_modules에서 참조하도록 설정
         'react-dom': resolve(__dirname, '../../../node_modules/react-dom'),
         'react-hook-form': resolve(__dirname, '../../../apps/www/node_modules/react-hook-form'),
-        // 'react-hook-form': resolve(__dirname, '../../../apps/storybook/src/mock/MockFormProvider'),
       };
       // config.resolve.modules = [resolve(__dirname, '../../apps/www/node_modules'), 'node_modules'];
     }

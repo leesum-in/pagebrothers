@@ -5,7 +5,7 @@ export default {
   title: 'www/WidgetConfig/Video',
   component: VideoWidgetConfigure,
   // decorators: [
-  //   (Story, { parameters } ) => (
+  //   (Story, { parameters }) => (
   //     <FormProvider>
   //       <Story />
   //     </FormProvider>
