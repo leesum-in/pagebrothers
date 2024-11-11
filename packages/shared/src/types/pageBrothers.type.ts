@@ -87,7 +87,7 @@ export interface IInvitation {
   design: IInvitationDesign;
   owners: IInvitationOwner[];
   editors: IInvitationEditor[];
-  widgets: WidgetItem[];
+  widgets: (WidgetItem & { index?: number })[];
   meta: IInvitationMeta;
   share: IInvitationShare | null;
   images: Record<string, IInvitationImageData>;
