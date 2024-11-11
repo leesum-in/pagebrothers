@@ -1,7 +1,12 @@
-import type { IInvitation, IInvitationImageData } from '@repo/shared/src/types/pageBrothers.type';
+import type {
+  IInvitation,
+  IInvitationImageData,
+  WidgetItem,
+} from '@repo/shared/src/types/pageBrothers.type';
 import { useMutation, type UseMutationResult, useQueryClient } from '@tanstack/react-query';
 
 import {
+  deleteWidget,
   postImage,
   postInvitation,
   postWidget,
@@ -67,6 +72,18 @@ export function useInvitationImageMutation(
   const queryClient = useQueryClient();
   return useMutation<IInvitationImageData, Error, FormData>({
     mutationFn: (imageData: FormData) => postImage(imageData, invitationId),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: [QUERY_KEY_INVITATION, invitationId] });
+    },
+  });
+}
+
+export function useWidgetDeleteMutation(
+  invitationId: string,
+): UseMutationResult<WidgetItem, Error, string> {
+  const queryClient = useQueryClient();
+  return useMutation<WidgetItem, Error, string>({
+    mutationFn: (widgetId: string) => deleteWidget(widgetId),
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: [QUERY_KEY_INVITATION, invitationId] });
     },

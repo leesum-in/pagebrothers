@@ -1,7 +1,8 @@
 import type { WidgetItem } from '@repo/shared/src/types/pageBrothers.type';
 import { type PropsWithChildren } from 'react';
 
-import { WidgetButtons } from '@/www/widgets/components';
+import WidgetHeader from './WidgetHeader';
+import WidgetTrashButton from './WidgetTrashButton';
 
 interface WidgetWrapperProps {
   widgetItem?: WidgetItem;
@@ -24,7 +25,7 @@ function WidgetWrapper({
       // aria-describedby="DndDescribedBy-0"
       className="relative overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-1 cursor-default w-[416px]"
     >
-      {widgetItem ? <WidgetButtons widgetItem={widgetItem} /> : null}
+      {widgetItem ? <WidgetHeader widgetItem={widgetItem} /> : null}
 
       <div className="border-t border-slate-200">
         {/** 아래 div에 컬러 스키마 클래스네임 추가 */}
@@ -32,6 +33,10 @@ function WidgetWrapper({
           <div className="relative overflow-hidden">{children}</div>
         </div>
       </div>
+
+      {widgetItem && widgetItem.type !== 'INTRO' ? (
+        <WidgetTrashButton widgetItem={widgetItem} />
+      ) : null}
     </div>
   );
 }
