@@ -20,6 +20,8 @@
   "name": "with-tailwind",
   "dependencies": {
     "axios": "^1.7.7",
+    "date-fns": "^4.1.0",
+    "react-datepicker": "^7.5.0",
     "react-dom": "^18.3.1"
   }
 }
