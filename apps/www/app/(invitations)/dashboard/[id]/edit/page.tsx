@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 
-import { EditTemplate } from '@/widgets/components';
+import { EditTemplate } from '@/www/widgets/components';
 
 export const metadata: Metadata = {
   title: '편집하기',

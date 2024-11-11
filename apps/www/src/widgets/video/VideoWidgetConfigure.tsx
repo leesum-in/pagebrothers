@@ -1,24 +1,23 @@
 'use client';
 
+import type { VideoWidgetConfig, WidgetItem } from '@repo/shared/src/types/pageBrothers.type';
 import { useCallback, useEffect, useMemo } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useFormContext } from 'react-hook-form';
 import { useShallow } from 'zustand/shallow';
 
-import type { VideoWidgetConfig, WidgetItem } from '@/types/pageBrothers.type';
-import { FixedLoader } from '@/ui/loader';
-
-import { useInvitationConfigMutation } from '../mutations';
-import type { ConfigPayload, HookFormValues } from '../types';
-import { getWidgetIndex } from '../utils';
-import type { ModalStore } from '../zustand';
-import useModalStore from '../zustand';
+import { FixedLoader } from '@/www/ui/loader';
+import { useInvitationConfigMutation } from '@/www/widgets/mutations';
+import type { ConfigPayload, HookFormValues } from '@/www/widgets/types';
+import { getWidgetIndex } from '@/www/widgets/utils';
+import type { ModalStore } from '@/www/widgets/zustand';
+import useModalStore from '@/www/widgets/zustand';
 
 interface VideoWidgetConfigureProps {
-  widgetItem: WidgetItem;
+  widgetItem: WidgetItem | Omit<WidgetItem, 'id'>;
 }
 
-function VideoWidgetConfigure({ widgetItem }: VideoWidgetConfigureProps): React.ReactNode {
+function VideoWidgetConfigure({ widgetItem }: VideoWidgetConfigureProps) {
   const { register } = useFormContext<HookFormValues>();
   const { invitation, setOnSubmit, closeModal } = useModalStore(
     useShallow((state: ModalStore) => ({
@@ -37,7 +36,7 @@ function VideoWidgetConfigure({ widgetItem }: VideoWidgetConfigureProps): React.
 
   const onSubmit: SubmitHandler<HookFormValues> = useCallback(
     (data) => {
-      if (!invitation || !data.invitation) return;
+      if (!invitation || !data.invitation || !('id' in widgetItem)) return;
 
       const widgets = data.invitation.widgets;
       const videoWidget = widgets.find((widget) => widget.type === 'VIDEO');

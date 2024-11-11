@@ -1,8 +1,7 @@
+import type { ErrorResponse } from '@repo/shared/src/types/error.type';
+import type { IInvitation } from '@repo/shared/src/types/pageBrothers.type';
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useQuery } from '@tanstack/react-query';
-
-import type { ErrorResponse } from '@/types/error.type';
-import type { IInvitation } from '@/types/pageBrothers.type';
 
 import {
   getInvitation,

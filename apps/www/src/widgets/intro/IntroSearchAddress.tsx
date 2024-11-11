@@ -12,11 +12,10 @@ import { useFormContext } from 'react-hook-form';
 import { HiOutlineLocationMarker } from 'react-icons/hi';
 import { IoSearchOutline } from 'react-icons/io5';
 
-import { Loader } from '@/ui/loader';
-import debounce from '@/utils/debounce';
-
-import { useKakaoKeywordQuery } from '../queries';
-import type { IntroSearchEngine, KaKaoKeywordDocument } from '../types';
+import { Loader } from '@/www/ui/loader';
+import debounce from '@/www/utils/debounce';
+import { useKakaoKeywordQuery } from '@/www/widgets/queries';
+import type { IntroSearchEngine, KaKaoKeywordDocument } from '@/www/widgets/types';
 
 type ComboboxValue = KaKaoKeywordDocument | google.maps.places.AutocompletePrediction | null;
 
@@ -34,10 +33,11 @@ function ComboBox({ engine, setIsAddress }: IntroLocationSearchProps) {
   const { setValue } = useFormContext();
 
   const [googlePlaces, setGooglePlaces] = useState<google.maps.places.AutocompletePrediction[]>([]);
+  const [kakaoQuery, setKakaoQuery] = useState('');
+
   const [selectedPlaceKakao, setSelectedPlaceKakao] = useState<KaKaoKeywordDocument | null>(null);
   const [selectedPlaceGoogle, setSelectedPlaceGoogle] =
     useState<google.maps.places.AutocompletePrediction | null>(null);
-  const [kakaoQuery, setKakaoQuery] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const { data: kakaoKeywordResults } = useKakaoKeywordQuery({
     value: kakaoQuery,
@@ -55,6 +55,11 @@ function ComboBox({ engine, setIsAddress }: IntroLocationSearchProps) {
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!event.target.value) return;
+    if (event.target.value.length === 0) {
+      setKakaoQuery('');
+      setGooglePlaces([]);
+      return;
+    }
     setIsLoading(true);
     const debounced = debounce(async () => {
       if (!placeAutocompleteRef.current) return;
@@ -152,10 +157,17 @@ function ComboBox({ engine, setIsAddress }: IntroLocationSearchProps) {
         >
           <ul className="divide-y divide-slate-100">
             {isLoading ? (
-              <ul className="relative w-full px-4 py-3 text-left hover:bg-slate-50 flex justify-center items-center">
+              <ul className="relative w-full h-20 text-left hover:bg-slate-50 flex justify-center items-center">
                 <Loader />
               </ul>
             ) : null}
+            {!isLoading &&
+              kakaoKeywordResults?.documents.length === 0 &&
+              googlePlaces.length === 0 && (
+                <div className="center-flex h-20">
+                  <p className="text-slate-400">검색된 주소가 없어요.</p>
+                </div>
+              )}
             {engine === 'GOOGLE' &&
               !isLoading &&
               googlePlaces.map((place) => (

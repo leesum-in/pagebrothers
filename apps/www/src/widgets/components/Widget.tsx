@@ -1,11 +1,10 @@
+import type { IInvitation, WidgetItem } from '@repo/shared/src/types/pageBrothers.type';
 import dynamic from 'next/dynamic';
 import { memo } from 'react';
 
-import type { IInvitation, WidgetItem } from '@/types/pageBrothers.type';
-
 interface WidgetProps {
   invitation?: IInvitation;
-  widgetItem: WidgetItem | Partial<WidgetItem>;
+  widgetItem: WidgetItem | Omit<WidgetItem, 'id'>;
   isMultiModal?: boolean;
 }
 
@@ -24,13 +23,11 @@ const components: Record<
   }),
 };
 
-function Widget({ invitation, widgetItem, isMultiModal }: WidgetProps) {
-  const Component = widgetItem.type && components[widgetItem.type as keyof typeof components];
-
-  if (!Component) return null;
+function UnmemoizedWidget({ invitation, widgetItem, isMultiModal }: WidgetProps) {
+  const WidgetComponent = components[widgetItem.type as keyof typeof components];
 
   return (
-    <Component
+    <WidgetComponent
       invitation={invitation}
       widgetItem={widgetItem as WidgetItem}
       isMultiModal={isMultiModal}
@@ -38,4 +35,5 @@ function Widget({ invitation, widgetItem, isMultiModal }: WidgetProps) {
   );
 }
 
-export default memo(Widget);
+const Widget = memo(UnmemoizedWidget);
+export default Widget;

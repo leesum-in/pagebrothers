@@ -1,13 +1,13 @@
 import type { Metadata } from 'next';
 
-import LogInTemplate from '@/auth/components/LogInTemplate';
+import { LoginTemplate } from '@/www/auth';
 
 export const metadata: Metadata = {
   title: '로그인하기',
 };
 
 function LoginPage(): React.ReactNode {
-  return <LogInTemplate />;
+  return <LoginTemplate />;
 }
 
 export default LoginPage;

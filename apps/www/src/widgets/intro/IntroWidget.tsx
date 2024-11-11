@@ -1,19 +1,22 @@
+import { Intro } from '@repo/shared';
+import type {
+  IInvitation,
+  IntroWidgetConfig,
+  WidgetItem,
+} from '@repo/shared/src/types/pageBrothers.type';
 import { memo } from 'react';
 
-import type { IInvitation, IntroWidgetConfig, WidgetItem } from '@/types/pageBrothers.type';
-
-import { WidgetWrapper } from '../components';
-import Intro from './Intro';
+import { WidgetWrapper } from '@/www/widgets/components';
 
 interface IntroWidgetProps {
-  invitation?: IInvitation;
   widgetItem: WidgetItem;
+  invitation?: IInvitation;
   isMultiModal?: boolean;
 }
 
 function IntroWidgetComp({
-  invitation,
   widgetItem,
+  invitation,
   isMultiModal = false,
 }: IntroWidgetProps): React.ReactNode {
   return (

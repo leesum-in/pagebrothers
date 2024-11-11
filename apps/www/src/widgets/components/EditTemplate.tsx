@@ -7,23 +7,19 @@ import type { FieldValues, SubmitHandler } from 'react-hook-form';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useShallow } from 'zustand/shallow';
 
-import type { WidgetItem } from '@/types/pageBrothers.type';
-import ErrorTemplate from '@/ui/error/ErrorTemplate';
-import { FixedLoader } from '@/ui/loader';
-import { PageWrapper } from '@/ui/wrapper';
+import { ErrorTemplate, FixedLoader, PageWrapper } from '@/www/ui';
 import {
   Widget,
   WidgetModal,
   WidgetModalFooter,
   WidgetModalHeader,
   WidgetNotFound,
-} from '@/widgets/components';
-
-import IntroCalendar from '../intro/IntroCalendar';
-import { useInvitationQuery } from '../queries';
-import type { HookFormValues } from '../types';
-import type { ModalStore } from '../zustand';
-import useModalStore from '../zustand';
+} from '@/www/widgets/components';
+import { IntroCalendar } from '@/www/widgets/intro';
+import { useInvitationQuery } from '@/www/widgets/queries';
+import type { HookFormValues } from '@/www/widgets/types';
+import type { ModalStore } from '@/www/widgets/zustand';
+import useModalStore from '@/www/widgets/zustand';
 
 function EditTemplate() {
   const { id } = useParams<{ id: string }>();
@@ -83,7 +79,7 @@ function EditTemplate() {
           modalState.widget ? <WidgetModalFooter widgetItem={modalState.widget} /> : null
         }
       >
-        <WidgetModal widget={modalState.widget as WidgetItem | null} />
+        <WidgetModal widgetItem={modalState.widget ? modalState.widget : null} />
       </Modal>
       <Modal
         isModalOpen={multiModalState.isOpen}
@@ -94,7 +90,7 @@ function EditTemplate() {
       >
         {multiModalState.calendar ? <IntroCalendar invitation={invitation} /> : null}
         {multiModalState.widget ? (
-          <Widget widgetItem={multiModalState.widget} isMultiModal />
+          <Widget widgetItem={multiModalState.widget} isMultiModal invitation={invitation} />
         ) : null}
       </Modal>
 

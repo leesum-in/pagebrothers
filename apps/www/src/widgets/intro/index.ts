@@ -1,4 +1,4 @@
-export { default as Intro } from './Intro';
+export { default as IntroCalendar } from './IntroCalendar';
 export { default as IntroSearchAddress } from './IntroSearchAddress';
 export { default as IntroSelectDateFormatKey } from './IntroSelectDateFormatKey';
 export { default as IntroSelectLayout } from './IntroSelectLayout';

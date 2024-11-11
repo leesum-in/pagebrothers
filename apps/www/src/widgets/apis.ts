@@ -1,6 +1,5 @@
 import { api, kakaoApi } from '@repo/shared';
-
-import type { IInvitation, IInvitationImageData } from '@/types/pageBrothers.type';
+import type { IInvitation, IInvitationImageData } from '@repo/shared/src/types/pageBrothers.type';
 
 import type {
   ConfigPayload,
@@ -10,7 +9,7 @@ import type {
   KakaoAddressResponse,
   KakaoKeywordResponse,
   WidgetData,
-} from './types';
+} from '@/www/widgets/types';
 
 export async function getTemplates(): Promise<ItemsResponse> {
   const url = '/v2/templates?stage=BEST';

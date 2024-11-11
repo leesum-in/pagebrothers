@@ -3,7 +3,7 @@
 import { Button } from '@repo/shared';
 import Link from 'next/link';
 
-import { useAuth } from '@/auth/hooks';
+import { useAuth } from '@/www/auth';
 
 function DashboardHeader() {
   const { me } = useAuth();

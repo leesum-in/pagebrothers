@@ -17,7 +17,7 @@ import type {
   VideoWidgetConfig,
   WidgetItem,
   WidgetType,
-} from '@/types/pageBrothers.type';
+} from '@repo/shared/src/types/pageBrothers.type';
 
 export type IdResponse = {
   id: string;

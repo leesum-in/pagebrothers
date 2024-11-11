@@ -1,4 +1,4 @@
-import StartButton from './StartButton';
+import { StartButton } from '@/www/widgets/components';
 
 function StartTemplate() {
   return (

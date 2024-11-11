@@ -4,7 +4,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
 
-import { QUERY_KEY_ME } from '@/auth/constants';
+import { QUERY_KEY_ME } from '@/www/auth';
 
 function LoginCallbackPage(): React.ReactNode {
   const router = useRouter();

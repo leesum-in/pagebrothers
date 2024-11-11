@@ -1,6 +1,7 @@
 'use client';
 
 import { cn } from '@repo/shared';
+import type { IInvitation } from '@repo/shared/src/types/pageBrothers.type';
 import {
   format,
   getDate,
@@ -19,12 +20,10 @@ import type { ReactDatePickerCustomHeaderProps } from 'react-datepicker';
 import DatePicker from 'react-datepicker';
 import { useFormContext } from 'react-hook-form';
 
-import type { IInvitation } from '@/types/pageBrothers.type';
-import { Before, Next } from '@/ui/svgs';
-
+import { Before, Next } from '@/www/ui/svgs';
+import { getCombinedDateTime } from '@/www/widgets/utils';
+import useModalStore from '@/www/widgets/zustand';
 import '../react-datepicker.css';
-import { getCombinedDateTime } from '../utils';
-import useModalStore from '../zustand';
 
 const months = [
   '1월',

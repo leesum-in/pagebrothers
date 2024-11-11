@@ -1,6 +1,6 @@
 import type { PropsWithChildren } from 'react';
 
-import { Navigation } from '@/ui/navigation';
+import { Navigation } from '@/www/ui/navigation';
 
 function InvitationsLayout({ children }: PropsWithChildren) {
   return (

@@ -1,6 +1,13 @@
 'use client';
 
-import { cn } from '@repo/shared';
+import { Button, cn, Label, LabelWithSub } from '@repo/shared';
+import Intro from '@repo/shared/src/components/widgets/intro/Intro';
+import type {
+  IntroDateFormatKey,
+  IntroLayoutKey,
+  IntroWidgetConfig,
+  WidgetItem,
+} from '@repo/shared/src/types/pageBrothers.type';
 import { APIProvider } from '@vis.gl/react-google-maps';
 import Image from 'next/image';
 import { useCallback, useEffect, useMemo, useState } from 'react';
@@ -10,38 +17,29 @@ import { LuPlusCircle } from 'react-icons/lu';
 import { MdOutlineCalendarToday } from 'react-icons/md';
 import { useShallow } from 'zustand/shallow';
 
-import type {
-  IntroDateFormatKey,
-  IntroLayoutKey,
-  IntroWidgetConfig,
-  WidgetItem,
-} from '@/types/pageBrothers.type';
-import { FixedLoader, Loader } from '@/ui/loader';
-
-import { WidgetBreakLine } from '../components';
+import { FixedLoader, Loader } from '@/www/ui/loader';
+import { WidgetBreakLine, WidgetLabelWithInput } from '@/www/widgets/components';
 import {
   useEventInfoMutation,
   useInvitationConfigMutation,
   useInvitationImageMutation,
   useWidgetMutation,
-} from '../mutations';
+} from '@/www/widgets/mutations';
 import type {
   ConfigPayload,
   EventInfoData,
   HookFormValues,
   IntroSearchEngine,
   WidgetData,
-} from '../types';
-import { formatDate, getImageSize, getWidgetIndex } from '../utils';
-import type { ModalStore } from '../zustand';
-import useModalStore from '../zustand';
-import Intro from './Intro';
-import IntroSearchAddress from './IntroSearchAddress';
-import IntroSelectDateFormatKey from './IntroSelectDateFormatKey';
-import IntroSelectLayout from './IntroSelectLayout';
+} from '@/www/widgets/types';
+import { formatDate, getImageSize, getWidgetIndex } from '@/www/widgets/utils';
+import type { ModalStore } from '@/www/widgets/zustand';
+import useModalStore from '@/www/widgets/zustand';
+
+import { IntroSearchAddress, IntroSelectDateFormatKey, IntroSelectLayout } from '.';
 
 interface IntroWidgetConfigureProps {
-  widgetItem: WidgetItem;
+  widgetItem: WidgetItem | Omit<WidgetItem, 'id'>;
 }
 
 function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.ReactNode {
@@ -141,7 +139,7 @@ function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.
 
     console.log('eventInfoData ====>', eventInfoData);
 
-    if (!widgetItem.id) {
+    if (!('id' in widgetItem)) {
       const widgetData: WidgetData = {
         id: invitation.id,
         widget: {
@@ -195,10 +193,7 @@ function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.
       {/** 대표 이미지 */}
       <div className="space-y-2">
         <div>
-          <div className="flex items-center justify-between text-slate-600">
-            <div className="font-bold">대표 이미지</div>
-            <div className="text-sm" />
-          </div>
+          <Label label="대표 이미지" />
         </div>
         <div>
           <div
@@ -226,28 +221,34 @@ function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.
                   </div>
                 </div>
                 <div className="center-flex gap-6 pr-4">
-                  <button
+                  <Button
                     type="button"
-                    className=" h-12 rounded-md px-0 text-sm  text-indigo-600 hover:text-indigo-700 center-flex gap-2 font-bold shadow-1 transition-colors disabled:opacity-40"
+                    variants="text_secondary"
+                    size="medium"
+                    className="h-12 rounded-md px-0 text-sm  text-indigo-600 hover:text-indigo-700 center-flex gap-2 font-bold shadow-1 transition-colors disabled:opacity-40"
                   >
                     편집
-                  </button>
-                  <button
+                  </Button>
+                  <Button
                     type="button"
-                    className=" h-12 rounded-md px-0 text-sm  text-slate-500 hover:text-slate-600 center-flex gap-2 font-bold shadow-1 transition-colors disabled:opacity-40"
+                    variants="text_secondary"
+                    size="medium"
+                    className="h-12 rounded-md px-0 text-sm  text-slate-500 hover:text-slate-600 center-flex gap-2 font-bold shadow-1 transition-colors disabled:opacity-40"
                     onClick={handleClickDeleteImage}
                   >
                     삭제
-                  </button>
+                  </Button>
                 </div>
               </div>
             ) : null}
             {!introWidgetConfig.coverImage && !isImageLoading ? (
               <>
-                <div className="flex-1 text-sm">
-                  <div className="font-bold text-slate-500">이미지 업로드</div>
-                  <div className="text-slate-400 empty:hidden">png, jpg / 최대 10mb</div>
-                </div>
+                <Label
+                  label="이미지 업로드"
+                  addOn="png, jpg / 최대 10mb"
+                  className="flex-1 text-sm flex-col items-start"
+                  addOnClassName="text-slate-400"
+                />
                 <LuPlusCircle className="ml-auto flex-none stroke-1 text-2xl" />
                 <input
                   className="absolute top-0 left-0 h-full w-full cursor-pointer opacity-0 file:cursor-pointer"
@@ -274,49 +275,36 @@ function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.
       {/** 타이틀 */}
       <div className="space-y-2 ">
         <div>
-          <div className="flex items-center justify-between text-slate-600">
-            <div className="font-bold">타이틀</div>
-            <div className="text-sm" />
-          </div>
-          <div className="text-sm text-slate-400">보통 신랑과 신부 이름을 많이 씁니다.</div>
+          <LabelWithSub label="타이틀" subLabel="보통 신랑과 신부 이름을 많이 씁니다." />
         </div>
         <div>
-          <label className="relative flex items-center overflow-hidden rounded-lg border focus-within:ring border-slate-200">
+          <WidgetLabelWithInput
+            labelClassName="relative flex items-center overflow-hidden rounded-lg border focus-within:ring border-slate-200"
+            defaultValue={`신랑 ${invitation?.owners[0].name}, 신부 ${invitation?.owners[1].name}`}
+            register={register}
+            registerOption={`invitation.widgets.${widgetIndex}.config.title`}
+            isTextarea
+          >
             <div className="flex items-center" />
-            <textarea
-              className="block w-full resize-none bg-white px-4 py-3 text-slate-600 placeholder:text-slate-300 disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-300 undefined"
-              spellCheck="false"
-              autoComplete="off"
-              defaultValue={`신랑 ${invitation?.owners[0].name}, 신부 ${invitation?.owners[1].name}`}
-              rows={3}
-              {...register(`invitation.widgets.${widgetIndex}.config.title`)}
-            />
-            <div className="flex items-center" />
-          </label>
+          </WidgetLabelWithInput>
         </div>
       </div>
 
       {/** 꾸미기 문구 */}
       <div className="space-y-2 ">
         <div>
-          <div className="flex items-center justify-between text-slate-600">
-            <div className="font-bold">꾸미기 문구</div>
-            <div className="text-sm" />
-          </div>
-          <div className="text-sm text-slate-400">제목과 함께 사용되는 작은 문구입니다.</div>
+          <LabelWithSub label="꾸미기 문구" subLabel="제목과 함께 사용되는 작은 문구입니다." />
         </div>
         <div>
-          <label className="relative flex items-center overflow-hidden rounded-md border bg-white focus-within:ring border-slate-200 ">
+          <WidgetLabelWithInput
+            labelClassName="relative flex items-center overflow-hidden rounded-lg border focus-within:ring border-slate-200"
+            defaultValue={(widgetItem.config as IntroWidgetConfig).subTitle}
+            register={register}
+            registerOption={`invitation.widgets.${widgetIndex}.config.subTitle`}
+            inputClassName="peer block h-12 w-full bg-white px-4 text-slate-600 placeholder:text-slate-300 disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-200 "
+          >
             <div className="flex flex-none items-center" />
-            <input
-              className="peer block h-12 w-full bg-white px-4 text-slate-600 placeholder:text-slate-300 disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-200 "
-              spellCheck="false"
-              autoComplete="off"
-              defaultValue={(widgetItem.config as IntroWidgetConfig).subTitle}
-              {...register(`invitation.widgets.${widgetIndex}.config.subTitle`)}
-            />
-            <div className="flex flex-none items-center" />
-          </label>
+          </WidgetLabelWithInput>
         </div>
       </div>
 
@@ -325,9 +313,9 @@ function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.
       {/** 예식 정보 표기 */}
       <div className="space-y-2 ">
         <div>
-          <div className="flex items-center justify-between text-slate-600">
-            <div className="font-bold">예식 정보 표기</div>
-            <div className="text-sm">
+          <Label
+            label="예식 정보 표기"
+            addOn={
               <label className="center-flex relative flex cursor-pointer gap-2 text-sm leading-5 ">
                 <input
                   className="no-interaction peer absolute flex-none opacity-0"
@@ -338,8 +326,8 @@ function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.
                 />
                 <div className="relative h-6 w-12 rounded-full border border-slate-200 bg-slate-100 transition-[background-color] after:ml-[-1px] after:mt-[-1px] after:block after:h-6 after:w-6 after:rounded-full after:border after:border-slate-300 after:bg-white after:transition-[background-color,transform] peer-checked:border-indigo-600 peer-checked:bg-indigo-600 peer-checked:after:translate-x-full peer-checked:after:border-indigo-600 peer-focus:ring" />
               </label>
-            </div>
-          </div>
+            }
+          />
           <div className="text-sm text-slate-400">인트로에 예식 장소와 일시를 보여줍니다.</div>
         </div>
       </div>
@@ -349,39 +337,37 @@ function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.
           {/** 예식장 주소 */}
           <div className="space-y-2">
             <div>
-              <div className="flex items-center justify-between text-slate-600">
-                <div className="font-bold">예식장 주소</div>
-                <div className="text-sm" />
-              </div>
+              <Label label="예식장 주소" />
             </div>
             {isAddress ? (
-              <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY || ''}>
+              <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY ?? ''}>
                 <div className="flex flex-col space-y-2">
                   <div className="flex items-center rounded-lg border border-slate-200 bg-slate-100 p-1 text-sm h-12 ">
-                    <label className="group relative flex-1 cursor-pointer text-center h-10">
-                      <input
-                        type="radio"
-                        className="peer absolute cursor-pointer opacity-0"
-                        value="KAKAO"
-                        onChange={handleChangeEngine}
-                        checked={searchEngine === 'KAKAO'}
-                      />
+                    <WidgetLabelWithInput
+                      labelClassName="group relative flex-1 cursor-pointer text-center h-10"
+                      inputType="radio"
+                      inputValue="KAKAO"
+                      inputClassName="peer absolute cursor-pointer opacity-0"
+                      inputChecked={searchEngine === 'KAKAO'}
+                      onInputChange={handleChangeEngine}
+                    >
                       <span className="center-flex h-full w-full rounded-md text-slate-500 peer-checked:border peer-checked:border-slate-200 peer-checked:bg-white peer-checked:font-bold peer-checked:text-slate-600">
                         국내
                       </span>
-                    </label>
-                    <label className="group relative flex-1 cursor-pointer text-center h-10">
-                      <input
-                        type="radio"
-                        className="peer absolute cursor-pointer opacity-0"
-                        value="GOOGLE"
-                        onChange={handleChangeEngine}
-                        checked={searchEngine === 'GOOGLE'}
-                      />
+                    </WidgetLabelWithInput>
+
+                    <WidgetLabelWithInput
+                      labelClassName="group relative flex-1 cursor-pointer text-center h-10"
+                      inputType="radio"
+                      inputValue="GOOGLE"
+                      inputClassName="peer absolute cursor-pointer opacity-0"
+                      inputChecked={searchEngine === 'GOOGLE'}
+                      onInputChange={handleChangeEngine}
+                    >
                       <span className="center-flex h-full w-full rounded-md text-slate-500 peer-checked:border peer-checked:border-slate-200 peer-checked:bg-white peer-checked:font-bold peer-checked:text-slate-600">
                         해외
                       </span>
-                    </label>
+                    </WidgetLabelWithInput>
                   </div>
                   <IntroSearchAddress engine={searchEngine} setIsAddress={setIsAddress} />
                 </div>
@@ -397,13 +383,14 @@ function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.
                       {watch('invitation.location.roadAddress')}
                     </p>
                   </div>
-                  <button
-                    className="center-flex h-16 w-16 flex-none text-slate-500"
+                  <Button
                     type="button"
-                    tabIndex={-1}
+                    variants="text_secondary"
+                    size="medium"
+                    className="center-flex h-16 w-16 flex-none text-slate-500"
                   >
                     <FaRegTrashAlt onClick={handleClickTrashCan} />
-                  </button>
+                  </Button>
                 </div>
               </div>
             )}
@@ -414,46 +401,36 @@ function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.
               {/** 예식장 이름 */}
               <div className="space-y-2 ">
                 <div>
-                  <div className="flex items-center justify-between text-slate-600">
-                    <div className="font-bold">예식장 이름</div>
-                    <div className="text-sm" />
-                  </div>
+                  <Label label="예식장 이름" />
                 </div>
                 <div>
-                  <label className="relative flex items-center overflow-hidden rounded-md border bg-white focus-within:ring border-slate-200 ">
+                  <WidgetLabelWithInput
+                    labelClassName="relative flex items-center overflow-hidden rounded-md border bg-white focus-within:ring border-slate-200 "
+                    inputClassName="peer block h-12 w-full bg-white px-4 text-slate-600 placeholder:text-slate-300 disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-200"
+                    defaultValue={watch('invitation.location.placeName')}
+                    register={register}
+                    registerOption="invitation.location.placeName"
+                  >
                     <div className="flex flex-none items-center" />
-                    <input
-                      className="peer block h-12 w-full bg-white px-4 text-slate-600 placeholder:text-slate-300 disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-200 "
-                      spellCheck="false"
-                      autoComplete="off"
-                      value={watch('invitation.location.placeName')}
-                      {...register('invitation.location.placeName')}
-                    />
-                    <div className="flex flex-none items-center" />
-                  </label>
+                  </WidgetLabelWithInput>
                 </div>
               </div>
 
               {/** 홀이름 */}
               <div className="space-y-2 ">
                 <div>
-                  <div className="flex items-center justify-between text-slate-600">
-                    <div className="font-bold">홀 이름</div>
-                    <div className="text-sm" />
-                  </div>
+                  <Label label="홀 이름" />
                 </div>
                 <div>
-                  <label className="relative flex items-center overflow-hidden rounded-md border bg-white focus-within:ring border-slate-200 ">
+                  <WidgetLabelWithInput
+                    labelClassName="relative flex items-center overflow-hidden rounded-md border bg-white focus-within:ring border-slate-200 "
+                    inputClassName="peer block h-12 w-full bg-white px-4 text-slate-600 placeholder:text-slate-300 disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-200"
+                    defaultValue={watch('invitation.location.placeDetail')}
+                    register={register}
+                    registerOption="invitation.location.placeDetail"
+                  >
                     <div className="flex flex-none items-center" />
-                    <input
-                      className="peer block h-12 w-full bg-white px-4 text-slate-600 placeholder:text-slate-300 disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-200 "
-                      spellCheck="false"
-                      autoComplete="off"
-                      value={watch('invitation.location.placeDetail')}
-                      {...register('invitation.location.placeDetail')}
-                    />
-                    <div className="flex flex-none items-center" />
-                  </label>
+                  </WidgetLabelWithInput>
                 </div>
               </div>
             </>
@@ -462,28 +439,23 @@ function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.
           {/** 예식 일시 */}
           <div className="space-y-2 ">
             <div>
-              <div className="flex items-center justify-between text-slate-600">
-                <div className="font-bold">예식 일시</div>
-                <div className="text-sm" />
-              </div>
+              <Label label="예식 일시" />
             </div>
             <div onClick={handleClickCalendar}>
-              <label className="relative flex items-center overflow-hidden rounded-md border bg-white focus-within:ring border-slate-200 ">
-                <div className="flex flex-none items-center" />
-                <input
-                  className="peer block h-12 w-full bg-white px-4 text-slate-600 placeholder:text-slate-300 disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-200 "
-                  spellCheck="false"
-                  autoComplete="off"
-                  placeholder="예식일을 선택해주세요."
-                  readOnly
-                  value={formatDate(watch('invitation.eventAt'), 'KO')}
-                />
+              <WidgetLabelWithInput
+                labelClassName="relative flex items-center overflow-hidden rounded-md border bg-white focus-within:ring border-slate-200 "
+                inputClassName="peer block h-12 w-full bg-white px-4 text-slate-600 placeholder:text-slate-300 disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-200"
+                inputValue={formatDate(watch('invitation.eventAt'), 'KO')}
+                registerOption="invitation.eventAt"
+                readonly
+                placeholder="예식일을 선택해주세요."
+              >
                 <div className="flex flex-none items-center">
                   <div className="center-flex h-12 w-12 text-slate-400">
                     <MdOutlineCalendarToday />
                   </div>
                 </div>
-              </label>
+              </WidgetLabelWithInput>
             </div>
           </div>
 

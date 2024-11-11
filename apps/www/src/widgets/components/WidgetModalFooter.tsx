@@ -1,16 +1,14 @@
 'use client';
 
 import { Button } from '@repo/shared';
+import type { WidgetItem } from '@repo/shared/src/types/pageBrothers.type';
 
-import type { WidgetItem } from '@/types/pageBrothers.type';
-
-import useModalStore from '../zustand';
+import useModalStore from '@/www/widgets/zustand';
 
 interface WidgetModalFooterProps {
-  widgetItem: WidgetItem | Partial<WidgetItem>;
+  widgetItem: WidgetItem | Omit<WidgetItem, 'id'>;
 }
 
-// 공용 버튼으로 수정 요망
 function WidgetModalFooter({ widgetItem }: WidgetModalFooterProps): React.ReactNode {
   const { openMultiModal } = useModalStore();
 

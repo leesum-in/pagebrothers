@@ -1,6 +1,6 @@
 import type { PropsWithChildren } from 'react';
 
-import AuthHeader from '@/auth/components/AuthHeader';
+import { AuthHeader } from '@/www/auth';
 
 interface AuthWrapperProps extends PropsWithChildren {
   type: 'login' | 'register';

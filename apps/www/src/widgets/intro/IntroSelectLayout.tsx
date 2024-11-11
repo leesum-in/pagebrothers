@@ -1,13 +1,13 @@
 'use client';
 
+import { Label } from '@repo/shared';
+import type { IntroLayoutKey, IntroWidgetConfig } from '@repo/shared/src/types/pageBrothers.type';
 import type { Dispatch, SetStateAction } from 'react';
 import type { UseFormRegister } from 'react-hook-form';
 import { IoCheckmark } from 'react-icons/io5';
 
-import type { IntroLayoutKey, IntroWidgetConfig } from '@/types/pageBrothers.type';
-
-import { useSlider } from '../hooks';
-import type { HookFormValues } from '../types';
+import { useSlider } from '@/www/widgets/hooks';
+import type { HookFormValues } from '@/www/widgets/types';
 
 type LayoutKey = {
   key: IntroLayoutKey;
@@ -77,10 +77,7 @@ function IntroSelectLayout({
   return (
     <div className="space-y-2 select-none">
       <div>
-        <div className="flex items-center justify-between text-slate-600">
-          <div className="font-bold">레이아웃</div>
-          <div className="text-sm" />
-        </div>
+        <Label label="레이아웃" />
       </div>
       <div>
         <div

@@ -48,7 +48,26 @@ module.exports = {
     'import/no-extraneous-dependencies': 'off', // 추가 의존성 끄기
     'import/no-cycle': 'off', // 순환 의존성 끄기
     'react/button-has-type': 'off', // button has type 끄기
+    '@typescript-eslint/consistent-type-definitions': 'off', // 일관된 타입 정의 끄기
+    '@typescript-eslint/naming-convention': 'off', // 네이밍 규칙 끄기
   },
+  'import/order': [
+    'error',
+    {
+      'newlines-between': 'always',
+      groups: [
+        'builtin', // Node.js 내장 모듈
+        'external', // npm 외부 모듈 (react 등)
+        'internal', // 프로젝트 내부 모듈 (@/contexts 등)
+        ['sibling', 'parent'], // 상대 경로 모듈
+        'index', // index 파일
+      ],
+      alphabetize: {
+        order: 'asc', // 알파벳 순서로 정렬
+        caseInsensitive: true, // 대소문자 구분 없음
+      },
+    },
+  ],
   overrides: [
     {
       files: ['*.config.js'],

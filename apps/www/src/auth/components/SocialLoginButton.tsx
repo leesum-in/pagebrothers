@@ -5,10 +5,9 @@ import { FcGoogle } from 'react-icons/fc';
 import { LuArrowRight } from 'react-icons/lu';
 import { RiKakaoTalkFill } from 'react-icons/ri';
 
-import Naver from '@/ui/svgs/Naver';
-
-import { useAuth } from '../hooks';
-import type { SocialLoginType } from '../types';
+import { useAuth } from '@/www/auth/hooks';
+import type { SocialLoginType } from '@/www/auth/types';
+import { Naver } from '@/www/ui/svgs';
 
 interface SocialLoginButtonProps {
   type: SocialLoginType;

@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 
-import ErrorTemplate from '@/ui/error/ErrorTemplate';
+import { ErrorTemplate } from '@/www/ui/error';
 
 interface ErrorPageProps {
   error: Error & { digest?: string };

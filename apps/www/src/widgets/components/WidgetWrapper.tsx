@@ -1,11 +1,10 @@
+import type { WidgetItem } from '@repo/shared/src/types/pageBrothers.type';
 import { type PropsWithChildren } from 'react';
 
-import type { WidgetItem } from '@/types/pageBrothers.type';
-
-import WidgetButtons from './WidgetButtons';
+import { WidgetButtons } from '@/www/widgets/components';
 
 interface WidgetWrapperProps {
-  widgetItem: WidgetItem;
+  widgetItem?: WidgetItem;
   isMultiModal?: boolean;
 }
 
@@ -13,7 +12,7 @@ function WidgetWrapper({
   children,
   widgetItem,
   isMultiModal = false,
-}: PropsWithChildren<WidgetWrapperProps>): React.ReactNode {
+}: PropsWithChildren<WidgetWrapperProps>) {
   if (isMultiModal) return <div className="relative overflow-hidden">{children}</div>;
 
   return (
@@ -25,7 +24,7 @@ function WidgetWrapper({
       // aria-describedby="DndDescribedBy-0"
       className="relative overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-1 cursor-default w-[416px]"
     >
-      <WidgetButtons widgetItem={widgetItem} />
+      {widgetItem ? <WidgetButtons widgetItem={widgetItem} /> : null}
 
       <div className="border-t border-slate-200">
         {/** 아래 div에 컬러 스키마 클래스네임 추가 */}

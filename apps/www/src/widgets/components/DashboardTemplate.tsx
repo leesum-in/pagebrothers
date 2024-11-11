@@ -3,10 +3,9 @@
 import Link from 'next/link';
 import { useEffect } from 'react';
 
-import { PageWrapper } from '@/ui/wrapper';
-
-import { useInvitationsQuery } from '../queries';
-import DashboardHeader from './DashboardHeader';
+import { PageWrapper } from '@/www/ui';
+import { DashboardHeader } from '@/www/widgets/components';
+import { useInvitationsQuery } from '@/www/widgets/queries';
 
 // 이 컴포넌트는 폴더 위치 및 구조에 대한 논의가 필요합니다.
 function DashboardTemplate() {

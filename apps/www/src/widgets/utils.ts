@@ -1,6 +1,9 @@
+import type {
+  IInvitation,
+  IntroDateFormatKey,
+  WidgetType,
+} from '@repo/shared/src/types/pageBrothers.type';
 import { setHours, setMinutes, setSeconds } from 'date-fns';
-
-import type { IInvitation, IntroDateFormatKey, WidgetType } from '@/types/pageBrothers.type';
 
 export function formatDate(time: string | null, dateFormatKey: IntroDateFormatKey): string {
   const date = time ? new Date(time) : new Date();
