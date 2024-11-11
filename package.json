@@ -6,7 +6,8 @@
     "lint": "turbo lint",
     "type-check": "turbo type-check",
     "clean": "turbo clean",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "storybook": "turbo run storybook"
   },
   "devDependencies": {
     "prettier": "^3.2.5",
@@ -19,7 +20,11 @@
   },
   "name": "with-tailwind",
   "dependencies": {
+    "@tanstack/react-query": "^5.55.4",
+    "@tanstack/react-query-devtools": "^5.55.4",
     "axios": "^1.7.7",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "react-hook-form": "^7.53.0",
+    "zustand": "5.0.0-rc.2"
   }
 }
