@@ -13,7 +13,9 @@ function WidgetTrashButton({ widgetItem }: WidgetTrashButtonProps) {
   const { mutate } = useWidgetDeleteMutation(invitation?.id ?? '');
 
   const handleClick = () => {
-    mutate(widgetItem.id);
+    if (confirm('정말 삭제하시겠어요?\n삭제된 위젯은 다시 복구할 수 없어요.')) {
+      mutate(widgetItem.id);
+    }
   };
 
   return (
