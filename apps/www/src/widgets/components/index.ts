@@ -7,7 +7,7 @@ export { default as StartButton } from './StartButton';
 export { default as StartTemplate } from './StartTemplate';
 export { default as Widget } from './Widget';
 export { default as WidgetBreakLine } from './WidgetBreakLine';
-export { default as WidgetButtons } from './WidgetButtons';
+export { default as WidgetHeader } from './WidgetHeader';
 export { default as WidgetLabelWithInput } from './WidgetLabelWithInput';
 export { default as WidgetModal } from './WidgetModal';
 export { default as WidgetModalFooter } from './WidgetModalFooter';
