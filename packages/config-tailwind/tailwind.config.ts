@@ -160,6 +160,10 @@ const config: Omit<Config, 'content'> = {
           fontSize: '.75em',
           lineHeight: '1.6',
         },
+        '.text-em-lg': {
+          fontSize: '1.125em',
+          lineHeight: '1.6',
+        },
         '.text-em-xl': {
           fontSize: '1.25em',
           lineHeight: '1.6',
