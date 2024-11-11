@@ -25,21 +25,6 @@ import { getCombinedDateTime } from '@/www/widgets/utils';
 import useModalStore from '@/www/widgets/zustand';
 import '../react-datepicker.css';
 
-const months = [
-  '1월',
-  '2월',
-  '3월',
-  '4월',
-  '5월',
-  '6월',
-  '7월',
-  '8월',
-  '9월',
-  '10월',
-  '11월',
-  '12월',
-];
-
 interface IntroCalendarProps {
   invitation: IInvitation;
 }
@@ -108,11 +93,9 @@ function IntroCalendar({ invitation }: IntroCalendarProps) {
           minDate={new Date()}
           dayClassName={(date) =>
             cn(
-              cn(
-                isBefore(startOfDay(date), startOfDay(new Date())) &&
-                  'opacity-25 react-datepicker__day--disabled',
-                selectedDay && isSameDay(date, selectedDay) && 'text-indigo-600 font-bold',
-              ),
+              isBefore(startOfDay(date), startOfDay(new Date())) &&
+                'opacity-25 react-datepicker__day--disabled',
+              selectedDay && isSameDay(date, selectedDay) && 'text-indigo-600 font-bold',
             )
           }
           renderDayContents={DatePickerDay}
@@ -191,7 +174,7 @@ function DatePickerCalendarHeader({
         <Before className="text-xl" />
       </button>
 
-      <div className="flex-1 text-center">{`${getYear(date)}년 ${months[getMonth(date)]}`}</div>
+      <div className="flex-1 text-center">{`${getYear(date)}년 ${getMonth(date)}월`}</div>
 
       <button type="button" onClick={increaseMonth} disabled={nextMonthButtonDisabled}>
         <Next className="text-xl" />

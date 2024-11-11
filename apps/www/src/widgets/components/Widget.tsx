@@ -21,6 +21,9 @@ const components: Record<
   MESSAGE: dynamic(() => import('../message/MessageWidget'), {
     ssr: false,
   }),
+  CALENDAR: dynamic(() => import('../calendar/CalendarWidget'), {
+    ssr: false,
+  }),
 };
 
 function UnmemoizedWidget({ invitation, widgetItem, isMultiModal }: WidgetProps) {
