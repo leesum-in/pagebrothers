@@ -25,7 +25,7 @@ function Calendar({ invitation }: CalendarProps) {
       >
         <p>예식일</p>
         <p className="text-em-lg font-bold text-theme-inter/70">
-          {getYear(weddingDay)}년 {getMonth(weddingDay)}월
+          {getYear(weddingDay)}년 {getMonth(weddingDay) + 1}월
         </p>
       </header>
       <div>
@@ -43,17 +43,29 @@ function Calendar({ invitation }: CalendarProps) {
           />
         </div>
       </div>
-      <div className="text-0 leading-0">
-        <hr className="inline-block w-8 border-t border-theme-colored/40" />
-      </div>
+      {widget?.config.differenceFormat !== 'NONE' && (
+        <div className="text-0 leading-0">
+          <hr className="inline-block w-8 border-t border-theme-colored/40" />
+        </div>
+      )}
       <footer className="space-y-4">
-        <p>
-          앞으로{' '}
-          <strong className="text-theme-inter/70">
-            {differenceInDays(weddingDay, new Date())}일
-          </strong>{' '}
-          남았어요
-        </p>
+        {widget?.config.differenceFormat === 'SENTANCE' && (
+          <p>
+            앞으로{' '}
+            <strong className="text-theme-inter/70">
+              {differenceInDays(weddingDay, new Date())}일
+            </strong>{' '}
+            남았어요
+          </p>
+        )}
+        {widget?.config.differenceFormat === 'DDAY' && (
+          <p>
+            예식일{' '}
+            <strong className="text-theme-inter/70">
+              D-{differenceInDays(weddingDay, new Date())}
+            </strong>
+          </p>
+        )}
         <a
           type="button"
           target="_blank"
