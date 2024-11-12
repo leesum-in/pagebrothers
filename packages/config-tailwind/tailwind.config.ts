@@ -232,6 +232,25 @@ const config: Omit<Config, 'content'> = {
           'box-shadow':
             'var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)',
         },
+        '.peer:checked~.peer-checked:text-indigo-600': {
+          '--tw-text-opacity': '1',
+          color: 'rgb(79 70 229 / var(--tw-text-opacity))',
+        },
+        '.peer:checked~.peer-checked:border-indigo-600': {
+          '--tw-border-opacity': '1',
+          'border-color': 'rgb(79 70 229 / var(--tw-border-opacity))',
+        },
+        '.peer:checked~.peer-checked:z-10': {
+          'z-index': '10',
+        },
+        '.rounded-l-sm': {
+          'border-top-left-radius': '4px',
+          'border-bottom-left-radius': '4px',
+        },
+        '.rounded-r-sm': {
+          'border-top-right-radius': '4px',
+          'border-bottom-right-radius': '4px',
+        },
       };
 
       const customComponents = [
@@ -247,6 +266,7 @@ const config: Omit<Config, 'content'> = {
           },
         },
       ];
+
       addUtilities(fontUtilities);
       addUtilities(customUtilities);
       addComponents(customComponents);
