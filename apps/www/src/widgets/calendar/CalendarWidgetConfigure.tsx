@@ -38,7 +38,7 @@ function CalendarWidgetConfigure({ widgetItem }: CalendarWidgetConfigureProps) {
   const { mutate: postEventInfo } = useEventInfoMutation(invitation?.id ?? '');
   const { mutate: putInvitationConfig } = useInvitationConfigMutation(invitation?.id ?? '');
 
-  const widgetIndex = useWidgetIndex(widgetItem.type);
+  const widgetIndex = useWidgetIndex(widgetItem);
 
   const handleClickHasICalButton = () => {
     setIsIcalButtonChecked((prev) => !prev);

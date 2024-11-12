@@ -1,6 +1,6 @@
 'use client';
 
-import type { WidgetType } from '@repo/shared';
+import type { WidgetItem } from '@repo/shared';
 import type { Dispatch, SetStateAction } from 'react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useShallow } from 'zustand/shallow';
@@ -190,7 +190,7 @@ export function useSlider() {
   };
 }
 
-export function useWidgetIndex(widgetType: WidgetType) {
+export function useWidgetIndex(widgetItem: WidgetItem | Omit<WidgetItem, 'id'>) {
   const { invitation } = useModalStore();
-  return useMemo(() => getWidgetIndex(invitation, widgetType), [invitation, widgetType]);
+  return useMemo(() => getWidgetIndex(invitation, widgetItem), [invitation, widgetItem]);
 }

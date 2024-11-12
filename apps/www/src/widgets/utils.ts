@@ -1,7 +1,7 @@
 import type {
   IInvitation,
   IntroDateFormatKey,
-  WidgetType,
+  WidgetItem,
 } from '@repo/shared/src/types/pageBrothers.type';
 import { setHours, setMinutes, setSeconds } from 'date-fns';
 
@@ -47,9 +47,13 @@ export function formatDate(time: string | null, dateFormatKey: IntroDateFormatKe
   return `${year}. ${padZero(month)}. ${padZero(day)}. (${weekdayEN})`;
 }
 
-export function getWidgetIndex(invitation: IInvitation | null, type: WidgetType) {
+export function getWidgetIndex(
+  invitation: IInvitation | null,
+  widgetItem: WidgetItem | Omit<WidgetItem, 'id'>,
+) {
   if (!invitation) return null;
-  const index = invitation.widgets.findIndex((item) => item.type === type);
+  if ('index' in widgetItem) return widgetItem.index as number;
+  const index = invitation.widgets.findIndex((item) => item.type === widgetItem.type);
   return index === -1 ? 0 : index;
 }
 
