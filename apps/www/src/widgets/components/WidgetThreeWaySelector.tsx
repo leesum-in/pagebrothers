@@ -7,7 +7,7 @@ import { useFormContext } from 'react-hook-form';
 import { FiAlignCenter, FiAlignLeft, FiAlignRight } from 'react-icons/fi';
 
 import { useWidgetIndex } from '../hooks';
-import type { HookFormValues } from '../types';
+import type { HookFormValues, ThreeWayLabelValue } from '../types';
 import WidgetLabelWithInput from './WidgetLabelWithInput';
 
 const textAlignItems = [
@@ -26,10 +26,9 @@ const textAlignItems = [
 ];
 
 interface WidgetThreeWaySelectorProps {
-  label: string;
+  label: ThreeWayLabelValue;
   widgetItem: WidgetItem | Omit<WidgetItem, 'id'>;
   items?: React.ReactNode[];
-
   value?: string[];
 }
 
@@ -43,6 +42,9 @@ function WidgetThreeWaySelector({ label, items, widgetItem, value }: WidgetThree
         return `invitation.widgets.${widgetIndex}.config.align`;
       case '남은 날짜 표기':
         return `invitation.widgets.${widgetIndex}.config.differenceFormat`;
+      // 수정 요망
+      case '텍스트 크기':
+        return `invitation.widgets.${widgetIndex}.config.textSize`;
     }
   }, [widgetIndex, label]);
 
