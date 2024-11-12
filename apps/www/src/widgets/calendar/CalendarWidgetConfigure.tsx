@@ -5,7 +5,6 @@ import { Label, LabelWithSub } from '@repo/shared';
 import { useCallback, useEffect, useState } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useFormContext } from 'react-hook-form';
-import { FiAlignCenter, FiAlignLeft, FiAlignRight } from 'react-icons/fi';
 import { useShallow } from 'zustand/shallow';
 
 import { FixedLoader } from '@/www/ui';
@@ -106,16 +105,7 @@ function CalendarWidgetConfigure({ widgetItem }: CalendarWidgetConfigureProps) {
     <div className="space-y-8">
       {/** 텍스트 정렬 */}
       <div className="space-y-2">
-        <WidgetThreeWaySelector
-          label="텍스트 정렬"
-          registerOption={`invitation.widgets.${widgetIndex}.config.align`}
-          items={[
-            <FiAlignLeft key="LEFT" className="text-xl" />,
-            <FiAlignCenter key="CENTER" className="text-xl" />,
-            <FiAlignRight key="RIGHT" className="text-xl" />,
-          ]}
-          value={['LEFT', 'CENTER', 'RIGHT']}
-        />
+        <WidgetThreeWaySelector label="텍스트 정렬" widgetItem={widgetItem} />
       </div>
 
       {/** 타이틀 */}
@@ -164,9 +154,9 @@ function CalendarWidgetConfigure({ widgetItem }: CalendarWidgetConfigureProps) {
       <div className="space-y-2">
         <WidgetThreeWaySelector
           label="남은 날짜 표기"
+          widgetItem={widgetItem}
           items={['안내 문구', '디데이(D-day)', '표시 안함']}
-          value={['SENTANCE', 'DDAY', 'NONE']}
-          registerOption={`invitation.widgets.${widgetIndex}.config.differenceFormat`}
+          value={['SENTENCE', 'DDAY', 'NONE']}
         />
       </div>
 

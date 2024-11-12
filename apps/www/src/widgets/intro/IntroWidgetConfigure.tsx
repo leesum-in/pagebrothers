@@ -60,7 +60,7 @@ function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.
       openMultiModal: state.openMultiModal,
     })),
   );
-  const widgetIndex = useWidgetIndex(widgetItem.type);
+  const widgetIndex = useWidgetIndex(widgetItem);
 
   const { mutate: putInvitationConfig } = useInvitationConfigMutation(invitation?.id ?? '');
   const { mutate: postWidget } = useWidgetMutation(invitation?.id ?? '');

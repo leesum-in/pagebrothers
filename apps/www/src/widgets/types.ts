@@ -145,3 +145,6 @@ export type IntroSearchQuery = {
 };
 
 export type HookFormValues = { invitation: IInvitation | null };
+
+// textSize 변동 가능성 있음
+export type ThreeWaySelectorValue = 'differenceFormat' | 'align' | 'textSize';

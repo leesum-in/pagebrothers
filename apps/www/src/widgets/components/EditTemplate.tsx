@@ -67,32 +67,36 @@ function EditTemplate() {
 
   return (
     <FormProvider {...methods}>
-      <Modal
-        isModalOpen={modalState.isOpen}
-        isDragging={isDragging}
-        onCloseModal={closeModal}
-        onSubmit={methods.handleSubmit(onSubmit as SubmitHandler<FieldValues>)}
-        modalHeader={
-          modalState.widget?.type ? <WidgetModalHeader type={modalState.widget.type} /> : null
-        }
-        modalFooter={
-          modalState.widget ? <WidgetModalFooter widgetItem={modalState.widget} /> : null
-        }
-      >
-        <WidgetModal widgetItem={modalState.widget ? modalState.widget : null} />
-      </Modal>
-      <Modal
-        isModalOpen={multiModalState.isOpen}
-        isDragging={isDragging}
-        onCloseModal={closeMultiModal}
-        isMultiModal
-        isCalendar={multiModalState.calendar}
-      >
-        {multiModalState.calendar ? <SelectableCalendar invitation={invitation} /> : null}
-        {multiModalState.widget ? (
-          <Widget widgetItem={multiModalState.widget} isMultiModal invitation={invitation} />
-        ) : null}
-      </Modal>
+      {modalState.isOpen ? (
+        <>
+          <Modal
+            isModalOpen={modalState.isOpen}
+            isDragging={isDragging}
+            onCloseModal={closeModal}
+            onSubmit={methods.handleSubmit(onSubmit as SubmitHandler<FieldValues>)}
+            modalHeader={
+              modalState.widget?.type ? <WidgetModalHeader type={modalState.widget.type} /> : null
+            }
+            modalFooter={
+              modalState.widget ? <WidgetModalFooter widgetItem={modalState.widget} /> : null
+            }
+          >
+            <WidgetModal widgetItem={modalState.widget ? modalState.widget : null} />
+          </Modal>
+          <Modal
+            isModalOpen={multiModalState.isOpen}
+            isDragging={isDragging}
+            onCloseModal={closeMultiModal}
+            isMultiModal
+            isCalendar={multiModalState.calendar}
+          >
+            {multiModalState.calendar ? <SelectableCalendar invitation={invitation} /> : null}
+            {multiModalState.widget ? (
+              <Widget widgetItem={multiModalState.widget} isMultiModal invitation={invitation} />
+            ) : null}
+          </Modal>
+        </>
+      ) : null}
 
       {invitation.widgets.length === 0 ? <WidgetNotFound /> : null}
       {invitation.widgets.length > 0 ? (

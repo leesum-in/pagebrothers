@@ -13,6 +13,7 @@ interface WidgetLabelWithInputProps {
   inputType?: string;
   inputValue?: string;
   inputChecked?: boolean;
+  inputDefaultChecked?: boolean;
   children?: React.ReactNode;
   labelClassName?: string;
   textareaClassName?: string;
@@ -31,6 +32,7 @@ function WidgetLabelWithInput({
   inputType = 'text',
   inputValue,
   inputChecked,
+  inputDefaultChecked,
   children,
   labelClassName,
   textareaClassName,
@@ -64,6 +66,7 @@ function WidgetLabelWithInput({
           value={inputValue}
           defaultValue={defaultValue}
           checked={inputChecked}
+          defaultChecked={inputDefaultChecked}
           onClick={onInputClick}
           onChange={onInputChange}
           {...(register ? register(registerOption as keyof HookFormValues) : undefined)}
