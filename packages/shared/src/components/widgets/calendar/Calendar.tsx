@@ -4,7 +4,7 @@ import { ko } from 'date-fns/locale';
 import DatePicker from 'react-datepicker';
 import { cn } from '../../../utils';
 import { Button } from '../../button';
-import './react-datepicker.css';
+import './datepicker.css';
 
 interface CalendarProps {
   invitation: IInvitation;
@@ -12,10 +12,17 @@ interface CalendarProps {
 
 function Calendar({ invitation }: CalendarProps) {
   const weddingDay = new Date(invitation.eventAt);
+  const widget = invitation.widgets.find((widget) => widget.type === 'CALENDAR');
 
   return (
     <div className="space-y-6 py-12 px-6 text-center no-interaction">
-      <header className="text-center">
+      <header
+        className={cn(
+          widget?.config.align === 'CENTER' && 'text-center',
+          widget?.config.align === 'LEFT' && 'text-left',
+          widget?.config.align === 'RIGHT' && 'text-right',
+        )}
+      >
         <p>예식일</p>
         <p className="text-em-lg font-bold text-theme-inter/70">
           {getYear(weddingDay)}년 {getMonth(weddingDay)}월
@@ -31,9 +38,7 @@ function Calendar({ invitation }: CalendarProps) {
             renderCustomHeader={DatePickerCalendarHeader}
             renderDayContents={(day, date) => DatePickerDay(day, date, weddingDay)}
             dayClassName={(date) => {
-              return cn(
-                weddingDay && isSameDay(date, weddingDay) && 'react-datepicker__day--selected',
-              );
+              return cn(weddingDay && isSameDay(date, weddingDay) && 'custom-selected');
             }}
           />
         </div>
