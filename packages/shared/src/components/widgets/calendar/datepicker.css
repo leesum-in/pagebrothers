@@ -357,11 +357,11 @@ h2.react-datepicker__current-month {
   background-color: rgb(28.75, 93.2196969697, 143.75);
 } */
 
-.react-datepicker__day-names {
+/* .react-datepicker__day-names {
   display: flex;
   align-items: center;
   border-bottom: 1px solid #eee;
-}
+} */
 
 .react-datepicker__week {
   display: flex;
@@ -927,6 +927,10 @@ h2.react-datepicker__current-month {
   position: relative;
   padding: 0.5rem;
   cursor: pointer;
+}
+
+.inline-calendar .react-datepicker__day-names {
+  border: none;
 }
 
 .inline-calendar .custom-selected {
