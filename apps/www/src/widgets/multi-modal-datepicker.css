@@ -848,7 +848,7 @@ h2.react-datepicker__current-month {
   user-select: none;
   white-space: nowrap;
 }
-.react-datepicker__header--month {
+.custom-calendar .react-datepicker__header--month {
   display: flex;
   align-items: center;
   height: 3.5rem;
@@ -856,34 +856,34 @@ h2.react-datepicker__current-month {
   border-bottom: 1px solid #eee;
   background-color: #fafafa;
 }
-.react-datepicker__day-name {
+.custom-calendar .react-datepicker__day-name {
   flex: 1;
   padding: 0.5rem;
   font-size: 0.875rem;
   font-weight: 700;
   opacity: 0.5;
 }
-.react-datepicker__day--outside-month {
+.custom-calendar .react-datepicker__day--outside-month {
   opacity: 0.25;
 }
-.react-datepicker__day--outside-month {
+.custom-calendar .react-datepicker__day--outside-month {
   opacity: 0.25;
 }
-.react-datepicker__day {
+.custom-calendar .react-datepicker__day {
   flex: 1;
   position: relative;
   padding: 0.5rem;
   cursor: pointer;
 }
-.react-datepicker__day--disabled {
+.custom-calendar .react-datepicker__day--disabled {
   opacity: 0.25;
   cursor: default;
 }
-.react-datepicker__day--selected > span {
+.custom-calendar .react-datepicker__day--selected > span {
   position: relative;
   color: #fff;
 }
-.react-datepicker__day--selected:before {
+.custom-calendar .react-datepicker__day--selected:before {
   content: '';
   position: absolute;
   top: 0;
@@ -896,13 +896,13 @@ h2.react-datepicker__current-month {
   background-color: currentColor;
   border-radius: 2rem;
 }
-.react-datepicker__day-names,
-.react-datepicker__header--time {
+.custom-calendar .react-datepicker__day-names,
+.custom-calendar .react-datepicker__header--time {
   display: flex;
   align-items: center;
   border-bottom: 1px solid #eee;
 }
-.react-datepicker__header--time {
+.custom-calendar .react-datepicker__header--time {
   position: sticky;
   top: 0;
   flex: none;
@@ -911,7 +911,7 @@ h2.react-datepicker__current-month {
   background-color: #fafafa;
   font-weight: 700;
 }
-.react-datepicker__time-list-item {
+.custom-calendar .react-datepicker__time-list-item {
   border-bottom: 1px solid #eee;
   display: flex;
   align-items: center;
@@ -919,17 +919,17 @@ h2.react-datepicker__current-month {
   height: 3rem;
   cursor: pointer;
 }
-.react-datepicker__time-list-item--disabled {
+.custom-calendar .react-datepicker__time-list-item--disabled {
   display: none;
   cursor: default;
 }
-.react-datepicker__time-list {
+.custom-calendar .react-datepicker__time-list {
   height: auto !important;
 }
-.react-datepicker > div > section#calendar {
+.custom-calendar #calendar {
   flex: 1 1 auto;
 }
-.react-datepicker > div > section#time {
+.custom-calendar #time {
   flex: none;
   width: 5rem;
   height: 100%;
@@ -937,11 +937,11 @@ h2.react-datepicker__current-month {
   overflow: auto;
   border-left: 1px solid #eee;
 }
-.react-datepicker__header--month > div {
+.custom-calendar .react-datepicker__header--month > div {
   flex: 1;
   font-weight: 700;
 }
-.react-datepicker__header--month > button {
+.custom-calendar .react-datepicker__header--month > button {
   flex: none;
   display: flex;
   align-items: center;
@@ -950,6 +950,6 @@ h2.react-datepicker__current-month {
   height: 2rem;
   opacity: 0.75;
 }
-.react-datepicker__header--month > button:disabled {
+.custom-calendar .react-datepicker__header--month > button:disabled {
   opacity: 0.25;
 }
