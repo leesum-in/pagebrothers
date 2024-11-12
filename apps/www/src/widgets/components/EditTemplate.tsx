@@ -9,13 +9,13 @@ import { useShallow } from 'zustand/shallow';
 
 import { ErrorTemplate, FixedLoader, PageWrapper } from '@/www/ui';
 import {
+  SelectableCalendar,
   Widget,
   WidgetModal,
   WidgetModalFooter,
   WidgetModalHeader,
   WidgetNotFound,
 } from '@/www/widgets/components';
-import { IntroCalendar } from '@/www/widgets/intro';
 import { useInvitationQuery } from '@/www/widgets/queries';
 import type { HookFormValues } from '@/www/widgets/types';
 import type { ModalStore } from '@/www/widgets/zustand';
@@ -88,7 +88,7 @@ function EditTemplate() {
         isMultiModal
         isCalendar={multiModalState.calendar}
       >
-        {multiModalState.calendar ? <IntroCalendar invitation={invitation} /> : null}
+        {multiModalState.calendar ? <SelectableCalendar invitation={invitation} /> : null}
         {multiModalState.widget ? (
           <Widget widgetItem={multiModalState.widget} isMultiModal invitation={invitation} />
         ) : null}
