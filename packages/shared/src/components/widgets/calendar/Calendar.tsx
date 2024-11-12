@@ -1,7 +1,7 @@
-import { IInvitation } from '@/shared/types';
 import { differenceInDays, format, getDate, getMonth, getYear, isSameDay } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import DatePicker from 'react-datepicker';
+import { IInvitation } from '../../../types';
 import { cn } from '../../../utils';
 import { Button } from '../../button';
 import './datepicker.css';
