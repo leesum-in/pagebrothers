@@ -32,6 +32,7 @@ function Calendar({ invitation }: CalendarProps) {
         <div className="react-datepicker inline-calendar text-sm">
           <div className="react-datepicker__triangle"></div>
           <DatePicker
+            selected={weddingDay}
             disabled
             locale={ko}
             inline

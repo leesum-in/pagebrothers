@@ -943,10 +943,6 @@ h2.react-datepicker__current-month {
 } */
 /* rgba(var(--theme-inter), 0.7) */
 .custom-selected:before {
-  background-color: rgba(51, 65, 85, 0.7);
-}
-
-.custom-selected:not(.react-datepicker__day--selected):before {
   content: '';
   position: absolute;
   top: 0;
@@ -957,9 +953,23 @@ h2.react-datepicker__current-month {
   height: 2rem;
   width: 2rem;
   border-radius: 9999px;
-  /* border-width: 1px;
-  border-color: rgba(var(--theme-black), 0.1); */
+  background-color: rgba(51, 65, 85, 0.7);
 }
+
+/* .custom-selected:not(.react-datepicker__day--selected):before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: auto;
+  height: 2rem;
+  width: 2rem;
+  border-radius: 9999px;
+  border-width: 1px;
+  border-color: rgba(var(--theme-black), 0.1);
+} */
 
 .inline-calendar .custom-selected > span {
   position: relative;
