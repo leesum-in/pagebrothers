@@ -30,8 +30,8 @@ function VideoWidgetConfigure({ widgetItem }: VideoWidgetConfigureProps) {
   const { mutate: putInvitationConfig } = useInvitationConfigMutation(invitation?.id ?? '');
 
   const widgetIndex = useMemo(
-    () => getWidgetIndex(invitation, widgetItem.type),
-    [invitation, widgetItem.type],
+    () => getWidgetIndex(invitation, widgetItem),
+    [invitation, widgetItem],
   );
 
   const onSubmit: SubmitHandler<HookFormValues> = useCallback(
