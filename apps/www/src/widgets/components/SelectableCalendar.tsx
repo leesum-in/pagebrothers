@@ -175,7 +175,7 @@ function DatePickerCalendarHeader({
         <Before className="text-xl" />
       </button>
 
-      <div className="flex-1 text-center">{`${getYear(date)}년 ${getMonth(date)}월`}</div>
+      <div className="flex-1 text-center">{`${getYear(date)}년 ${getMonth(date) + 1}월`}</div>
 
       <button type="button" onClick={increaseMonth} disabled={nextMonthButtonDisabled}>
         <Next className="text-xl" />

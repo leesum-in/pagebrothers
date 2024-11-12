@@ -14,7 +14,8 @@ import { WidgetBreakLine, WidgetLabelWithInput } from '../components';
 import WidgetEventAt from '../components/WidgetEventAt';
 import WidgetThreeWaySelector from '../components/WidgetThreeWaySelector';
 import { useWidgetIndex } from '../hooks';
-import type { ConfigPayload, HookFormValues } from '../types';
+import { useEventInfoMutation, useInvitationConfigMutation } from '../mutations';
+import type { ConfigPayload, EventInfoData, HookFormValues } from '../types';
 import type { ModalStore } from '../zustand';
 import useModalStore from '../zustand';
 
@@ -23,7 +24,7 @@ interface CalendarWidgetConfigureProps {
 }
 
 function CalendarWidgetConfigure({ widgetItem }: CalendarWidgetConfigureProps) {
-  const [isIcalButtonChecked, setIsIcalButtonChecked] = useState(false);
+  const [isIcalButtonChecked, setIsIcalButtonChecked] = useState(true);
   const { watch, register } = useFormContext<HookFormValues>();
 
   const { setOnSubmit, closeModal, invitation } = useModalStore(
@@ -33,6 +34,9 @@ function CalendarWidgetConfigure({ widgetItem }: CalendarWidgetConfigureProps) {
       invitation: state.invitation,
     })),
   );
+
+  const { mutate: postEventInfo } = useEventInfoMutation(invitation?.id ?? '');
+  const { mutate: putInvitationConfig } = useInvitationConfigMutation(invitation?.id ?? '');
 
   const widgetIndex = useWidgetIndex(widgetItem.type);
 
@@ -60,10 +64,37 @@ function CalendarWidgetConfigure({ widgetItem }: CalendarWidgetConfigureProps) {
       stickers: [],
     };
 
-    console.log('configPayloadData ====>', configPayloadData);
+    const eventInfoData: EventInfoData = {
+      id: invitation.id,
+      eventInfo: {
+        eventAt: watch('invitation.eventAt'),
+        location: {
+          address: watch(`invitation.location.address`),
+          coord: watch(`invitation.location.coord`),
+          placeDetail: watch(`invitation.location.placeDetail`),
+          placeName: watch(`invitation.location.placeName`),
+          mapType: watch(`invitation.location.mapType`),
+          placeId: watch(`invitation.location.placeId`),
+          roadAddress: watch(`invitation.location.roadAddress`),
+        },
+      },
+    };
+    postEventInfo(eventInfoData);
+    putInvitationConfig(configPayloadData);
 
+    console.log('configPayloadData ====>', configPayloadData);
+    console.log('eventInfoData ====>', eventInfoData);
     closeModal();
-  }, [closeModal, invitation, widgetItem, widgetIndex, isIcalButtonChecked, watch]);
+  }, [
+    closeModal,
+    invitation,
+    widgetItem,
+    widgetIndex,
+    isIcalButtonChecked,
+    watch,
+    postEventInfo,
+    putInvitationConfig,
+  ]);
 
   useEffect(() => {
     setOnSubmit(onSubmit);
@@ -134,7 +165,7 @@ function CalendarWidgetConfigure({ widgetItem }: CalendarWidgetConfigureProps) {
         <WidgetThreeWaySelector
           label="남은 날짜 표기"
           items={['안내 문구', '디데이(D-day)', '표시 안함']}
-          value={['SENTANCE', 'D-DAY', 'NONE']}
+          value={['SENTANCE', 'DDAY', 'NONE']}
           registerOption={`invitation.widgets.${widgetIndex}.config.differenceFormat`}
         />
       </div>
@@ -173,6 +204,7 @@ function CalendarWidgetConfigure({ widgetItem }: CalendarWidgetConfigureProps) {
           <div>
             <WidgetLabelWithInput
               labelClassName="relative flex items-center overflow-hidden rounded-lg border focus-within:ring border-slate-200"
+              inputClassName="peer block h-12 w-full bg-white px-4 text-slate-600 placeholder:text-slate-300 disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-200"
               defaultValue={watch(`invitation.widgets.${widgetIndex}.config.eventName`)}
               register={register}
               registerOption={`invitation.widgets.${widgetIndex}.config.eventName`}
