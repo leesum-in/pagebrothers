@@ -10,7 +10,7 @@ interface WidgetButtonsProps {
   widgetItem: WidgetItem;
 }
 
-function WidgetButtons({ widgetItem }: WidgetButtonsProps) {
+function WidgetHeader({ widgetItem }: WidgetButtonsProps) {
   return (
     <div className="flex items-center justify-between p-4 font-bold text-slate-900">
       <WidgetTitleButton type={widgetItem.type} />
@@ -22,4 +22,4 @@ function WidgetButtons({ widgetItem }: WidgetButtonsProps) {
   );
 }
 
-export default WidgetButtons;
+export default WidgetHeader;

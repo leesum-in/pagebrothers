@@ -9,13 +9,13 @@ import { useShallow } from 'zustand/shallow';
 
 import { ErrorTemplate, FixedLoader, PageWrapper } from '@/www/ui';
 import {
+  SelectableCalendar,
   Widget,
   WidgetModal,
   WidgetModalFooter,
   WidgetModalHeader,
   WidgetNotFound,
 } from '@/www/widgets/components';
-import { IntroCalendar } from '@/www/widgets/intro';
 import { useInvitationQuery } from '@/www/widgets/queries';
 import type { HookFormValues } from '@/www/widgets/types';
 import type { ModalStore } from '@/www/widgets/zustand';
@@ -67,32 +67,36 @@ function EditTemplate() {
 
   return (
     <FormProvider {...methods}>
-      <Modal
-        isModalOpen={modalState.isOpen}
-        isDragging={isDragging}
-        onCloseModal={closeModal}
-        onSubmit={methods.handleSubmit(onSubmit as SubmitHandler<FieldValues>)}
-        modalHeader={
-          modalState.widget?.type ? <WidgetModalHeader type={modalState.widget.type} /> : null
-        }
-        modalFooter={
-          modalState.widget ? <WidgetModalFooter widgetItem={modalState.widget} /> : null
-        }
-      >
-        <WidgetModal widgetItem={modalState.widget ? modalState.widget : null} />
-      </Modal>
-      <Modal
-        isModalOpen={multiModalState.isOpen}
-        isDragging={isDragging}
-        onCloseModal={closeMultiModal}
-        isMultiModal
-        isCalendar={multiModalState.calendar}
-      >
-        {multiModalState.calendar ? <IntroCalendar invitation={invitation} /> : null}
-        {multiModalState.widget ? (
-          <Widget widgetItem={multiModalState.widget} isMultiModal invitation={invitation} />
-        ) : null}
-      </Modal>
+      {modalState.isOpen ? (
+        <>
+          <Modal
+            isModalOpen={modalState.isOpen}
+            isDragging={isDragging}
+            onCloseModal={closeModal}
+            onSubmit={methods.handleSubmit(onSubmit as SubmitHandler<FieldValues>)}
+            modalHeader={
+              modalState.widget?.type ? <WidgetModalHeader type={modalState.widget.type} /> : null
+            }
+            modalFooter={
+              modalState.widget ? <WidgetModalFooter widgetItem={modalState.widget} /> : null
+            }
+          >
+            <WidgetModal widgetItem={modalState.widget ? modalState.widget : null} />
+          </Modal>
+          <Modal
+            isModalOpen={multiModalState.isOpen}
+            isDragging={isDragging}
+            onCloseModal={closeMultiModal}
+            isMultiModal
+            isCalendar={multiModalState.calendar}
+          >
+            {multiModalState.calendar ? <SelectableCalendar invitation={invitation} /> : null}
+            {multiModalState.widget ? (
+              <Widget widgetItem={multiModalState.widget} isMultiModal invitation={invitation} />
+            ) : null}
+          </Modal>
+        </>
+      ) : null}
 
       {invitation.widgets.length === 0 ? <WidgetNotFound /> : null}
       {invitation.widgets.length > 0 ? (
@@ -100,13 +104,9 @@ function EditTemplate() {
           <div className="desktop:flex-1">
             <div className="mx-auto w-full max-w-[26rem]">
               <div className="space-y-6">
-                {/** 아래 그냥 예시입니다 */}
-                {invitation.widgets[0] ? (
-                  <Widget invitation={invitation} widgetItem={invitation.widgets[0]} />
-                ) : null}
-                {invitation.widgets[1] ? (
-                  <Widget invitation={invitation} widgetItem={invitation.widgets[1]} />
-                ) : null}
+                {invitation.widgets.map((widget) => (
+                  <Widget key={widget.id} invitation={invitation} widgetItem={widget} />
+                ))}
               </div>
             </div>
           </div>

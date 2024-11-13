@@ -10,11 +10,10 @@ import type {
 } from '@repo/shared/src/types/pageBrothers.type';
 import { APIProvider } from '@vis.gl/react-google-maps';
 import Image from 'next/image';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useFormContext, type SubmitHandler } from 'react-hook-form';
 import { FaRegTrashAlt } from 'react-icons/fa';
 import { LuPlusCircle } from 'react-icons/lu';
-import { MdOutlineCalendarToday } from 'react-icons/md';
 import { useShallow } from 'zustand/shallow';
 
 import { FixedLoader, Loader } from '@/www/ui/loader';
@@ -32,9 +31,12 @@ import type {
   IntroSearchEngine,
   WidgetData,
 } from '@/www/widgets/types';
-import { formatDate, getImageSize, getWidgetIndex } from '@/www/widgets/utils';
+import { getImageSize } from '@/www/widgets/utils';
 import type { ModalStore } from '@/www/widgets/zustand';
 import useModalStore from '@/www/widgets/zustand';
+
+import WidgetEventAt from '../components/WidgetEventAt';
+import { useWidgetIndex } from '../hooks';
 
 import { IntroSearchAddress, IntroSelectDateFormatKey, IntroSelectLayout } from '.';
 
@@ -50,7 +52,7 @@ function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.
   );
   const [isImageLoading, setIsImageLoading] = useState(false);
   const { watch, register } = useFormContext<HookFormValues>();
-  const { setOnSubmit, closeModal, invitation, openMultiModal } = useModalStore(
+  const { setOnSubmit, closeModal, invitation } = useModalStore(
     useShallow((state: ModalStore) => ({
       setOnSubmit: state.setOnSubmit,
       closeModal: state.closeModal,
@@ -58,6 +60,7 @@ function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.
       openMultiModal: state.openMultiModal,
     })),
   );
+  const widgetIndex = useWidgetIndex(widgetItem);
 
   const { mutate: putInvitationConfig } = useInvitationConfigMutation(invitation?.id ?? '');
   const { mutate: postWidget } = useWidgetMutation(invitation?.id ?? '');
@@ -70,10 +73,6 @@ function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.
 
   const handleChangeEngine = () => {
     setSearchEngine((prev) => (prev === 'KAKAO' ? 'GOOGLE' : 'KAKAO'));
-  };
-
-  const handleClickCalendar = () => {
-    openMultiModal({ widget: null, calendar: true });
   };
 
   const handleClickEventInformation = () => {
@@ -98,11 +97,6 @@ function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.
   const handleClickDeleteImage = () => {
     setIntroWidgetConfig((prev) => ({ ...prev, coverImage: null }));
   };
-
-  const widgetIndex = useMemo(
-    () => getWidgetIndex(invitation, widgetItem.type),
-    [invitation, widgetItem.type],
-  );
 
   const onSubmit: SubmitHandler<HookFormValues> = useCallback(() => {
     if (!invitation || widgetIndex === null || widgetIndex === -1) return;
@@ -438,25 +432,7 @@ function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.
 
           {/** 예식 일시 */}
           <div className="space-y-2 ">
-            <div>
-              <Label label="예식 일시" />
-            </div>
-            <div onClick={handleClickCalendar}>
-              <WidgetLabelWithInput
-                labelClassName="relative flex items-center overflow-hidden rounded-md border bg-white focus-within:ring border-slate-200 "
-                inputClassName="peer block h-12 w-full bg-white px-4 text-slate-600 placeholder:text-slate-300 disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-200"
-                inputValue={formatDate(watch('invitation.eventAt'), 'KO')}
-                registerOption="invitation.eventAt"
-                readonly
-                placeholder="예식일을 선택해주세요."
-              >
-                <div className="flex flex-none items-center">
-                  <div className="center-flex h-12 w-12 text-slate-400">
-                    <MdOutlineCalendarToday />
-                  </div>
-                </div>
-              </WidgetLabelWithInput>
-            </div>
+            <WidgetEventAt />
           </div>
 
           {/** 표기법 */}

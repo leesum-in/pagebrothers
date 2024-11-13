@@ -12,8 +12,10 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "../../packages/shared/src/components/widgets/intro/Intro.tsx",
-    "../../packages/shared/src/components/widgets/video/Video.tsx"
+    "../../packages/shared/src/*.ts"
+    // "../../packages/shared/src/components/widgets/intro/Intro.tsx",
+    // "../../packages/shared/src/components/widgets/video/Video.tsx",
+    // "../../packages/shared/src/components/widgets/calendar/Calendar.tsx"
   ],
   "exclude": ["node_modules"]
 }

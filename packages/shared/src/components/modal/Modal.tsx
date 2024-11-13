@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, type PropsWithChildren } from 'react';
+import { memo, useEffect, useState, type PropsWithChildren } from 'react';
 import { createPortal } from 'react-dom';
 import { CloseIcon } from '../../assets/icons';
 import { cn } from '../../utils';
@@ -21,7 +21,7 @@ interface ModalProps extends PropsWithChildren {
   isHeaderBorderLine?: boolean;
 }
 
-function Modal({
+function UnmemoizedModal({
   isModalOpen,
   isDragging,
   onCloseModal,
@@ -149,4 +149,5 @@ function Modal({
   );
 }
 
+const Modal = memo(UnmemoizedModal);
 export default Modal;

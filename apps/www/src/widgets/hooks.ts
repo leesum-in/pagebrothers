@@ -1,15 +1,18 @@
 'use client';
 
+import type { WidgetItem } from '@repo/shared';
 import type { Dispatch, SetStateAction } from 'react';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useShallow } from 'zustand/shallow';
 
 import type { ModalStore } from '@/www/widgets/zustand';
 import useModalStore from '@/www/widgets/zustand';
 
+import { getWidgetIndex } from './utils';
+
 const BOUNCE_FACTOR = 0.3; // 튕김 효과의 강도를 설정 (0.1 ~ 0.5 사이)
 
-const useSlider = () => {
+export function useSlider() {
   const { setIsDragging, isDragging } = useModalStore(
     useShallow((state: ModalStore) => ({
       setIsDragging: state.setIsDragging,
@@ -185,6 +188,9 @@ const useSlider = () => {
     handleMouseUpTouchEnd,
     handleInputClick,
   };
-};
+}
 
-export { useSlider };
+export function useWidgetIndex(widgetItem: WidgetItem | Omit<WidgetItem, 'id'>) {
+  const { invitation } = useModalStore();
+  return useMemo(() => getWidgetIndex(invitation, widgetItem), [invitation, widgetItem]);
+}

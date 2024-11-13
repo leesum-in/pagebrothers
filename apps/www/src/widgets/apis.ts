@@ -1,5 +1,9 @@
 import { api, kakaoApi } from '@repo/shared';
-import type { IInvitation, IInvitationImageData } from '@repo/shared/src/types/pageBrothers.type';
+import type {
+  IInvitation,
+  IInvitationImageData,
+  WidgetItem,
+} from '@repo/shared/src/types/pageBrothers.type';
 
 import type {
   ConfigPayload,
@@ -61,4 +65,9 @@ export async function getKakaoAddress(query: string): Promise<KakaoAddressRespon
 export async function postImage(imageData: FormData, id: string): Promise<IInvitationImageData> {
   const url = `/invitations/${id}/images`;
   return api.post<IInvitationImageData, IInvitationImageData>(url, imageData);
+}
+
+export async function deleteWidget(widgetId: string): Promise<WidgetItem> {
+  const url = `/widgets/${widgetId}`;
+  return api.delete<WidgetItem, WidgetItem>(url);
 }

@@ -145,3 +145,6 @@ export type IntroSearchQuery = {
 };
 
 export type HookFormValues = { invitation: IInvitation | null };
+
+// textSize 변동 가능성 있음
+export type ThreeWayLabelValue = '텍스트 정렬' | '남은 날짜 표기' | '텍스트 크기';
