@@ -23,7 +23,7 @@ function Calendar({ invitation }: CalendarProps) {
           widget?.config.align === 'RIGHT' && 'text-right',
         )}
       >
-        <p>예식일</p>
+        <p>{widget?.config.title}</p>
         <p className="text-em-lg font-bold text-theme-inter/70">
           {getYear(weddingDay)}년 {getMonth(weddingDay) + 1}월
         </p>
