@@ -14,6 +14,7 @@
     "incremental": true,
     "baseUrl": ".",
     "paths": {
+      "@/www/widgets/mutations": [".storybook/mocks/mutations.ts"],
       "@/*": ["./src/*"],
       "@shared/*": ["../../packages/shared/src/*"],
       "@/www/*": ["../../apps/www/src/*"],

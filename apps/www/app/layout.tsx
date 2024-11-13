@@ -1,9 +1,10 @@
+import { QueryProvider } from '@repo/shared';
 import '@repo/shared/src/styles.css';
 import type { Metadata } from 'next';
 
 import { gowunBatang, notoSerifKr, pretendard } from '@/www/fonts';
-import { QueryProvider } from '@/www/query';
 import LayoutWrapper from '@/www/ui/wrapper/LayoutWrapper';
+
 import './globals.css';
 
 export const metadata: Metadata = {

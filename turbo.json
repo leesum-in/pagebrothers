@@ -14,6 +14,10 @@
     },
     "clean": {
       "cache": false
+    },
+    "storybook": {
+      "inputs": ["$TURBO_DEFAULT$", ".env*"],
+      "outputs": []
     }
   },
   "globalEnv": [
