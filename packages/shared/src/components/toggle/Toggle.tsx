@@ -1,3 +1,5 @@
+import { useState } from 'react';
+import { cn } from '../../utils';
 import { Label } from '..';
 
 interface ToggleProps {
@@ -9,39 +11,57 @@ interface ToggleProps {
   className?: string;
 }
 
-// 토글 컨테이너 상태별 스타일
-const getToggleStyles = (disabled: boolean, enabled: boolean) => {
-  switch (true) {
-    case disabled && enabled:
-      return 'w-[3.25rem] h-[1.5rem] rounded-full bg-indigo-100 border border-slate-200';
-    case disabled:
-      return 'w-[3.25rem] h-[1.5rem] rounded-full bg-slate-100 border border-slate-200';
-    case enabled:
-      return 'w-[3.25rem] h-[1.5rem] rounded-full bg-indigo-500 border border-slate-200';
-    default:
-      return 'w-[3.25rem] h-[1.5rem] rounded-full bg-slate-100 border border-slate-200';
-  }
-};
+export default function Toggle({
+  label = 'none',
+  toggled: controlledToggled,
+  disabled = false,
+  labelText = '',
+  onChange,
+  className,
+}: ToggleProps) {
+  const [internalToggled, setInternalToggled] = useState(false);
 
-// 토글 버튼 상태별 스타일
-const getCircleStyles = (disabled: boolean, enabled: boolean) => {
-  switch (true) {
-    case disabled && enabled:
-      return 'w-[1.75rem] h-[1.75rem] rounded-full bg-slate-50 border border-slate-200 translate-x-[1.75rem]';
-    case disabled:
-      return 'w-[1.75rem] h-[1.75rem] rounded-full bg-slate-50 border border-slate-200 translate-x-[-0.25rem]';
-    case enabled:
-      return 'w-[1.75rem] h-[1.75rem] rounded-full bg-white border border-slate-200 shadow-[0_0_0.5rem_#0000000A,_-0.125rem_0_0.125rem_#0000001F] translate-x-[1.75rem]';
-    default:
-      return 'w-[1.75rem] h-[1.75rem] rounded-full bg-white border border-slate-200 shadow-[0_0_0.5rem_#0000000A,_0.125rem_0_0.125rem_#0000000A] translate-x-[-0.25rem]';
-  }
-};
+  const isControlled = controlledToggled !== undefined;
+  const isToggled = isControlled ? controlledToggled : internalToggled;
 
-function Toggle({ label = 'left', toggleOn, disabled = false, labelText, onChange }: ToggleProps) {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const isChecked = e.target.checked;
+
+    if (!isControlled) {
+      setInternalToggled(isChecked);
+    }
+
+    onChange?.(isChecked);
+  };
+
   return (
+    <div className={cn('flex items-center', { 'cursor-not-allowed': disabled }, className)}>
+      {label === 'left' && labelText ? <Label label={labelText} className="mr-5" /> : null}
+      <label
+        aria-label="Toggle Button"
+        className={cn('center-flex relative flex cursor-pointer gap-2 text-sm leading-5', {
+          'opacity-50 cursor-not-allowed': disabled,
+        })}
       >
+        <input
+          type="checkbox"
+          checked={isToggled}
+          onChange={handleChange}
+          disabled={disabled}
+          className="no-interaction peer absolute flex-none opacity-0"
         />
+
+        <div
+          className={cn(
+            'relative h-6 w-12 rounded-full border border-slate-200 bg-slate-100 transition-[background-color]',
+            'after:ml-[-1px] after:mt-[-1px] after:block after:h-6 after:w-6 after:rounded-full',
+            'after:border after:border-slate-300 after:bg-white after:transition-[background-color,transform]',
+            'peer-checked:border-indigo-600 peer-checked:bg-indigo-600 peer-checked:after:translate-x-full',
+            'peer-checked:after:border-indigo-600 peer-focus:ring',
+          )}
+        />
+      </label>
+      {label === 'right' && labelText ? <Label label={labelText} className="ml-5" /> : null}
+    </div>
   );
 }
-
-export default Toggle;
