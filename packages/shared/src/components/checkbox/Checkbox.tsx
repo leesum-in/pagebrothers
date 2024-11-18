@@ -2,11 +2,12 @@ import { Checkbox as HeadlessUiCheckbox } from '@headlessui/react';
 import { Label } from '..';
 
 interface CheckboxProps {
-  label: 'small' | 'large' | 'none';
-  checked: boolean;
+  label?: 'small' | 'large' | 'none';
+  checked?: boolean;
   disabled?: boolean;
   labelText?: string;
-  onChange: (checked: boolean) => void;
+  onChange?: (checked: boolean) => void;
+  className?: string;
 }
 
 // default, disabled, checked & disabled 상태별 스타일
