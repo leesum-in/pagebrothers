@@ -2,10 +2,11 @@ import { Label } from '..';
 
 interface ToggleProps {
   label?: 'left' | 'right' | 'none';
-  toggleOn: boolean;
+  toggled?: boolean;
   disabled?: boolean;
   labelText?: string;
-  onChange: (checked: boolean) => void;
+  onChange?: (checked: boolean) => void;
+  className?: string;
 }
 
 // 토글 컨테이너 상태별 스타일
