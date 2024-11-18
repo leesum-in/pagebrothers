@@ -1,3 +1,4 @@
+import CheckIcon from '../../assets/icons/CheckIcon';
 import { Label } from '..';
 
 interface CheckboxProps {
@@ -55,14 +56,7 @@ function Checkbox({ label, checked, disabled = false, labelText = '', onChange }
           disabled ? 'cursor-not-allowed' : 'cursor-pointer'
         }`}
       >
-        {/* 체크박스 아이콘 변경하기 */}
-        <svg
-          className="stroke-white opacity-0 group-data-[checked]:opacity-100"
-          viewBox="0 0 14 14"
-          fill="none"
-        >
-          <path d="M3 8L6 11L11 3.5" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
+        <CheckIcon className="text-base" />
       <Label label={labelText} className={`ml-2 ${getTextStyle(label)}`} />
     </div>
     </label>
