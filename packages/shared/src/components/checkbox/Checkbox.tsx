@@ -1,4 +1,3 @@
-import { Checkbox as HeadlessUiCheckbox } from '@headlessui/react';
 import { Label } from '..';
 
 interface CheckboxProps {
@@ -47,9 +46,10 @@ const getTextStyle = (label: CheckboxProps['label']) => {
 function Checkbox({ label, checked, disabled = false, labelText = '', onChange }: CheckboxProps) {
   return (
     <div className={`flex items-center ${disabled ? 'opacity-50 cursor-not-allowed' : null}`}>
-      <HeadlessUiCheckbox
         checked={checked}
         onChange={(value) => onChange(value)}
+    <label
+      <input
         disabled={disabled}
         className={`group block ${getCheckboxSizeStyle(label)} ${getCheckboxStateStyle(checked, disabled)} ${
           disabled ? 'cursor-not-allowed' : 'cursor-pointer'
@@ -63,9 +63,9 @@ function Checkbox({ label, checked, disabled = false, labelText = '', onChange }
         >
           <path d="M3 8L6 11L11 3.5" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
         </svg>
-      </HeadlessUiCheckbox>
       <Label label={labelText} className={`ml-2 ${getTextStyle(label)}`} />
     </div>
+    </label>
   );
 }
 
