@@ -1,4 +1,3 @@
-import { Switch } from '@headlessui/react';
 import { Label } from '..';
 
 interface ToggleProps {
@@ -39,25 +38,8 @@ const getCircleStyles = (disabled: boolean, enabled: boolean) => {
 
 function Toggle({ label = 'left', toggleOn, disabled = false, labelText, onChange }: ToggleProps) {
   return (
-    <Switch.Group
-      as="div"
-      className={`flex items-center ${disabled ? 'opacity-50 cursor-not-allowed' : null}`}
-    >
-      {label === 'left' && Boolean(labelText) && <Label label={labelText} className="mr-5" />}
-      <Switch
-        checked={toggleOn}
-        onChange={onChange}
-        disabled={disabled}
-        className={`relative inline-flex items-center justify-start ${getToggleStyles(disabled, toggleOn)} ${
-          disabled ? 'cursor-not-allowed' : 'cursor-pointer'
-        }`}
       >
-        <span
-          className={`absolute top-1/2 transform -translate-y-1/2 transition-transform ${getCircleStyles(disabled, toggleOn)}`}
         />
-      </Switch>
-      {label === 'right' && Boolean(labelText) && <Label label={labelText} className="ml-5" />}
-    </Switch.Group>
   );
 }
 
