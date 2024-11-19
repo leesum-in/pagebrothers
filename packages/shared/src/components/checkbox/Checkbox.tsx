@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 import CheckIcon from '../../assets/icons/CheckIcon';
 import { cn } from '../../utils';
@@ -29,7 +31,7 @@ const getTextStyle = (label: 'small' | 'large' | 'none') => {
   }
 };
 
-function Checkbox({
+export default function Checkbox({
   label = 'none',
   checked: controlledChecked,
   disabled = false,
@@ -55,6 +57,7 @@ function Checkbox({
 
   return (
     <label
+      aria-label="Checkbox"
       className={cn(
         'relative flex cursor-pointer items-center gap-2 text-sm text-slate-600',
         { 'opacity-50 cursor-not-allowed': disabled },
@@ -83,5 +86,3 @@ function Checkbox({
     </label>
   );
 }
-
-export default Checkbox;
