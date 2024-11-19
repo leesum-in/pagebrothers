@@ -14,25 +14,37 @@ interface TextInputProps {
   label?: boolean;
   labelText?: string;
   placeholder?: string;
-  value: string;
-  onChange: (value: string) => void;
+  value?: string;
+  onChange?: (value: string) => void;
   className?: string;
 }
 
 function TextInput({
   description = false,
-  descriptionText = '피드백이나 부가 설명이 들어갑니다.',
+  descriptionText = '',
   disabled = false,
   leftAddOn,
   rightAddOn,
   label = true,
-  labelText = '레이블',
-  placeholder = '텍스트 인풋',
-  value,
+  labelText = '',
+  placeholder = '',
+  value: controlledValue,
   onChange,
   className,
 }: TextInputProps) {
   const [focused, setFocused] = useState(false);
+  const [internalValue, setInternalValue] = useState('');
+
+  const isControlled = controlledValue !== undefined;
+  const value = isControlled ? controlledValue : internalValue;
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = e.target.value;
+    if (!isControlled) {
+      setInternalValue(newValue);
+    }
+    onChange?.(value);
+  };
 
   const inputClassName = cn(
     'block w-full rounded pl-[3rem] pr-[3.5rem] border text-p1 text-slate-600 leading-6 caret-indigo-700 h-[3rem]',
@@ -61,7 +73,7 @@ function TextInput({
             disabled={disabled}
             placeholder={placeholder}
             value={value}
-            onChange={(e) => onChange(e.target.value)}
+            onChange={handleChange}
           />
 
           {rightAddOn ? (

@@ -1,3 +1,6 @@
+'use client';
+
+import { useState } from 'react';
 import { Description, Label } from '..';
 import { cn } from '../../utils';
 
@@ -8,8 +11,8 @@ interface LongTextFieldProps {
   description?: boolean;
   descriptionText?: string;
   placeholder?: string;
-  value: string;
-  onChange: (value: string) => void;
+  value?: string;
+  onChange?: (value: string) => void;
   className?: string;
 }
 
@@ -28,17 +31,30 @@ const getTextFieldStyle = (status: LongTextFieldProps['status']) => {
   return `${baseStyles} ${statusStyles[status]}`;
 };
 
-function LongTextField({
+export default function LongTextField({
   status = 'default',
   label = true,
   labelText = '',
   description = true,
   descriptionText = '',
-  placeholder,
-  value,
+  placeholder = '',
+  value: controlledValue,
   onChange,
   className,
 }: LongTextFieldProps) {
+  const [internalValue, setInternalValue] = useState('');
+
+  const isControlled = controlledValue !== undefined;
+  const value = isControlled ? controlledValue : internalValue;
+
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const newValue = e.target.value;
+    if (!isControlled) {
+      setInternalValue(newValue);
+    }
+    onChange?.(value);
+  };
+
   return (
     <div>
       {label && (
@@ -61,7 +77,7 @@ function LongTextField({
             className,
           )}
           value={value}
-          onChange={(e) => onChange(e.target.value)}
+          onChange={handleChange}
           disabled={status === 'disabled'}
           placeholder={placeholder}
         />
@@ -77,5 +93,3 @@ function LongTextField({
     </div>
   );
 }
-
-export default LongTextField;
