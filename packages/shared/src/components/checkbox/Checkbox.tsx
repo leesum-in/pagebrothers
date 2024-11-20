@@ -1,71 +1,88 @@
-import { Checkbox as HeadlessUiCheckbox } from '@headlessui/react';
+'use client';
+
+import { useState } from 'react';
+import CheckIcon from '../../assets/icons/CheckIcon';
+import { cn } from '../../utils';
 import { Label } from '..';
 
 interface CheckboxProps {
   label: 'small' | 'large' | 'none';
-  checked: boolean;
+  checked?: boolean;
   disabled?: boolean;
   labelText?: string;
-  onChange: (checked: boolean) => void;
+  onChange?: (checked: boolean) => void;
+  className?: string;
 }
 
-// default, disabled, checked & disabled 상태별 스타일
-const getCheckboxStateStyle = (checked: boolean, disabled: boolean) => {
-  if (disabled) {
-    return checked ? 'bg-indigo-100 border-none' : 'bg-slate-50 border-[0.1rem] border-slate-100';
-  }
-  return checked ? 'bg-indigo-500 border-none' : 'border-[0.1rem] border-slate-200';
+const sizeClass: Record<'small' | 'large' | 'none', string> = {
+  small: 'w-4 h-4 rounded-sm',
+  large: 'w-6 h-6 rounded-sm',
+  none: 'w-5 h-5 rounded-sm',
 };
 
-// 사이즈별 체크박스 스타일
-const getCheckboxSizeStyle = (label: CheckboxProps['label']) => {
+const getTextStyle = (label: 'small' | 'large' | 'none') => {
   switch (label) {
     case 'small':
-      return 'w-[1.125rem] h-[1.125rem] border-[0.1rem] rounded-[0.25rem] gap-0';
+      return 'text-xs';
     case 'large':
-      return 'w-[1.25rem] h-[1.25rem] border-[0.1rem] rounded-[0.25rem] gap-0';
-    case 'none':
+      return 'text-lg';
     default:
-      return 'w-[1.5rem] h-[1.5rem] border-[0.1rem] rounded-[0.25rem] gap-0';
+      return 'text-sm';
   }
 };
 
-// 라벨별 텍스트 스타일
-const getTextStyle = (label: CheckboxProps['label']) => {
-  switch (label) {
-    case 'small':
-      return 'text-p2 text-justify';
-    case 'large':
-      return 'text-p1 text-justify';
-    case 'none':
-    default:
-      return 'hidden';
-  }
-};
+export default function Checkbox({
+  label = 'none',
+  checked: controlledChecked,
+  disabled = false,
+  labelText = '',
+  onChange,
+  className,
+}: CheckboxProps) {
+  const [internalChecked, setInternalChecked] = useState(false);
 
-function Checkbox({ label, checked, disabled = false, labelText = '', onChange }: CheckboxProps) {
+  const isControlled = controlledChecked !== undefined;
+  const isChecked = isControlled ? controlledChecked : internalChecked;
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const checked = e.target.checked;
+    if (!isControlled) {
+      setInternalChecked(checked);
+    }
+
+    onChange?.(checked);
+  };
+
+  const selectedSizeClass = sizeClass[label];
+
   return (
-    <div className={`flex items-center ${disabled ? 'opacity-50 cursor-not-allowed' : null}`}>
-      <HeadlessUiCheckbox
-        checked={checked}
-        onChange={(value) => onChange(value)}
+    <label
+      aria-label="Checkbox"
+      className={cn(
+        'relative flex cursor-pointer items-center gap-2 text-sm text-slate-600',
+        { 'opacity-50 cursor-not-allowed': disabled },
+        className,
+      )}
+    >
+      <input
+        name="isConfirmed"
+        type="checkbox"
+        checked={isChecked}
+        onChange={handleChange}
         disabled={disabled}
-        className={`group block ${getCheckboxSizeStyle(label)} ${getCheckboxStateStyle(checked, disabled)} ${
-          disabled ? 'cursor-not-allowed' : 'cursor-pointer'
-        }`}
+        className="no-interaction peer absolute flex-none opacity-0"
+      />
+
+      <div
+        className={cn(
+          'center-flex flex-none border border-slate-200 bg-white text-transparent peer-checked:border-indigo-600 peer-checked:bg-indigo-600 peer-checked:text-white peer-focus:ring peer-disabled:bg-slate-100',
+          selectedSizeClass,
+        )}
       >
-        {/* 체크박스 아이콘 변경하기 */}
-        <svg
-          className="stroke-white opacity-0 group-data-[checked]:opacity-100"
-          viewBox="0 0 14 14"
-          fill="none"
-        >
-          <path d="M3 8L6 11L11 3.5" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      </HeadlessUiCheckbox>
+        <CheckIcon className="text-base" />
+      </div>
+
       <Label label={labelText} className={`ml-2 ${getTextStyle(label)}`} />
-    </div>
+    </label>
   );
 }
-
-export default Checkbox;

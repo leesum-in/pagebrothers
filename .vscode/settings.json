@@ -1,6 +1,6 @@
 {
   "editor.codeActionsOnSave": {
-    "source.organizeImports": "always",
+    // "source.organizeImports": "always", // import 순서 자동 정렬 off
     "source.fixAll.eslint": "always"
   },
   "editor.formatOnSave": true,

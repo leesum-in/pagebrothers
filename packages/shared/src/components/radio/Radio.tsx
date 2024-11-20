@@ -1,11 +1,16 @@
+'use client';
+
+import { useState } from 'react';
+import { cn } from '../../utils';
 import { Label } from '..';
 
 interface RadioProps {
   label: 'small' | 'large' | 'none';
-  selected: boolean;
+  selected?: boolean;
   disabled?: boolean;
   labelText?: string;
-  onChange: (value: boolean) => void;
+  onChange?: (value: boolean) => void;
+  className?: string;
 }
 
 // 라벨별 스타일
@@ -47,28 +52,57 @@ const getSelectedCircleStyle = (label: 'small' | 'large' | 'none') => {
   }
 };
 
-function Radio({ label, selected, disabled = false, labelText = '', onChange }: RadioProps) {
+export default function Radio({
+  label = 'none',
+  selected: controlledSelected,
+  disabled = false,
+  labelText = '',
+  onChange,
+  className,
+}: RadioProps) {
+  const [internalSelected, setInternalSelected] = useState(false);
+
+  const isControlled = controlledSelected !== undefined;
+  const isSelected = isControlled ? controlledSelected : internalSelected;
+
+  const handleClick = () => {
+    if (disabled) return;
+    if (!isControlled) {
+      setInternalSelected(!isSelected);
+    }
+    onChange?.(!isSelected);
+  };
+
   return (
     <div
-      className={`flex items-center cursor-pointer ${disabled ? 'opacity-50 cursor-not-allowed' : null}`}
-      onClick={() => !disabled && onChange(!selected)}
+      className={cn(
+        'flex items-center cursor-pointer',
+        { 'opacity-50 cursor-not-allowed': disabled },
+        className,
+      )}
+      onClick={handleClick}
+      aria-label="Radio Button"
     >
       <div
-        className={`relative flex items-center justify-center ${getRadioStateStyle(label)} ${disabled ? 'cursor-not-allowed' : 'cursor-pointer'}`}
+        className={cn('relative flex items-center justify-center', getRadioStateStyle(label), {
+          'cursor-not-allowed': disabled,
+          'cursor-pointer': !disabled,
+        })}
       >
-        {selected && (
+        {isSelected && (
           <div
-            className={`absolute ${getSelectedCircleStyle(label)} ${disabled ? 'bg-slate-200' : 'bg-indigo-500'} 
-              top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2`}
+            className={cn(
+              'absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2',
+              getSelectedCircleStyle(label),
+              { 'bg-slate-200': disabled, 'bg-indigo-500': !disabled },
+            )}
           />
         )}
       </div>
       <Label
         label={labelText}
-        className={`text-p1 ml-[0.5rem] text-slate-600 ${getTextStyle(label)}`}
+        className={cn('text-p1 ml-[0.5rem] text-slate-600', getTextStyle(label))}
       />
     </div>
   );
 }
-
-export default Radio;
