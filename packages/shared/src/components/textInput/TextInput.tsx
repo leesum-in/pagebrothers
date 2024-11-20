@@ -1,16 +1,16 @@
 'use client';
 
-import type { ReactNode } from 'react';
 import { useState } from 'react';
 import { Description, Label } from '..';
 import { cn } from '../../utils';
 
 interface TextInputProps {
+  status: 'default' | 'error';
   description?: boolean;
   descriptionText?: string;
   disabled?: boolean;
-  leftAddOn?: ReactNode;
-  rightAddOn?: ReactNode;
+  leftAddOn?: React.ReactNode;
+  rightAddOn?: React.ReactNode;
   label?: boolean;
   labelText?: string;
   placeholder?: string;
@@ -20,19 +20,19 @@ interface TextInputProps {
 }
 
 function TextInput({
+  status = 'default',
   description = false,
   descriptionText = '',
   disabled = false,
   leftAddOn,
   rightAddOn,
-  label = true,
+  label = false,
   labelText = '',
   placeholder = '',
   value: controlledValue,
   onChange,
   className,
 }: TextInputProps) {
-  const [focused, setFocused] = useState(false);
   const [internalValue, setInternalValue] = useState('');
 
   const isControlled = controlledValue !== undefined;
@@ -46,50 +46,35 @@ function TextInput({
     onChange?.(value);
   };
 
-  const inputClassName = cn(
-    'block w-full rounded pl-[3rem] pr-[3.5rem] border text-p1 text-slate-600 leading-6 caret-indigo-700 h-[3rem]',
-    description ? 'border-red-500' : 'border-slate-200',
-    disabled ? 'cursor-not-allowed bg-gray-100' : '',
-    focused && !disabled ? 'outline-2 outline-indigo-700 border-indigo-700' : '',
-    'hover:shadow-[0_4px_12px_0_rgba(19,32,57,0.1),_0_8px_20px_0_rgba(19,32,57,0.03)]',
-    className,
-  );
-
   return (
-    <div className="w-full max-w-md px-4">
-      <div className="flex flex-col">
-        {label ? <Label label={labelText} className="text-sm font-medium" /> : null}
-        <div className="relative mt-3">
-          {leftAddOn ? (
-            <span className="absolute top-0 left-0 w-[3rem] h-full flex items-center justify-center">
-              {leftAddOn}
-            </span>
-          ) : null}
-
-          <input
-            className={inputClassName}
-            onFocus={() => setFocused(true)}
-            onBlur={() => setFocused(false)}
-            disabled={disabled}
-            placeholder={placeholder}
-            value={value}
-            onChange={handleChange}
-          />
-
-          {rightAddOn ? (
-            <span className="absolute top-0 right-0 w-[3.5rem] h-full flex items-center justify-center">
-              {rightAddOn}
-            </span>
-          ) : null}
-        </div>
-        {description ? (
-          <Description
-            state="error"
-            description={descriptionText}
-            className="mt-2 text-p2 text-red-500"
-          />
-        ) : null}
+    <div className="flex flex-col gap-2">
+      {label && <Label label={labelText} />}
+      <div className="relative">
+        {leftAddOn && <div className="absolute left-3 flex items-center">{leftAddOn}</div>}
+        <input
+          className={cn(
+            'block w-full h-[3rem] px-4 rounded-md border text-slate-600',
+            leftAddOn && 'pl-10',
+            rightAddOn && 'pr-10',
+            disabled
+              ? 'bg-slate-100 border-slate-200 text-slate-300'
+              : 'bg-white border-slate-200 focus:ring',
+            status === 'error' && 'border-red-500',
+            className,
+          )}
+          placeholder={placeholder}
+          value={value}
+          onChange={handleChange}
+          disabled={disabled}
+        />
+        {rightAddOn && <div className="absolute right-3 flex items-center">{rightAddOn}</div>}
       </div>
+      {description && (
+        <Description
+          state={status === 'error' ? 'error' : 'normal'}
+          description={descriptionText}
+        />
+      )}
     </div>
   );
 }
