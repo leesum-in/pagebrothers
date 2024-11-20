@@ -5,7 +5,7 @@ import { cn } from '../../utils';
 import { Label } from '..';
 
 interface ToggleProps {
-  label?: 'left' | 'right' | 'none';
+  label: 'left' | 'right' | 'none';
   toggled?: boolean;
   disabled?: boolean;
   labelText?: string;

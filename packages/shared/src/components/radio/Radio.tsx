@@ -5,7 +5,7 @@ import { cn } from '../../utils';
 import { Label } from '..';
 
 interface RadioProps {
-  label?: 'small' | 'large' | 'none';
+  label: 'small' | 'large' | 'none';
   selected?: boolean;
   disabled?: boolean;
   labelText?: string;

@@ -6,7 +6,7 @@ import { cn } from '../../utils';
 import { Label } from '..';
 
 interface CheckboxProps {
-  label?: 'small' | 'large' | 'none';
+  label: 'small' | 'large' | 'none';
   checked?: boolean;
   disabled?: boolean;
   labelText?: string;
