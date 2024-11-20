@@ -8,7 +8,7 @@ import { useWidgetIndex } from '../hooks';
 import type { HookFormValues } from '../types';
 import GalleryKeyItem from './GalleryKeyItem';
 
-const GalleryCarouselAlignKeys = ['WIDTH', 'HEIGHT'] as const;
+const GalleryCarouselAlignKeys = ['HEIGHT', 'WIDTH'] as const;
 
 interface GalleryCarouselAlignProps {
   widgetItem: WidgetItem | Omit<WidgetItem, 'id'>;
