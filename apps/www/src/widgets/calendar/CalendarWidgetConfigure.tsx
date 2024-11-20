@@ -155,7 +155,7 @@ function CalendarWidgetConfigure({ widgetItem }: CalendarWidgetConfigureProps) {
         <WidgetThreeWaySelector
           label="남은 날짜 표기"
           widgetItem={widgetItem}
-          items={['안내 문구', '디데이(D-day)', '표시 안함']}
+          texts={['안내 문구', '디데이(D-day)', '표시 안함']}
           value={['SENTENCE', 'DDAY', 'NONE']}
         />
       </div>

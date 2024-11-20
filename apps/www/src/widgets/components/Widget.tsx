@@ -24,6 +24,9 @@ const components: Record<
   CALENDAR: dynamic(() => import('../calendar/CalendarWidget'), {
     ssr: false,
   }),
+  GALLERY: dynamic(() => import('../gallery/GalleryWidget'), {
+    ssr: false,
+  }),
 };
 
 function UnmemoizedWidget({ invitation, widgetItem, isMultiModal }: WidgetProps) {
