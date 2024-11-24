@@ -327,7 +327,7 @@ export interface GalleryWidgetConfig {
   title: string;
   align?: Align;
   singleItem: IInvitationImage | null;
-  items: IInvitationImage[];
+  items: IInvitationImageData[];
   layoutKey: GalleryLayoutKey;
   layoutCarouselAlignKey: GalleryLayoutCarouselAlignKey;
 }
