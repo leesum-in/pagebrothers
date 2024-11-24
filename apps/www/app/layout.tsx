@@ -1,4 +1,4 @@
-import { QueryProvider } from '@repo/shared';
+import { DndProvider, QueryProvider } from '@repo/shared';
 import '@repo/shared/src/styles.css';
 import type { Metadata } from 'next';
 
@@ -19,7 +19,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }):
         className={`font-sans leading-relaxed tracking-tight text-slate-700 ${pretendard.variable} ${gowunBatang.variable} ${notoSerifKr.variable}`}
       >
         <QueryProvider>
-          <LayoutWrapper>{children}</LayoutWrapper>
+          <DndProvider>
+            <LayoutWrapper>{children}</LayoutWrapper>
+          </DndProvider>
         </QueryProvider>
       </body>
     </html>
