@@ -1,6 +1,6 @@
 'use client';
 
-import { CloseIcon, cn, LabelWithSub } from '@repo/shared';
+import { LabelWithSub } from '@repo/shared';
 import type {
   GalleryLayoutCarouselAlignKey,
   GalleryLayoutKey,
@@ -8,14 +8,13 @@ import type {
   IInvitationImageData,
   WidgetItem,
 } from '@repo/shared/src/types/pageBrothers.type';
-import Image from 'next/image';
 import { useCallback, useEffect, useState } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useFormContext } from 'react-hook-form';
 import { LuPlusCircle } from 'react-icons/lu';
 import { useShallow } from 'zustand/shallow';
 
-import { FixedLoader, Loader } from '@/www/ui';
+import { FixedLoader } from '@/www/ui';
 
 import { WidgetBreakLine, WidgetLabelWithInput } from '../components';
 import WidgetThreeWaySelector from '../components/WidgetThreeWaySelector';
@@ -26,13 +25,15 @@ import { getImageSize } from '../utils';
 import type { ModalStore } from '../zustand';
 import useModalStore from '../zustand';
 import GalleryCarouselAlign from './GalleryCarouselAlign';
+import GalleryDraggableList from './GalleryDraggableList';
+import GalleryDroppableUl from './GalleryDroppableUl';
 import GalleryLayout from './GalleryLayout';
 
 interface GalleryWidgetConfigureProps {
   widgetItem: WidgetItem | Omit<WidgetItem, 'id'>;
 }
 
-type IInvitationImageDataWithIsLoading = IInvitationImageData & {
+export type IInvitationImageDataWithIsLoading = IInvitationImageData & {
   isLoading?: boolean;
 };
 
@@ -160,55 +161,18 @@ function GalleryWidgetConfigure({ widgetItem }: GalleryWidgetConfigureProps) {
           />
         </div>
         <div>
-          <ul className="grid grid-cols-3 gap-4">
+          <GalleryDroppableUl<IInvitationImageDataWithIsLoading>
+            items={fileUrls}
+            setItems={setFileUrls}
+          >
             {fileUrls.map((fileUrl, index) => (
-              <li
+              <GalleryDraggableList
                 key={fileUrl.id}
-                className={cn(
-                  'center-flex relative isolate flex aspect-square touch-none overflow-hidden rounded-lg',
-                  fileUrl.isLoading && 'border',
-                )}
-                style={{ zIndex: 'auto' }}
-              >
-                {fileUrl.isLoading ? (
-                  <Loader />
-                ) : (
-                  <>
-                    <input
-                      type="hidden"
-                      {...register(
-                        `invitation.widgets.${widgetIndex}.config.items.${index}.id` as keyof HookFormValues,
-                      )}
-                      value={fileUrl.id}
-                    />
-                    <div className="relative h-full w-full object-cover">
-                      {/** 아래 image 컴포넌트 dnd-kit 적용 */}
-                      <Image
-                        src={fileUrl.url}
-                        alt="uploaded image"
-                        className="relative h-full w-full bg-white object-cover"
-                        role="button"
-                        width={fileUrl.dimensions.width}
-                        height={fileUrl.dimensions.height}
-                        tabIndex={0}
-                      />
-                    </div>
-                    <button
-                      type="button"
-                      className="center-flex absolute right-0 top-0 z-[2] flex h-8 w-8 touch-none text-red-500"
-                    >
-                      <CloseIcon className="text-red-500" />
-                    </button>
-                    <div className="center-flex absolute left-0 bottom-0 z-[2] w-full cursor-pointer">
-                      <button className="pt-2 pb-2 align-bottom" type="button">
-                        <span className="touch-none rounded-lg bg-white bg-opacity-80 py-1 px-2 text-xs font-bold text-slate-600">
-                          이미지 편집
-                        </span>
-                      </button>
-                    </div>
-                  </>
-                )}
-              </li>
+                fileUrl={fileUrl}
+                index={index}
+                widgetIndex={widgetIndex}
+                register={register}
+              />
             ))}
 
             <li className="center-flex relative flex aspect-square overflow-hidden rounded-lg border border-dashed border-slate-300">
@@ -221,7 +185,7 @@ function GalleryWidgetConfigure({ widgetItem }: GalleryWidgetConfigureProps) {
               />
               <LuPlusCircle className="text-2xl text-slate-600" />
             </li>
-          </ul>
+          </GalleryDroppableUl>
         </div>
       </div>
     </div>
