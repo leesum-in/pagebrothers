@@ -174,7 +174,6 @@ export function useSlider<T extends HTMLElement>({
         }, 0);
         const gapWidth = gap * (slides.length - 1);
         const containerWidth = trackRef.current.offsetWidth; // 컨테이너 너비
-        console.log(tracksWidth, containerWidth);
         setMaxTranslate(-(tracksWidth + gapWidth - containerWidth)); // 최대 이동 가능 범위 계산
       }
     }
