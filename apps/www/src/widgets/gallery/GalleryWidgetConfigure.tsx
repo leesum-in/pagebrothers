@@ -85,7 +85,11 @@ function GalleryWidgetConfigure({ widgetItem }: GalleryWidgetConfigureProps) {
     const config: GalleryWidgetConfig = {
       title: watch(`invitation.widgets.${widgetIndex}.config.title`) ?? '',
       align: watch(`invitation.widgets.${widgetIndex}.config.align`),
-      items: fileUrls,
+      items: fileUrls.map((item) => ({
+        id: item.id,
+        url: item.url,
+        dimensions: item.dimensions,
+      })),
       singleItem: null,
       layoutKey: watch(`invitation.widgets.${widgetIndex}.config.layoutKey`) as GalleryLayoutKey,
       layoutCarouselAlignKey: watch(
