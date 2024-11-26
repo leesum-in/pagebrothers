@@ -18,7 +18,7 @@ function GalleryDroppableUl<T extends { id: string }>({
   items,
   setItems,
 }: DroppableProps<T>) {
-  const { isOver, setNodeRef } = useDroppable({
+  const { setNodeRef } = useDroppable({
     id: 'droppable',
   });
 
@@ -33,14 +33,10 @@ function GalleryDroppableUl<T extends { id: string }>({
     }
   };
 
-  const style = {
-    color: isOver ? 'green' : undefined,
-  };
-
   return (
     <DndProvider onDragEnd={handleDragEnd} collisionDetection={closestCenter}>
       <SortableContext items={items} strategy={horizontalListSortingStrategy}>
-        <ul className="grid grid-cols-3 gap-4" ref={setNodeRef} style={style}>
+        <ul className="grid grid-cols-3 gap-4" ref={setNodeRef}>
           {children}
         </ul>
       </SortableContext>
