@@ -93,7 +93,6 @@ export function useSlider<T extends HTMLElement>({
     ) => {
       isMouseDownRef.current = false;
       const target = e.target as HTMLElement;
-
       if (!isDragging && target.closest('.layout-key')) {
         isInputClickRef.current = true;
       } else {
@@ -117,16 +116,17 @@ export function useSlider<T extends HTMLElement>({
       if (trackRef.current.contains(e.target as HTMLElement)) {
         setIsDragging(false);
       } else {
+        // 멀티모달일 경우에 자꾸 꺼지는 이슈가 있어서 리턴처리
+        if (target.closest('#multi-modal-bg') || target.closest('#multi-modal-inner-bg')) {
+          setPrevTranslate(currentTranslate);
+          return;
+        }
         setTimeout(() => {
           setIsDragging(false);
         }, 0);
       }
 
       setPrevTranslate(currentTranslate);
-
-      // 전역 이벤트 제거
-      window.removeEventListener('mousemove', handleMouseMoveTouchMove);
-      window.removeEventListener('mouseup', handleMouseUpTouchEnd);
     },
     [currentTranslate, handleMouseMoveTouchMove, setIsDragging, maxTranslate, isDragging],
   );
