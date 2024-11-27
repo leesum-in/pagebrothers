@@ -1,21 +1,41 @@
 'use client';
 
 import { GalleryWidgetItem } from '@/shared/types';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useReducer, useState } from 'react';
 import { useSlider } from '../../../hooks';
+import { cn } from '../../../utils';
 
 interface GalleryProps {
   widgetItem: GalleryWidgetItem;
+}
+
+function reducer(state: { isDragging: boolean }, action: { type: string }) {
+  switch (action.type) {
+    case 'START_DRAG':
+      return { ...state, isDragging: true };
+    case 'STOP_DRAG':
+      return { ...state, isDragging: false };
+    default:
+      return state;
+  }
 }
 
 const MAX_IMAGE_WIDTH = 420;
 
 function Gallery({ widgetItem }: GalleryProps) {
   const [currentViewingItem, setCurrentViewingItem] = useState(0);
-  const [isDragging, setIsDragging] = useState(false);
+  const [state, dispatch] = useReducer(reducer, { isDragging: false });
+  const { isDragging } = state;
 
   const { trackRef, handleMouseDownTouchStart, handleMouseMoveTouchMove, handleMouseUpTouchEnd } =
-    useSlider<HTMLUListElement>({ isDragging, setIsDragging, gap: 2 });
+    useSlider<HTMLUListElement>({
+      isDragging,
+      setIsDragging: (value) => {
+        if (value) dispatch({ type: 'START_DRAG' });
+        else dispatch({ type: 'STOP_DRAG' });
+      },
+      gap: 2,
+    });
 
   const imageWidthHeight = useCallback((item: GalleryWidgetItem['config']['items'][0]) => {
     const { width: imageWidth, height: imageHeight } = item.dimensions;
@@ -37,6 +57,30 @@ function Gallery({ widgetItem }: GalleryProps) {
       height: fixedHeight,
     };
   }, []);
+
+  const handleMouseDownTouchStartOverride = useCallback(
+    (e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>) => {
+      if (widgetItem.config.layoutKey !== 'CAROUSEL') return;
+      handleMouseDownTouchStart(e);
+    },
+    [handleMouseDownTouchStart],
+  );
+
+  const handleMouseMoveTouchMoveOverride = useCallback(
+    (e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>) => {
+      if (widgetItem.config.layoutKey !== 'CAROUSEL') return;
+      handleMouseMoveTouchMove(e);
+    },
+    [handleMouseMoveTouchMove],
+  );
+
+  const handleMouseUpTouchEndOverride = useCallback(
+    (e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>) => {
+      if (widgetItem.config.layoutKey !== 'CAROUSEL') return;
+      handleMouseUpTouchEnd(e);
+    },
+    [handleMouseUpTouchEnd],
+  );
 
   useEffect(() => {
     if (!trackRef.current) return;
@@ -68,91 +112,95 @@ function Gallery({ widgetItem }: GalleryProps) {
     );
 
   return (
-    <div className="space-y-6 overflow-x-hidden">
+    <div className={cn('space-y-6 overflow-x-hidden', widgetItem.config.title && 'p-8')}>
+      {widgetItem.config.title && (
+        <p
+          className={cn('text-em-lg font-bold text-theme-inter/70 text-center', {
+            'text-left': widgetItem.config.align === 'LEFT',
+            'text-center': widgetItem.config.align === 'CENTER',
+          })}
+        >
+          {widgetItem.config.title}
+        </p>
+      )}
       <div
-        className="relative overflow-hidden"
-        onMouseDown={handleMouseDownTouchStart}
-        onMouseMove={handleMouseMoveTouchMove}
-        onMouseUp={handleMouseUpTouchEnd}
-        onTouchStart={handleMouseDownTouchStart}
-        onTouchMove={handleMouseMoveTouchMove}
-        onTouchEnd={handleMouseUpTouchEnd}
+        className="relative"
+        onMouseDown={handleMouseDownTouchStartOverride}
+        onMouseMove={handleMouseMoveTouchMoveOverride}
+        onMouseUp={handleMouseUpTouchEndOverride}
+        onTouchStart={handleMouseDownTouchStartOverride}
+        onTouchMove={handleMouseMoveTouchMoveOverride}
+        onTouchEnd={handleMouseUpTouchEndOverride}
       >
-        <ul className="flex items-stretch gap-[2px] leading-0" ref={trackRef}>
+        <ul
+          className={cn({
+            'flex items-stretch gap-[2px] leading-0': widgetItem.config.layoutKey === 'CAROUSEL',
+            'divide grid grid-cols-3 gap-[1px]': widgetItem.config.layoutKey === 'TILING',
+          })}
+          ref={trackRef}
+        >
           {widgetItem.config.items.map((item, index) => (
             <li
               key={item.id}
-              className="relative flex flex-shrink-0 items-center"
+              className={cn('relative ', {
+                'flex flex-shrink-0 items-center': widgetItem.config.layoutKey === 'CAROUSEL',
+                'aspect-square cursor-pointer overflow-hidden leading-0':
+                  widgetItem.config.layoutKey === 'TILING',
+              })}
               data-index={index}
             >
-              <div className="relative no-interaction">
+              <div
+                className={cn('relative no-interaction', {
+                  'w-full h-full object-cover': widgetItem.config.layoutKey === 'TILING',
+                })}
+              >
                 <div className="absolute top-0 left-0 right-0 bottom-0 z-[1] select-none"></div>
                 <img
                   src={item.url}
                   alt="uploaded image"
-                  className="relative bg-white no-interaction"
-                  width={imageWidthHeight(item).width}
-                  height={imageWidthHeight(item).height}
+                  className={cn('relative bg-white no-interaction', {
+                    'w-full h-full object-cover': widgetItem.config.layoutKey === 'TILING',
+                  })}
+                  width={
+                    widgetItem.config.layoutKey === 'CAROUSEL'
+                      ? imageWidthHeight(item).width
+                      : undefined
+                  }
+                  height={
+                    widgetItem.config.layoutKey === 'CAROUSEL'
+                      ? imageWidthHeight(item).height
+                      : undefined
+                  }
                 />
               </div>
             </li>
           ))}
         </ul>
-        <div className="no-interaction center-flex absolute right-4 bottom-4 m-auto h-8 gap-1 rounded-full bg-white px-3 text-xs font-bold text-theme-colored">
-          {currentViewingItem === 0
-            ? '밀어서 사진 넘기기'
-            : `${currentViewingItem + 1} / ${widgetItem.config.items.length}`}
-          <svg
-            stroke="currentColor"
-            fill="none"
-            strokeWidth="2"
-            viewBox="0 0 24 24"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="text-lg"
-            height="1em"
-            width="1em"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <line x1="5" y1="12" x2="19" y2="12"></line>
-            <polyline points="12 5 19 12 12 19"></polyline>
-          </svg>
-        </div>
+        {widgetItem.config.layoutKey === 'CAROUSEL' && (
+          <div className="no-interaction center-flex absolute right-4 bottom-4 m-auto h-8 gap-1 rounded-full bg-white px-3 text-xs font-bold text-theme-colored">
+            {currentViewingItem === 0
+              ? '밀어서 사진 넘기기'
+              : `${currentViewingItem + 1} / ${widgetItem.config.items.length}`}
+            <svg
+              stroke="currentColor"
+              fill="none"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="text-lg"
+              height="1em"
+              width="1em"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </div>
+        )}
       </div>
     </div>
   );
 }
 
 export default Gallery;
-
-// interface GalleryItemProps {
-//   item: GalleryWidgetItem['config']['items'][0];
-//   index: number;
-//   width: number;
-//   height: number;
-// }
-
-// function GalleryItem({ item, index, width, height }: GalleryItemProps) {
-
-//   return (
-//     <li
-//       key={index}
-//       ref={setNodeRef}
-//       className="relative flex flex-shrink-0 items-center"
-//       style={style}
-//       {...listeners}
-//       {...attributes}
-//     >
-//       <div className="relative no-interaction">
-//         <div className="absolute top-0 left-0 right-0 bottom-0 z-[1] select-none"></div>
-//         <img
-//           src={item.url}
-//           alt="uploaded image"
-//           className="relative bg-white no-interaction"
-//           width={width}
-//           height={height}
-//         />
-//       </div>
-//     </li>
-//   );
-// }
