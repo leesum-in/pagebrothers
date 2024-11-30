@@ -140,6 +140,36 @@ export function useSlider<T extends HTMLElement>({
     [isDragging],
   );
 
+  const handleScrollToIndex = useCallback(
+    (index: number) => {
+      if (!trackRef.current) return;
+
+      const slides = trackRef.current.children;
+      if (slides.length === 0 || index < 0 || index >= slides.length) return;
+
+      // 각 슬라이드의 너비 및 간격 계산
+      const gapWidth = gap;
+      const translateX = Array.from(slides)
+        .slice(0, index)
+        .reduce((acc, slide) => acc - (slide.getBoundingClientRect().width + gapWidth), 0);
+
+      setCurrentTranslate(translateX);
+      setPrevTranslate(translateX);
+
+      // 트랜지션 효과 추가
+      trackRef.current.style.transition = 'transform 0.3s ease-out';
+      trackRef.current.style.transform = `translate3d(${translateX}px, 0, 0)`;
+
+      // 트랜지션 초기화
+      setTimeout(() => {
+        if (trackRef.current) {
+          trackRef.current.style.transition = '';
+        }
+      }, 300);
+    },
+    [gap],
+  );
+
   useEffect(() => {
     if (trackRef.current) {
       trackRef.current.style.transform = `translate3d(${currentTranslate}px, 0, 0)`;
@@ -186,5 +216,6 @@ export function useSlider<T extends HTMLElement>({
     handleMouseMoveTouchMove,
     handleMouseUpTouchEnd,
     handleInputClick,
+    handleScrollToIndex,
   };
 }
