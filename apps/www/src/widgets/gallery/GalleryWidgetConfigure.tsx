@@ -15,7 +15,7 @@ import { useFormContext } from 'react-hook-form';
 import { LuPlusCircle } from 'react-icons/lu';
 import { useShallow } from 'zustand/shallow';
 
-import { FixedLoader } from '@/www/ui';
+import { FixedLoader, Loader } from '@/www/ui';
 
 import { WidgetBreakLine, WidgetLabelWithInput } from '../components';
 import WidgetThreeWaySelector from '../components/WidgetThreeWaySelector';
@@ -64,7 +64,9 @@ function GalleryWidgetConfigure({ widgetItem }: GalleryWidgetConfigureProps) {
   const { mutate: putInvitationConfig } = useInvitationConfigMutation(invitation?.id ?? '');
   const { mutateAsync: postInvitationImage } = useInvitationImageMutation(invitation?.id ?? '');
 
-  const layoutKey = watch(`invitation.widgets.${widgetIndex ?? 0}.config.layoutKey`);
+  const layoutKey = watch(
+    `invitation.widgets.${widgetIndex ?? 0}.config.layoutKey`,
+  ) as GalleryLayoutKey;
 
   const handleFormAppend = async (inputFile: File) => {
     const { width, height } = await getImageSize(inputFile);
@@ -106,16 +108,21 @@ function GalleryWidgetConfigure({ widgetItem }: GalleryWidgetConfigureProps) {
   const onSubmit: SubmitHandler<HookFormValues> = useCallback(() => {
     if (!invitation || widgetIndex === null || widgetIndex === -1 || !('id' in widgetItem)) return;
 
+    const fileUrlsWithoutLoading = fileUrls.filter((item) => !item.isLoading);
+    const singleItemWithoutLoading = singleItem
+      ? {
+          id: singleItem.id,
+          url: singleItem.url,
+          dimensions: singleItem.dimensions,
+        }
+      : null;
+
     const config: GalleryWidgetConfig = {
       title: watch(`invitation.widgets.${widgetIndex}.config.title`) ?? '',
       align: watch(`invitation.widgets.${widgetIndex}.config.align`),
-      items: fileUrls.map((item) => ({
-        id: item.id,
-        url: item.url,
-        dimensions: item.dimensions,
-      })),
-      singleItem: null,
-      layoutKey: watch(`invitation.widgets.${widgetIndex}.config.layoutKey`) as GalleryLayoutKey,
+      items: fileUrlsWithoutLoading,
+      singleItem: singleItemWithoutLoading,
+      layoutKey,
       layoutCarouselAlignKey: watch(
         `invitation.widgets.${widgetIndex}.config.layoutCarouselAlignKey`,
       ) as GalleryLayoutCarouselAlignKey,
@@ -132,7 +139,17 @@ function GalleryWidgetConfigure({ widgetItem }: GalleryWidgetConfigureProps) {
     console.log('configPayloadData ====>', configPayloadData);
     putInvitationConfig(configPayloadData);
     closeModal();
-  }, [fileUrls, invitation, widgetIndex, watch, putInvitationConfig, closeModal, widgetItem]);
+  }, [
+    fileUrls,
+    singleItem,
+    invitation,
+    widgetIndex,
+    watch,
+    putInvitationConfig,
+    closeModal,
+    widgetItem,
+    layoutKey,
+  ]);
 
   useEffect(() => {
     const isCarousel = layoutKey === 'CAROUSEL';
@@ -228,20 +245,27 @@ function GalleryWidgetConfigure({ widgetItem }: GalleryWidgetConfigureProps) {
               style={{ aspectRatio: '1 / 1' }}
             >
               {singleItem ? (
-                <div className="relative h-full w-full object-contain">
-                  <Image
-                    src={singleItem.url}
-                    alt="uploaded image"
-                    className="relative h-full w-full bg-white object-contain"
-                    fill
-                  />
-                  <button
-                    type="button"
-                    className="center-flex absolute right-0 top-0 z-[2] flex h-8 w-8 touch-none text-red-500"
-                  >
-                    <CloseIcon className="h-4 w-4 text-red-500" />
-                  </button>
-                </div>
+                <>
+                  {singleItem.isLoading ? (
+                    <Loader />
+                  ) : (
+                    <div className="relative h-full w-full object-contain">
+                      <Image
+                        src={singleItem.url}
+                        alt="uploaded image"
+                        className="relative h-full w-full bg-white object-contain"
+                        fill
+                        sizes="100%"
+                      />
+                      <button
+                        type="button"
+                        className="center-flex absolute right-0 top-0 z-[2] flex h-8 w-8 touch-none text-red-500"
+                      >
+                        <CloseIcon className="h-4 w-4 text-red-500" />
+                      </button>
+                    </div>
+                  )}
+                </>
               ) : (
                 <div className="center-flex flex-col space-y-2 text-slate-500">
                   <LuPlusCircle className="text-2xl text-slate-600" />
