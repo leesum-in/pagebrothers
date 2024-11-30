@@ -200,12 +200,12 @@ function Gallery({ widgetItem }: GalleryProps) {
                       'w-full h-full object-cover': widgetItem.config.layoutKey === 'TILING',
                     })}
                     width={
-                      widgetItem.config.layoutKey === 'CAROUSEL'
+                      widgetItem.config.layoutKey !== 'SINGLE'
                         ? imageWidthHeight(item).width
                         : undefined
                     }
                     height={
-                      widgetItem.config.layoutKey === 'CAROUSEL'
+                      widgetItem.config.layoutKey !== 'SINGLE'
                         ? imageWidthHeight(item).height
                         : undefined
                     }
