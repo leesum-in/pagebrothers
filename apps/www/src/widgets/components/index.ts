@@ -1,5 +1,6 @@
 export { default as CatalogHeader } from './CatalogHeader';
 export { default as CatalogTemplate } from './CatalogTemplate';
+export { default as ComponentWithKakaoScript } from './ComponentWithKakaoScript';
 export { default as DashboardHeader } from './DashboardHeader';
 export { default as DashboardTemplate } from './DashboardTemplate';
 export { default as EditTemplate } from './EditTemplate';
