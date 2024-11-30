@@ -41,6 +41,9 @@ function GalleryWidgetConfigure({ widgetItem }: GalleryWidgetConfigureProps) {
   const [fileUrls, setFileUrls] = useState<IInvitationImageDataWithIsLoading[]>(
     (widgetItem.config as GalleryWidgetConfig).items,
   );
+  const [alignSlider, setAlignSlider] = useState<boolean>(
+    (widgetItem.config as GalleryWidgetConfig).layoutKey === 'CAROUSEL',
+  );
 
   const { watch, register } = useFormContext<HookFormValues>();
 
@@ -56,6 +59,8 @@ function GalleryWidgetConfigure({ widgetItem }: GalleryWidgetConfigureProps) {
 
   const { mutate: putInvitationConfig } = useInvitationConfigMutation(invitation?.id ?? '');
   const { mutateAsync: postInvitationImage } = useInvitationImageMutation(invitation?.id ?? '');
+
+  const layoutKey = watch(`invitation.widgets.${widgetIndex ?? 0}.config.layoutKey`);
 
   const handleChangeFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputFile = e.target.files?.[0];
@@ -111,6 +116,11 @@ function GalleryWidgetConfigure({ widgetItem }: GalleryWidgetConfigureProps) {
   }, [fileUrls, invitation, widgetIndex, watch, putInvitationConfig, closeModal, widgetItem]);
 
   useEffect(() => {
+    const isCarousel = layoutKey === 'CAROUSEL';
+    setAlignSlider(isCarousel);
+  }, [layoutKey]);
+
+  useEffect(() => {
     setOnSubmit(onSubmit);
   }, [setOnSubmit, onSubmit]);
 
@@ -150,9 +160,11 @@ function GalleryWidgetConfigure({ widgetItem }: GalleryWidgetConfigureProps) {
       <WidgetBreakLine />
 
       {/** 슬라이더 정렬 */}
-      <div className="space-y-2">
-        <GalleryCarouselAlign widgetItem={widgetItem} register={register} />
-      </div>
+      {alignSlider ? (
+        <div className="space-y-2">
+          <GalleryCarouselAlign widgetItem={widgetItem} register={register} />
+        </div>
+      ) : null}
 
       {/** 사진 업로드 */}
       <div className="space-y-2">
