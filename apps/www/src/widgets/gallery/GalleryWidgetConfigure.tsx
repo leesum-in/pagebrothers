@@ -1,6 +1,6 @@
 'use client';
 
-import { LabelWithSub } from '@repo/shared';
+import { CloseIcon, LabelWithSub } from '@repo/shared';
 import type {
   GalleryLayoutCarouselAlignKey,
   GalleryLayoutKey,
@@ -8,6 +8,7 @@ import type {
   IInvitationImageData,
   WidgetItem,
 } from '@repo/shared/src/types/pageBrothers.type';
+import Image from 'next/image';
 import { useCallback, useEffect, useState } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useFormContext } from 'react-hook-form';
@@ -44,6 +45,9 @@ function GalleryWidgetConfigure({ widgetItem }: GalleryWidgetConfigureProps) {
   const [alignSlider, setAlignSlider] = useState<boolean>(
     (widgetItem.config as GalleryWidgetConfig).layoutKey === 'CAROUSEL',
   );
+  const [singleItem, setSingleItem] = useState<IInvitationImageDataWithIsLoading | null>(
+    (widgetItem.config as GalleryWidgetConfig).singleItem,
+  );
 
   const { watch, register } = useFormContext<HookFormValues>();
 
@@ -62,6 +66,15 @@ function GalleryWidgetConfigure({ widgetItem }: GalleryWidgetConfigureProps) {
 
   const layoutKey = watch(`invitation.widgets.${widgetIndex ?? 0}.config.layoutKey`);
 
+  const handleFormAppend = async (inputFile: File) => {
+    const { width, height } = await getImageSize(inputFile);
+    const formData = new FormData();
+    formData.append('file', inputFile);
+    formData.append('width', width.toString());
+    formData.append('height', height.toString());
+    return formData;
+  };
+
   const handleChangeFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputFile = e.target.files?.[0];
     if (inputFile) {
@@ -69,11 +82,7 @@ function GalleryWidgetConfigure({ widgetItem }: GalleryWidgetConfigureProps) {
         ...prev,
         { id: '', url: '', dimensions: { width: 0, height: 0 }, isLoading: true },
       ]);
-      const { width, height } = await getImageSize(inputFile);
-      const formData = new FormData();
-      formData.append('file', inputFile);
-      formData.append('width', width.toString());
-      formData.append('height', height.toString());
+      const formData = await handleFormAppend(inputFile);
       const response = await postInvitationImage(formData);
 
       setFileUrls((prev) => {
@@ -81,6 +90,16 @@ function GalleryWidgetConfigure({ widgetItem }: GalleryWidgetConfigureProps) {
         newFileUrls[newFileUrls.length - 1] = { ...response, isLoading: false };
         return newFileUrls;
       });
+    }
+  };
+
+  const handleChangeSingleItem = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputFile = e.target.files?.[0];
+    if (inputFile) {
+      setSingleItem({ id: '', url: '', dimensions: { width: 0, height: 0 }, isLoading: true });
+      const formData = await handleFormAppend(inputFile);
+      const response = await postInvitationImage(formData);
+      setSingleItem({ ...response, isLoading: false });
     }
   };
 
@@ -177,31 +196,68 @@ function GalleryWidgetConfigure({ widgetItem }: GalleryWidgetConfigureProps) {
           />
         </div>
         <div>
-          <GalleryDroppableUl<IInvitationImageDataWithIsLoading>
-            items={fileUrls}
-            setItems={setFileUrls}
-          >
-            {fileUrls.map((fileUrl, index) => (
-              <GalleryDraggableList
-                key={fileUrl.id}
-                fileUrl={fileUrl}
-                index={index}
-                widgetIndex={widgetIndex}
-                register={register}
-              />
-            ))}
+          {layoutKey === 'CAROUSEL' || layoutKey === 'TILING' ? (
+            <GalleryDroppableUl<IInvitationImageDataWithIsLoading>
+              items={fileUrls}
+              setItems={setFileUrls}
+            >
+              {fileUrls.map((fileUrl, index) => (
+                <GalleryDraggableList
+                  key={fileUrl.id}
+                  fileUrl={fileUrl}
+                  index={index}
+                  widgetIndex={widgetIndex}
+                  register={register}
+                />
+              ))}
 
-            <li className="center-flex relative flex aspect-square overflow-hidden rounded-lg border border-dashed border-slate-300">
-              <input
-                className="absolute top-0 left-0 h-full w-full cursor-pointer opacity-0 file:cursor-pointer"
-                type="file"
-                accept="image/png, image/jpeg"
-                multiple
-                onChange={handleChangeFile}
-              />
-              <LuPlusCircle className="text-2xl text-slate-600" />
-            </li>
-          </GalleryDroppableUl>
+              <li className="center-flex relative flex aspect-square overflow-hidden rounded-lg border border-dashed border-slate-300">
+                <input
+                  className="absolute top-0 left-0 h-full w-full cursor-pointer opacity-0 file:cursor-pointer"
+                  type="file"
+                  accept="image/png, image/jpeg"
+                  multiple
+                  onChange={handleChangeFile}
+                />
+                <LuPlusCircle className="text-2xl text-slate-600" />
+              </li>
+            </GalleryDroppableUl>
+          ) : (
+            <div
+              className="center-flex relative overflow-hidden rounded-lg border border-slate-300"
+              style={{ aspectRatio: '1 / 1' }}
+            >
+              {singleItem ? (
+                <div className="relative h-full w-full object-contain">
+                  <Image
+                    src={singleItem.url}
+                    alt="uploaded image"
+                    className="relative h-full w-full bg-white object-contain"
+                    fill
+                  />
+                  <button
+                    type="button"
+                    className="center-flex absolute right-0 top-0 z-[2] flex h-8 w-8 touch-none text-red-500"
+                  >
+                    <CloseIcon className="h-4 w-4 text-red-500" />
+                  </button>
+                </div>
+              ) : (
+                <div className="center-flex flex-col space-y-2 text-slate-500">
+                  <LuPlusCircle className="text-2xl text-slate-600" />
+                  <div>
+                    <p className="text-xs">png, jpg / 최대 10mb</p>
+                  </div>
+                  <input
+                    className="absolute top-0 left-0 m-0 h-full w-full cursor-pointer opacity-0 file:cursor-pointer"
+                    type="file"
+                    accept="image/png, image/jpeg"
+                    onChange={handleChangeSingleItem}
+                  />
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </div>

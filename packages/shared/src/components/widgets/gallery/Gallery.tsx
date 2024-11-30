@@ -138,6 +138,7 @@ function Gallery({ widgetItem }: GalleryProps) {
 
   return (
     <div className={cn('space-y-6 overflow-x-hidden', widgetItem.config.title && 'p-8')}>
+      {/** 제목 영역 */}
       {widgetItem.config.title && (
         <p
           className={cn('text-em-lg font-bold text-theme-inter/70 text-center', {
@@ -148,6 +149,8 @@ function Gallery({ widgetItem }: GalleryProps) {
           {widgetItem.config.title}
         </p>
       )}
+
+      {/** 이미지 영역 */}
       <div
         className="relative"
         onMouseDown={handleMouseDownTouchStartOverride}
@@ -157,59 +160,72 @@ function Gallery({ widgetItem }: GalleryProps) {
         onTouchMove={handleMouseMoveTouchMoveOverride}
         onTouchEnd={handleMouseUpTouchEndOverride}
       >
-        <ul
-          className={cn({
-            'flex items-stretch gap-[2px] leading-0': widgetItem.config.layoutKey === 'CAROUSEL',
-            'divide grid grid-cols-3 gap-[1px]': widgetItem.config.layoutKey === 'TILING',
-          })}
-          ref={trackRef}
-        >
-          {widgetItem.config.items.map((item, index) => (
-            <li
-              key={item.id}
-              className={cn('relative ', {
-                'flex flex-shrink-0 items-center': widgetItem.config.layoutKey === 'CAROUSEL',
-                'w-full':
-                  widgetItem.config.layoutKey === 'CAROUSEL' &&
-                  widgetItem.config.layoutCarouselAlignKey === 'WIDTH',
-                'aspect-square cursor-pointer overflow-hidden leading-0':
-                  widgetItem.config.layoutKey === 'TILING',
-              })}
-              data-index={index}
-            >
-              <div
-                className={cn('relative no-interaction', {
+        {widgetItem.config.layoutKey !== 'SINGLE' ? (
+          <ul
+            className={cn({
+              'flex items-stretch gap-[2px] leading-0': widgetItem.config.layoutKey === 'CAROUSEL',
+              'divide grid grid-cols-3 gap-[1px]': widgetItem.config.layoutKey === 'TILING',
+            })}
+            ref={trackRef}
+          >
+            {widgetItem.config.items.map((item, index) => (
+              <li
+                key={item.id}
+                className={cn('relative ', {
+                  'flex flex-shrink-0 items-center': widgetItem.config.layoutKey === 'CAROUSEL',
                   'w-full':
                     widgetItem.config.layoutKey === 'CAROUSEL' &&
                     widgetItem.config.layoutCarouselAlignKey === 'WIDTH',
-                  'w-full h-full object-cover': widgetItem.config.layoutKey === 'TILING',
+                  'aspect-square cursor-pointer overflow-hidden leading-0':
+                    widgetItem.config.layoutKey === 'TILING',
                 })}
+                data-index={index}
               >
-                <div className="absolute top-0 left-0 right-0 bottom-0 z-[1] select-none"></div>
-                <img
-                  src={item.url}
-                  alt="uploaded image"
-                  className={cn('relative bg-white no-interaction', {
+                <div
+                  className={cn('relative no-interaction', {
                     'w-full':
                       widgetItem.config.layoutKey === 'CAROUSEL' &&
                       widgetItem.config.layoutCarouselAlignKey === 'WIDTH',
                     'w-full h-full object-cover': widgetItem.config.layoutKey === 'TILING',
                   })}
-                  width={
-                    widgetItem.config.layoutKey === 'CAROUSEL'
-                      ? imageWidthHeight(item).width
-                      : undefined
-                  }
-                  height={
-                    widgetItem.config.layoutKey === 'CAROUSEL'
-                      ? imageWidthHeight(item).height
-                      : undefined
-                  }
-                />
-              </div>
-            </li>
-          ))}
-        </ul>
+                >
+                  <div className="absolute top-0 left-0 right-0 bottom-0 z-[1] select-none"></div>
+                  <img
+                    src={item.url}
+                    alt="uploaded image"
+                    className={cn('relative bg-white no-interaction', {
+                      'w-full':
+                        widgetItem.config.layoutKey === 'CAROUSEL' &&
+                        widgetItem.config.layoutCarouselAlignKey === 'WIDTH',
+                      'w-full h-full object-cover': widgetItem.config.layoutKey === 'TILING',
+                    })}
+                    width={
+                      widgetItem.config.layoutKey === 'CAROUSEL'
+                        ? imageWidthHeight(item).width
+                        : undefined
+                    }
+                    height={
+                      widgetItem.config.layoutKey === 'CAROUSEL'
+                        ? imageWidthHeight(item).height
+                        : undefined
+                    }
+                  />
+                </div>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <div className="relative cursor-pointer">
+            <div className="absolute top-0 left-0 right-0 bottom-0 z-[1] select-none"></div>
+            <img
+              src={widgetItem.config.singleItem?.url}
+              className="relative bg-white cursor-pointer"
+              alt="uploaded image"
+            />
+          </div>
+        )}
+
+        {/** 밀어서 사진 넘기기 | 사진 인덱스 표시 영역 */}
         {widgetItem.config.layoutKey === 'CAROUSEL' &&
           widgetItem.config.layoutCarouselAlignKey === 'HEIGHT' && (
             <div className="no-interaction center-flex absolute right-4 bottom-4 m-auto h-8 gap-1 rounded-full bg-white px-3 text-xs font-bold text-theme-colored">
