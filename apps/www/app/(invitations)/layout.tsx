@@ -1,5 +1,6 @@
 import type { PropsWithChildren } from 'react';
 
+import { Toast } from '@/www/ui';
 import { Navigation } from '@/www/ui/navigation';
 
 function InvitationsLayout({ children }: PropsWithChildren) {
@@ -7,6 +8,7 @@ function InvitationsLayout({ children }: PropsWithChildren) {
     <>
       <Navigation />
       {children}
+      <Toast />
     </>
   );
 }

@@ -3,4 +3,5 @@ export * from './header';
 export * from './loader';
 export * from './navigation';
 export * from './svgs';
+export * from './toast';
 export * from './wrapper';
