@@ -137,11 +137,11 @@ export type KakaoKeywordResponse = {
   meta: KaKaoResponseMeta;
 };
 
-export type IntroSearchEngine = 'KAKAO' | 'GOOGLE';
+export type SearchEngine = 'KAKAO' | 'GOOGLE';
 
 export type IntroSearchQuery = {
   value: string;
-  engine: IntroSearchEngine;
+  engine: SearchEngine;
 };
 
 export type HookFormValues = { invitation: IInvitation | null };
