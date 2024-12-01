@@ -6,14 +6,23 @@ import { LuArrowRight } from 'react-icons/lu';
 
 import { useEffect, useRef } from 'react';
 import type { IInvitationLocation, LocationWidgetConfig } from '../../../types/pageBrothers.type';
+import { cn } from '../../../utils';
 
 interface LocationProps {
   config: LocationWidgetConfig;
   invitationLocation: IInvitationLocation;
   kakaoObject?: Window['kakao'];
+  isMultiModal?: boolean;
+  onCopyAddress?: () => void;
 }
 
-function Location({ config, invitationLocation, kakaoObject }: LocationProps) {
+function Location({
+  config,
+  invitationLocation,
+  kakaoObject,
+  isMultiModal,
+  onCopyAddress,
+}: LocationProps) {
   const mapRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -30,6 +39,7 @@ function Location({ config, invitationLocation, kakaoObject }: LocationProps) {
       const options = {
         center: latlng,
         level: 5,
+        draggable: false,
       };
 
       const map = new kakaoObject.maps.Map(mapRef.current, options);
@@ -38,6 +48,7 @@ function Location({ config, invitationLocation, kakaoObject }: LocationProps) {
         map,
         position: latlng,
       });
+
       const parent = marker.zd.parentElement;
       if (parent) {
         parent.style.margin = '0';
@@ -51,13 +62,14 @@ function Location({ config, invitationLocation, kakaoObject }: LocationProps) {
   }, [invitationLocation, kakaoObject]);
 
   return (
-    <div className="space-y-8 p-8 no-interaction">
+    <div className={cn('space-y-8 p-8', isMultiModal ? '' : 'no-interaction')}>
       <section className="space-y-4">
         <p className="flex items-center justify-between gap-4 text-em-lg font-bold text-theme-inter/70">
           <span>{config.title}</span>
           <button
             type="button"
             className="flex-none whitespace-nowrap !border-theme-colored/20 !bg-theme-colored/5 !text-theme-inter/70 hover:!bg-theme-colored/10 h-8 rounded-sm px-2 text-xs border border-slate-200 bg-slate-100 text-slate-900 hover:bg-slate-200 center-flex gap-2 font-bold shadow-1 transition-colors disabled:opacity-40"
+            onClick={onCopyAddress}
           >
             <FiCopy className="text-em-lg" />
             주소 복사하기
