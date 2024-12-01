@@ -19,9 +19,12 @@ interface WidgetLabelWithInputProps {
   textareaClassName?: string;
   inputClassName?: string;
   onInputClick?: () => void;
-  onInputChange?: () => void;
+  onInputChange?: (
+    e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>,
+  ) => void;
   readonly?: boolean;
   placeholder?: string;
+  textareaPlaceholder?: string;
 }
 
 function WidgetLabelWithInput({
@@ -41,6 +44,7 @@ function WidgetLabelWithInput({
   onInputChange,
   readonly = false,
   placeholder,
+  textareaPlaceholder,
 }: WidgetLabelWithInputProps) {
   return (
     <label className={labelClassName}>
@@ -48,14 +52,16 @@ function WidgetLabelWithInput({
       {isTextarea ? (
         <textarea
           className={cn(
-            'block w-full resize-none bg-white px-4 py-3 text-slate-600 placeholder:text-slate-300 disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-300 undefined',
+            'block w-full resize-none bg-white px-4 py-3 text-slate-600 placeholder:text-slate-300 disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-300',
             textareaClassName,
           )}
           spellCheck="false"
           autoComplete="off"
           defaultValue={defaultValue}
           rows={3}
+          placeholder={textareaPlaceholder}
           {...(register ? register(registerOption as keyof HookFormValues) : undefined)}
+          onChange={onInputChange}
         />
       ) : (
         <input

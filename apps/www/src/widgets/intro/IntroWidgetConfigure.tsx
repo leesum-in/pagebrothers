@@ -8,29 +8,21 @@ import type {
   IntroWidgetConfig,
   WidgetItem,
 } from '@repo/shared/src/types/pageBrothers.type';
-import { APIProvider } from '@vis.gl/react-google-maps';
 import Image from 'next/image';
 import { useCallback, useEffect, useState } from 'react';
 import { useFormContext, type SubmitHandler } from 'react-hook-form';
-import { FaRegTrashAlt } from 'react-icons/fa';
 import { LuPlusCircle } from 'react-icons/lu';
 import { useShallow } from 'zustand/shallow';
 
 import { FixedLoader, Loader } from '@/www/ui/loader';
-import { WidgetBreakLine, WidgetLabelWithInput } from '@/www/widgets/components';
+import { WidgetAddress, WidgetBreakLine, WidgetLabelWithInput } from '@/www/widgets/components';
 import {
   useEventInfoMutation,
   useInvitationConfigMutation,
   useInvitationImageMutation,
   useWidgetMutation,
 } from '@/www/widgets/mutations';
-import type {
-  ConfigPayload,
-  EventInfoData,
-  HookFormValues,
-  IntroSearchEngine,
-  WidgetData,
-} from '@/www/widgets/types';
+import type { ConfigPayload, EventInfoData, HookFormValues, WidgetData } from '@/www/widgets/types';
 import { getImageSize } from '@/www/widgets/utils';
 import type { ModalStore } from '@/www/widgets/zustand';
 import useModalStore from '@/www/widgets/zustand';
@@ -38,7 +30,7 @@ import useModalStore from '@/www/widgets/zustand';
 import WidgetEventAt from '../components/WidgetEventAt';
 import { useWidgetIndex } from '../hooks';
 
-import { IntroSearchAddress, IntroSelectDateFormatKey, IntroSelectLayout } from '.';
+import { IntroSelectDateFormatKey, IntroSelectLayout } from '.';
 
 interface IntroWidgetConfigureProps {
   widgetItem: WidgetItem | Omit<WidgetItem, 'id'>;
@@ -46,7 +38,6 @@ interface IntroWidgetConfigureProps {
 
 function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.ReactNode {
   const [isAddress, setIsAddress] = useState(false);
-  const [searchEngine, setSearchEngine] = useState<IntroSearchEngine>('KAKAO');
   const [introWidgetConfig, setIntroWidgetConfig] = useState<IntroWidgetConfig>(
     widgetItem.config as IntroWidgetConfig,
   );
@@ -66,14 +57,6 @@ function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.
   const { mutate: postWidget } = useWidgetMutation(invitation?.id ?? '');
   const { mutate: postEventInfo } = useEventInfoMutation(invitation?.id ?? '');
   const { mutateAsync: postInvitationImage } = useInvitationImageMutation(invitation?.id ?? '');
-
-  const handleClickTrashCan = () => {
-    setIsAddress(true);
-  };
-
-  const handleChangeEngine = () => {
-    setSearchEngine((prev) => (prev === 'KAKAO' ? 'GOOGLE' : 'KAKAO'));
-  };
 
   const handleClickEventInformation = () => {
     setIntroWidgetConfig((prev) => ({ ...prev, showEventInformation: !prev.showEventInformation }));
@@ -328,67 +311,7 @@ function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.
 
       {introWidgetConfig.showEventInformation ? (
         <>
-          {/** 예식장 주소 */}
-          <div className="space-y-2">
-            <div>
-              <Label label="예식장 주소" />
-            </div>
-            {isAddress ? (
-              <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY ?? ''}>
-                <div className="flex flex-col space-y-2">
-                  <div className="flex items-center rounded-lg border border-slate-200 bg-slate-100 p-1 text-sm h-12 ">
-                    <WidgetLabelWithInput
-                      labelClassName="group relative flex-1 cursor-pointer text-center h-10"
-                      inputType="radio"
-                      inputValue="KAKAO"
-                      inputClassName="peer absolute cursor-pointer opacity-0"
-                      inputChecked={searchEngine === 'KAKAO'}
-                      onInputChange={handleChangeEngine}
-                    >
-                      <span className="center-flex h-full w-full rounded-md text-slate-500 peer-checked:border peer-checked:border-slate-200 peer-checked:bg-white peer-checked:font-bold peer-checked:text-slate-600">
-                        국내
-                      </span>
-                    </WidgetLabelWithInput>
-
-                    <WidgetLabelWithInput
-                      labelClassName="group relative flex-1 cursor-pointer text-center h-10"
-                      inputType="radio"
-                      inputValue="GOOGLE"
-                      inputClassName="peer absolute cursor-pointer opacity-0"
-                      inputChecked={searchEngine === 'GOOGLE'}
-                      onInputChange={handleChangeEngine}
-                    >
-                      <span className="center-flex h-full w-full rounded-md text-slate-500 peer-checked:border peer-checked:border-slate-200 peer-checked:bg-white peer-checked:font-bold peer-checked:text-slate-600">
-                        해외
-                      </span>
-                    </WidgetLabelWithInput>
-                  </div>
-                  <IntroSearchAddress engine={searchEngine} setIsAddress={setIsAddress} />
-                </div>
-              </APIProvider>
-            ) : (
-              <div>
-                <div className="relative flex w-full items-center justify-between rounded-md border border-slate-200 bg-slate-100 text-left">
-                  <div className="w-0 flex-1 px-4">
-                    <p className="truncate text-slate-600">
-                      {watch('invitation.location.address')}
-                    </p>
-                    <p className="truncate text-sm text-slate-400">
-                      {watch('invitation.location.roadAddress')}
-                    </p>
-                  </div>
-                  <Button
-                    type="button"
-                    variants="text_secondary"
-                    size="medium"
-                    className="center-flex h-16 w-16 flex-none text-slate-500"
-                  >
-                    <FaRegTrashAlt onClick={handleClickTrashCan} />
-                  </Button>
-                </div>
-              </div>
-            )}
-          </div>
+          <WidgetAddress isAddress={isAddress} setIsAddress={setIsAddress} />
 
           {!isAddress ? (
             <>
