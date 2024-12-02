@@ -7,6 +7,7 @@ import { memo } from 'react';
 import { CalendarWidgetConfigure } from '../calendar';
 import { GalleryWidgetConfigure } from '../gallery';
 import { IntroWidgetConfigure } from '../intro';
+import { LocationWidgetConfigure } from '../location';
 import { VideoWidgetConfigure } from '../video';
 
 interface WidgetModalProps {
@@ -18,6 +19,7 @@ function UnmemoizedWidgetModal({ widgetItem }: WidgetModalProps) {
   if (widgetItem.type === 'INTRO') return <IntroWidgetConfigure widgetItem={widgetItem} />;
   if (widgetItem.type === 'VIDEO') return <VideoWidgetConfigure widgetItem={widgetItem} />;
   if (widgetItem.type === 'CALENDAR') return <CalendarWidgetConfigure widgetItem={widgetItem} />;
+  if (widgetItem.type === 'LOCATION') return <LocationWidgetConfigure widgetItem={widgetItem} />;
   if (widgetItem.type === 'GALLERY') return <GalleryWidgetConfigure widgetItem={widgetItem} />;
 }
 

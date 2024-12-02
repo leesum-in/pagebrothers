@@ -93,4 +93,33 @@ const useModalStore = create<ModalStore>((set) => ({
   },
 }));
 
+export type ToastState = {
+  isOpen: boolean;
+  message: string;
+};
+
+export type ToastStore = {
+  toastState: ToastState;
+  openToast: (message: string) => void;
+  closeToast: () => void;
+};
+
+export const useToastStore = create<ToastStore>((set) => ({
+  toastState: {
+    isOpen: false,
+    message: '',
+  },
+  openToast: (message: string) => {
+    set((state: ToastStore) => ({ toastState: { ...state.toastState, isOpen: true, message } }));
+  },
+  closeToast: () => {
+    set((state: ToastStore) => ({ toastState: { ...state.toastState, isOpen: false } }));
+    setTimeout(() => {
+      set((state: ToastStore) => ({
+        toastState: { ...state.toastState, message: '' },
+      }));
+    }, 300);
+  },
+}));
+
 export default useModalStore;

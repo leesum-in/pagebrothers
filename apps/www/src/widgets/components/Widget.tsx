@@ -24,6 +24,9 @@ const components: Record<
   CALENDAR: dynamic(() => import('../calendar/CalendarWidget'), {
     ssr: false,
   }),
+  LOCATION: dynamic(() => import('../location/LocationWidget'), {
+     ssr: false,
+  }),
   GALLERY: dynamic(() => import('../gallery/GalleryWidget'), {
     ssr: false,
   }),

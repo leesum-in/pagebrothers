@@ -15,12 +15,12 @@ import { IoSearchOutline } from 'react-icons/io5';
 import { Loader } from '@/www/ui/loader';
 import debounce from '@/www/utils/debounce';
 import { useKakaoKeywordQuery } from '@/www/widgets/queries';
-import type { IntroSearchEngine, KaKaoKeywordDocument } from '@/www/widgets/types';
+import type { KaKaoKeywordDocument, SearchEngine } from '@/www/widgets/types';
 
 type ComboboxValue = KaKaoKeywordDocument | google.maps.places.AutocompletePrediction | null;
 
 interface IntroLocationSearchProps {
-  engine: IntroSearchEngine;
+  engine: SearchEngine;
   setIsAddress: (value: boolean) => void;
 }
 
