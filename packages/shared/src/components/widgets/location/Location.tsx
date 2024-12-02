@@ -104,6 +104,21 @@ function Location({
           </div>
         </div>
       </section>
+      {config.trafficDescriptionItems.length > 0 && (
+        <section className="space-y-4">
+          <p className="text-em-lg font-bold text-theme-inter/70">오시는 길</p>
+          <ul className="space-y-4">
+            {config.trafficDescriptionItems.map((item) => (
+              <li className="flex items-start gap-4" key={item.title}>
+                <p className="w-16 flex-none text-left font-bold">{item.title}</p>
+                <div className="space-y-3 whitespace-pre-line empty:hidden flex-1">
+                  <p className="[&>a]:text-theme-colored [&>a]:underline">{item.description}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
     </div>
   );
 }
