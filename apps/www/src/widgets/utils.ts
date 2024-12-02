@@ -53,7 +53,9 @@ export function getWidgetIndex(
 ) {
   if (!invitation) return null;
   if ('index' in widgetItem) return widgetItem.index as number;
-  const index = invitation.widgets.findIndex((item) => item.type === widgetItem.type);
+  const index = invitation.widgets.findIndex(
+    (item) => item.type === widgetItem.type, //&& item.id === widgetItem.id,
+  );
   return index === -1 ? 0 : index;
 }
 

@@ -1,13 +1,16 @@
 'use client';
 
-import { Label } from '@repo/shared';
+import { Label, useSlider } from '@repo/shared';
 import type { IntroLayoutKey, IntroWidgetConfig } from '@repo/shared/src/types/pageBrothers.type';
 import type { Dispatch, SetStateAction } from 'react';
 import type { UseFormRegister } from 'react-hook-form';
 import { IoCheckmark } from 'react-icons/io5';
+import { useShallow } from 'zustand/shallow';
 
-import { useSlider } from '@/www/widgets/hooks';
 import type { HookFormValues } from '@/www/widgets/types';
+
+import type { ModalStore } from '../zustand';
+import useModalStore from '../zustand';
 
 type LayoutKey = {
   key: IntroLayoutKey;
@@ -66,13 +69,20 @@ function IntroSelectLayout({
   register,
   widgetIndex,
 }: IntroSelectLayoutProps) {
+  const { isDragging, setIsDragging } = useModalStore(
+    useShallow((state: ModalStore) => ({
+      isDragging: state.isDragging,
+      setIsDragging: state.setIsDragging,
+    })),
+  );
+
   const {
     trackRef,
     handleMouseDownTouchStart,
     handleMouseMoveTouchMove,
     handleMouseUpTouchEnd,
     handleInputClick,
-  } = useSlider();
+  } = useSlider<HTMLDivElement>({ isDragging, setIsDragging });
 
   return (
     <div className="space-y-2 select-none">

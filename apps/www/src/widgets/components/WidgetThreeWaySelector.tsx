@@ -1,6 +1,6 @@
 'use client';
 
-import type { CalendarWidgetConfig, WidgetItem } from '@repo/shared';
+import type { CalendarWidgetConfig, GalleryWidgetConfig, WidgetItem } from '@repo/shared';
 import { Label } from '@repo/shared';
 import { useMemo } from 'react';
 import { useFormContext } from 'react-hook-form';
@@ -28,17 +28,18 @@ const textAlignItems = [
 interface WidgetThreeWaySelectorProps {
   label: ThreeWayLabelValue;
   widgetItem: WidgetItem | Omit<WidgetItem, 'id'>;
-  items?: React.ReactNode[];
+  texts?: string[];
   value?: string[];
 }
 
-function WidgetThreeWaySelector({ label, items, widgetItem, value }: WidgetThreeWaySelectorProps) {
+function WidgetThreeWaySelector({ label, texts, widgetItem, value }: WidgetThreeWaySelectorProps) {
   const { register } = useFormContext<HookFormValues>();
   const widgetIndex = useWidgetIndex(widgetItem);
-  const isTextAlign = label === '텍스트 정렬';
+  const isTextAlign = label === '텍스트 정렬' || label === '타이틀 정렬';
   const registerOption = useMemo(() => {
     switch (label) {
       case '텍스트 정렬':
+      case '타이틀 정렬':
         return `invitation.widgets.${widgetIndex}.config.align`;
       case '남은 날짜 표기':
         return `invitation.widgets.${widgetIndex}.config.differenceFormat`;
@@ -66,8 +67,9 @@ function WidgetThreeWaySelector({ label, items, widgetItem, value }: WidgetThree
                   register={register}
                   registerOption={registerOption}
                   inputDefaultChecked={
-                    (widgetItem.config as CalendarWidgetConfig).align
-                      ? (widgetItem.config as CalendarWidgetConfig).align === item.key
+                    (widgetItem.config as CalendarWidgetConfig | GalleryWidgetConfig).align
+                      ? (widgetItem.config as CalendarWidgetConfig | GalleryWidgetConfig).align ===
+                        item.key
                       : item.key === 'CENTER'
                   }
                 >
@@ -76,7 +78,7 @@ function WidgetThreeWaySelector({ label, items, widgetItem, value }: WidgetThree
                   </span>
                 </WidgetLabelWithInput>
               ))
-            : items?.map((item, index) => (
+            : texts?.map((text, index) => (
                 <WidgetLabelWithInput
                   key={value?.[index]}
                   labelClassName="group relative h-full w-full cursor-pointer text-sm leading-relaxed"
@@ -90,7 +92,7 @@ function WidgetThreeWaySelector({ label, items, widgetItem, value }: WidgetThree
                   }
                 >
                   <span className="center-flex relative h-full w-full gap-2 border border-slate-200 px-3 text-slate-600 group-first-of-type:rounded-l-sm group-last-of-type:rounded-r-sm peer-checked:z-10 peer-checked:border-indigo-600 peer-checked:text-indigo-600 peer-focus:ring">
-                    {item}
+                    {text}
                   </span>
                 </WidgetLabelWithInput>
               ))}

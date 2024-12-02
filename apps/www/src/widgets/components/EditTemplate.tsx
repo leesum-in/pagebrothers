@@ -85,10 +85,11 @@ function EditTemplate() {
           </Modal>
           <Modal
             isModalOpen={multiModalState.isOpen}
-            isDragging={isDragging}
+            // isDragging={isDragging} // 멀티모달에서는 필요없을 수도 있어서 우선 주석처리
             onCloseModal={closeMultiModal}
             isMultiModal
             isCalendar={multiModalState.calendar}
+            widgetType={multiModalState.widget?.type}
           >
             {multiModalState.calendar ? <SelectableCalendar invitation={invitation} /> : null}
             {multiModalState.widget ? (
