@@ -326,8 +326,8 @@ export interface EventSequenceItem {
 export interface GalleryWidgetConfig {
   title: string;
   align?: Align;
-  singleItem: IInvitationImage | null;
-  items: IInvitationImage[];
+  singleItem: IInvitationImageData | null;
+  items: IInvitationImageData[];
   layoutKey: GalleryLayoutKey;
   layoutCarouselAlignKey: GalleryLayoutCarouselAlignKey;
 }

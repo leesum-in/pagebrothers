@@ -50,11 +50,11 @@ function Calendar({ invitation }: CalendarProps) {
         </div>
       )}
       <footer className="space-y-4">
-        {widget?.config.differenceFormat === 'SENTANCE' && (
+        {widget?.config.differenceFormat === 'SENTENCE' && (
           <p>
             앞으로{' '}
             <strong className="text-theme-inter/70">
-              {differenceInDays(weddingDay, new Date())}일
+              {differenceInDays(weddingDay, new Date()) + 1}일
             </strong>{' '}
             남았어요
           </p>
@@ -63,7 +63,7 @@ function Calendar({ invitation }: CalendarProps) {
           <p>
             예식일{' '}
             <strong className="text-theme-inter/70">
-              D-{differenceInDays(weddingDay, new Date())}
+              D-{differenceInDays(weddingDay, new Date()) + 1}
             </strong>
           </p>
         )}

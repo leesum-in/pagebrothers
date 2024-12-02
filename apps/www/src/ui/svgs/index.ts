@@ -1,5 +1,10 @@
 export { default as Before } from './Before';
 export { default as Check } from './Check';
+export { default as GalleryLayoutOne } from './GalleryLayoutOne';
+export { default as GalleryLayoutSlider } from './GalleryLayoutSlider';
+export { default as GalleryLayoutTiling } from './GalleryLayoutTiling';
+export { default as GallerySliderLayoutHeight } from './GallerySliderLayoutHeight';
+export { default as GallerySliderLayoutWidth } from './GallerySliderLayoutWidth';
 export { default as Logo } from './Logo';
 export { default as Move } from './Move';
 export { default as Naver } from './Naver';
