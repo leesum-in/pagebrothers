@@ -25,7 +25,7 @@ const components: Record<
     ssr: false,
   }),
   LOCATION: dynamic(() => import('../location/LocationWidget'), {
-     ssr: false,
+    ssr: false,
   }),
   GALLERY: dynamic(() => import('../gallery/GalleryWidget'), {
     ssr: false,
