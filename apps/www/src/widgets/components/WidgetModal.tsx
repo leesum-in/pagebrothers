@@ -11,6 +11,7 @@ import { IntroWidgetConfigure } from '../intro';
 import { LocationWidgetConfigure } from '../location';
 import { RsvpWidgetConfigure } from '../rsvp';
 import { VideoWidgetConfigure } from '../video';
+import { MessageWidgetConfigure } from '../message';
 
 interface WidgetModalProps {
   widgetItem: WidgetItem | Omit<WidgetItem, 'id'> | null;
@@ -25,6 +26,7 @@ function UnmemoizedWidgetModal({ widgetItem }: WidgetModalProps) {
   if (widgetItem.type === 'GALLERY') return <GalleryWidgetConfigure widgetItem={widgetItem} />;
   if (widgetItem.type === 'RSVP') return <RsvpWidgetConfigure widgetItem={widgetItem} />;
   if (widgetItem.type === 'GREETING') return <GreetingWidgetConfigure widgetItem={widgetItem} />;
+  if (widgetItem.type === 'MESSAGE') return <MessageWidgetConfigure widgetItem={widgetItem} />;
 }
 
 const WidgetModal = memo(UnmemoizedWidgetModal);
