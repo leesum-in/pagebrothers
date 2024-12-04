@@ -28,7 +28,7 @@ export const TEXT_ALIGN = {
 };
 
 export const TEXT_SIZE = {
-  sm: 'text-base',
-  md: 'text-md',
+  sm: 'text-sm',
+  md: 'text-base',
   lg: 'text-lg',
 };
