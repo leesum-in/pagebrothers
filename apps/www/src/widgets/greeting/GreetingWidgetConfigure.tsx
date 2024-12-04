@@ -1,7 +1,7 @@
 'use client';
 
 import { Label, LabelWithSub, type GreetingWidgetConfig, type WidgetItem } from '@repo/shared';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useFormContext } from 'react-hook-form';
 import { useShallow } from 'zustand/shallow';
@@ -10,7 +10,7 @@ import { FixedLoader } from '@/www/ui';
 
 import { WidgetLabelWithInput } from '../components';
 import WidgetThreeWaySelector from '../components/WidgetThreeWaySelector';
-import { useWidgetIndex } from '../hooks';
+import useCombobox, { useWidgetIndex } from '../hooks';
 import type { HookFormValues } from '../types';
 import type { ModalStore } from '../zustand';
 import useModalStore from '../zustand';
@@ -18,6 +18,8 @@ import useModalStore from '../zustand';
 interface GreetingWidgetConfigureProps {
   widgetItem: WidgetItem | Omit<WidgetItem, 'id'>;
 }
+
+const comboboxOptions = ['아들', '장남', '차남', '삼남', '딸', '장녀', '차녀', '삼녀'];
 
 function GreetingWidgetConfigure({ widgetItem }: GreetingWidgetConfigureProps) {
   const { watch, register, setValue } = useFormContext<HookFormValues>();
@@ -32,6 +34,25 @@ function GreetingWidgetConfigure({ widgetItem }: GreetingWidgetConfigureProps) {
 
   const widgetIndex = useWidgetIndex(widgetItem);
   const widgetConfig = widgetItem.config as GreetingWidgetConfig;
+
+  const { selected: groomValue, Combobox: GroomCombobox } = useCombobox({
+    options: comboboxOptions,
+  });
+
+  const groomBrideGreetingData = useMemo(() => {
+    if (!invitation) return { groomData: null, brideData: null };
+    const groomData = Object.entries(widgetConfig.hosts).find(([key]) =>
+      invitation.owners.find((owner) => owner.id === key),
+    );
+    const brideData = Object.entries(widgetConfig.hosts).find(([key]) =>
+      invitation.owners.find((owner) => owner.id === key),
+    );
+    if (!groomData || !brideData) return { groomData: null, brideData: null };
+    return {
+      groomData: { id: groomData[0], ...groomData[1] },
+      brideData: { id: brideData[0], ...brideData[1] },
+    };
+  }, [invitation, widgetConfig.hosts]);
 
   const onSubmit: SubmitHandler<HookFormValues> = useCallback(() => {
     if (!invitation || !('id' in widgetItem) || widgetIndex === null || widgetIndex === -1) return;
@@ -66,6 +87,7 @@ function GreetingWidgetConfigure({ widgetItem }: GreetingWidgetConfigureProps) {
         <div>
           <WidgetLabelWithInput
             labelClassName="relative flex items-center overflow-hidden rounded-lg border focus-within:ring border-slate-200"
+            inputClassName="peer block h-12 w-full bg-white px-4 text-slate-600 placeholder:text-slate-300 disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-200 "
             defaultValue={widgetConfig.title}
             placeholder="타이틀 입력"
             register={register}
@@ -87,6 +109,8 @@ function GreetingWidgetConfigure({ widgetItem }: GreetingWidgetConfigureProps) {
             defaultValue={widgetConfig.greetingText}
             placeholder="인사말 입력"
             register={register}
+            isTextarea
+            textareaClassName="block w-full resize-none bg-white px-4 py-3 text-slate-600 placeholder:text-slate-300 disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-300"
             registerOption={`invitation.widgets.${widgetIndex}.config.greetingText`}
           >
             <div className="flex items-center" />
@@ -113,6 +137,34 @@ function GreetingWidgetConfigure({ widgetItem }: GreetingWidgetConfigureProps) {
             }
           />
           <div className="text-sm text-slate-400">인트로에 예식 장소와 일시를 보여줍니다.</div>
+        </div>
+      </div>
+
+      {/** 정보 */}
+      <div className="grid grid-cols-2 gap-x-4 gap-y-8">
+        {/** 신랑 이름 */}
+        <div className="space-y-2 col-span-1">
+          <div>
+            <LabelWithSub label="🤵 신랑 이름" />
+          </div>
+          <div>
+            <WidgetLabelWithInput
+              labelClassName="relative flex items-center overflow-hidden rounded-lg border focus-within:ring border-slate-200"
+              inputClassName="peer block h-12 w-full bg-white px-4 text-slate-600 placeholder:text-slate-300 disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-200"
+              defaultValue={groomBrideGreetingData.groomData?.name}
+              register={register}
+              registerOption={`invitation.widgets.${widgetIndex}.config.hosts.${groomBrideGreetingData.groomData?.id}.name`}
+            >
+              <div className="flex items-center" />
+            </WidgetLabelWithInput>
+          </div>
+        </div>
+        {/** 신랑 서열 */}
+        <div className="space-y-2">
+          <div>
+            <LabelWithSub label="서열 표기" />
+          </div>
+          {GroomCombobox()}
         </div>
       </div>
     </div>
