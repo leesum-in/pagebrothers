@@ -6,6 +6,7 @@ import { memo } from 'react';
 // 여기서는 절대경로(@) 임포트하면 스토리북 실행 안됨
 import { CalendarWidgetConfigure } from '../calendar';
 import { GalleryWidgetConfigure } from '../gallery';
+import { GreetingWidgetConfigure } from '../greeting';
 import { IntroWidgetConfigure } from '../intro';
 import { LocationWidgetConfigure } from '../location';
 import { VideoWidgetConfigure } from '../video';
@@ -21,6 +22,7 @@ function UnmemoizedWidgetModal({ widgetItem }: WidgetModalProps) {
   if (widgetItem.type === 'CALENDAR') return <CalendarWidgetConfigure widgetItem={widgetItem} />;
   if (widgetItem.type === 'LOCATION') return <LocationWidgetConfigure widgetItem={widgetItem} />;
   if (widgetItem.type === 'GALLERY') return <GalleryWidgetConfigure widgetItem={widgetItem} />;
+  if (widgetItem.type === 'GREETING') return <GreetingWidgetConfigure widgetItem={widgetItem} />;
 }
 
 const WidgetModal = memo(UnmemoizedWidgetModal);
