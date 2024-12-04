@@ -21,7 +21,7 @@ function MessageWidget({ widgetItem }: MessageWidgetProps): React.ReactNode {
         <div
           className={`no-interaction space-y-6 p-8 ${TEXT_ALIGN[align]} ${TEXT_SIZE[size]} text-slate-700/70`}
         >
-          {widgetTitle ? <p className="text-[1.12em] font-black"> {widgetTitle}</p> : null}
+          {widgetTitle ? <p className="text-[1.15em] font-bold"> {widgetTitle}</p> : null}
           <div className="space-y-3">
             <p>{title}</p>
           </div>
