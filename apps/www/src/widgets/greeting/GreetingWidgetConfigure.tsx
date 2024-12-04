@@ -1,7 +1,7 @@
 'use client';
 
 import { Label, LabelWithSub, type GreetingWidgetConfig, type WidgetItem } from '@repo/shared';
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useFormContext } from 'react-hook-form';
 import { useShallow } from 'zustand/shallow';
@@ -14,6 +14,7 @@ import useCombobox, { useWidgetIndex } from '../hooks';
 import type { HookFormValues } from '../types';
 import type { ModalStore } from '../zustand';
 import useModalStore from '../zustand';
+import GreetingHostDisplay from './GreetingHostDisplay';
 
 interface GreetingWidgetConfigureProps {
   widgetItem: WidgetItem | Omit<WidgetItem, 'id'>;
@@ -38,21 +39,42 @@ function GreetingWidgetConfigure({ widgetItem }: GreetingWidgetConfigureProps) {
   const { selected: groomValue, Combobox: GroomCombobox } = useCombobox({
     options: comboboxOptions,
   });
+  const { selected: brideValue, Combobox: BrideCombobox } = useCombobox({
+    options: comboboxOptions,
+  });
 
   const groomBrideGreetingData = useMemo(() => {
     if (!invitation) return { groomData: null, brideData: null };
-    const groomData = Object.entries(widgetConfig.hosts).find(([key]) =>
-      invitation.owners.find((owner) => owner.id === key),
-    );
-    const brideData = Object.entries(widgetConfig.hosts).find(([key]) =>
-      invitation.owners.find((owner) => owner.id === key),
-    );
+
+    const groom = invitation.owners.find((owner) => owner.role === 'GROOM');
+    const bride = invitation.owners.find((owner) => owner.role === 'BRIDE');
+
+    if (!groom || !bride) return { groomData: null, brideData: null };
+
+    const groomData = Object.entries(widgetConfig.hosts).find(([key]) => key === groom.id);
+    const brideData = Object.entries(widgetConfig.hosts).find(([key]) => key === bride.id);
+
     if (!groomData || !brideData) return { groomData: null, brideData: null };
+
     return {
       groomData: { id: groomData[0], ...groomData[1] },
       brideData: { id: brideData[0], ...brideData[1] },
     };
   }, [invitation, widgetConfig.hosts]);
+
+  const [isDeceased, setIsDeceased] = useState({
+    groomFather: groomBrideGreetingData.groomData?.isFatherDeceased ?? false,
+    groomMother: groomBrideGreetingData.groomData?.isMotherDeceased ?? false,
+    brideFather: groomBrideGreetingData.brideData?.isFatherDeceased ?? false,
+    brideMother: groomBrideGreetingData.brideData?.isMotherDeceased ?? false,
+  });
+
+  const handleChangeDeceased = useCallback(
+    (type: 'groomFather' | 'groomMother' | 'brideFather' | 'brideMother') => (value: boolean) => {
+      setIsDeceased((prev) => ({ ...prev, [type]: value }));
+    },
+    [],
+  );
 
   const onSubmit: SubmitHandler<HookFormValues> = useCallback(() => {
     if (!invitation || !('id' in widgetItem) || widgetIndex === null || widgetIndex === -1) return;
@@ -140,33 +162,27 @@ function GreetingWidgetConfigure({ widgetItem }: GreetingWidgetConfigureProps) {
         </div>
       </div>
 
-      {/** 정보 */}
-      <div className="grid grid-cols-2 gap-x-4 gap-y-8">
-        {/** 신랑 이름 */}
-        <div className="space-y-2 col-span-1">
-          <div>
-            <LabelWithSub label="🤵 신랑 이름" />
-          </div>
-          <div>
-            <WidgetLabelWithInput
-              labelClassName="relative flex items-center overflow-hidden rounded-lg border focus-within:ring border-slate-200"
-              inputClassName="peer block h-12 w-full bg-white px-4 text-slate-600 placeholder:text-slate-300 disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-200"
-              defaultValue={groomBrideGreetingData.groomData?.name}
-              register={register}
-              registerOption={`invitation.widgets.${widgetIndex}.config.hosts.${groomBrideGreetingData.groomData?.id}.name`}
-            >
-              <div className="flex items-center" />
-            </WidgetLabelWithInput>
-          </div>
-        </div>
-        {/** 신랑 서열 */}
-        <div className="space-y-2">
-          <div>
-            <LabelWithSub label="서열 표기" />
-          </div>
-          {GroomCombobox()}
-        </div>
-      </div>
+      {groomBrideGreetingData.groomData ? (
+        <>
+          <GreetingHostDisplay
+            groomBrideGreetingData={groomBrideGreetingData}
+            widgetIndex={widgetIndex}
+            isDeceased={isDeceased}
+            handleChangeDeceased={handleChangeDeceased}
+            Combobox={GroomCombobox}
+            type="groom"
+          />
+          <hr className="border-t border-slate-300" />
+          <GreetingHostDisplay
+            groomBrideGreetingData={groomBrideGreetingData}
+            widgetIndex={widgetIndex}
+            isDeceased={isDeceased}
+            handleChangeDeceased={handleChangeDeceased}
+            Combobox={BrideCombobox}
+            type="bride"
+          />
+        </>
+      ) : null}
     </div>
   );
 }
