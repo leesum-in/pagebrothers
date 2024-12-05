@@ -1,6 +1,12 @@
 'use client';
 
-import { Label, LabelWithSub, type GreetingWidgetConfig, type WidgetItem } from '@repo/shared';
+import type {
+  GreetingNameFormatKey,
+  GreetingNameLayoutKey,
+  GreetingWidgetConfig,
+  WidgetItem,
+} from '@repo/shared';
+import { Label, LabelWithSub } from '@repo/shared';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useFormContext } from 'react-hook-form';
@@ -11,10 +17,12 @@ import { FixedLoader } from '@/www/ui';
 import { WidgetBreakLine, WidgetLabelWithInput } from '../components';
 import WidgetThreeWaySelector from '../components/WidgetThreeWaySelector';
 import useCombobox, { useWidgetIndex } from '../hooks';
-import type { HookFormValues } from '../types';
+import { useInvitationConfigMutation } from '../mutations';
+import type { ConfigPayload, HookFormValues } from '../types';
 import type { ModalStore } from '../zustand';
 import useModalStore from '../zustand';
 import GreetingHostDisplay from './GreetingHostDisplay';
+import GreetingNameFormatKeyList from './GreetingNameFormatKey';
 import GreetingNameLayout from './GreetingNameLayout';
 
 interface GreetingWidgetConfigureProps {
@@ -24,7 +32,7 @@ interface GreetingWidgetConfigureProps {
 const comboboxOptions = ['아들', '장남', '차남', '삼남', '딸', '장녀', '차녀', '삼녀'];
 
 function GreetingWidgetConfigure({ widgetItem }: GreetingWidgetConfigureProps) {
-  const { watch, register, setValue } = useFormContext<HookFormValues>();
+  const { watch, register } = useFormContext<HookFormValues>();
   const { setOnSubmit, closeModal, invitation } = useModalStore(
     useShallow((state: ModalStore) => ({
       setOnSubmit: state.setOnSubmit,
@@ -34,21 +42,23 @@ function GreetingWidgetConfigure({ widgetItem }: GreetingWidgetConfigureProps) {
     })),
   );
 
+  const { mutate: putInvitationConfig } = useInvitationConfigMutation(invitation?.id ?? '');
+
   const widgetIndex = useWidgetIndex(widgetItem);
   const widgetConfig = widgetItem.config as GreetingWidgetConfig;
 
-  const { selected: groomValue, Combobox: GroomCombobox } = useCombobox({
+  const { selected: groomLevelValue, Combobox: GroomCombobox } = useCombobox({
     options: comboboxOptions,
   });
-  const { selected: brideValue, Combobox: BrideCombobox } = useCombobox({
+  const { selected: brideLevelValue, Combobox: BrideCombobox } = useCombobox({
     options: comboboxOptions,
   });
+
+  const groom = invitation?.owners.find((owner) => owner.role === 'GROOM');
+  const bride = invitation?.owners.find((owner) => owner.role === 'BRIDE');
 
   const groomBrideGreetingData = useMemo(() => {
     if (!invitation) return { groomData: null, brideData: null };
-
-    const groom = invitation.owners.find((owner) => owner.role === 'GROOM');
-    const bride = invitation.owners.find((owner) => owner.role === 'BRIDE');
 
     if (!groom || !bride) return { groomData: null, brideData: null };
 
@@ -61,7 +71,7 @@ function GreetingWidgetConfigure({ widgetItem }: GreetingWidgetConfigureProps) {
       groomData: { id: groomData[0], ...groomData[1] },
       brideData: { id: brideData[0], ...brideData[1] },
     };
-  }, [invitation, widgetConfig.hosts]);
+  }, [invitation, widgetConfig.hosts, groom, bride]);
 
   const [isDeceased, setIsDeceased] = useState({
     groomFather: groomBrideGreetingData.groomData?.isFatherDeceased ?? false,
@@ -79,11 +89,84 @@ function GreetingWidgetConfigure({ widgetItem }: GreetingWidgetConfigureProps) {
 
   const onSubmit: SubmitHandler<HookFormValues> = useCallback(() => {
     if (!invitation || !('id' in widgetItem) || widgetIndex === null || widgetIndex === -1) return;
+    const align = watch(`invitation.widgets.${widgetIndex}.config.align`);
 
-    // const config: GreetingWidgetConfig = {
-    //   title: watch(`invitation.widgets.${widgetIndex}.config.title`),
-    // };
-  }, [invitation, widgetIndex, watch, widgetItem]);
+    if (!align) return;
+    if (!groom || !bride) return;
+    if (!groomBrideGreetingData.groomData) return;
+
+    const config: GreetingWidgetConfig = {
+      align,
+      title: String(watch(`invitation.widgets.${widgetIndex}.config.title`)),
+      nameLayoutKey: watch(
+        `invitation.widgets.${widgetIndex}.config.nameLayoutKey`,
+      ) as GreetingNameLayoutKey,
+      nameFormatKey: watch(
+        `invitation.widgets.${widgetIndex}.config.nameFormatKey`,
+      ) as GreetingNameFormatKey,
+      greetingText: watch(`invitation.widgets.${widgetIndex}.config.greetingText`),
+      withParent: watch(`invitation.widgets.${widgetIndex}.config.withParent`),
+      useFlower: watch(`invitation.widgets.${widgetIndex}.config.useFlower`),
+      hosts: {
+        [groom.id]: {
+          ...groomBrideGreetingData.groomData,
+          name: watch(
+            `invitation.widgets.${widgetIndex}.config.hosts.${groomBrideGreetingData.groomData.id}.name`,
+          ),
+          level: groomLevelValue,
+          fatherName: watch(
+            `invitation.widgets.${widgetIndex}.config.hosts.${groomBrideGreetingData.groomData.id}.fatherName`,
+          ),
+          motherName: watch(
+            `invitation.widgets.${widgetIndex}.config.hosts.${groomBrideGreetingData.groomData.id}.motherName`,
+          ),
+          isFatherDeceased: isDeceased.groomFather,
+          isMotherDeceased: isDeceased.groomMother,
+        },
+        [bride.id]: {
+          ...groomBrideGreetingData.brideData,
+          name: watch(
+            `invitation.widgets.${widgetIndex}.config.hosts.${groomBrideGreetingData.brideData.id}.name`,
+          ),
+          level: brideLevelValue,
+          fatherName: watch(
+            `invitation.widgets.${widgetIndex}.config.hosts.${groomBrideGreetingData.brideData.id}.fatherName`,
+          ),
+          motherName: watch(
+            `invitation.widgets.${widgetIndex}.config.hosts.${groomBrideGreetingData.brideData.id}.motherName`,
+          ),
+          isFatherDeceased: isDeceased.brideFather,
+          isMotherDeceased: isDeceased.brideMother,
+        },
+      },
+    };
+
+    console.log('config =======>', config);
+
+    const configPayloadData: ConfigPayload = {
+      id: widgetItem.id,
+      type: 'GREETING',
+      index: widgetIndex,
+      config,
+      stickers: [],
+    };
+
+    putInvitationConfig(configPayloadData);
+    closeModal();
+  }, [
+    invitation,
+    widgetIndex,
+    watch,
+    widgetItem,
+    groom,
+    bride,
+    groomBrideGreetingData,
+    groomLevelValue,
+    brideLevelValue,
+    isDeceased,
+    putInvitationConfig,
+    closeModal,
+  ]);
 
   useEffect(() => {
     setOnSubmit(onSubmit);
@@ -151,7 +234,7 @@ function GreetingWidgetConfigure({ widgetItem }: GreetingWidgetConfigureProps) {
                 <input
                   className="no-interaction peer absolute flex-none opacity-0"
                   type="checkbox"
-                  checked={widgetConfig.withParent}
+                  checked={watch(`invitation.widgets.${widgetIndex}.config.withParent`)}
                   // onClick={handleClickShowParent}
                   {...register(`invitation.widgets.${widgetIndex}.config.withParent`)}
                 />
@@ -217,6 +300,11 @@ function GreetingWidgetConfigure({ widgetItem }: GreetingWidgetConfigureProps) {
         <div>
           <GreetingNameLayout widgetItem={widgetItem} />
         </div>
+      </div>
+
+      {/** 표기법 */}
+      <div className="space-y-2 ">
+        <GreetingNameFormatKeyList widgetItem={widgetItem} />
       </div>
     </div>
   );

@@ -45,7 +45,6 @@ function GreetingHostDisplay({
   handleChangeDeceased,
   Combobox,
 }: GreetingHostDisplayProps) {
-  console.log(groomBrideGreetingData);
   const { register } = useFormContext<HookFormValues>();
 
   return (

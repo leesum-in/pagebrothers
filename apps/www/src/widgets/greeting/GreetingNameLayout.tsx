@@ -36,7 +36,7 @@ function GreetingNameLayout({ widgetItem }: GreetingNameLayoutProps) {
           inputType="radio"
           inputValue={key.key}
           register={register}
-          registerOption={`invitation.widgets.${widgetIndex}.config.layoutKey`}
+          registerOption={`invitation.widgets.${widgetIndex}.config.nameLayoutKey`}
           inputDefaultChecked={
             (widgetItem.config as GreetingWidgetConfig).nameLayoutKey === key.key
           }
