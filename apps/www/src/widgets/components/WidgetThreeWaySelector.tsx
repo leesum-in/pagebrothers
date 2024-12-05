@@ -3,7 +3,7 @@
 import type {
   CalendarWidgetConfig,
   GalleryWidgetConfig,
-  RsvpWidgetConfig,
+  MessageWidgetConfig,
   WidgetItem,
 } from '@repo/shared';
 import { Label } from '@repo/shared';
@@ -14,6 +14,7 @@ import { FiAlignCenter, FiAlignLeft, FiAlignRight } from 'react-icons/fi';
 import { useWidgetIndex } from '../hooks';
 import type { HookFormValues, ThreeWayLabelValue } from '../types';
 import WidgetLabelWithInput from './WidgetLabelWithInput';
+import { TEXT_SIZE } from '../constants';
 
 const textAlignItems = [
   {
@@ -41,6 +42,7 @@ function WidgetThreeWaySelector({ label, texts, widgetItem, value }: WidgetThree
   const { register } = useFormContext<HookFormValues>();
   const widgetIndex = useWidgetIndex(widgetItem);
   const isTextAlign = label === '텍스트 정렬' || label === '타이틀 정렬';
+  const isTextSize = label === '텍스트 크기';
   const registerOption = useMemo(() => {
     switch (label) {
       case '텍스트 정렬':
@@ -72,18 +74,9 @@ function WidgetThreeWaySelector({ label, texts, widgetItem, value }: WidgetThree
                   register={register}
                   registerOption={registerOption}
                   inputDefaultChecked={
-                    (
-                      widgetItem.config as
-                        | CalendarWidgetConfig
-                        | GalleryWidgetConfig
-                        | RsvpWidgetConfig
-                    ).align
-                      ? (
-                          widgetItem.config as
-                            | CalendarWidgetConfig
-                            | GalleryWidgetConfig
-                            | RsvpWidgetConfig
-                        ).align === item.key
+                    (widgetItem.config as CalendarWidgetConfig | GalleryWidgetConfig).align
+                      ? (widgetItem.config as CalendarWidgetConfig | GalleryWidgetConfig).align ===
+                        item.key
                       : item.key === 'CENTER'
                   }
                 >
@@ -102,10 +95,14 @@ function WidgetThreeWaySelector({ label, texts, widgetItem, value }: WidgetThree
                   register={register}
                   registerOption={registerOption}
                   inputDefaultChecked={
-                    (widgetItem.config as CalendarWidgetConfig).differenceFormat === value?.[index]
+                    (widgetItem.config as CalendarWidgetConfig).differenceFormat ===
+                      value?.[index] ||
+                    (widgetItem.config as MessageWidgetConfig).size === value?.[index]
                   }
                 >
-                  <span className="center-flex relative h-full w-full gap-2 border border-slate-200 px-3 text-slate-600 group-first-of-type:rounded-l-sm group-last-of-type:rounded-r-sm peer-checked:z-10 peer-checked:border-indigo-600 peer-checked:text-indigo-600 peer-focus:ring">
+                  <span
+                    className={`center-flex relative h-full w-full gap-2 border border-slate-200 px-3 text-slate-600 ${isTextSize && Object.values(TEXT_SIZE)[index]} group-first-of-type:rounded-l-sm group-last-of-type:rounded-r-sm peer-checked:z-10 peer-checked:border-indigo-600 peer-checked:text-indigo-600 peer-focus:ring`}
+                  >
                     {text}
                   </span>
                 </WidgetLabelWithInput>
