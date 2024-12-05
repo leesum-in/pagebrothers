@@ -8,13 +8,14 @@ import { useShallow } from 'zustand/shallow';
 
 import { FixedLoader } from '@/www/ui';
 
-import { WidgetLabelWithInput } from '../components';
+import { WidgetBreakLine, WidgetLabelWithInput } from '../components';
 import WidgetThreeWaySelector from '../components/WidgetThreeWaySelector';
 import useCombobox, { useWidgetIndex } from '../hooks';
 import type { HookFormValues } from '../types';
 import type { ModalStore } from '../zustand';
 import useModalStore from '../zustand';
 import GreetingHostDisplay from './GreetingHostDisplay';
+import GreetingNameLayout from './GreetingNameLayout';
 
 interface GreetingWidgetConfigureProps {
   widgetItem: WidgetItem | Omit<WidgetItem, 'id'>;
@@ -158,7 +159,7 @@ function GreetingWidgetConfigure({ widgetItem }: GreetingWidgetConfigureProps) {
               </label>
             }
           />
-          <div className="text-sm text-slate-400">인트로에 예식 장소와 일시를 보여줍니다.</div>
+          <div className="text-sm text-slate-400">호스트 정보에 혼주 정보를 추가합니다.</div>
         </div>
       </div>
 
@@ -183,6 +184,40 @@ function GreetingWidgetConfigure({ widgetItem }: GreetingWidgetConfigureProps) {
           />
         </>
       ) : null}
+
+      {/** 국화 이미지로 표기 */}
+      <div className="space-y-2 ">
+        <div>
+          <Label
+            label="故를 국화 이미지로 표기"
+            addOn={
+              <label className="center-flex relative flex cursor-pointer gap-2 text-sm leading-5 ">
+                <input
+                  className="no-interaction peer absolute flex-none opacity-0"
+                  type="checkbox"
+                  checked={widgetConfig.useFlower}
+                  // onClick={handleClickShowParent}
+                  {...register(`invitation.widgets.${widgetIndex}.config.useFlower`)}
+                />
+                <div className="relative h-6 w-12 rounded-full border border-slate-200 bg-slate-100 transition-[background-color] after:ml-[-1px] after:mt-[-1px] after:block after:h-6 after:w-6 after:rounded-full after:border after:border-slate-300 after:bg-white after:transition-[background-color,transform] peer-checked:border-indigo-600 peer-checked:bg-indigo-600 peer-checked:after:translate-x-full peer-checked:after:border-indigo-600 peer-focus:ring" />
+              </label>
+            }
+          />
+          <div className="text-sm text-slate-400" />
+        </div>
+      </div>
+
+      <WidgetBreakLine />
+
+      {/** 혼주 정보 위치 */}
+      <div className="space-y-2 ">
+        <div>
+          <LabelWithSub label="혼주 정보 위치" />
+        </div>
+        <div>
+          <GreetingNameLayout widgetItem={widgetItem} />
+        </div>
+      </div>
     </div>
   );
 }
