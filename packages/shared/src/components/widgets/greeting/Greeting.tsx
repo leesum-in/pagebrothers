@@ -54,7 +54,7 @@ function Greeting({ config, isMultiModal, invitationOwners }: GreetingProps) {
       case 'ROLE_AND_FULL_NAME_WITH_PREFIX_PARENT':
         return (
           <>
-            {dead.father} {host.fatherName} · {dead.mother}
+            부 {dead.father} {host.fatherName} · 모 {dead.mother}
             {host.motherName}의 {host.level}
           </>
         );
