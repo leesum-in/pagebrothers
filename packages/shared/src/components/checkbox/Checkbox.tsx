@@ -1,17 +1,18 @@
 'use client';
 
 import { useState } from 'react';
+import { Label } from '..';
 import CheckIcon from '../../assets/icons/CheckIcon';
 import { cn } from '../../utils';
-import { Label } from '..';
 
 interface CheckboxProps {
-  label: 'small' | 'large' | 'none';
+  label?: 'small' | 'large' | 'none';
   checked?: boolean;
   disabled?: boolean;
   labelText?: string;
   onChange?: (checked: boolean) => void;
   className?: string;
+  isSpan?: boolean;
 }
 
 const sizeClass: Record<'small' | 'large' | 'none', string> = {
@@ -38,6 +39,7 @@ export default function Checkbox({
   labelText = '',
   onChange,
   className,
+  isSpan = false,
 }: CheckboxProps) {
   const [internalChecked, setInternalChecked] = useState(false);
 
@@ -82,7 +84,13 @@ export default function Checkbox({
         <CheckIcon className="text-base" />
       </div>
 
-      <Label label={labelText} className={`ml-2 ${getTextStyle(label)}`} />
+      {isSpan ? (
+        <span className="flex-1 text-slate-400 peer-checked:text-current peer-disabled:text-slate-300">
+          {labelText}
+        </span>
+      ) : (
+        <Label label={labelText} className={`ml-2 ${getTextStyle(label)}`} />
+      )}
     </label>
   );
 }

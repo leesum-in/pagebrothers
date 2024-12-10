@@ -6,7 +6,7 @@ function CheckIcon({ className, ...rest }: HTMLAttributes<SVGElement>) {
     <svg
       stroke="currentColor"
       fill="none"
-      strokeWidth="3"
+      strokeWidth="2"
       viewBox="0 0 24 24"
       strokeLinecap="round"
       strokeLinejoin="round"

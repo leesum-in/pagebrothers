@@ -1,8 +1,8 @@
 'use client';
 
-import { GalleryWidgetItem } from '@/shared/types';
 import { useCallback, useEffect, useReducer, useRef, useState } from 'react';
 import { useSlider } from '../../../hooks';
+import type { GalleryWidgetItem } from '../../../types';
 import { cn } from '../../../utils';
 
 interface GalleryProps {
