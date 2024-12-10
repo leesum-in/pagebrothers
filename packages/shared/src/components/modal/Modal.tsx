@@ -1,9 +1,9 @@
 'use client';
 
-import { WidgetType } from '@/shared/types';
 import { memo, useCallback, useEffect, useRef, useState, type PropsWithChildren } from 'react';
 import { createPortal } from 'react-dom';
 import { CloseIcon } from '../../assets/icons';
+import type { WidgetType } from '../../types';
 import { cn } from '../../utils';
 
 interface ModalProps extends PropsWithChildren {
