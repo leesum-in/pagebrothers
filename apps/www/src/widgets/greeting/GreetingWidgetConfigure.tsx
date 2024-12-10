@@ -174,6 +174,8 @@ function GreetingWidgetConfigure({ widgetItem }: GreetingWidgetConfigureProps) {
 
   if (widgetIndex === null) return <FixedLoader />;
 
+  const withParent = watch(`invitation.widgets.${widgetIndex}.config.withParent`);
+
   return (
     <div className="space-y-8">
       {/** 텍스트 정렬 */}
@@ -235,7 +237,6 @@ function GreetingWidgetConfigure({ widgetItem }: GreetingWidgetConfigureProps) {
                   className="no-interaction peer absolute flex-none opacity-0"
                   type="checkbox"
                   checked={watch(`invitation.widgets.${widgetIndex}.config.withParent`)}
-                  // onClick={handleClickShowParent}
                   {...register(`invitation.widgets.${widgetIndex}.config.withParent`)}
                 />
                 <div className="relative h-6 w-12 rounded-full border border-slate-200 bg-slate-100 transition-[background-color] after:ml-[-1px] after:mt-[-1px] after:block after:h-6 after:w-6 after:rounded-full after:border after:border-slate-300 after:bg-white after:transition-[background-color,transform] peer-checked:border-indigo-600 peer-checked:bg-indigo-600 peer-checked:after:translate-x-full peer-checked:after:border-indigo-600 peer-focus:ring" />
@@ -251,6 +252,7 @@ function GreetingWidgetConfigure({ widgetItem }: GreetingWidgetConfigureProps) {
           <GreetingHostDisplay
             groomBrideGreetingData={groomBrideGreetingData}
             widgetIndex={widgetIndex}
+            withParent={withParent}
             isDeceased={isDeceased}
             handleChangeDeceased={handleChangeDeceased}
             Combobox={GroomCombobox}
@@ -260,6 +262,7 @@ function GreetingWidgetConfigure({ widgetItem }: GreetingWidgetConfigureProps) {
           <GreetingHostDisplay
             groomBrideGreetingData={groomBrideGreetingData}
             widgetIndex={widgetIndex}
+            withParent={withParent}
             isDeceased={isDeceased}
             handleChangeDeceased={handleChangeDeceased}
             Combobox={BrideCombobox}
@@ -269,38 +272,41 @@ function GreetingWidgetConfigure({ widgetItem }: GreetingWidgetConfigureProps) {
       ) : null}
 
       {/** 국화 이미지로 표기 */}
-      <div className="space-y-2 ">
-        <div>
-          <Label
-            label="故를 국화 이미지로 표기"
-            addOn={
-              <label className="center-flex relative flex cursor-pointer gap-2 text-sm leading-5 ">
-                <input
-                  className="no-interaction peer absolute flex-none opacity-0"
-                  type="checkbox"
-                  checked={widgetConfig.useFlower}
-                  // onClick={handleClickShowParent}
-                  {...register(`invitation.widgets.${widgetIndex}.config.useFlower`)}
-                />
-                <div className="relative h-6 w-12 rounded-full border border-slate-200 bg-slate-100 transition-[background-color] after:ml-[-1px] after:mt-[-1px] after:block after:h-6 after:w-6 after:rounded-full after:border after:border-slate-300 after:bg-white after:transition-[background-color,transform] peer-checked:border-indigo-600 peer-checked:bg-indigo-600 peer-checked:after:translate-x-full peer-checked:after:border-indigo-600 peer-focus:ring" />
-              </label>
-            }
-          />
-          <div className="text-sm text-slate-400" />
+      {withParent ? (
+        <div className="space-y-2 ">
+          <div>
+            <Label
+              label="故를 국화 이미지로 표기"
+              addOn={
+                <label className="center-flex relative flex cursor-pointer gap-2 text-sm leading-5 ">
+                  <input
+                    className="no-interaction peer absolute flex-none opacity-0"
+                    type="checkbox"
+                    checked={watch(`invitation.widgets.${widgetIndex}.config.useFlower`)}
+                    {...register(`invitation.widgets.${widgetIndex}.config.useFlower`)}
+                  />
+                  <div className="relative h-6 w-12 rounded-full border border-slate-200 bg-slate-100 transition-[background-color] after:ml-[-1px] after:mt-[-1px] after:block after:h-6 after:w-6 after:rounded-full after:border after:border-slate-300 after:bg-white after:transition-[background-color,transform] peer-checked:border-indigo-600 peer-checked:bg-indigo-600 peer-checked:after:translate-x-full peer-checked:after:border-indigo-600 peer-focus:ring" />
+                </label>
+              }
+            />
+            <div className="text-sm text-slate-400" />
+          </div>
         </div>
-      </div>
+      ) : null}
 
       <WidgetBreakLine />
 
       {/** 혼주 정보 위치 */}
-      <div className="space-y-2 ">
-        <div>
-          <LabelWithSub label="혼주 정보 위치" />
+      {withParent ? (
+        <div className="space-y-2 ">
+          <div>
+            <LabelWithSub label="혼주 정보 위치" />
+          </div>
+          <div>
+            <GreetingNameLayout widgetItem={widgetItem} />
+          </div>
         </div>
-        <div>
-          <GreetingNameLayout widgetItem={widgetItem} />
-        </div>
-      </div>
+      ) : null}
 
       {/** 표기법 */}
       <div className="space-y-2 ">
