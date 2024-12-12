@@ -40,22 +40,22 @@ function Greeting({ config, isMultiModal, invitationOwners }: GreetingProps) {
       case 'LEVEL_AND_FULL_NAME_WITH_PARENT':
         return (
           <>
-            {dead.father} {host.fatherName} · {dead.mother}
-            {host.motherName}의 {host.level}
+            {dead.father} {host.fatherName === '' ? '[아버지 ' : host.fatherName} · {dead.mother}
+            {host.motherName === '' ? ' 어머니]' : host.motherName}의 {host.level}
           </>
         );
       case 'FULL_NAME_WITH_PREFIX_PARENT':
         return (
           <>
-            부 {dead.father} {host.fatherName} · 모 {dead.mother}
-            {host.motherName}의 {host.level}
+            부 {dead.father} {host.fatherName === '' ? '[아버지' : host.fatherName} · 모{' '}
+            {dead.mother} {host.motherName === '' ? ' 어머니]' : host.motherName}의 {host.level}
           </>
         );
       case 'ROLE_AND_FULL_NAME_WITH_PREFIX_PARENT':
         return (
           <>
-            부 {dead.father} {host.fatherName} · 모 {dead.mother}
-            {host.motherName}의 {host.level}
+            부 {dead.father} {host.fatherName === '' ? '[아버지' : host.fatherName} · 모{' '}
+            {dead.mother} {host.motherName === '' ? ' 어머니]' : host.motherName}의 {host.level}
           </>
         );
       case 'ROLE_AND_FULL_NAME':
