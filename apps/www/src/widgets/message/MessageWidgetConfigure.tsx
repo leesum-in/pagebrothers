@@ -1,6 +1,8 @@
-import { Label, LabelWithSub, LongTextField, TextInput, WidgetItem } from '@repo/shared';
-import WidgetThreeWaySelector from '../components/WidgetThreeWaySelector';
+'use client';
 
+import { LabelWithSub, WidgetItem } from '@repo/shared';
+import WidgetThreeWaySelector from '../components/WidgetThreeWaySelector';
+import { WidgetLabelWithInput } from '../components';
 interface MessageWidgetConfigureProps {
   widgetItem: WidgetItem | Omit<WidgetItem, 'id'>;
 }
@@ -32,12 +34,22 @@ function MessageWidgetConfigure({ widgetItem }: MessageWidgetConfigureProps) {
             subLabel="입력하면 위젯에 제목이 추가됩니다."
           />
         </div>
-        <TextInput status="default" placeholder="타이틀 입력" />
+        <WidgetLabelWithInput
+          labelClassName="relative flex items-center overflow-hidden rounded-lg border focus-within:ring border-slate-200"
+          inputClassName="peer block h-12 w-full bg-white px-4 text-slate-600 placeholder:text-slate-300 disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-200"
+          placeholder="타이틀 입력"
+        />
       </div>
 
       {/* 메세지 */}
       <div className="space-y-2">
-        <LongTextField status="default" labelText="메세지" className="h-full px-4 py-3" />
+        <div>
+          <LabelWithSub label="메세지" />
+        </div>
+        <WidgetLabelWithInput
+          isTextarea={true}
+          labelClassName="relative flex items-center overflow-hidden rounded-lg border focus-within:ring border-slate-200"
+        />
       </div>
     </div>
   );
