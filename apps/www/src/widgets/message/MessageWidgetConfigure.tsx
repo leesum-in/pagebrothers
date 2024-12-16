@@ -3,11 +3,18 @@
 import { LabelWithSub, WidgetItem } from '@repo/shared';
 import WidgetThreeWaySelector from '../components/WidgetThreeWaySelector';
 import { WidgetLabelWithInput } from '../components';
+import { useFormContext } from 'react-hook-form';
+import { HookFormValues } from '../types';
+import { useWidgetIndex } from '../hooks';
 interface MessageWidgetConfigureProps {
   widgetItem: WidgetItem | Omit<WidgetItem, 'id'>;
 }
 
 function MessageWidgetConfigure({ widgetItem }: MessageWidgetConfigureProps) {
+  const { register } = useFormContext<HookFormValues>();
+
+  const widgetIndex = useWidgetIndex(widgetItem);
+
   return (
     <div className="space-y-8">
       {/* 텍스트 정렬 */}
@@ -38,6 +45,8 @@ function MessageWidgetConfigure({ widgetItem }: MessageWidgetConfigureProps) {
           labelClassName="relative flex items-center overflow-hidden rounded-lg border focus-within:ring border-slate-200"
           inputClassName="peer block h-12 w-full bg-white px-4 text-slate-600 placeholder:text-slate-300 disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-200"
           placeholder="타이틀 입력"
+          register={register}
+          registerOption={`invitation.widgets.${widgetIndex}.config.widgetTitle`}
         />
       </div>
 
@@ -49,6 +58,8 @@ function MessageWidgetConfigure({ widgetItem }: MessageWidgetConfigureProps) {
         <WidgetLabelWithInput
           isTextarea={true}
           labelClassName="relative flex items-center overflow-hidden rounded-lg border focus-within:ring border-slate-200"
+          register={register}
+          registerOption={`invitation.widgets.${widgetIndex}.config.title`}
         />
       </div>
     </div>
