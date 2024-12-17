@@ -52,7 +52,7 @@ function WidgetThreeWaySelector({ label, texts, widgetItem, value }: WidgetThree
         return `invitation.widgets.${widgetIndex}.config.differenceFormat`;
       // 수정 요망
       case '텍스트 크기':
-        return `invitation.widgets.${widgetIndex}.config.textSize`;
+        return `invitation.widgets.${widgetIndex}.config.size`;
     }
   }, [widgetIndex, label]);
 
