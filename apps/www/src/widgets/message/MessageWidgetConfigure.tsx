@@ -12,9 +12,28 @@ interface MessageWidgetConfigureProps {
 }
 
 function MessageWidgetConfigure({ widgetItem }: MessageWidgetConfigureProps) {
-  const { register } = useFormContext<HookFormValues>();
+  const { watch, register } = useFormContext<HookFormValues>();
 
   const widgetIndex = useWidgetIndex(widgetItem);
+
+  const onSubmit = () => {
+    if (widgetIndex === null || !('id' in widgetItem)) return;
+
+    const config: MessageWidgetConfig = {
+      widgetTitle: watch(`invitation.widgets.${widgetIndex}.config.widgetTitle`),
+      title: watch(`invitation.widgets.${widgetIndex}.config.title`) ?? '',
+      size: watch(`invitation.widgets.${widgetIndex}.config.size`),
+      align: watch(`invitation.widgets.${widgetIndex}.config.align`) ?? 'CENTER',
+    };
+
+    const configPayloadData: ConfigPayload = {
+      id: widgetItem.id,
+      type: 'MESSAGE',
+      config,
+      index: widgetIndex,
+      stickers: [],
+    };
+  };
 
   return (
     <div className="space-y-8">
