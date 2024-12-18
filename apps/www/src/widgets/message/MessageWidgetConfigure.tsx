@@ -1,11 +1,12 @@
 'use client';
 
-import { LabelWithSub, WidgetItem } from '@repo/shared';
+import { LabelWithSub, MessageWidgetConfig, WidgetItem } from '@repo/shared';
 import WidgetThreeWaySelector from '../components/WidgetThreeWaySelector';
 import { WidgetLabelWithInput } from '../components';
 import { useFormContext } from 'react-hook-form';
-import { HookFormValues } from '../types';
+import { ConfigPayload, HookFormValues } from '../types';
 import { useWidgetIndex } from '../hooks';
+
 interface MessageWidgetConfigureProps {
   widgetItem: WidgetItem | Omit<WidgetItem, 'id'>;
 }
@@ -47,6 +48,7 @@ function MessageWidgetConfigure({ widgetItem }: MessageWidgetConfigureProps) {
           placeholder="타이틀 입력"
           register={register}
           registerOption={`invitation.widgets.${widgetIndex}.config.widgetTitle`}
+          defaultValue={(widgetItem.config as MessageWidgetConfig).widgetTitle}
         />
       </div>
 
@@ -60,6 +62,7 @@ function MessageWidgetConfigure({ widgetItem }: MessageWidgetConfigureProps) {
           labelClassName="relative flex items-center overflow-hidden rounded-lg border focus-within:ring border-slate-200"
           register={register}
           registerOption={`invitation.widgets.${widgetIndex}.config.title`}
+          defaultValue={(widgetItem.config as MessageWidgetConfig).title}
         />
       </div>
     </div>
