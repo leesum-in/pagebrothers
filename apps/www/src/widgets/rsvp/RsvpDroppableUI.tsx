@@ -19,7 +19,7 @@ function RsvpDroppableUl<T extends { id: string }>({
   setItems,
 }: DroppableProps<T>) {
   const { setNodeRef } = useDroppable({
-    id: 'droppable',
+    id: 'droppable-rsvp',
   });
 
   const handleDragEnd = (event: DragEndEvent) => {
@@ -38,29 +38,6 @@ function RsvpDroppableUl<T extends { id: string }>({
       <SortableContext items={items} strategy={verticalListSortingStrategy}>
         <ul className="space-y-6" ref={setNodeRef}>
           {children}
-          <li>
-            <button
-              type="button"
-              className="w-full h-12 rounded-md px-4 text-sm border border-dashed border-slate-300 !shadow-none center-flex gap-2 font-bold shadow-1 transition-colors disabled:opacity-40"
-            >
-              <span>구성 추가하기</span>
-              <svg
-                stroke="currentColor"
-                fill="none"
-                strokeWidth="2"
-                viewBox="0 0 24 24"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="text-xl"
-                height="1em"
-                width="1em"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <line x1="12" y1="5" x2="12" y2="19" />
-                <line x1="5" y1="12" x2="19" y2="12" />
-              </svg>
-            </button>
-          </li>
         </ul>
       </SortableContext>
     </DndProvider>

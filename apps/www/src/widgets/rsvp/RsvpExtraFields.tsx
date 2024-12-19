@@ -1,3 +1,5 @@
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 import { Label, type RsvpExtraField } from '@repo/shared';
 import { useFormContext } from 'react-hook-form';
 import { FaRegTrashAlt } from 'react-icons/fa';
@@ -17,16 +19,34 @@ interface RsvpExtraFieldsProps {
 function RsvpExtraFields({ extraField, index, widgetIndex }: RsvpExtraFieldsProps) {
   const { watch, register } = useFormContext<HookFormValues>();
 
+  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
+    id: extraField.id, // 고유 ID
+  });
+
+  // y축만 적용하도록 transform 수정
+  const adjustedTransform = transform
+    ? { ...transform, x: 0 } // x축 값을 0으로 고정
+    : null;
+
+  const style = {
+    transform: CSS.Transform.toString(adjustedTransform),
+    transition,
+    boxShadow: transform ? '0px 0px 20px 0px rgba(0, 0, 0, 0.1)' : 'none', // 드래그 중에만 shadow 적용
+  };
+
   return (
     <li
       className="relative rounded-md border border-slate-200 bg-slate-100 py-4 px-3 cursor-default"
-      style={{ zIndex: 'auto' }}
+      style={style}
+      ref={setNodeRef}
+      {...attributes}
     >
       <ul className="space-y-5">
         <li className="relative flex items-center gap-2">
           <button
             className="center-flex h-12 w-12 touch-none gap-3 rounded-md bg-white ring-1"
             type="button"
+            {...listeners}
           >
             <Move className="text-xl text-slate-500" />
           </button>
