@@ -8,6 +8,7 @@ import { CalendarWidgetConfigure } from '../calendar';
 import { GalleryWidgetConfigure } from '../gallery';
 import { IntroWidgetConfigure } from '../intro';
 import { LocationWidgetConfigure } from '../location';
+import { RsvpWidgetConfigure } from '../rsvp';
 import { VideoWidgetConfigure } from '../video';
 
 interface WidgetModalProps {
@@ -21,6 +22,7 @@ function UnmemoizedWidgetModal({ widgetItem }: WidgetModalProps) {
   if (widgetItem.type === 'CALENDAR') return <CalendarWidgetConfigure widgetItem={widgetItem} />;
   if (widgetItem.type === 'LOCATION') return <LocationWidgetConfigure widgetItem={widgetItem} />;
   if (widgetItem.type === 'GALLERY') return <GalleryWidgetConfigure widgetItem={widgetItem} />;
+  if (widgetItem.type === 'RSVP') return <RsvpWidgetConfigure widgetItem={widgetItem} />;
 }
 
 const WidgetModal = memo(UnmemoizedWidgetModal);

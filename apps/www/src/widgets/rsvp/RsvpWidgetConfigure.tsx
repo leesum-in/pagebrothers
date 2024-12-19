@@ -1,6 +1,8 @@
 'use client';
 
-import { LabelWithSub, type RsvpWidgetConfig, type WidgetItem } from '@repo/shared';
+import type { RsvpExtraField, RsvpWidgetConfig, WidgetItem } from '@repo/shared';
+import { LabelWithSub } from '@repo/shared';
+import { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useShallow } from 'zustand/shallow';
 
@@ -13,12 +15,17 @@ import { useInvitationConfigMutation } from '../mutations';
 import type { HookFormValues } from '../types';
 import type { ModalStore } from '../zustand';
 import useModalStore from '../zustand';
+import RsvpDroppableUl from './RsvpDroppableUI';
+import RsvpExtraFields from './RsvpExtraFields';
 
 interface RsvpWidgetConfigureProps {
   widgetItem: WidgetItem | Omit<WidgetItem, 'id'>;
 }
 
 function RsvpWidgetConfigure({ widgetItem }: RsvpWidgetConfigureProps) {
+  const widgetConfig = widgetItem.config as RsvpWidgetConfig;
+
+  const [extraFields, setExtraFields] = useState<RsvpExtraField[]>(widgetConfig.extraFields);
   const { watch, register } = useFormContext<HookFormValues>();
   const { setOnSubmit, closeModal, invitation } = useModalStore(
     useShallow((state: ModalStore) => ({
@@ -31,7 +38,6 @@ function RsvpWidgetConfigure({ widgetItem }: RsvpWidgetConfigureProps) {
 
   const { mutate: putInvitationConfig } = useInvitationConfigMutation(invitation?.id ?? '');
   const widgetIndex = useWidgetIndex(widgetItem);
-  const widgetConfig = widgetItem.config as RsvpWidgetConfig;
 
   if (widgetIndex === null) return <FixedLoader />;
 
@@ -114,6 +120,26 @@ function RsvpWidgetConfigure({ widgetItem }: RsvpWidgetConfigureProps) {
             </WidgetLabelWithInput>
           </div>
         </div>
+      </div>
+
+      {/** extraFields */}
+      <div className="space-y-2">
+        <div>
+          <LabelWithSub
+            label="문항 편집"
+            subLabel="참석 여부에 답하면 묻는 추가 질문을 편집해 주세요."
+          />
+        </div>
+        <RsvpDroppableUl<RsvpExtraField> items={extraFields} setItems={setExtraFields}>
+          {extraFields.map((extraField, index) => (
+            <RsvpExtraFields
+              key={extraField.id}
+              extraField={extraField}
+              index={index}
+              widgetIndex={widgetIndex}
+            />
+          ))}
+        </RsvpDroppableUl>
       </div>
     </div>
   );
