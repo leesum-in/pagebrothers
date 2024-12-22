@@ -1,6 +1,11 @@
 'use client';
 
-import type { CalendarWidgetConfig, GalleryWidgetConfig, WidgetItem } from '@repo/shared';
+import type {
+  CalendarWidgetConfig,
+  GalleryWidgetConfig,
+  RsvpWidgetConfig,
+  WidgetItem,
+} from '@repo/shared';
 import { Label } from '@repo/shared';
 import { useMemo } from 'react';
 import { useFormContext } from 'react-hook-form';
@@ -67,9 +72,18 @@ function WidgetThreeWaySelector({ label, texts, widgetItem, value }: WidgetThree
                   register={register}
                   registerOption={registerOption}
                   inputDefaultChecked={
-                    (widgetItem.config as CalendarWidgetConfig | GalleryWidgetConfig).align
-                      ? (widgetItem.config as CalendarWidgetConfig | GalleryWidgetConfig).align ===
-                        item.key
+                    (
+                      widgetItem.config as
+                        | CalendarWidgetConfig
+                        | GalleryWidgetConfig
+                        | RsvpWidgetConfig
+                    ).align
+                      ? (
+                          widgetItem.config as
+                            | CalendarWidgetConfig
+                            | GalleryWidgetConfig
+                            | RsvpWidgetConfig
+                        ).align === item.key
                       : item.key === 'CENTER'
                   }
                 >

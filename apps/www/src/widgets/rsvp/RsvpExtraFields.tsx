@@ -1,8 +1,10 @@
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { Label, type RsvpExtraField } from '@repo/shared';
+import { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FaRegTrashAlt } from 'react-icons/fa';
+import { HiPlus } from 'react-icons/hi2';
 import { IoIosArrowDown } from 'react-icons/io';
 
 import { Move } from '@/www/ui';
@@ -18,6 +20,7 @@ interface RsvpExtraFieldsProps {
 
 function RsvpExtraFields({ extraField, index, widgetIndex }: RsvpExtraFieldsProps) {
   const { watch, register } = useFormContext<HookFormValues>();
+  const [options, setOptions] = useState(extraField.options);
 
   const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
     id: extraField.id, // 고유 ID
@@ -33,6 +36,12 @@ function RsvpExtraFields({ extraField, index, widgetIndex }: RsvpExtraFieldsProp
     transition,
     boxShadow: transform ? '0px 0px 20px 0px rgba(0, 0, 0, 0.1)' : 'none', // 드래그 중에만 shadow 적용
   };
+
+  const handleAddOption = () => {
+    setOptions([...options, '']);
+  };
+
+  const type = watch(`invitation.widgets.${widgetIndex}.config.extraFields.${index}.type`);
 
   return (
     <li
@@ -56,7 +65,9 @@ function RsvpExtraFields({ extraField, index, widgetIndex }: RsvpExtraFieldsProp
                 <div className="flex flex-none items-center" />
                 <select
                   className="peer block h-12 w-full appearance-none bg-white pl-4 pr-16 text-slate-600 invalid:text-slate-300 disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-200 "
-                  name={`extraFields.${index}.type`}
+                  {...register(
+                    `invitation.widgets.${widgetIndex}.config.extraFields.${index}.type`,
+                  )}
                 >
                   <option value="InputText">주관식</option>
                   <option value="InputNumber">숫자 카운트</option>
@@ -76,76 +87,82 @@ function RsvpExtraFields({ extraField, index, widgetIndex }: RsvpExtraFieldsProp
             <FaRegTrashAlt className="w-[14px] h-[14px]" />
           </button>
         </li>
-        <li>
-          <div className="space-y-2 ">
-            <div>
-              <Label label="문항 타이틀" />
-            </div>
-            <div>
-              <WidgetLabelWithInput
-                labelClassName="relative flex items-center overflow-hidden rounded-md border bg-white focus-within:ring border-slate-200 w-full"
-                inputClassName="peer block h-12 w-full bg-white px-4 text-slate-600 placeholder:text-slate-300 disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-200"
-                defaultValue={extraField.label}
-                placeholder="입력하지 않으면 문항 타이틀이 생략돼요."
-                register={register}
-                registerOption={`invitation.widgets.${widgetIndex}.config.extraFields.${index}.label`}
-              >
-                <div className="flex flex-none items-center" />
-              </WidgetLabelWithInput>
-            </div>
-          </div>
-        </li>
-        <li>
-          <div className="space-y-2 ">
-            <div>
-              <Label label="선택지" />
-            </div>
-            <div>
-              <div className="space-y-2">
-                <WidgetLabelWithInput
-                  labelClassName="relative flex items-center overflow-hidden rounded-md border bg-white focus-within:ring border-slate-200 w-full"
-                  inputClassName="peer block h-12 w-full bg-white px-4 text-slate-600 placeholder:text-slate-300 disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-200"
-                  defaultValue={extraField.label}
-                  placeholder="선택 옵션 입력(8자 이하가 예뻐요.)"
-                  register={register}
-                  registerOption={`invitation.widgets.${widgetIndex}.config.extraFields.${index}.options.0`}
-                >
-                  <div className="flex flex-none items-center" />
-                </WidgetLabelWithInput>
-                <WidgetLabelWithInput
-                  labelClassName="relative flex items-center overflow-hidden rounded-md border bg-white focus-within:ring border-slate-200 w-full"
-                  inputClassName="peer block h-12 w-full bg-white px-4 text-slate-600 placeholder:text-slate-300 disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-200"
-                  defaultValue={extraField.label}
-                  placeholder="선택 옵션 입력(8자 이하가 예뻐요.)"
-                  register={register}
-                  registerOption={`invitation.widgets.${widgetIndex}.config.extraFields.${index}.options.1`}
-                >
-                  <div className="flex flex-none items-center" />
-                </WidgetLabelWithInput>
-                <button
-                  type="button"
-                  className="h-12 w-12 !p-0 rounded-md px-4 text-sm border border-dashed border-slate-300 center-flex gap-2 font-bold shadow-1 transition-colors disabled:opacity-40"
-                >
-                  <svg
-                    stroke="currentColor"
-                    fill="none"
-                    strokeWidth="2"
-                    viewBox="0 0 24 24"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="text-xl"
-                    height="1em"
-                    width="1em"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <line x1="12" y1="5" x2="12" y2="19" />
-                    <line x1="5" y1="12" x2="19" y2="12" />
-                  </svg>
-                </button>
+
+        {type === 'Radio' || type === 'Select' ? (
+          <>
+            <RsvpExtraFieldTitle extraField={extraField} index={index} widgetIndex={widgetIndex} />
+            <li>
+              <div className="space-y-2 ">
+                <div>
+                  <Label label="선택지" />
+                </div>
+                <div>
+                  <div className="space-y-2">
+                    {options.map((option, idx) => (
+                      <WidgetLabelWithInput
+                        key={`${option}option`}
+                        labelClassName="relative flex items-center overflow-hidden rounded-md border bg-white focus-within:ring border-slate-200 w-full"
+                        inputClassName="peer block h-12 w-full bg-white px-4 text-slate-600 placeholder:text-slate-300 disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-200"
+                        defaultValue={option}
+                        placeholder="선택 옵션 입력(8자 이하가 예뻐요.)"
+                        register={register}
+                        registerOption={`invitation.widgets.${widgetIndex}.config.extraFields.${index}.options.${idx}`}
+                      >
+                        <div className="flex flex-none items-center" />
+                      </WidgetLabelWithInput>
+                    ))}
+                    <button
+                      type="button"
+                      onClick={handleAddOption}
+                      className="h-12 w-12 !p-0 rounded-md px-4 text-sm border border-dashed border-slate-300 center-flex gap-2 font-bold shadow-1 transition-colors disabled:opacity-40"
+                    >
+                      <HiPlus />
+                    </button>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-        </li>
+            </li>
+          </>
+        ) : null}
+        {type === 'InputText' && (
+          <>
+            <RsvpExtraFieldTitle extraField={extraField} index={index} widgetIndex={widgetIndex} />
+            <li>
+              <div className="space-y-2 ">
+                <div>
+                  <Label label="힌트 텍스트" addOn="입력하기 전, 입력 칸에 보이는 문구예요." />
+                </div>
+                <div>
+                  <div className="space-y-2">
+                    <WidgetLabelWithInput
+                      labelClassName="relative flex items-center overflow-hidden rounded-md border bg-white focus-within:ring border-slate-200 w-full"
+                      inputClassName="peer block h-12 w-full bg-white px-4 text-slate-600 placeholder:text-slate-300 disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-200"
+                      defaultValue={extraField.placeholder}
+                      placeholder="입력하지 않으면 “여기에 입력”으로 나와요."
+                      register={register}
+                      registerOption={`invitation.widgets.${widgetIndex}.config.extraFields.${index}.placeholder`}
+                    >
+                      <div className="flex flex-none items-center" />
+                    </WidgetLabelWithInput>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </>
+        )}
+        {type === 'InputNumber' && (
+          <>
+            <li>
+              <p className="text-sm text-slate-400">
+                플러스(+)와 마이너스(-) 버튼으로
+                <br />
+                1부터 100사이 숫자를 입력하는 문항입니다.
+              </p>
+            </li>
+            <RsvpExtraFieldTitle extraField={extraField} index={index} widgetIndex={widgetIndex} />
+          </>
+        )}
+
         <li>
           <div className="space-y-2 ">
             <div>
@@ -198,3 +215,29 @@ function RsvpExtraFields({ extraField, index, widgetIndex }: RsvpExtraFieldsProp
 }
 
 export default RsvpExtraFields;
+
+function RsvpExtraFieldTitle({ extraField, index, widgetIndex }: RsvpExtraFieldsProps) {
+  const { register } = useFormContext<HookFormValues>();
+
+  return (
+    <li>
+      <div className="space-y-2 ">
+        <div>
+          <Label label="문항 타이틀" />
+        </div>
+        <div>
+          <WidgetLabelWithInput
+            labelClassName="relative flex items-center overflow-hidden rounded-md border bg-white focus-within:ring border-slate-200 w-full"
+            inputClassName="peer block h-12 w-full bg-white px-4 text-slate-600 placeholder:text-slate-300 disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-200"
+            defaultValue={extraField.label}
+            placeholder="입력하지 않으면 문항 타이틀이 생략돼요."
+            register={register}
+            registerOption={`invitation.widgets.${widgetIndex}.config.extraFields.${index}.label`}
+          >
+            <div className="flex flex-none items-center" />
+          </WidgetLabelWithInput>
+        </div>
+      </div>
+    </li>
+  );
+}
