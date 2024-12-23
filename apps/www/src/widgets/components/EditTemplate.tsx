@@ -28,8 +28,10 @@ function EditTemplate() {
     isDragging,
     modalState,
     multiModalState,
+    thirdModalState,
     closeModal,
     closeMultiModal,
+    closeThirdModal,
     setInvitation,
     onSubmit,
   } = useModalStore(
@@ -37,8 +39,10 @@ function EditTemplate() {
       isDragging: state.isDragging,
       multiModalState: state.multiModalState,
       modalState: state.modalState,
+      thirdModalState: state.thirdModalState,
       closeModal: state.closeModal,
       closeMultiModal: state.closeMultiModal,
+      closeThirdModal: state.closeThirdModal,
       setInvitation: state.setInvitation,
       onSubmit: state.onSubmit,
     })),
@@ -95,6 +99,17 @@ function EditTemplate() {
             {multiModalState.widget ? (
               <Widget widgetItem={multiModalState.widget} isMultiModal invitation={invitation} />
             ) : null}
+          </Modal>
+          <Modal isModalOpen={thirdModalState.isOpen} onCloseModal={closeThirdModal}>
+            {thirdModalState.isRejected ? (
+              <div>
+                <p>신랑 손님이 참여하지 않을 것 같아요.</p>
+                <p>신랑 손님이 참여하지 않을 것 같아요.</p>
+              </div>
+            ) : null}
+            {!thirdModalState.isRejected && thirdModalState.extraFields
+              ? thirdModalState.extraFields.map((field) => <div key={field.id}>{field.label}</div>)
+              : null}
           </Modal>
         </>
       ) : null}
