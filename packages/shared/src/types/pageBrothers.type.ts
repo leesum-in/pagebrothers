@@ -1,4 +1,4 @@
-export const COLOR_HIGHLIGHTS = {
+export const COLOR_HIGHLIGHTS: Record<string, string[]> = {
   black: [
     '[--theme-black:15,15,15]',
     '[--theme-inter:25,25,25]',
