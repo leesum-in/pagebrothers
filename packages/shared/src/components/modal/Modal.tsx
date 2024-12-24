@@ -14,6 +14,7 @@ interface ModalProps extends PropsWithChildren {
   modalHeader?: React.ReactNode | null;
   modalFooter?: React.ReactNode | null;
   isMultiModal?: boolean;
+  isThirdModal?: boolean;
   isCalendar?: boolean;
   isModalFooterBg?: boolean;
   modalBgClassName?: string;
@@ -32,6 +33,7 @@ function UnmemoizedModal({
   modalHeader,
   modalFooter,
   isMultiModal = false,
+  isThirdModal = false,
   isModalFooterBg = false,
   isCalendar = false,
   modalBgClassName,
@@ -189,6 +191,7 @@ function UnmemoizedModal({
           modalContentClassName,
         )}
       >
+        {isThirdModal ? <>{children}</> : null}
         {isMultiModal ? (
           <>
             {!isCalendar ? (
@@ -204,7 +207,9 @@ function UnmemoizedModal({
             ) : null}
             {children}
           </>
-        ) : (
+        ) : null}
+
+        {!isMultiModal && !isThirdModal ? (
           <form onSubmit={onSubmit}>
             <div className="bg-slate-50">
               {modalHeader ? (
@@ -231,7 +236,7 @@ function UnmemoizedModal({
               ) : null}
             </div>
           </form>
-        )}
+        ) : null}
       </div>
     </div>,
     document.body,

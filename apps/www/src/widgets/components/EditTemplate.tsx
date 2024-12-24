@@ -21,6 +21,8 @@ import type { HookFormValues } from '@/www/widgets/types';
 import type { ModalStore } from '@/www/widgets/zustand';
 import useModalStore from '@/www/widgets/zustand';
 
+import RsvpRejectedUI from '../rsvp/RsvpRejectedUI';
+
 function EditTemplate() {
   const { id } = useParams<{ id: string }>();
   const { data: invitation, isPending, error } = useInvitationQuery(id);
@@ -100,13 +102,8 @@ function EditTemplate() {
               <Widget widgetItem={multiModalState.widget} isMultiModal invitation={invitation} />
             ) : null}
           </Modal>
-          <Modal isModalOpen={thirdModalState.isOpen} onCloseModal={closeThirdModal}>
-            {thirdModalState.isRejected ? (
-              <div>
-                <p>신랑 손님이 참여하지 않을 것 같아요.</p>
-                <p>신랑 손님이 참여하지 않을 것 같아요.</p>
-              </div>
-            ) : null}
+          <Modal isModalOpen={thirdModalState.isOpen} onCloseModal={closeThirdModal} isThirdModal>
+            {thirdModalState.isRejected ? <RsvpRejectedUI /> : null}
             {!thirdModalState.isRejected && thirdModalState.extraFields
               ? thirdModalState.extraFields.map((field) => <div key={field.id}>{field.label}</div>)
               : null}
