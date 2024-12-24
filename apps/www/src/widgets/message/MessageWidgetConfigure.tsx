@@ -3,12 +3,13 @@
 import { LabelWithSub, MessageWidgetConfig, WidgetItem } from '@repo/shared';
 import WidgetThreeWaySelector from '../components/WidgetThreeWaySelector';
 import { WidgetLabelWithInput } from '../components';
-import { useFormContext } from 'react-hook-form';
+import { SubmitHandler, useFormContext } from 'react-hook-form';
 import { ConfigPayload, HookFormValues } from '../types';
 import { useWidgetIndex } from '../hooks';
 import { useInvitationConfigMutation } from '../mutations';
 import useModalStore from '../zustand';
 import { useShallow } from 'zustand/shallow';
+import { useEffect } from 'react';
 
 interface MessageWidgetConfigureProps {
   widgetItem: WidgetItem | Omit<WidgetItem, 'id'>;
@@ -27,7 +28,7 @@ function MessageWidgetConfigure({ widgetItem }: MessageWidgetConfigureProps) {
 
   const widgetIndex = useWidgetIndex(widgetItem);
 
-  const onSubmit = () => {
+  const onSubmit: SubmitHandler<HookFormValues> = () => {
     if (widgetIndex === null || !('id' in widgetItem)) return;
 
     const config: MessageWidgetConfig = {
@@ -44,7 +45,14 @@ function MessageWidgetConfigure({ widgetItem }: MessageWidgetConfigureProps) {
       index: widgetIndex,
       stickers: [],
     };
+
+    console.log('message configData => ', configPayloadData);
+    putInvitationConfig(configPayloadData);
   };
+
+  useEffect(() => {
+    setOnSubmit(onSubmit);
+  }, [onSubmit]);
 
   return (
     <div className="space-y-8">
