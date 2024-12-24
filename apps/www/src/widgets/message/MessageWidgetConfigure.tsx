@@ -6,6 +6,8 @@ import { WidgetLabelWithInput } from '../components';
 import { useFormContext } from 'react-hook-form';
 import { ConfigPayload, HookFormValues } from '../types';
 import { useWidgetIndex } from '../hooks';
+import { useInvitationConfigMutation } from '../mutations';
+import useModalStore from '../zustand';
 
 interface MessageWidgetConfigureProps {
   widgetItem: WidgetItem | Omit<WidgetItem, 'id'>;
@@ -13,6 +15,12 @@ interface MessageWidgetConfigureProps {
 
 function MessageWidgetConfigure({ widgetItem }: MessageWidgetConfigureProps) {
   const { watch, register } = useFormContext<HookFormValues>();
+  const { setOnSubmit, invitation } = useModalStore((state) => ({
+    invitation: state.invitation,
+    setOnSubmit: state.setOnSubmit,
+  }));
+
+  const { mutate: putInvitationConfig } = useInvitationConfigMutation(invitation?.id ?? '');
 
   const widgetIndex = useWidgetIndex(widgetItem);
 
