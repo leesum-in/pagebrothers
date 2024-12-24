@@ -2,8 +2,27 @@ import type { Config } from 'tailwindcss';
 import plugin from 'tailwindcss/plugin';
 
 type FontStyleValue = [string, { lineHeight: string; letterSpacing: string; fontWeight: string }];
+type OpacityValue = { opacityValue?: number };
 
-// We want each package to be responsible for its own content.
+const withOpacity = (variableName: string) => {
+  return ({ opacityValue }: OpacityValue) => {
+    if (opacityValue !== undefined) {
+      return `rgba(var(${variableName}), ${opacityValue})`;
+    }
+    return `rgb(var(${variableName}))`;
+  };
+};
+
+const getThemeColors = () => {
+  return {
+    theme: {
+      black: withOpacity('--theme-black'),
+      colored: withOpacity('--theme-colored'),
+      inter: withOpacity('--theme-inter'),
+    },
+  };
+};
+
 const config: Omit<Config, 'content'> = {
   theme: {
     extend: {
@@ -26,7 +45,6 @@ const config: Omit<Config, 'content'> = {
           "'Noto Color Emoji'",
         ],
         serif: [
-          'var(--font-gowunBatang)',
           'var(--font-notoSerifKr)',
           'ui-sans-serif',
           'system-ui',
@@ -61,6 +79,7 @@ const config: Omit<Config, 'content'> = {
           "'Segoe UI Symbol'",
           "'Noto Color Emoji'",
         ],
+        gowun: ['var(--font-gowunBatang)', 'serif'],
       },
       fontWeight: {
         thin: '100',
@@ -120,7 +139,24 @@ const config: Omit<Config, 'content'> = {
           'linear-gradient(180deg, rgba(248, 250, 252, 0) 0%, #F8FAFC 100%)',
       },
       backgroundColor: {
-        'theme-black': 'rgb(15,23,42)',
+        // theme: {
+        //   black: 'rgb(var(--theme-black))',
+        //   inter: 'rgb(var(--theme-inter))',
+        //   colored: 'rgb(var(--theme-colored))',
+        //   block: 'rgb(var(--theme-block))',
+        // },
+      },
+      opacity: {
+        light: 0.04,
+      },
+      colors: {
+        ...getThemeColors(),
+      },
+      borderColor: {
+        ...getThemeColors(),
+      },
+      gradientColorStops: {
+        ...getThemeColors(),
       },
       screens: {
         desktop: '820px',
