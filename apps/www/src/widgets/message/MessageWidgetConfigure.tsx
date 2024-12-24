@@ -9,7 +9,7 @@ import { useWidgetIndex } from '../hooks';
 import { useInvitationConfigMutation } from '../mutations';
 import useModalStore from '../zustand';
 import { useShallow } from 'zustand/shallow';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 
 interface MessageWidgetConfigureProps {
   widgetItem: WidgetItem | Omit<WidgetItem, 'id'>;
@@ -28,7 +28,7 @@ function MessageWidgetConfigure({ widgetItem }: MessageWidgetConfigureProps) {
 
   const widgetIndex = useWidgetIndex(widgetItem);
 
-  const onSubmit: SubmitHandler<HookFormValues> = () => {
+  const onSubmit: SubmitHandler<HookFormValues> = useCallback(() => {
     if (widgetIndex === null || !('id' in widgetItem)) return;
 
     const config: MessageWidgetConfig = {
@@ -48,7 +48,7 @@ function MessageWidgetConfigure({ widgetItem }: MessageWidgetConfigureProps) {
 
     console.log('message configData => ', configPayloadData);
     putInvitationConfig(configPayloadData);
-  };
+  }, []);
 
   useEffect(() => {
     setOnSubmit(onSubmit);
