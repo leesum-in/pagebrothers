@@ -140,6 +140,8 @@ export interface IInvitationDesign {
   zoomDisabled: ZoomDisabledKey;
 }
 
+// export type BrandColor = keyof typeof COLOR_HIGHLIGHTS;
+
 /** INVITATION : OWNER 혼주 */
 export interface IInvitationOwner {
   id: string;
