@@ -135,12 +135,13 @@ export interface IInvitationLocation {
 export interface IInvitationDesign {
   layoutType: 'WIDGETS';
   brandColor: keyof typeof COLOR_HIGHLIGHTS;
-  font: string;
+  font: Font;
   textSize: Size;
   zoomDisabled: ZoomDisabledKey;
 }
 
 // export type BrandColor = keyof typeof COLOR_HIGHLIGHTS;
+export type Font = 'sans' | 'serif' | 'gowun';
 
 /** INVITATION : OWNER 혼주 */
 export interface IInvitationOwner {
