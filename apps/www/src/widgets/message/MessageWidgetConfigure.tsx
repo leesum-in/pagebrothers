@@ -8,6 +8,7 @@ import { ConfigPayload, HookFormValues } from '../types';
 import { useWidgetIndex } from '../hooks';
 import { useInvitationConfigMutation } from '../mutations';
 import useModalStore from '../zustand';
+import { useShallow } from 'zustand/shallow';
 
 interface MessageWidgetConfigureProps {
   widgetItem: WidgetItem | Omit<WidgetItem, 'id'>;
@@ -15,10 +16,12 @@ interface MessageWidgetConfigureProps {
 
 function MessageWidgetConfigure({ widgetItem }: MessageWidgetConfigureProps) {
   const { watch, register } = useFormContext<HookFormValues>();
-  const { setOnSubmit, invitation } = useModalStore((state) => ({
-    invitation: state.invitation,
-    setOnSubmit: state.setOnSubmit,
-  }));
+  const { setOnSubmit, invitation } = useModalStore(
+    useShallow((state) => ({
+      invitation: state.invitation,
+      setOnSubmit: state.setOnSubmit,
+    })),
+  );
 
   const { mutate: putInvitationConfig } = useInvitationConfigMutation(invitation?.id ?? '');
 
