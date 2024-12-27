@@ -30,7 +30,7 @@ function MessageWidgetConfigure({ widgetItem }: MessageWidgetConfigureProps) {
   const widgetIndex = useWidgetIndex(widgetItem);
 
   const onSubmit: SubmitHandler<HookFormValues> = useCallback(() => {
-    if (widgetIndex === null || !('id' in widgetItem)) return;
+    if (!invitation || widgetIndex === null || widgetIndex === -1 || !('id' in widgetItem)) return;
 
     const config: MessageWidgetConfig = {
       widgetTitle: watch(`invitation.widgets.${widgetIndex}.config.widgetTitle`),
