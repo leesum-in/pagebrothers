@@ -17,10 +17,11 @@ interface MessageWidgetConfigureProps {
 
 function MessageWidgetConfigure({ widgetItem }: MessageWidgetConfigureProps) {
   const { watch, register } = useFormContext<HookFormValues>();
-  const { setOnSubmit, invitation } = useModalStore(
+  const { setOnSubmit, invitation, closeModal } = useModalStore(
     useShallow((state) => ({
       invitation: state.invitation,
       setOnSubmit: state.setOnSubmit,
+      closeModal: state.closeModal,
     })),
   );
 
@@ -48,6 +49,8 @@ function MessageWidgetConfigure({ widgetItem }: MessageWidgetConfigureProps) {
 
     console.log('message configData => ', configPayloadData);
     putInvitationConfig(configPayloadData);
+
+    closeModal();
   }, []);
 
   useEffect(() => {
