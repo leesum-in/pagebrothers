@@ -63,8 +63,8 @@ function RsvpWidgetConfigure({ widgetItem }: RsvpWidgetConfigureProps) {
     };
 
     console.log('configPayloadData ====>', configPayloadData);
-    // putInvitationConfig(configPayloadData);
-    // closeModal();
+    putInvitationConfig(configPayloadData);
+    closeModal();
   }, [extraFields, widgetIndex, invitation, widgetItem, watch, putInvitationConfig, closeModal]);
 
   useEffect(() => {
@@ -192,6 +192,7 @@ function RsvpWidgetConfigure({ widgetItem }: RsvpWidgetConfigureProps) {
               extraField={extraField}
               index={index}
               widgetIndex={widgetIndex}
+              setExtraFields={setExtraFields}
             />
           ))}
           <button

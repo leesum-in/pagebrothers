@@ -1,11 +1,12 @@
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { Label, type RsvpExtraField } from '@repo/shared';
-import { useState } from 'react';
+import { useEffect, useState, type Dispatch, type SetStateAction } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FaRegTrashAlt } from 'react-icons/fa';
 import { HiPlus } from 'react-icons/hi2';
 import { IoIosArrowDown } from 'react-icons/io';
+import { IoCloseCircleOutline } from 'react-icons/io5';
 
 import { Move } from '@/www/ui';
 
@@ -16,15 +17,20 @@ interface RsvpExtraFieldsProps {
   extraField: RsvpExtraField;
   index: number;
   widgetIndex: number;
+  setExtraFields: Dispatch<SetStateAction<RsvpExtraField[]>>;
 }
 
-function RsvpExtraFieldsUI({ extraField, index, widgetIndex }: RsvpExtraFieldsProps) {
-  const { watch, register } = useFormContext<HookFormValues>();
-  const [options, setOptions] = useState(extraField.options);
-
+function RsvpExtraFieldsUI({
+  extraField,
+  index,
+  widgetIndex,
+  setExtraFields,
+}: RsvpExtraFieldsProps) {
+  const { watch, register, setValue } = useFormContext<HookFormValues>();
   const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
     id: extraField.id, // 고유 ID
   });
+  const [options, setOptions] = useState(extraField.options);
 
   // y축만 적용하도록 transform 수정
   const adjustedTransform = transform
@@ -40,6 +46,19 @@ function RsvpExtraFieldsUI({ extraField, index, widgetIndex }: RsvpExtraFieldsPr
   const handleAddOption = () => {
     setOptions([...options, '']);
   };
+
+  const handleDeleteOption = (option: string) => {
+    setOptions(options.filter((o) => o !== option));
+  };
+
+  useEffect(() => {
+    setValue(`invitation.widgets.${widgetIndex}.config.extraFields.${index}.options`, options);
+    setExtraFields((prev) => {
+      const newExtraFields = [...prev];
+      newExtraFields[index] = { ...newExtraFields[index], options };
+      return newExtraFields;
+    });
+  }, [options, setExtraFields, index, setValue, widgetIndex]);
 
   const type = watch(`invitation.widgets.${widgetIndex}.config.extraFields.${index}.type`);
 
@@ -108,10 +127,21 @@ function RsvpExtraFieldsUI({ extraField, index, widgetIndex }: RsvpExtraFieldsPr
                         register={register}
                         registerOption={`invitation.widgets.${widgetIndex}.config.extraFields.${index}.options.${idx}`}
                       >
-                        <div className="flex flex-none items-center" />
+                        <div className="flex flex-none items-center">
+                          {idx >= 2 && (
+                            <button
+                              type="button"
+                              onClick={() => handleDeleteOption(option)}
+                              className="center-flex h-12 w-12 opacity-50"
+                            >
+                              <IoCloseCircleOutline />
+                            </button>
+                          )}
+                        </div>
                       </WidgetLabelWithInput>
                     ))}
                     <button
+                      disabled={type === 'Radio' && options.length >= 3}
                       type="button"
                       onClick={handleAddOption}
                       className="h-12 w-12 !p-0 rounded-md px-4 text-sm border border-dashed border-slate-300 center-flex gap-2 font-bold shadow-1 transition-colors disabled:opacity-40"
@@ -216,7 +246,13 @@ function RsvpExtraFieldsUI({ extraField, index, widgetIndex }: RsvpExtraFieldsPr
 
 export default RsvpExtraFieldsUI;
 
-function RsvpExtraFieldTitle({ extraField, index, widgetIndex }: RsvpExtraFieldsProps) {
+interface RsvpExtraFieldTitleProps {
+  extraField: RsvpExtraField;
+  index: number;
+  widgetIndex: number;
+}
+
+function RsvpExtraFieldTitle({ extraField, index, widgetIndex }: RsvpExtraFieldTitleProps) {
   const { register } = useFormContext<HookFormValues>();
 
   return (
