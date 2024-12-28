@@ -2,7 +2,7 @@ import { PropsWithChildren } from 'react';
 import { HiChevronDown, HiMinus, HiPlus } from 'react-icons/hi2';
 import { RsvpExtraField } from '../../../types';
 import { Label } from '../../label';
-import RsvpButtons from './RsvpButtons';
+import RsvpInputButtons from './RsvpInputButtons';
 import RsvpLabelWithInput from './RsvpLabelWithInput';
 
 interface RsvpExtraFieldsProps {
@@ -10,12 +10,11 @@ interface RsvpExtraFieldsProps {
 }
 
 function RsvpExtraFields({ extraField }: RsvpExtraFieldsProps) {
-  // 버튼 항목이 많으면??
   if (extraField.type === 'Radio') {
     return (
       <RsvpExtraFieldWrapper extraField={extraField}>
         <div>
-          <RsvpButtons options={extraField.options} />
+          <RsvpInputButtons options={extraField.options} />
         </div>
       </RsvpExtraFieldWrapper>
     );
@@ -30,7 +29,7 @@ function RsvpExtraFields({ extraField }: RsvpExtraFieldsProps) {
     );
   }
   if (extraField.type === 'InputNumber') {
-    // 버튼
+    // 버튼 추수 수정 요망
     // react-hook-form watch 사용하여
     // 값이 1 이면 버튼 비활성화
     // 값이 100 이면 버튼 비활성화
@@ -68,6 +67,7 @@ function RsvpExtraFields({ extraField }: RsvpExtraFieldsProps) {
       </RsvpExtraFieldWrapper>
     );
   }
+  // 추후 select react-hook-form 으로 수정 요망
   if (extraField.type === 'Select') {
     return (
       <RsvpExtraFieldWrapper extraField={extraField}>

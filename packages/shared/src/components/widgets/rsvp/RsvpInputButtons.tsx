@@ -2,23 +2,23 @@ interface RsvpDoubleButtonProps {
   options: string[];
 }
 
-function RsvpButtons({ options }: RsvpDoubleButtonProps) {
+function RsvpInputButtons({ options }: RsvpDoubleButtonProps) {
   return (
     <div className="relative z-0 flex h-12 items-stretch -space-x-[1px] bg-white ">
       {options.map((option) => (
-        <RsvpButton option={option} key={option} />
+        <RsvpInputButton option={option} key={option} />
       ))}
     </div>
   );
 }
 
-export default RsvpButtons;
+export default RsvpInputButtons;
 
 interface RsvpButtonProps {
   option: string;
 }
 
-function RsvpButton({ option }: RsvpButtonProps) {
+function RsvpInputButton({ option }: RsvpButtonProps) {
   return (
     <label className="group relative h-full w-full cursor-pointer text-sm leading-relaxed">
       <input

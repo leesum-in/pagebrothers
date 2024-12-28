@@ -1,8 +1,8 @@
 'use client';
 
 import { LabelWithSub } from '../../label';
-import RsvpButtons from './RsvpButtons';
 import RsvpFormHeader from './RsvpFormHeader';
+import RsvpInputButtons from './RsvpInputButtons';
 
 interface RsvpRejectedProps {
   onClose: () => void;
@@ -19,6 +19,7 @@ function RsvpRejected({ onClose, openToast, isThirdModal }: RsvpRejectedProps) {
     }
   };
 
+  // 여기도 react-hook-form 사용 하여 추후 수정 요망
   return (
     <div className="bg-white">
       <RsvpFormHeader onClose={onClose} />
@@ -29,7 +30,7 @@ function RsvpRejected({ onClose, openToast, isThirdModal }: RsvpRejectedProps) {
             <li>
               <div className="space-y-2 ">
                 <div>
-                  <RsvpButtons options={['🤵 신랑 손님', '👰 신부 손님']} />
+                  <RsvpInputButtons options={['🤵 신랑 손님', '👰 신부 손님']} />
                 </div>
               </div>
             </li>
