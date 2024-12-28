@@ -51,11 +51,11 @@ function MessageWidgetConfigure({ widgetItem }: MessageWidgetConfigureProps) {
     putInvitationConfig(configPayloadData);
 
     closeModal();
-  }, []);
+  }, [closeModal, invitation, widgetItem, widgetIndex, watch, putInvitationConfig]);
 
   useEffect(() => {
     setOnSubmit(onSubmit);
-  }, [onSubmit]);
+  }, [setOnSubmit, onSubmit]);
 
   return (
     <div className="space-y-8">
