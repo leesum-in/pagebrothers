@@ -1,6 +1,6 @@
 'use client';
 
-import { RsvpWidgetConfig } from '@/shared/types';
+import type { RsvpWidgetConfig } from '../../../types';
 import { cn } from '../../../utils';
 
 interface RsvpProps {

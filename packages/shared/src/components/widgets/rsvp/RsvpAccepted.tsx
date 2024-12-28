@@ -1,6 +1,6 @@
 'use client';
 
-import { RsvpExtraField } from '@/shared/types';
+import type { RsvpExtraField } from '../../../types';
 import RsvpExtraFields from './RsvpExtraFields';
 import RsvpFormHeader from './RsvpFormHeader';
 
