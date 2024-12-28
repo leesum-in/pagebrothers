@@ -6,7 +6,7 @@ interface RsvpRejectedHeaderProps {
   onClose: () => void;
 }
 
-function RsvpRejectedHeader({ onClose }: RsvpRejectedHeaderProps) {
+function RsvpFormHeader({ onClose }: RsvpRejectedHeaderProps) {
   return (
     <header className="sticky top-0 z-10 flex items-center justify-between border-b border-neutral-100 bg-white p-3">
       <p className="pl-2 text-base font-bold">참석자 정보를 알려주세요.</p>
@@ -17,4 +17,4 @@ function RsvpRejectedHeader({ onClose }: RsvpRejectedHeaderProps) {
   );
 }
 
-export default RsvpRejectedHeader;
+export default RsvpFormHeader;

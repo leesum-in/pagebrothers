@@ -185,7 +185,7 @@ function UnmemoizedModal({
           'translate-y-0 desktop:translate-y-0 scroll-lock-layer-children relative isolate max-h-[90%] w-full overflow-x-hidden rounded-t-2xl bg-white desktop:max-h-[calc(100vh-8rem)] desktop:w-[30rem] desktop:rounded-2xl opacity-100 transition-all duration-300',
           {
             'translate-y-0 desktop:translate-y-4 opacity-0': isClosing || isOpening,
-            'font-serif': widgetType === 'GALLERY',
+            'font-serif': widgetType === 'GALLERY' || widgetType === 'RSVP',
           },
           isMultiModal ? 'max-w-sm' : 'desktop:w-[480px]',
           modalContentClassName,

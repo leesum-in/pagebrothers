@@ -18,7 +18,7 @@ import type { ConfigPayload, HookFormValues } from '../types';
 import type { ModalStore } from '../zustand';
 import useModalStore from '../zustand';
 import RsvpDroppableUl from './RsvpDroppableUI';
-import RsvpExtraFields from './RsvpExtraFields';
+import RsvpExtraFieldsUI from './RsvpExtraFieldsUI';
 
 interface RsvpWidgetConfigureProps {
   widgetItem: WidgetItem | Omit<WidgetItem, 'id'>;
@@ -187,7 +187,7 @@ function RsvpWidgetConfigure({ widgetItem }: RsvpWidgetConfigureProps) {
         </div>
         <RsvpDroppableUl<RsvpExtraField> items={extraFields} setItems={setExtraFields}>
           {extraFields.map((extraField, index) => (
-            <RsvpExtraFields
+            <RsvpExtraFieldsUI
               key={extraField.id}
               extraField={extraField}
               index={index}

@@ -21,6 +21,7 @@ import type { HookFormValues } from '@/www/widgets/types';
 import type { ModalStore } from '@/www/widgets/zustand';
 import useModalStore from '@/www/widgets/zustand';
 
+import { RsvpAcceptedUI } from '../rsvp';
 import RsvpRejectedUI from '../rsvp/RsvpRejectedUI';
 
 function EditTemplate() {
@@ -104,9 +105,9 @@ function EditTemplate() {
           </Modal>
           <Modal isModalOpen={thirdModalState.isOpen} onCloseModal={closeThirdModal} isThirdModal>
             {thirdModalState.isRejected ? <RsvpRejectedUI /> : null}
-            {!thirdModalState.isRejected && thirdModalState.extraFields
-              ? thirdModalState.extraFields.map((field) => <div key={field.id}>{field.label}</div>)
-              : null}
+            {!thirdModalState.isRejected && thirdModalState.extraFields ? (
+              <RsvpAcceptedUI extraFields={thirdModalState.extraFields} />
+            ) : null}
           </Modal>
         </>
       ) : null}

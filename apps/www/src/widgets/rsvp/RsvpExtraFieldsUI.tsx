@@ -18,7 +18,7 @@ interface RsvpExtraFieldsProps {
   widgetIndex: number;
 }
 
-function RsvpExtraFields({ extraField, index, widgetIndex }: RsvpExtraFieldsProps) {
+function RsvpExtraFieldsUI({ extraField, index, widgetIndex }: RsvpExtraFieldsProps) {
   const { watch, register } = useFormContext<HookFormValues>();
   const [options, setOptions] = useState(extraField.options);
 
@@ -214,7 +214,7 @@ function RsvpExtraFields({ extraField, index, widgetIndex }: RsvpExtraFieldsProp
   );
 }
 
-export default RsvpExtraFields;
+export default RsvpExtraFieldsUI;
 
 function RsvpExtraFieldTitle({ extraField, index, widgetIndex }: RsvpExtraFieldsProps) {
   const { register } = useFormContext<HookFormValues>();
