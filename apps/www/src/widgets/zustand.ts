@@ -19,7 +19,7 @@ export type MultiModalState = {
 
 export type ThirdModalState = {
   isOpen: boolean;
-  isRejected?: boolean;
+  isRejected: boolean | null;
   extraFields: RsvpExtraField[] | null;
 };
 
@@ -38,7 +38,7 @@ export type ModalStore = {
     widget: WidgetItem | Omit<WidgetItem, 'id'> | null;
     calendar?: boolean;
   }) => void;
-  openThirdModal: (extraFields: RsvpExtraField[], isRejected?: boolean) => void;
+  openThirdModal: (extraFields: RsvpExtraField[], isRejected: boolean) => void;
   closeModal: () => void;
   closeMultiModal: () => void;
   closeThirdModal: () => void;
@@ -59,6 +59,7 @@ const useModalStore = create<ModalStore>((set) => ({
   },
   thirdModalState: {
     isOpen: false,
+    isRejected: false,
     extraFields: null,
   },
   isDragging: false,
@@ -83,7 +84,7 @@ const useModalStore = create<ModalStore>((set) => ({
       },
     }));
   },
-  openThirdModal: (extraFields: RsvpExtraField[], isRejected?: boolean) => {
+  openThirdModal: (extraFields: RsvpExtraField[], isRejected: boolean) => {
     set((state: ModalStore) => ({
       thirdModalState: { ...state.thirdModalState, isOpen: true, extraFields, isRejected },
     }));
@@ -106,7 +107,7 @@ const useModalStore = create<ModalStore>((set) => ({
   },
   closeThirdModal: () => {
     set((state: ModalStore) => ({
-      thirdModalState: { ...state.thirdModalState, isOpen: false, isRejected: false },
+      thirdModalState: { ...state.thirdModalState, isOpen: false, isRejected: null },
     }));
     setTimeout(() => {
       set((state: ModalStore) => ({

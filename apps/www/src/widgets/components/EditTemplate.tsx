@@ -21,8 +21,7 @@ import type { HookFormValues } from '@/www/widgets/types';
 import type { ModalStore } from '@/www/widgets/zustand';
 import useModalStore from '@/www/widgets/zustand';
 
-import { RsvpAcceptedUI } from '../rsvp';
-import RsvpRejectedUI from '../rsvp/RsvpRejectedUI';
+import RsvpSumbit from '../rsvp/RsvpSumbit';
 
 function EditTemplate() {
   const { id } = useParams<{ id: string }>();
@@ -104,10 +103,11 @@ function EditTemplate() {
             ) : null}
           </Modal>
           <Modal isModalOpen={thirdModalState.isOpen} onCloseModal={closeThirdModal} isThirdModal>
-            {thirdModalState.isRejected ? <RsvpRejectedUI /> : null}
-            {!thirdModalState.isRejected && thirdModalState.extraFields ? (
-              <RsvpAcceptedUI extraFields={thirdModalState.extraFields} />
-            ) : null}
+            <RsvpSumbit
+              isRejected={thirdModalState.isRejected}
+              isThirdModal
+              extraFields={thirdModalState.extraFields}
+            />
           </Modal>
         </>
       ) : null}
