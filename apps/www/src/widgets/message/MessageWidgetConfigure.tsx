@@ -10,6 +10,7 @@ import { useInvitationConfigMutation } from '../mutations';
 import useModalStore from '../zustand';
 import { useShallow } from 'zustand/shallow';
 import { useCallback, useEffect } from 'react';
+import { FixedLoader } from '../..';
 
 interface MessageWidgetConfigureProps {
   widgetItem: WidgetItem | Omit<WidgetItem, 'id'>;
@@ -56,6 +57,8 @@ function MessageWidgetConfigure({ widgetItem }: MessageWidgetConfigureProps) {
   useEffect(() => {
     setOnSubmit(onSubmit);
   }, [setOnSubmit, onSubmit]);
+
+  if (widgetIndex === null) return <FixedLoader />;
 
   return (
     <div className="space-y-8">
