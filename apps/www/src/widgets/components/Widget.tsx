@@ -33,6 +33,9 @@ const components: Record<
   RSVP: dynamic(() => import('../rsvp/RsvpWidget'), {
     ssr: false,
   }),
+  GREETING: dynamic(() => import('../greeting/GreetingWidget'), {
+    ssr: false,
+  }),
 };
 
 function UnmemoizedWidget({ invitation, widgetItem, isMultiModal }: WidgetProps) {
