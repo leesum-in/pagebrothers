@@ -36,6 +36,9 @@ const components: Record<
   GREETING: dynamic(() => import('../greeting/GreetingWidget'), {
     ssr: false,
   }),
+  CONGRATULATION: dynamic(() => import('../congratulation/CongratulationWidget'), {
+    ssr: false,
+  }),
 };
 
 function UnmemoizedWidget({ invitation, widgetItem, isMultiModal }: WidgetProps) {
