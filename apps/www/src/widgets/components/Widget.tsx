@@ -30,6 +30,9 @@ const components: Record<
   GALLERY: dynamic(() => import('../gallery/GalleryWidget'), {
     ssr: false,
   }),
+  RSVP: dynamic(() => import('../rsvp/RsvpWidget'), {
+    ssr: false,
+  }),
   GREETING: dynamic(() => import('../greeting/GreetingWidget'), {
     ssr: false,
   }),

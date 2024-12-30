@@ -61,7 +61,7 @@ function WidgetLabelWithInput({
           rows={3}
           placeholder={textareaPlaceholder}
           {...(register ? register(registerOption as keyof HookFormValues) : undefined)}
-          onChange={onInputChange}
+          onChange={onInputChange as (e: React.ChangeEvent<HTMLTextAreaElement>) => void}
         />
       ) : (
         <input
@@ -73,8 +73,8 @@ function WidgetLabelWithInput({
           defaultValue={defaultValue}
           checked={inputChecked}
           defaultChecked={inputDefaultChecked}
-          onClick={onInputClick}
-          onChange={onInputChange}
+          onClick={onInputClick as (e: React.MouseEvent<HTMLInputElement>) => void}
+          onChange={onInputChange as (e: React.ChangeEvent<HTMLInputElement>) => void}
           {...(register ? register(registerOption as keyof HookFormValues) : undefined)}
           readOnly={readonly}
           placeholder={placeholder}

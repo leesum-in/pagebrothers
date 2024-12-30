@@ -1,4 +1,8 @@
-import type { IInvitation, WidgetItem } from '@repo/shared/src/types/pageBrothers.type';
+import type {
+  IInvitation,
+  RsvpExtraField,
+  WidgetItem,
+} from '@repo/shared/src/types/pageBrothers.type';
 import type { SubmitHandler } from 'react-hook-form';
 import { create } from 'zustand';
 
@@ -13,9 +17,16 @@ export type MultiModalState = {
   calendar?: boolean;
 } & ModalState;
 
+export type ThirdModalState = {
+  isOpen: boolean;
+  isRejected: boolean | null;
+  extraFields: RsvpExtraField[] | null;
+};
+
 export type ModalStore = {
   modalState: ModalState;
   multiModalState: MultiModalState;
+  thirdModalState: ThirdModalState;
   invitation: IInvitation | null;
   isDragging: boolean;
   onSubmit: SubmitHandler<HookFormValues>;
@@ -27,8 +38,10 @@ export type ModalStore = {
     widget: WidgetItem | Omit<WidgetItem, 'id'> | null;
     calendar?: boolean;
   }) => void;
+  openThirdModal: (extraFields: RsvpExtraField[], isRejected: boolean) => void;
   closeModal: () => void;
   closeMultiModal: () => void;
+  closeThirdModal: () => void;
   setOnSubmit: (onSubmit: SubmitHandler<HookFormValues>) => void;
   setInvitation: (invitation: IInvitation) => void;
   setIsDragging: (isDragging: boolean) => void;
@@ -43,6 +56,11 @@ const useModalStore = create<ModalStore>((set) => ({
     isOpen: false,
     widget: null,
     calendar: false,
+  },
+  thirdModalState: {
+    isOpen: false,
+    isRejected: false,
+    extraFields: null,
   },
   isDragging: false,
   invitation: null,
@@ -66,6 +84,11 @@ const useModalStore = create<ModalStore>((set) => ({
       },
     }));
   },
+  openThirdModal: (extraFields: RsvpExtraField[], isRejected: boolean) => {
+    set((state: ModalStore) => ({
+      thirdModalState: { ...state.thirdModalState, isOpen: true, extraFields, isRejected },
+    }));
+  },
   closeModal: () => {
     set((state: ModalStore) => ({ modalState: { ...state.modalState, isOpen: false } }));
     setTimeout(() => {
@@ -79,6 +102,16 @@ const useModalStore = create<ModalStore>((set) => ({
     setTimeout(() => {
       set((state: ModalStore) => ({
         multiModalState: { ...state.multiModalState, widget: null, calendar: false },
+      }));
+    }, 300);
+  },
+  closeThirdModal: () => {
+    set((state: ModalStore) => ({
+      thirdModalState: { ...state.thirdModalState, isOpen: false, isRejected: null },
+    }));
+    setTimeout(() => {
+      set((state: ModalStore) => ({
+        thirdModalState: { ...state.thirdModalState, extraFields: null },
       }));
     }, 300);
   },

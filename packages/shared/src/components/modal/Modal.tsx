@@ -14,6 +14,7 @@ interface ModalProps extends PropsWithChildren {
   modalHeader?: React.ReactNode | null;
   modalFooter?: React.ReactNode | null;
   isMultiModal?: boolean;
+  isThirdModal?: boolean;
   isCalendar?: boolean;
   isModalFooterBg?: boolean;
   modalBgClassName?: string;
@@ -32,6 +33,7 @@ function UnmemoizedModal({
   modalHeader,
   modalFooter,
   isMultiModal = false,
+  isThirdModal = false,
   isModalFooterBg = false,
   isCalendar = false,
   modalBgClassName,
@@ -183,12 +185,13 @@ function UnmemoizedModal({
           'translate-y-0 desktop:translate-y-0 scroll-lock-layer-children relative isolate max-h-[90%] w-full overflow-x-hidden rounded-t-2xl bg-white desktop:max-h-[calc(100vh-8rem)] desktop:w-[30rem] desktop:rounded-2xl opacity-100 transition-all duration-300',
           {
             'translate-y-0 desktop:translate-y-4 opacity-0': isClosing || isOpening,
-            'font-serif': widgetType === 'GALLERY',
+            'font-serif': widgetType === 'GALLERY' || widgetType === 'RSVP',
           },
           isMultiModal ? 'max-w-sm' : 'desktop:w-[480px]',
           modalContentClassName,
         )}
       >
+        {isThirdModal ? <>{children}</> : null}
         {isMultiModal ? (
           <>
             {!isCalendar ? (
@@ -204,7 +207,9 @@ function UnmemoizedModal({
             ) : null}
             {children}
           </>
-        ) : (
+        ) : null}
+
+        {!isMultiModal && !isThirdModal ? (
           <form onSubmit={onSubmit}>
             <div className="bg-slate-50">
               {modalHeader ? (
@@ -231,7 +236,7 @@ function UnmemoizedModal({
               ) : null}
             </div>
           </form>
-        )}
+        ) : null}
       </div>
     </div>,
     document.body,

@@ -21,6 +21,8 @@ import type { HookFormValues } from '@/www/widgets/types';
 import type { ModalStore } from '@/www/widgets/zustand';
 import useModalStore from '@/www/widgets/zustand';
 
+import RsvpSumbit from '../rsvp/RsvpSumbit';
+
 function EditTemplate() {
   const { id } = useParams<{ id: string }>();
   const { data: invitation, isPending, error } = useInvitationQuery(id);
@@ -28,8 +30,10 @@ function EditTemplate() {
     isDragging,
     modalState,
     multiModalState,
+    thirdModalState,
     closeModal,
     closeMultiModal,
+    closeThirdModal,
     setInvitation,
     onSubmit,
   } = useModalStore(
@@ -37,8 +41,10 @@ function EditTemplate() {
       isDragging: state.isDragging,
       multiModalState: state.multiModalState,
       modalState: state.modalState,
+      thirdModalState: state.thirdModalState,
       closeModal: state.closeModal,
       closeMultiModal: state.closeMultiModal,
+      closeThirdModal: state.closeThirdModal,
       setInvitation: state.setInvitation,
       onSubmit: state.onSubmit,
     })),
@@ -95,6 +101,13 @@ function EditTemplate() {
             {multiModalState.widget ? (
               <Widget widgetItem={multiModalState.widget} isMultiModal invitation={invitation} />
             ) : null}
+          </Modal>
+          <Modal isModalOpen={thirdModalState.isOpen} onCloseModal={closeThirdModal} isThirdModal>
+            <RsvpSumbit
+              isRejected={thirdModalState.isRejected}
+              isThirdModal
+              extraFields={thirdModalState.extraFields}
+            />
           </Modal>
         </>
       ) : null}
