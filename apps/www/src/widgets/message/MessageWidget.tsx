@@ -10,13 +10,14 @@ import { TEXT_ALIGN, TEXT_SIZE } from '../constants';
 interface MessageWidgetProps {
   invitation?: IInvitation;
   widgetItem: WidgetItem;
+  isMultiModal?: boolean;
 }
 
-function MessageWidget({ widgetItem }: MessageWidgetProps): React.ReactNode {
+function MessageWidget({ widgetItem, isMultiModal = false }: MessageWidgetProps): React.ReactNode {
   const { widgetTitle, title, align, size } = widgetItem.config as MessageWidgetConfig;
 
   return (
-    <WidgetWrapper widgetItem={widgetItem}>
+    <WidgetWrapper widgetItem={widgetItem} isMultiModal={isMultiModal}>
       {title ? (
         <div
           className={`no-interaction space-y-6 p-8 ${TEXT_ALIGN[align]} ${TEXT_SIZE[size]} text-slate-700/70`}
