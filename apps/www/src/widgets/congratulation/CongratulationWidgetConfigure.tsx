@@ -1,14 +1,12 @@
 'use client';
 
-import {
-  Label,
-  LabelWithSub,
-  type CongratulationWidgetConfig,
-  type WidgetItem,
-} from '@repo/shared';
-import { useCallback, useEffect } from 'react';
-import type { SubmitHandler, UseFormRegister } from 'react-hook-form';
+import type { CongratulationWidgetConfig, OwnerAccountItem, WidgetItem } from '@repo/shared';
+import { Label, LabelWithSub } from '@repo/shared';
+import type { ChangeEvent } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import type { SubmitHandler } from 'react-hook-form';
 import { useFormContext } from 'react-hook-form';
+import { FiPlus } from 'react-icons/fi';
 import { useShallow } from 'zustand/shallow';
 
 import { FixedLoader } from '@/www/ui';
@@ -19,6 +17,7 @@ import { useWidgetIndex } from '../hooks';
 import type { HookFormValues } from '../types';
 import type { ModalStore } from '../zustand';
 import useModalStore from '../zustand';
+import CongratulationAccountList from './CongratulationAccountList';
 import CongratulationLayoutCollapsible from './CongratulationLayoutCollapsible';
 import CongratulationLayoutSpreaded from './CongratulationLayoutSpreaded';
 
@@ -42,16 +41,50 @@ function CongratulationWidgetConfigure({ widgetItem }: CongratulationWidgetConfi
   );
   const widgetIndex = useWidgetIndex(widgetItem);
   const accounts = Object.entries(widgetConfig.accounts);
+  const [groomUse, setGroomUse] = useState(accounts[0][1].use);
+  const [brideUse, setBrideUse] = useState(accounts[1][1].use);
+  const [groomItems, setGroomItems] = useState<OwnerAccountItem[]>(accounts[0][1].items);
+  const [brideItems, setBrideItems] = useState<OwnerAccountItem[]>(accounts[1][1].items);
+
+  const handleUseChange = useCallback(
+    (idx: number) => (e: ChangeEvent<HTMLInputElement>) => {
+      const target = e.target;
+      if (idx === 0) setGroomUse(target.checked);
+      else setBrideUse(target.checked);
+    },
+    [],
+  );
+
+  const handleBankChange = useCallback(
+    (idx: number) => (itemIndex: number) => (value: string) => {
+      if (idx === 0)
+        setGroomItems((prev) => {
+          const newItems = [...prev];
+          newItems[itemIndex] = { ...newItems[itemIndex], bank: value };
+          return newItems;
+        });
+      else
+        setBrideItems((prev) => {
+          const newItems = [...prev];
+          newItems[itemIndex] = { ...newItems[itemIndex], bank: value };
+          return newItems;
+        });
+    },
+    [],
+  );
+
+  console.log(groomItems);
 
   const onSubmit: SubmitHandler<HookFormValues> = useCallback(() => {
     if (!invitation || widgetIndex === null || widgetIndex === -1 || !('id' in widgetItem)) return;
   }, [widgetIndex, invitation, widgetItem]);
 
+  // console.log(groomItems, brideItems);
+
   useEffect(() => {
     setOnSubmit(onSubmit);
   }, [setOnSubmit, onSubmit]);
 
-  console.log(accounts);
   if (widgetIndex === null) return <FixedLoader />;
 
   return (
@@ -172,16 +205,42 @@ function CongratulationWidgetConfigure({ widgetItem }: CongratulationWidgetConfi
       <div className="space-y-2 ">
         <Selectable
           label={ACCOUNTS_SIDE_KEYS[0]}
-          register={register}
           registerOption={`invitation.widgets.${widgetIndex}.config.accounts.${accounts[0][0]}.use`}
-          checked={accounts[0][1].use}
+          checked={groomUse}
+          handleUseChange={handleUseChange(0)}
         />
+        {groomUse
+          ? groomItems.map((item, index) => (
+              <CongratulationAccountList
+                key={item.name + item.role}
+                accountKey={accounts[0][0]}
+                itemIndex={index}
+                widgetIndex={widgetIndex}
+                handleClickTrashCan={() => {}}
+                handleBankChange={handleBankChange(0)}
+              />
+            ))
+          : null}
+        <AddAccountButton />
         <Selectable
           label={ACCOUNTS_SIDE_KEYS[1]}
-          register={register}
           registerOption={`invitation.widgets.${widgetIndex}.config.accounts.${accounts[1][0]}.use`}
-          checked={accounts[1][1].use}
+          checked={brideUse}
+          handleUseChange={handleUseChange(1)}
         />
+        {brideUse
+          ? brideItems.map((item, index) => (
+              <CongratulationAccountList
+                key={item.name + item.role}
+                accountKey={accounts[1][0]}
+                itemIndex={index}
+                widgetIndex={widgetIndex}
+                handleClickTrashCan={() => {}}
+                handleBankChange={handleBankChange(1)}
+              />
+            ))
+          : null}
+        <AddAccountButton />
       </div>
     </div>
   );
@@ -191,12 +250,14 @@ export default CongratulationWidgetConfigure;
 
 interface SelectableProps {
   label: string;
-  register: UseFormRegister<HookFormValues>;
   registerOption: string;
   checked: boolean;
+  handleUseChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
-function Selectable({ label, register, registerOption, checked }: SelectableProps) {
+function Selectable({ label, registerOption, checked, handleUseChange }: SelectableProps) {
+  const { register } = useFormContext<HookFormValues>();
+
   return (
     <div>
       <Label
@@ -208,6 +269,7 @@ function Selectable({ label, register, registerOption, checked }: SelectableProp
               type="checkbox"
               checked={checked}
               {...register(registerOption as keyof HookFormValues)}
+              onChange={handleUseChange}
             />
             <div className="relative h-6 w-12 rounded-full border border-slate-200 bg-slate-100 transition-[background-color] after:ml-[-1px] after:mt-[-1px] after:block after:h-6 after:w-6 after:rounded-full after:border after:border-slate-300 after:bg-white after:transition-[background-color,transform] peer-checked:border-indigo-600 peer-checked:bg-indigo-600 peer-checked:after:translate-x-full peer-checked:after:border-indigo-600 peer-focus:ring" />
           </label>
@@ -215,5 +277,17 @@ function Selectable({ label, register, registerOption, checked }: SelectableProp
       />
       <div className="text-sm text-slate-400">화면 하단에 참석 여부를 묻는 버튼이 따라다녀요.</div>
     </div>
+  );
+}
+
+function AddAccountButton() {
+  return (
+    <button
+      type="button"
+      className="w-full h-12 rounded-md px-4 text-sm border border-dashed border-slate-300 !shadow-none center-flex gap-2 font-bold shadow-1 transition-colors disabled:opacity-40"
+    >
+      <span>추가하기</span>
+      <FiPlus className="text-lg" />
+    </button>
   );
 }

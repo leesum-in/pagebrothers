@@ -16,11 +16,23 @@ export function useWidgetIndex(widgetItem: WidgetItem | Omit<WidgetItem, 'id'>) 
 
 interface UseComboboxProps {
   options: string[];
+  isRounded?: boolean;
+  initialSelected?: string;
+  placeholder?: string;
+  customOnChange?: (value: string) => void;
 }
 
-function useCombobox({ options }: UseComboboxProps) {
+function useCombobox({
+  options,
+  isRounded = true,
+  initialSelected,
+  placeholder,
+  customOnChange,
+}: UseComboboxProps) {
   const [query, setQuery] = useState('');
-  const [selected, setSelected] = useState(options[0]);
+  const [selected, setSelected] = useState(
+    initialSelected === undefined ? options[0] : initialSelected,
+  );
 
   const filteredOptions = useMemo(
     () =>
@@ -32,9 +44,13 @@ function useCombobox({ options }: UseComboboxProps) {
     [query, options],
   );
 
-  const handleChangeCombobox = useCallback((value: string) => {
-    setSelected(value);
-  }, []);
+  const handleChangeCombobox = useCallback(
+    (value: string) => {
+      setSelected(value);
+      customOnChange?.(value);
+    },
+    [customOnChange],
+  );
 
   const handleChangeComboboxInput = useCallback((event: ChangeEvent<HTMLInputElement>) => {
     setQuery(event.target.value);
@@ -52,6 +68,8 @@ function useCombobox({ options }: UseComboboxProps) {
         onChange={handleChangeCombobox}
         onInputChange={handleChangeComboboxInput}
         onClose={handleCloseCombobox}
+        isRounded={isRounded}
+        placeholder={placeholder}
       />
     );
   }, [
@@ -60,6 +78,8 @@ function useCombobox({ options }: UseComboboxProps) {
     handleChangeComboboxInput,
     handleCloseCombobox,
     filteredOptions,
+    isRounded,
+    placeholder,
   ]);
 
   return { selected, Combobox };
