@@ -1,7 +1,9 @@
 'use client';
 
 import { Button } from '@repo/shared';
+import type { ChangeEvent } from 'react';
 import { memo } from 'react';
+import type { Path } from 'react-hook-form';
 import { useFormContext } from 'react-hook-form';
 import { FaRegTrashAlt } from 'react-icons/fa';
 
@@ -50,7 +52,7 @@ function UnmemoizedCongratulationAccountList({
   handleClickTrashCan,
   handleBankChange,
 }: CongratulationAccountListProps) {
-  const { register } = useFormContext<HookFormValues>();
+  const { register, setValue } = useFormContext<HookFormValues>();
   const { Combobox } = useCombobox({
     options: BANK_LIST,
     isRounded: false,
@@ -58,6 +60,27 @@ function UnmemoizedCongratulationAccountList({
     placeholder: '은행',
     customOnChange: handleBankChange(itemIndex),
   });
+
+  const handleRoleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const target = e.target as HTMLInputElement;
+    const path =
+      `invitation.widgets.${widgetIndex}.config.accounts.${accountKey}.items.${itemIndex}.role` as Path<HookFormValues>;
+    setValue(path, target.value);
+  };
+
+  const handleNameChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const target = e.target as HTMLInputElement;
+    const path =
+      `invitation.widgets.${widgetIndex}.config.accounts.${accountKey}.items.${itemIndex}.name` as Path<HookFormValues>;
+    setValue(path, target.value);
+  };
+
+  const handleNumberChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const target = e.target as HTMLInputElement;
+    const path =
+      `invitation.widgets.${widgetIndex}.config.accounts.${accountKey}.items.${itemIndex}.number` as Path<HookFormValues>;
+    setValue(path, target.value);
+  };
 
   return (
     <li className="relative grid grid-cols-2 gap-[-1px]">
@@ -67,6 +90,7 @@ function UnmemoizedCongratulationAccountList({
         placeholder="명칭"
         register={register}
         registerOption={`invitation.widgets.${widgetIndex}.config.accounts.${accountKey}.items.${itemIndex}.role`}
+        onInputChange={handleRoleChange}
       >
         <div className="flex flex-none items-center" />
       </WidgetLabelWithInput>
@@ -77,6 +101,7 @@ function UnmemoizedCongratulationAccountList({
         placeholder="예금주"
         register={register}
         registerOption={`invitation.widgets.${widgetIndex}.config.accounts.${accountKey}.items.${itemIndex}.name`}
+        onInputChange={handleNameChange}
       >
         <div className="flex flex-none items-center">
           {itemIndex > 0 ? (
@@ -100,6 +125,7 @@ function UnmemoizedCongratulationAccountList({
         placeholder="계좌번호 입력"
         register={register}
         registerOption={`invitation.widgets.${widgetIndex}.config.accounts.${accountKey}.items.${itemIndex}.number`}
+        onInputChange={handleNumberChange}
       >
         <div className="flex flex-none items-center" />
       </WidgetLabelWithInput>

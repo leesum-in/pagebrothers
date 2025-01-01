@@ -18,9 +18,9 @@ interface WidgetLabelWithInputProps {
   labelClassName?: string;
   textareaClassName?: string;
   inputClassName?: string;
-  onInputClick?: () => void;
-  onInputChange?: (
-    e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>,
+  onInputClick?: (e: React.MouseEvent<HTMLInputElement>) => void;
+  onInputChange?: <T extends HTMLInputElement | HTMLTextAreaElement>(
+    e: React.ChangeEvent<T>,
   ) => void;
   readonly?: boolean;
   placeholder?: string;
