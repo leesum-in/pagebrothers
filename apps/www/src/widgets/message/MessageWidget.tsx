@@ -1,37 +1,22 @@
-import type {
-  IInvitation,
-  MessageWidgetConfig,
-  WidgetItem,
-} from '@repo/shared/src/types/pageBrothers.type';
+import { Message } from '@repo/shared';
+import type { WidgetItem } from '@repo/shared/src/types/pageBrothers.type';
 
 import { WidgetWrapper } from '../components';
-import { TEXT_ALIGN, TEXT_SIZE } from '../constants';
+import useModalStore from '../zustand';
 
 interface MessageWidgetProps {
-  invitation?: IInvitation;
   widgetItem: WidgetItem;
   isMultiModal?: boolean;
 }
 
 function MessageWidget({ widgetItem, isMultiModal = false }: MessageWidgetProps): React.ReactNode {
-  const { widgetTitle, title, align, size } = widgetItem.config as MessageWidgetConfig;
+  const { invitation } = useModalStore();
+
+  if (!invitation) return null;
 
   return (
     <WidgetWrapper widgetItem={widgetItem} isMultiModal={isMultiModal}>
-      {title ? (
-        <div
-          className={`no-interaction space-y-6 p-8 ${TEXT_ALIGN[align]} ${TEXT_SIZE[size]} text-slate-700/70`}
-        >
-          {widgetTitle ? <p className="text-[1.15em] font-bold"> {widgetTitle}</p> : null}
-          <div className="space-y-3">
-            <p>{title}</p>
-          </div>
-        </div>
-      ) : (
-        <div className="relative no-interaction py-20 px-4 text-center text-sm">
-          <p>메세지를 등록해주세요.</p>
-        </div>
-      )}
+      <Message invitation={invitation} widgetItem={widgetItem}></Message>
     </WidgetWrapper>
   );
 }
