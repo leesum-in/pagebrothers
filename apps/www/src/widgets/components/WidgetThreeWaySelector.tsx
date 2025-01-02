@@ -6,7 +6,7 @@ import type {
   MessageWidgetConfig,
   WidgetItem,
 } from '@repo/shared';
-import { Label } from '@repo/shared';
+import { Label, TEXT_SIZE } from '@repo/shared';
 import { useMemo } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FiAlignCenter, FiAlignLeft, FiAlignRight } from 'react-icons/fi';
@@ -14,7 +14,6 @@ import { FiAlignCenter, FiAlignLeft, FiAlignRight } from 'react-icons/fi';
 import { useWidgetIndex } from '../hooks';
 import type { HookFormValues, ThreeWayLabelValue } from '../types';
 import WidgetLabelWithInput from './WidgetLabelWithInput';
-import { TEXT_SIZE } from '../constants';
 
 const textAlignItems = [
   {
