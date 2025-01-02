@@ -5,3 +5,4 @@ export * from './intro';
 export * from './location';
 export * from './rsvp';
 export * from './video';
+export * from './message';
