@@ -9,9 +9,9 @@ import { GalleryWidgetConfigure } from '../gallery';
 import { GreetingWidgetConfigure } from '../greeting';
 import { IntroWidgetConfigure } from '../intro';
 import { LocationWidgetConfigure } from '../location';
+import { MessageWidgetConfigure } from '../message';
 import { RsvpWidgetConfigure } from '../rsvp';
 import { VideoWidgetConfigure } from '../video';
-import { MessageWidgetConfigure } from '../message';
 
 interface WidgetModalProps {
   widgetItem: WidgetItem | Omit<WidgetItem, 'id'> | null;

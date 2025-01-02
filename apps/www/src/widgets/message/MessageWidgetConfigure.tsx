@@ -1,16 +1,19 @@
 'use client';
 
-import { LabelWithSub, MessageWidgetConfig, WidgetItem } from '@repo/shared';
-import WidgetThreeWaySelector from '../components/WidgetThreeWaySelector';
+import type { MessageWidgetConfig, WidgetItem } from '@repo/shared';
+import { LabelWithSub } from '@repo/shared';
+import { useCallback, useEffect } from 'react';
+import type { SubmitHandler } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
+import { useShallow } from 'zustand/shallow';
+
+import { FixedLoader } from '../..';
 import { WidgetLabelWithInput } from '../components';
-import { SubmitHandler, useFormContext } from 'react-hook-form';
-import { ConfigPayload, HookFormValues } from '../types';
+import WidgetThreeWaySelector from '../components/WidgetThreeWaySelector';
 import { useWidgetIndex } from '../hooks';
 import { useInvitationConfigMutation } from '../mutations';
+import type { ConfigPayload, HookFormValues } from '../types';
 import useModalStore from '../zustand';
-import { useShallow } from 'zustand/shallow';
-import { useCallback, useEffect } from 'react';
-import { FixedLoader } from '../..';
 
 interface MessageWidgetConfigureProps {
   widgetItem: WidgetItem | Omit<WidgetItem, 'id'>;
@@ -102,8 +105,8 @@ function MessageWidgetConfigure({ widgetItem }: MessageWidgetConfigureProps) {
           <LabelWithSub label="메세지" />
         </div>
         <WidgetLabelWithInput
-          isTextarea={true}
           labelClassName="relative flex items-center overflow-hidden rounded-lg border focus-within:ring border-slate-200"
+          isTextarea={true}
           register={register}
           registerOption={`invitation.widgets.${widgetIndex}.config.title`}
           defaultValue={(widgetItem.config as MessageWidgetConfig).title}
