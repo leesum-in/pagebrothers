@@ -210,7 +210,7 @@ function UnmemoizedModal({
         ) : null}
 
         {!isMultiModal && !isThirdModal ? (
-          <form onSubmit={onSubmit}>
+          <form id="modal-form" onSubmit={onSubmit}>
             <div className="bg-slate-50">
               {modalHeader ? (
                 <header

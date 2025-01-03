@@ -20,6 +20,7 @@ interface UseComboboxProps {
   initialSelected?: string;
   placeholder?: string;
   customOnChange?: (value: string) => void;
+  isInputError?: boolean;
 }
 
 function useCombobox({
@@ -28,6 +29,7 @@ function useCombobox({
   initialSelected,
   placeholder,
   customOnChange,
+  isInputError = false,
 }: UseComboboxProps) {
   const [query, setQuery] = useState('');
   const [selected, setSelected] = useState(
@@ -70,6 +72,7 @@ function useCombobox({
         onClose={handleCloseCombobox}
         isRounded={isRounded}
         placeholder={placeholder}
+        isInputError={isInputError}
       />
     );
   }, [
@@ -80,6 +83,7 @@ function useCombobox({
     filteredOptions,
     isRounded,
     placeholder,
+    isInputError,
   ]);
 
   return { selected, Combobox };

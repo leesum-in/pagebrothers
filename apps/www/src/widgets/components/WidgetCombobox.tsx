@@ -8,7 +8,7 @@ import {
   ComboboxOptions,
 } from '@headlessui/react';
 import { cn } from '@repo/shared';
-import type { ChangeEvent } from 'react';
+import { type ChangeEvent } from 'react';
 import { IoIosArrowDown } from 'react-icons/io';
 
 interface WidgetComboboxProps {
@@ -19,6 +19,7 @@ interface WidgetComboboxProps {
   onClose: () => void;
   isRounded?: boolean;
   placeholder?: string;
+  isInputError?: boolean;
 }
 
 function WidgetCombobox({
@@ -29,6 +30,7 @@ function WidgetCombobox({
   onClose,
   isRounded = false,
   placeholder,
+  isInputError = false,
 }: WidgetComboboxProps) {
   return (
     <Combobox value={value} onChange={onChange} onClose={onClose}>
@@ -39,6 +41,7 @@ function WidgetCombobox({
               'relative flex items-center overflow-hidden border bg-white focus-within:ring border-slate-200',
               isRounded && 'rounded-md',
               !isRounded && 'rounded-bl-md border-t-0',
+              isInputError && 'border-red-500',
             )}
           >
             <div className="flex flex-none items-center" />

@@ -2,7 +2,7 @@
 'use client';
 
 import type { CongratulationLayoutKey, CongratulationWidgetConfig, WidgetItem } from '@repo/shared';
-import { Label, LabelWithSub } from '@repo/shared';
+import { LabelWithSub } from '@repo/shared';
 import type { ChangeEvent, MouseEvent } from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { Path, SubmitHandler } from 'react-hook-form';
@@ -20,6 +20,7 @@ import type { ConfigPayload, HookFormValues } from '../types';
 import type { ModalStore } from '../zustand';
 import useModalStore from '../zustand';
 import CongratulationAccountList from './CongratulationAccountList';
+import CongratulationCheckbox from './CongratulationCheckbox';
 import CongratulationLayoutCollapsible from './CongratulationLayoutCollapsible';
 import CongratulationLayoutSpreaded from './CongratulationLayoutSpreaded';
 
@@ -150,8 +151,8 @@ function CongratulationWidgetConfigure({ widgetItem }: CongratulationWidgetConfi
     };
 
     console.log('configPayloadData ====>', configPayloadData);
-    putInvitationConfig(configPayloadData);
-    closeModal();
+    // putInvitationConfig(configPayloadData);
+    // closeModal();
   }, [
     widgetIndex,
     invitation,
@@ -290,7 +291,7 @@ function CongratulationWidgetConfigure({ widgetItem }: CongratulationWidgetConfi
 
       {/** 신랑측 계좌 */}
       <div className="space-y-2 ">
-        <Checkbox
+        <CongratulationCheckbox
           label={ACCOUNTS_SIDE_KEYS[0]}
           registerOption={`invitation.widgets.${widgetIndex}.config.accounts.${accounts.current[0][0]}.use`}
           checked={groomUse}
@@ -305,6 +306,7 @@ function CongratulationWidgetConfigure({ widgetItem }: CongratulationWidgetConfi
                     accountKey={accounts.current[0][0]}
                     itemIndex={index}
                     widgetIndex={widgetIndex}
+                    bank={item.bank}
                     handleClickTrashCan={handleClickTrashCan(index, 'groom')}
                     handleBankChange={handleBankChange(0)}
                   />
@@ -317,7 +319,7 @@ function CongratulationWidgetConfigure({ widgetItem }: CongratulationWidgetConfi
 
       {/** 신부측 계좌 */}
       <div className="space-y-2 ">
-        <Checkbox
+        <CongratulationCheckbox
           label={ACCOUNTS_SIDE_KEYS[1]}
           registerOption={`invitation.widgets.${widgetIndex}.config.accounts.${accounts.current[1][0]}.use`}
           checked={brideUse}
@@ -332,6 +334,7 @@ function CongratulationWidgetConfigure({ widgetItem }: CongratulationWidgetConfi
                     accountKey={accounts.current[1][0]}
                     itemIndex={index}
                     widgetIndex={widgetIndex}
+                    bank={item.bank}
                     handleClickTrashCan={handleClickTrashCan(index, 'bride')}
                     handleBankChange={handleBankChange(1)}
                   />
@@ -346,38 +349,6 @@ function CongratulationWidgetConfigure({ widgetItem }: CongratulationWidgetConfi
 }
 
 export default CongratulationWidgetConfigure;
-
-interface SelectableProps {
-  label: string;
-  registerOption: string;
-  checked: boolean;
-  handleUseChange: (e: ChangeEvent<HTMLInputElement>) => void;
-}
-
-function Checkbox({ label, registerOption, checked, handleUseChange }: SelectableProps) {
-  const { register } = useFormContext<HookFormValues>();
-
-  return (
-    <div>
-      <Label
-        label={label}
-        addOn={
-          <label className="center-flex relative flex cursor-pointer gap-2 text-sm leading-5 ">
-            <input
-              className="no-interaction peer absolute flex-none opacity-0"
-              type="checkbox"
-              checked={checked}
-              {...register(registerOption as keyof HookFormValues)}
-              onChange={handleUseChange}
-            />
-            <div className="relative h-6 w-12 rounded-full border border-slate-200 bg-slate-100 transition-[background-color] after:ml-[-1px] after:mt-[-1px] after:block after:h-6 after:w-6 after:rounded-full after:border after:border-slate-300 after:bg-white after:transition-[background-color,transform] peer-checked:border-indigo-600 peer-checked:bg-indigo-600 peer-checked:after:translate-x-full peer-checked:after:border-indigo-600 peer-focus:ring" />
-          </label>
-        }
-      />
-      <div className="text-sm text-slate-400" />
-    </div>
-  );
-}
 
 interface AddAccountButtonProps {
   onClick: () => void;
