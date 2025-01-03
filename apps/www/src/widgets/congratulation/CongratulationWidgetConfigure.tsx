@@ -1,7 +1,12 @@
 /* eslint-disable react/no-array-index-key -- Index is stable in this case as items maintain their order */
 'use client';
 
-import type { CongratulationLayoutKey, CongratulationWidgetConfig, WidgetItem } from '@repo/shared';
+import type {
+  CongratulationLayoutKey,
+  CongratulationWidgetConfig,
+  OwnerAccountItem,
+  WidgetItem,
+} from '@repo/shared';
 import { LabelWithSub } from '@repo/shared';
 import type { ChangeEvent, MouseEvent } from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -14,7 +19,7 @@ import { FixedLoader } from '@/www/ui';
 
 import { WidgetLabelWithInput } from '../components';
 import WidgetThreeWaySelector from '../components/WidgetThreeWaySelector';
-import { useWidgetIndex } from '../hooks';
+import { InputErrorProvider, useInputErrorContext, useWidgetIndex } from '../hooks';
 import { useInvitationConfigMutation } from '../mutations';
 import type { ConfigPayload, HookFormValues } from '../types';
 import type { ModalStore } from '../zustand';
@@ -31,8 +36,9 @@ interface CongratulationWidgetConfigureProps {
   widgetItem: WidgetItem | Omit<WidgetItem, 'id'>;
 }
 
-function CongratulationWidgetConfigure({ widgetItem }: CongratulationWidgetConfigureProps) {
+function CongratulationWidgetConfigureInner({ widgetItem }: CongratulationWidgetConfigureProps) {
   const widgetConfig = widgetItem.config as CongratulationWidgetConfig;
+  const { isInputError, setIsInputError } = useInputErrorContext();
   const { watch, register, setValue, getValues } = useFormContext<HookFormValues>();
   const { setOnSubmit, closeModal, invitation } = useModalStore(
     useShallow((state: ModalStore) => ({
@@ -47,6 +53,8 @@ function CongratulationWidgetConfigure({ widgetItem }: CongratulationWidgetConfi
   const accounts = useRef(Object.entries(widgetConfig.accounts));
   const [groomUse, setGroomUse] = useState(accounts.current[0][1].use);
   const [brideUse, setBrideUse] = useState(accounts.current[1][1].use);
+  const groomListRef = useRef<HTMLUListElement>(null);
+  const brideListRef = useRef<HTMLUListElement>(null);
 
   const {
     fields: groomFields,
@@ -112,13 +120,42 @@ function CongratulationWidgetConfigure({ widgetItem }: CongratulationWidgetConfi
 
   const onSubmit: SubmitHandler<HookFormValues> = useCallback(() => {
     if (!invitation || widgetIndex === null || widgetIndex === -1 || !('id' in widgetItem)) return;
-
-    const groomValues = getValues(
+    const groomValues: OwnerAccountItem[] = getValues(
       `invitation.widgets.${widgetIndex}.config.accounts.${accounts.current[0][0]}.items`,
     );
-    const brideValues = getValues(
+    const brideValues: OwnerAccountItem[] = getValues(
       `invitation.widgets.${widgetIndex}.config.accounts.${accounts.current[1][0]}.items`,
     );
+
+    const inputError = {
+      groom: false,
+      bride: false,
+    };
+    groomValues.forEach((item) => {
+      if (
+        item.bank.length === 0 ||
+        item.number.length === 0 ||
+        item.name.length === 0 ||
+        item.role.length === 0
+      ) {
+        console.log('groomValues', item);
+        setIsInputError((prev) => prev + 1);
+        inputError.groom = true;
+      }
+    });
+
+    brideValues.forEach((item) => {
+      if (
+        item.bank.length === 0 ||
+        item.number.length === 0 ||
+        item.name.length === 0 ||
+        item.role.length === 0
+      ) {
+        console.log('brideValues', item);
+        setIsInputError((prev) => prev + 1);
+        inputError.bride = true;
+      }
+    });
 
     const config: CongratulationWidgetConfig = {
       layout,
@@ -150,9 +187,15 @@ function CongratulationWidgetConfigure({ widgetItem }: CongratulationWidgetConfi
       stickers: [],
     };
 
+    if (isInputError > 0) {
+      if (inputError.groom) groomListRef.current?.scrollIntoView({ behavior: 'smooth' });
+      if (inputError.bride) brideListRef.current?.scrollIntoView({ behavior: 'smooth' });
+      return;
+    }
+
     console.log('configPayloadData ====>', configPayloadData);
-    // putInvitationConfig(configPayloadData);
-    // closeModal();
+    putInvitationConfig(configPayloadData);
+    closeModal();
   }, [
     widgetIndex,
     invitation,
@@ -160,10 +203,12 @@ function CongratulationWidgetConfigure({ widgetItem }: CongratulationWidgetConfi
     groomUse,
     brideUse,
     layout,
+    isInputError,
     watch,
     closeModal,
     putInvitationConfig,
     getValues,
+    setIsInputError,
   ]);
 
   useEffect(() => {
@@ -298,7 +343,7 @@ function CongratulationWidgetConfigure({ widgetItem }: CongratulationWidgetConfi
           handleUseChange={handleUseChange(0)}
         />
         <div>
-          <ul className="space-y-4">
+          <ul className="space-y-4" ref={groomListRef}>
             {groomUse
               ? groomFields.map((item, index) => (
                   <CongratulationAccountList
@@ -326,7 +371,7 @@ function CongratulationWidgetConfigure({ widgetItem }: CongratulationWidgetConfi
           handleUseChange={handleUseChange(1)}
         />
         <div>
-          <ul className="space-y-4">
+          <ul className="space-y-4" ref={brideListRef}>
             {brideUse
               ? brideFields.map((item, index) => (
                   <CongratulationAccountList
@@ -345,6 +390,14 @@ function CongratulationWidgetConfigure({ widgetItem }: CongratulationWidgetConfi
         </div>
       </div>
     </div>
+  );
+}
+
+function CongratulationWidgetConfigure({ widgetItem }: CongratulationWidgetConfigureProps) {
+  return (
+    <InputErrorProvider>
+      <CongratulationWidgetConfigureInner widgetItem={widgetItem} />
+    </InputErrorProvider>
   );
 }
 

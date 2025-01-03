@@ -1,8 +1,8 @@
 'use client';
 
 import type { WidgetItem } from '@repo/shared';
-import type { ChangeEvent } from 'react';
-import { useCallback, useMemo, useState } from 'react';
+import type { ChangeEvent, Dispatch, SetStateAction } from 'react';
+import { createContext, useCallback, useContext, useMemo, useState } from 'react';
 
 import useModalStore from '@/www/widgets/zustand';
 
@@ -23,7 +23,7 @@ interface UseComboboxProps {
   isInputError?: boolean;
 }
 
-function useCombobox({
+export function useCombobox({
   options,
   isRounded = true,
   initialSelected,
@@ -89,4 +89,25 @@ function useCombobox({
   return { selected, Combobox };
 }
 
-export default useCombobox;
+const InputErrorContext = createContext<{
+  isInputError: number;
+  setIsInputError: Dispatch<SetStateAction<number>>;
+} | null>(null);
+
+const initialInputErrorContext = {
+  isInputError: 0,
+  setIsInputError: () => {},
+};
+
+export function useInputErrorContext() {
+  return useContext(InputErrorContext) ?? initialInputErrorContext;
+}
+
+export function InputErrorProvider({ children }: { children: React.ReactNode }) {
+  const [isInputError, setIsInputError] = useState<number>(0);
+  return (
+    <InputErrorContext.Provider value={{ isInputError, setIsInputError }}>
+      {children}
+    </InputErrorContext.Provider>
+  );
+}

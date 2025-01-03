@@ -16,7 +16,7 @@ import { FixedLoader } from '@/www/ui';
 
 import { WidgetBreakLine, WidgetLabelWithInput } from '../components';
 import WidgetThreeWaySelector from '../components/WidgetThreeWaySelector';
-import useCombobox, { useWidgetIndex } from '../hooks';
+import { useCombobox, useWidgetIndex } from '../hooks';
 import { useInvitationConfigMutation } from '../mutations';
 import type { ConfigPayload, HookFormValues } from '../types';
 import type { ModalStore } from '../zustand';

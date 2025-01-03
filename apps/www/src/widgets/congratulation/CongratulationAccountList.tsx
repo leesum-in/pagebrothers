@@ -7,7 +7,7 @@ import { useFormContext } from 'react-hook-form';
 import { FaRegTrashAlt } from 'react-icons/fa';
 
 import { WidgetLabelWithInput } from '../components';
-import useCombobox from '../hooks';
+import { useCombobox, useInputErrorContext } from '../hooks';
 import type { HookFormValues } from '../types';
 
 const BANK_LIST = [
@@ -53,6 +53,7 @@ function CongratulationAccountList({
   handleClickTrashCan,
   handleBankChange,
 }: CongratulationAccountListProps) {
+  const { setIsInputError: setError } = useInputErrorContext();
   const [isInputError, setIsInputError] = useState(false);
   const { register, setValue, watch } = useFormContext<HookFormValues>();
   const { Combobox } = useCombobox({
@@ -114,21 +115,10 @@ function CongratulationAccountList({
     };
   }, [role, name, number]);
 
-  // const errorConfig = errors.invitation?.widgets?.[widgetIndex]?.config;
-
-  // useEffect(() => {
-  //   if (!errorConfig) return;
-  //   const accounts = (errorConfig as CongratulationWidgetConfig).accounts[accountKey] as
-  //     | OwnerAccountGroup
-  //     | undefined;
-  //   const items = accounts?.items;
-  //   if (items) {
-  //     setIsInputError(true);
-  //   }
-  //   return () => {
-  //     setIsInputError(false);
-  //   };
-  // }, [errorConfig, accountKey]);
+  useEffect(() => {
+    if (isInputError) setError((prev) => prev + 1);
+    else setError((prev) => (prev > 0 ? prev - 1 : prev));
+  }, [isInputError, setError]);
 
   return (
     <li className="relative grid grid-cols-2 gap-[-1px]">
