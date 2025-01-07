@@ -56,7 +56,6 @@ function GalleryWidgetConfigure({ widgetItem }: GalleryWidgetConfigureProps) {
       setOnSubmit: state.setOnSubmit,
       closeModal: state.closeModal,
       invitation: state.invitation,
-      openMultiModal: state.openMultiModal,
     })),
   );
   const widgetIndex = useWidgetIndex(widgetItem);

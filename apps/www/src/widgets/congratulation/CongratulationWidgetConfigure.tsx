@@ -45,7 +45,6 @@ function CongratulationWidgetConfigureInner({ widgetItem }: CongratulationWidget
       setOnSubmit: state.setOnSubmit,
       closeModal: state.closeModal,
       invitation: state.invitation,
-      openMultiModal: state.openMultiModal,
     })),
   );
   const widgetIndex = useWidgetIndex(widgetItem);
@@ -138,9 +137,11 @@ function CongratulationWidgetConfigureInner({ widgetItem }: CongratulationWidget
         item.name.length === 0 ||
         item.role.length === 0
       ) {
-        console.log('groomValues', item);
         setIsInputError((prev) => prev + 1);
         inputError.groom = true;
+      } else {
+        setIsInputError((prev) => prev - 1);
+        inputError.groom = false;
       }
     });
 
@@ -151,9 +152,11 @@ function CongratulationWidgetConfigureInner({ widgetItem }: CongratulationWidget
         item.name.length === 0 ||
         item.role.length === 0
       ) {
-        console.log('brideValues', item);
         setIsInputError((prev) => prev + 1);
         inputError.bride = true;
+      } else {
+        setIsInputError((prev) => prev - 1);
+        inputError.bride = false;
       }
     });
 
@@ -310,7 +313,7 @@ function CongratulationWidgetConfigureInner({ widgetItem }: CongratulationWidget
       </div>
 
       {/** 버튼 문구 */}
-      {layout === 'SPREADED' ? (
+      {layout === 'COLLABSIBLE' ? (
         <div className="space-y-2 ">
           <div>
             <LabelWithSub

@@ -38,7 +38,6 @@ function GreetingWidgetConfigure({ widgetItem }: GreetingWidgetConfigureProps) {
       setOnSubmit: state.setOnSubmit,
       closeModal: state.closeModal,
       invitation: state.invitation,
-      openMultiModal: state.openMultiModal,
     })),
   );
 
