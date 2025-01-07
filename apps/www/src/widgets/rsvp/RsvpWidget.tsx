@@ -23,11 +23,14 @@ function RsvpWidget({ widgetItem, invitation, isMultiModal = false }: RsvpWidget
           config={widgetItem.config as RsvpWidgetConfig}
           isMultiModal={isMultiModal}
           onAcceptClick={() =>
-            openThirdModal((widgetItem.config as RsvpWidgetConfig).extraFields, false)
+            openThirdModal({
+              extraFields: (widgetItem.config as RsvpWidgetConfig).extraFields,
+              isRejected: false,
+            })
           }
           onRejectClick={() =>
-            openThirdModal(
-              [
+            openThirdModal({
+              extraFields: [
                 {
                   id: 'db0cd3a3-50af-46a0-b0fb-7c67e6b78272',
                   type: 'Radio',
@@ -38,8 +41,8 @@ function RsvpWidget({ widgetItem, invitation, isMultiModal = false }: RsvpWidget
                   needResponseRejected: true,
                 },
               ],
-              true,
-            )
+              isRejected: true,
+            })
           }
         />
       ) : null}

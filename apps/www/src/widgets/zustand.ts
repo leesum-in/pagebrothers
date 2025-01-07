@@ -1,5 +1,6 @@
 import type {
   IInvitation,
+  OwnerAccountItem,
   RsvpExtraField,
   WidgetItem,
 } from '@repo/shared/src/types/pageBrothers.type';
@@ -19,8 +20,9 @@ export type MultiModalState = {
 
 export type ThirdModalState = {
   isOpen: boolean;
-  isRejected: boolean | null;
-  extraFields: RsvpExtraField[] | null;
+  items?: OwnerAccountItem[] | null;
+  isRejected?: boolean | null;
+  extraFields?: RsvpExtraField[] | null;
 };
 
 export type ModalStore = {
@@ -38,7 +40,7 @@ export type ModalStore = {
     widget: WidgetItem | Omit<WidgetItem, 'id'> | null;
     calendar?: boolean;
   }) => void;
-  openThirdModal: (extraFields: RsvpExtraField[], isRejected: boolean) => void;
+  openThirdModal: ({ extraFields, isRejected, items }: Omit<ThirdModalState, 'isOpen'>) => void;
   closeModal: () => void;
   closeMultiModal: () => void;
   closeThirdModal: () => void;
@@ -84,9 +86,15 @@ const useModalStore = create<ModalStore>((set) => ({
       },
     }));
   },
-  openThirdModal: (extraFields: RsvpExtraField[], isRejected: boolean) => {
+  openThirdModal: ({ extraFields, isRejected, items }: Omit<ThirdModalState, 'isOpen'>) => {
     set((state: ModalStore) => ({
-      thirdModalState: { ...state.thirdModalState, isOpen: true, extraFields, isRejected },
+      thirdModalState: {
+        ...state.thirdModalState,
+        isOpen: true,
+        items,
+        extraFields,
+        isRejected,
+      },
     }));
   },
   closeModal: () => {
@@ -111,7 +119,7 @@ const useModalStore = create<ModalStore>((set) => ({
     }));
     setTimeout(() => {
       set((state: ModalStore) => ({
-        thirdModalState: { ...state.thirdModalState, extraFields: null },
+        thirdModalState: { ...state.thirdModalState, items: null, extraFields: null },
       }));
     }, 300);
   },
