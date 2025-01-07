@@ -114,6 +114,7 @@ function UnmemoizedModal({
     if (isDragging || isDraggingInMultiModal) return;
     !target.closest('form') &&
       !target.closest('#multi-modal') &&
+      !target.closest('#third-modal') &&
       !target.dataset.preview &&
       onCloseModal();
   };
@@ -180,7 +181,7 @@ function UnmemoizedModal({
         )}
       />
       <div
-        id={isMultiModal ? 'multi-modal' : ''}
+        id={isMultiModal ? 'multi-modal' : isThirdModal ? 'third-modal' : ''}
         className={cn(
           'translate-y-0 desktop:translate-y-0 scroll-lock-layer-children relative isolate max-h-[90%] w-full overflow-x-hidden rounded-t-2xl bg-white desktop:max-h-[calc(100vh-8rem)] desktop:w-[30rem] desktop:rounded-2xl opacity-100 transition-all duration-300',
           {
