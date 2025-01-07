@@ -12,7 +12,6 @@ import type { ChangeEvent, MouseEvent } from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { Path, SubmitHandler } from 'react-hook-form';
 import { useFieldArray, useFormContext } from 'react-hook-form';
-import { FiPlus } from 'react-icons/fi';
 import { useShallow } from 'zustand/shallow';
 
 import { FixedLoader } from '@/www/ui';
@@ -25,6 +24,7 @@ import type { ConfigPayload, HookFormValues } from '../types';
 import type { ModalStore } from '../zustand';
 import useModalStore from '../zustand';
 import CongratulationAccountList from './CongratulationAccountList';
+import CongratulationAddAccountButton from './CongratulationAddAccountButton';
 import CongratulationCheckbox from './CongratulationCheckbox';
 import CongratulationLayoutCollapsible from './CongratulationLayoutCollapsible';
 import CongratulationLayoutSpreaded from './CongratulationLayoutSpreaded';
@@ -357,7 +357,9 @@ function CongratulationWidgetConfigureInner({ widgetItem }: CongratulationWidget
                   />
                 ))
               : null}
-            {groomUse ? <AddAccountButton onClick={handleClickAddAccount('groom')} /> : null}
+            {groomUse ? (
+              <CongratulationAddAccountButton onClick={handleClickAddAccount('groom')} />
+            ) : null}
           </ul>
         </div>
       </div>
@@ -385,7 +387,9 @@ function CongratulationWidgetConfigureInner({ widgetItem }: CongratulationWidget
                   />
                 ))
               : null}
-            {brideUse ? <AddAccountButton onClick={handleClickAddAccount('bride')} /> : null}
+            {brideUse ? (
+              <CongratulationAddAccountButton onClick={handleClickAddAccount('bride')} />
+            ) : null}
           </ul>
         </div>
       </div>
@@ -402,22 +406,3 @@ function CongratulationWidgetConfigure({ widgetItem }: CongratulationWidgetConfi
 }
 
 export default CongratulationWidgetConfigure;
-
-interface AddAccountButtonProps {
-  onClick: () => void;
-}
-
-function AddAccountButton({ onClick }: AddAccountButtonProps) {
-  return (
-    <li>
-      <button
-        type="button"
-        className="w-full h-12 rounded-md px-4 text-sm border border-dashed border-slate-300 center-flex gap-2 font-bold shadow-1 transition-colors disabled:opacity-40"
-        onClick={onClick}
-      >
-        <span>추가하기</span>
-        <FiPlus className="text-lg" />
-      </button>
-    </li>
-  );
-}
