@@ -13,3 +13,4 @@ export * from './types';
 export * from './utils';
 export * from './video';
 export * from './zustand';
+export * from './guestbook';
