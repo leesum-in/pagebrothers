@@ -1,5 +1,7 @@
+import Guestbook from '@repo/shared/src/components/widgets/guestbook/Guestbook';
+
 function GuestbookWidget(): React.ReactNode {
-  return <div>guestbookWidget</div>;
+  return <Guestbook />;
 }
 
 export default GuestbookWidget;
