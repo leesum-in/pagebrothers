@@ -113,7 +113,7 @@ function EditTemplate() {
             ) : null}
           </Modal>
           <Modal isModalOpen={thirdModalState.isOpen} onCloseModal={closeThirdModal} isThirdModal>
-            {thirdModalState.extraFields && thirdModalState.isRejected ? (
+            {thirdModalState.extraFields && thirdModalState.isRejected !== undefined ? (
               <RsvpSumbit
                 isRejected={thirdModalState.isRejected}
                 isThirdModal
