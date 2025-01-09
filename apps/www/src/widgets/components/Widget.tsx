@@ -3,7 +3,7 @@
 import type { IInvitation, WidgetItem } from '@repo/shared/src/types/pageBrothers.type';
 import dynamic from 'next/dynamic';
 import { memo } from 'react';
-import { useFieldArray } from 'react-hook-form';
+import { useFieldArray, useWatch } from 'react-hook-form';
 
 import { useWidgetIndex } from '../hooks';
 import type { HookFormValues } from '../types';
@@ -55,9 +55,15 @@ function UnmemoizedWidget({ invitation, widgetItem, isMultiModal }: WidgetProps)
     name: `invitation.widgets` as const,
   });
 
+  const changingInvitation = useWatch<HookFormValues>({
+    name: 'invitation',
+  });
+
+  console.log('changingInvitation ====>', changingInvitation);
+
   return (
     <WidgetComponent
-      invitation={invitation}
+      invitation={changingInvitation ? (changingInvitation as IInvitation) : invitation}
       widgetItem={fields.filter((field) => field.index === widgetIndex)[0]}
       isMultiModal={isMultiModal}
     />

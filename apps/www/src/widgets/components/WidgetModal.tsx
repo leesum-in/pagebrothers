@@ -18,6 +18,7 @@ interface WidgetModalProps {
 }
 
 function UnmemoizedWidgetModal({ widgetItem }: WidgetModalProps) {
+  // 아래 div 수정 요망
   if (!widgetItem) return <div />;
   if (widgetItem.type === 'INTRO') return <IntroWidgetConfigure widgetItem={widgetItem} />;
   if (widgetItem.type === 'VIDEO') return <VideoWidgetConfigure widgetItem={widgetItem} />;

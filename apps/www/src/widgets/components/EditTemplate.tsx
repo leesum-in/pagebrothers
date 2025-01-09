@@ -96,6 +96,7 @@ function EditTemplate() {
             modalFooter={
               modalState.widget ? <WidgetModalFooter widgetItem={modalState.widget} /> : null
             }
+            reset={methods.reset}
           >
             <WidgetModal widgetItem={modalState.widget ? modalState.widget : null} />
           </Modal>

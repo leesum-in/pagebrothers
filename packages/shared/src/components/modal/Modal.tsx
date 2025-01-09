@@ -22,6 +22,7 @@ interface ModalProps extends PropsWithChildren {
   modalChildrenClassName?: string;
   isHeaderBorderLine?: boolean;
   widgetType?: WidgetType;
+  reset?: () => void;
 }
 
 function UnmemoizedModal({
@@ -41,6 +42,7 @@ function UnmemoizedModal({
   modalChildrenClassName,
   isHeaderBorderLine = true,
   widgetType,
+  reset,
 }: ModalProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isOpening, setIsOpening] = useState(false);
@@ -116,7 +118,12 @@ function UnmemoizedModal({
       !target.closest('#multi-modal') &&
       !target.closest('#third-modal') &&
       !target.dataset.preview &&
-      onCloseModal();
+      (onCloseModal(), reset?.());
+  };
+
+  const handleModalCloseWithCloseButton = () => {
+    onCloseModal();
+    reset?.();
   };
 
   const footerBackground = isModalFooterBg
@@ -200,7 +207,7 @@ function UnmemoizedModal({
                 <button
                   type="button"
                   className="center-flex m-3 h-12 w-12 rounded-full border border-slate-100 bg-white shadow-1"
-                  onClick={onCloseModal}
+                  onClick={handleModalCloseWithCloseButton}
                 >
                   <CloseIcon />
                 </button>
@@ -219,7 +226,11 @@ function UnmemoizedModal({
                 >
                   {modalHeader}
                   <section className="center-flex ml-auto translate-x-4 desktop:items-start">
-                    <button type="button" className="center-flex h-12 w-12" onClick={onCloseModal}>
+                    <button
+                      type="button"
+                      className="center-flex h-12 w-12"
+                      onClick={handleModalCloseWithCloseButton}
+                    >
                       <CloseIcon />
                     </button>
                   </section>
