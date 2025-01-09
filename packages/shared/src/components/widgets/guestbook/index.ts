@@ -1,1 +1,1 @@
-export { default as Guestbook } from './guestbook';
+export { default as Guestbook } from './Guestbook';
