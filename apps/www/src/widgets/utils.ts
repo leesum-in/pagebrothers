@@ -6,7 +6,10 @@ import type {
 import { setHours, setMinutes, setSeconds } from 'date-fns';
 
 export function formatDate(time: string | null, dateFormatKey: IntroDateFormatKey): string {
-  const date = time ? new Date(time) : new Date();
+  if (!time) return '';
+
+  const date = new Date(time);
+  if (isNaN(date.getTime())) return ''; // Invalid date check
 
   // 날짜 구성 요소 추출
   const year = date.getFullYear();
