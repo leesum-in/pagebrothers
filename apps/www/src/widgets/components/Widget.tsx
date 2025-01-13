@@ -59,8 +59,6 @@ function UnmemoizedWidget({ invitation, widgetItem, isMultiModal }: WidgetProps)
     name: 'invitation',
   });
 
-  console.log('changingInvitation ====>', changingInvitation);
-
   return (
     <WidgetComponent
       invitation={changingInvitation ? (changingInvitation as IInvitation) : invitation}
