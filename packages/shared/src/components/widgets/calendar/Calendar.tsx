@@ -14,7 +14,6 @@ function Calendar({ invitation }: CalendarProps) {
   const weddingDay = new Date(invitation.eventAt);
   const widget = invitation.widgets.find((widget) => widget.type === 'CALENDAR');
 
-  console.log('weddingDay ====>', weddingDay);
   return (
     <div className="space-y-6 py-12 px-6 text-center no-interaction">
       <header
