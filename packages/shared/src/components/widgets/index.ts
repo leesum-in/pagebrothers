@@ -1,4 +1,5 @@
 export * from './calendar';
+export * from './congratulation';
 export * from './gallery';
 export * from './greeting';
 export * from './intro';

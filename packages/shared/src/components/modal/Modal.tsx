@@ -22,6 +22,7 @@ interface ModalProps extends PropsWithChildren {
   modalChildrenClassName?: string;
   isHeaderBorderLine?: boolean;
   widgetType?: WidgetType;
+  reset?: () => void;
 }
 
 function UnmemoizedModal({
@@ -41,6 +42,7 @@ function UnmemoizedModal({
   modalChildrenClassName,
   isHeaderBorderLine = true,
   widgetType,
+  reset,
 }: ModalProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isOpening, setIsOpening] = useState(false);
@@ -114,8 +116,14 @@ function UnmemoizedModal({
     if (isDragging || isDraggingInMultiModal) return;
     !target.closest('form') &&
       !target.closest('#multi-modal') &&
+      !target.closest('#third-modal') &&
       !target.dataset.preview &&
-      onCloseModal();
+      (onCloseModal(), reset?.());
+  };
+
+  const handleModalCloseWithCloseButton = () => {
+    onCloseModal();
+    reset?.();
   };
 
   const footerBackground = isModalFooterBg
@@ -180,7 +188,7 @@ function UnmemoizedModal({
         )}
       />
       <div
-        id={isMultiModal ? 'multi-modal' : ''}
+        id={isMultiModal ? 'multi-modal' : isThirdModal ? 'third-modal' : ''}
         className={cn(
           'translate-y-0 desktop:translate-y-0 scroll-lock-layer-children relative isolate max-h-[90%] w-full overflow-x-hidden rounded-t-2xl bg-white desktop:max-h-[calc(100vh-8rem)] desktop:w-[30rem] desktop:rounded-2xl opacity-100 transition-all duration-300',
           {
@@ -199,7 +207,7 @@ function UnmemoizedModal({
                 <button
                   type="button"
                   className="center-flex m-3 h-12 w-12 rounded-full border border-slate-100 bg-white shadow-1"
-                  onClick={onCloseModal}
+                  onClick={handleModalCloseWithCloseButton}
                 >
                   <CloseIcon />
                 </button>
@@ -210,7 +218,7 @@ function UnmemoizedModal({
         ) : null}
 
         {!isMultiModal && !isThirdModal ? (
-          <form onSubmit={onSubmit}>
+          <form id="modal-form" onSubmit={onSubmit}>
             <div className="bg-slate-50">
               {modalHeader ? (
                 <header
@@ -218,7 +226,11 @@ function UnmemoizedModal({
                 >
                   {modalHeader}
                   <section className="center-flex ml-auto translate-x-4 desktop:items-start">
-                    <button type="button" className="center-flex h-12 w-12" onClick={onCloseModal}>
+                    <button
+                      type="button"
+                      className="center-flex h-12 w-12"
+                      onClick={handleModalCloseWithCloseButton}
+                    >
                       <CloseIcon />
                     </button>
                   </section>

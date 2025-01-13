@@ -1,8 +1,8 @@
 'use client';
 
 import type { WidgetItem } from '@repo/shared';
-import type { ChangeEvent } from 'react';
-import { useCallback, useMemo, useState } from 'react';
+import type { ChangeEvent, Dispatch, SetStateAction } from 'react';
+import { createContext, useCallback, useContext, useMemo, useState } from 'react';
 
 import useModalStore from '@/www/widgets/zustand';
 
@@ -16,11 +16,25 @@ export function useWidgetIndex(widgetItem: WidgetItem | Omit<WidgetItem, 'id'>) 
 
 interface UseComboboxProps {
   options: string[];
+  isRounded?: boolean;
+  initialSelected?: string;
+  placeholder?: string;
+  customOnChange?: (value: string) => void;
+  isInputError?: boolean;
 }
 
-function useCombobox({ options }: UseComboboxProps) {
+export function useCombobox({
+  options,
+  isRounded = true,
+  initialSelected,
+  placeholder,
+  customOnChange,
+  isInputError = false,
+}: UseComboboxProps) {
   const [query, setQuery] = useState('');
-  const [selected, setSelected] = useState(options[0]);
+  const [selected, setSelected] = useState(
+    initialSelected === undefined ? options[0] : initialSelected,
+  );
 
   const filteredOptions = useMemo(
     () =>
@@ -32,9 +46,13 @@ function useCombobox({ options }: UseComboboxProps) {
     [query, options],
   );
 
-  const handleChangeCombobox = useCallback((value: string) => {
-    setSelected(value);
-  }, []);
+  const handleChangeCombobox = useCallback(
+    (value: string) => {
+      setSelected(value);
+      customOnChange?.(value);
+    },
+    [customOnChange],
+  );
 
   const handleChangeComboboxInput = useCallback((event: ChangeEvent<HTMLInputElement>) => {
     setQuery(event.target.value);
@@ -52,6 +70,9 @@ function useCombobox({ options }: UseComboboxProps) {
         onChange={handleChangeCombobox}
         onInputChange={handleChangeComboboxInput}
         onClose={handleCloseCombobox}
+        isRounded={isRounded}
+        placeholder={placeholder}
+        isInputError={isInputError}
       />
     );
   }, [
@@ -60,9 +81,33 @@ function useCombobox({ options }: UseComboboxProps) {
     handleChangeComboboxInput,
     handleCloseCombobox,
     filteredOptions,
+    isRounded,
+    placeholder,
+    isInputError,
   ]);
 
   return { selected, Combobox };
 }
 
-export default useCombobox;
+const InputErrorContext = createContext<{
+  isInputError: number;
+  setIsInputError: Dispatch<SetStateAction<number>>;
+} | null>(null);
+
+const initialInputErrorContext = {
+  isInputError: 0,
+  setIsInputError: () => {},
+};
+
+export function useInputErrorContext() {
+  return useContext(InputErrorContext) ?? initialInputErrorContext;
+}
+
+export function InputErrorProvider({ children }: { children: React.ReactNode }) {
+  const [isInputError, setIsInputError] = useState<number>(0);
+  return (
+    <InputErrorContext.Provider value={{ isInputError, setIsInputError }}>
+      {children}
+    </InputErrorContext.Provider>
+  );
+}

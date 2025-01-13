@@ -1,6 +1,12 @@
+'use client';
+
 import type { IInvitation, WidgetItem } from '@repo/shared/src/types/pageBrothers.type';
 import dynamic from 'next/dynamic';
 import { memo } from 'react';
+import { useFieldArray, useWatch } from 'react-hook-form';
+
+import { useWidgetIndex } from '../hooks';
+import type { HookFormValues } from '../types';
 
 interface WidgetProps {
   invitation?: IInvitation;
@@ -36,15 +42,27 @@ const components: Record<
   GREETING: dynamic(() => import('../greeting/GreetingWidget'), {
     ssr: false,
   }),
+  CONGRATULATION: dynamic(() => import('../congratulation/CongratulationWidget'), {
+    ssr: false,
+  }),
 };
 
 function UnmemoizedWidget({ invitation, widgetItem, isMultiModal }: WidgetProps) {
   const WidgetComponent = components[widgetItem.type as keyof typeof components];
+  const widgetIndex = useWidgetIndex(widgetItem)!;
+
+  const { fields } = useFieldArray<HookFormValues, `invitation.widgets`>({
+    name: `invitation.widgets` as const,
+  });
+
+  const changingInvitation = useWatch<HookFormValues>({
+    name: 'invitation',
+  });
 
   return (
     <WidgetComponent
-      invitation={invitation}
-      widgetItem={widgetItem as WidgetItem}
+      invitation={changingInvitation ? (changingInvitation as IInvitation) : invitation}
+      widgetItem={fields.filter((field) => field.index === widgetIndex)[0]}
       isMultiModal={isMultiModal}
     />
   );

@@ -309,7 +309,7 @@ export interface OwnerAccountItem {
   number: string;
 }
 
-export type CongratulationLayoutKey = 'COLLAPSIBLE' | 'SPREADED';
+export type CongratulationLayoutKey = 'COLLABSIBLE' | 'SPREADED';
 
 /** EVENT_SEQUENCE (예식 구성) */
 export interface EventSequenceWidgetConfig {

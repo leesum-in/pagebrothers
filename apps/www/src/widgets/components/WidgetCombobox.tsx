@@ -7,7 +7,8 @@ import {
   ComboboxOption,
   ComboboxOptions,
 } from '@headlessui/react';
-import type { ChangeEvent } from 'react';
+import { cn } from '@repo/shared';
+import { type ChangeEvent } from 'react';
 import { IoIosArrowDown } from 'react-icons/io';
 
 interface WidgetComboboxProps {
@@ -16,14 +17,33 @@ interface WidgetComboboxProps {
   onChange: (value: string) => void;
   onInputChange: (event: ChangeEvent<HTMLInputElement>) => void;
   onClose: () => void;
+  isRounded?: boolean;
+  placeholder?: string;
+  isInputError?: boolean;
 }
 
-function WidgetCombobox({ options, value, onChange, onInputChange, onClose }: WidgetComboboxProps) {
+function WidgetCombobox({
+  options,
+  value,
+  onChange,
+  onInputChange,
+  onClose,
+  isRounded = false,
+  placeholder,
+  isInputError = false,
+}: WidgetComboboxProps) {
   return (
     <Combobox value={value} onChange={onChange} onClose={onClose}>
       <div className="relative">
         <ComboboxButton className="w-full">
-          <label className="relative flex items-center overflow-hidden rounded-md border bg-white focus-within:ring border-slate-200">
+          <label
+            className={cn(
+              'relative flex items-center overflow-hidden border bg-white focus-within:ring border-slate-200',
+              isRounded && 'rounded-md',
+              !isRounded && 'rounded-bl-md border-t-0',
+              isInputError && 'border-red-500',
+            )}
+          >
             <div className="flex flex-none items-center" />
 
             <ComboboxInput
@@ -31,6 +51,7 @@ function WidgetCombobox({ options, value, onChange, onInputChange, onClose }: Wi
               displayValue={(option: string) => option}
               spellCheck={false}
               autoComplete="off"
+              placeholder={placeholder}
               type="text"
               onChange={onInputChange}
             />

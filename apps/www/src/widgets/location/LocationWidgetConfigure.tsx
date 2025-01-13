@@ -45,7 +45,6 @@ function LocationWidgetConfigure({ widgetItem }: LocationWidgetConfigureProps) {
       setOnSubmit: state.setOnSubmit,
       closeModal: state.closeModal,
       invitation: state.invitation,
-      openMultiModal: state.openMultiModal,
     })),
   );
   const [isAddress, setIsAddress] = useState(false);

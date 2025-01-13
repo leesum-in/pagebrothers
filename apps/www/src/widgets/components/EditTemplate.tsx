@@ -1,8 +1,9 @@
 'use client';
 
-import { Modal } from '@repo/shared';
+import type { OwnerAccountItem } from '@repo/shared';
+import { CongratulationList, Modal } from '@repo/shared';
 import { useParams } from 'next/navigation';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import type { FieldValues, SubmitHandler } from 'react-hook-form';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useShallow } from 'zustand/shallow';
@@ -19,13 +20,14 @@ import {
 import { useInvitationQuery } from '@/www/widgets/queries';
 import type { HookFormValues } from '@/www/widgets/types';
 import type { ModalStore } from '@/www/widgets/zustand';
-import useModalStore from '@/www/widgets/zustand';
+import useModalStore, { useToastStore } from '@/www/widgets/zustand';
 
 import RsvpSumbit from '../rsvp/RsvpSumbit';
 
 function EditTemplate() {
   const { id } = useParams<{ id: string }>();
   const { data: invitation, isPending, error } = useInvitationQuery(id);
+  const { openToast } = useToastStore();
   const {
     isDragging,
     modalState,
@@ -54,6 +56,14 @@ function EditTemplate() {
       invitation: null,
     },
   });
+
+  const handleClickCopy = useCallback(
+    async (account: OwnerAccountItem) => {
+      await navigator.clipboard.writeText(`${account.bank} ${account.number}`);
+      openToast(`계좌번호(${account.bank} ${account.number})가 복사됐어요.`);
+    },
+    [openToast],
+  );
 
   useEffect(() => {
     console.log('invitation ====>', invitation);
@@ -86,6 +96,7 @@ function EditTemplate() {
             modalFooter={
               modalState.widget ? <WidgetModalFooter widgetItem={modalState.widget} /> : null
             }
+            reset={methods.reset}
           >
             <WidgetModal widgetItem={modalState.widget ? modalState.widget : null} />
           </Modal>
@@ -103,11 +114,16 @@ function EditTemplate() {
             ) : null}
           </Modal>
           <Modal isModalOpen={thirdModalState.isOpen} onCloseModal={closeThirdModal} isThirdModal>
-            <RsvpSumbit
-              isRejected={thirdModalState.isRejected}
-              isThirdModal
-              extraFields={thirdModalState.extraFields}
-            />
+            {thirdModalState.extraFields && thirdModalState.isRejected !== undefined ? (
+              <RsvpSumbit
+                isRejected={thirdModalState.isRejected}
+                isThirdModal
+                extraFields={thirdModalState.extraFields}
+              />
+            ) : null}
+            {thirdModalState.items ? (
+              <CongratulationList items={thirdModalState.items} handleClickCopy={handleClickCopy} />
+            ) : null}
           </Modal>
         </>
       ) : null}

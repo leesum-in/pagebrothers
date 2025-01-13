@@ -24,8 +24,7 @@ interface CalendarWidgetConfigureProps {
 
 function CalendarWidgetConfigure({ widgetItem }: CalendarWidgetConfigureProps) {
   const [isIcalButtonChecked, setIsIcalButtonChecked] = useState(true);
-  const { watch, register } = useFormContext<HookFormValues>();
-
+  const { watch, register, reset } = useFormContext<HookFormValues>();
   const { setOnSubmit, closeModal, invitation } = useModalStore(
     useShallow((state: ModalStore) => ({
       setOnSubmit: state.setOnSubmit,
@@ -97,7 +96,7 @@ function CalendarWidgetConfigure({ widgetItem }: CalendarWidgetConfigureProps) {
 
   useEffect(() => {
     setOnSubmit(onSubmit);
-  }, [setOnSubmit, onSubmit]);
+  }, [setOnSubmit, onSubmit, reset]);
 
   if (widgetIndex === null) return <FixedLoader />;
 

@@ -1,14 +1,14 @@
 'use client';
 
 import { cn } from '@repo/shared';
-import { type UseFormRegister } from 'react-hook-form';
+import type { RegisterOptions, UseFormRegister } from 'react-hook-form';
 
 import type { HookFormValues } from '@/www/widgets/types';
 
 interface WidgetLabelWithInputProps {
   defaultValue?: string;
   register?: UseFormRegister<HookFormValues>;
-  registerOption?: string;
+  registerOption?: string | { name: string; options: RegisterOptions<HookFormValues> };
   isTextarea?: boolean;
   inputType?: string;
   inputValue?: string;
@@ -18,13 +18,14 @@ interface WidgetLabelWithInputProps {
   labelClassName?: string;
   textareaClassName?: string;
   inputClassName?: string;
-  onInputClick?: () => void;
+  onInputClick?: (e: React.MouseEvent<HTMLInputElement>) => void;
   onInputChange?: (
     e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>,
   ) => void;
   readonly?: boolean;
   placeholder?: string;
   textareaPlaceholder?: string;
+  id?: string;
 }
 
 function WidgetLabelWithInput({
@@ -45,12 +46,17 @@ function WidgetLabelWithInput({
   readonly = false,
   placeholder,
   textareaPlaceholder,
+  id,
 }: WidgetLabelWithInputProps) {
+  if (!register) {
+    throw new Error('register is required');
+  }
   return (
     <label className={labelClassName}>
       <div className="flex items-center" />
       {isTextarea ? (
         <textarea
+          id={id}
           className={cn(
             'block w-full resize-none bg-white px-4 py-3 text-slate-600 placeholder:text-slate-300 disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-300',
             textareaClassName,
@@ -60,11 +66,17 @@ function WidgetLabelWithInput({
           defaultValue={defaultValue}
           rows={3}
           placeholder={textareaPlaceholder}
-          {...(register ? register(registerOption as keyof HookFormValues) : undefined)}
+          {...(typeof registerOption === 'string'
+            ? register(registerOption as keyof HookFormValues)
+            : register(
+                registerOption!.name as keyof HookFormValues,
+                registerOption!.options as RegisterOptions<HookFormValues, keyof HookFormValues>,
+              ))}
           onChange={onInputChange as (e: React.ChangeEvent<HTMLTextAreaElement>) => void}
         />
       ) : (
         <input
+          id={id}
           className={inputClassName}
           type={inputType}
           spellCheck={inputType === 'text' ? true : undefined}
@@ -74,8 +86,17 @@ function WidgetLabelWithInput({
           checked={inputChecked}
           defaultChecked={inputDefaultChecked}
           onClick={onInputClick as (e: React.MouseEvent<HTMLInputElement>) => void}
-          onChange={onInputChange as (e: React.ChangeEvent<HTMLInputElement>) => void}
-          {...(register ? register(registerOption as keyof HookFormValues) : undefined)}
+          {...(typeof registerOption === 'string'
+            ? register(registerOption as keyof HookFormValues)
+            : register(
+                registerOption!.name as keyof HookFormValues,
+                registerOption!.options as RegisterOptions<HookFormValues, keyof HookFormValues>,
+              ))}
+          onChange={
+            typeof registerOption === 'string'
+              ? (onInputChange as (e: React.ChangeEvent<HTMLInputElement>) => void)
+              : undefined
+          }
           readOnly={readonly}
           placeholder={placeholder}
         />
