@@ -10,6 +10,7 @@ import { GalleryWidgetConfigure } from '../gallery';
 import { GreetingWidgetConfigure } from '../greeting';
 import { IntroWidgetConfigure } from '../intro';
 import { LocationWidgetConfigure } from '../location';
+import { MessageWidgetConfigure } from '../message';
 import { RsvpWidgetConfigure } from '../rsvp';
 import { VideoWidgetConfigure } from '../video';
 
@@ -29,6 +30,7 @@ function UnmemoizedWidgetModal({ widgetItem }: WidgetModalProps) {
   if (widgetItem.type === 'GREETING') return <GreetingWidgetConfigure widgetItem={widgetItem} />;
   if (widgetItem.type === 'CONGRATULATION')
     return <CongratulationWidgetConfigure widgetItem={widgetItem} />;
+  if (widgetItem.type === 'MESSAGE') return <MessageWidgetConfigure widgetItem={widgetItem} />;
 }
 
 const WidgetModal = memo(UnmemoizedWidgetModal);
