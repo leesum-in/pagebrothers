@@ -25,10 +25,10 @@ interface RsvpWidgetConfigureProps {
 }
 
 function RsvpWidgetConfigure({ widgetItem }: RsvpWidgetConfigureProps) {
+  // console.log('widgetItem ====>', widgetItem);
   const widgetConfig = widgetItem.config as RsvpWidgetConfig;
-
   const [extraFields, setExtraFields] = useState<RsvpExtraField[]>(widgetConfig.extraFields);
-  const { watch, register } = useFormContext<HookFormValues>();
+  const { watch, register, setValue } = useFormContext<HookFormValues>();
   const { setOnSubmit, closeModal, invitation } = useModalStore(
     useShallow((state: ModalStore) => ({
       setOnSubmit: state.setOnSubmit,
@@ -69,6 +69,12 @@ function RsvpWidgetConfigure({ widgetItem }: RsvpWidgetConfigureProps) {
   useEffect(() => {
     setOnSubmit(onSubmit);
   }, [setOnSubmit, onSubmit]);
+
+  useEffect(() => {
+    // console.log('extraFields ====>', extraFields);
+    setValue(`invitation.widgets.${widgetIndex!}.config.extraFields`, extraFields);
+    setExtraFields(extraFields);
+  }, [extraFields, setValue, widgetIndex]);
 
   if (widgetIndex === null) return <FixedLoader />;
 
@@ -153,7 +159,7 @@ function RsvpWidgetConfigure({ widgetItem }: RsvpWidgetConfigureProps) {
         </div>
       </div>
 
-      {/** isFloating */}
+      {/** 플로팅 버튼 추가하기 */}
       <div className="space-y-2">
         <div>
           <Label
@@ -163,7 +169,7 @@ function RsvpWidgetConfigure({ widgetItem }: RsvpWidgetConfigureProps) {
                 <input
                   className="no-interaction peer absolute flex-none opacity-0"
                   type="checkbox"
-                  checked={widgetConfig.isFloating}
+                  checked={watch(`invitation.widgets.${widgetIndex}.config.isFloating`)}
                   {...register(`invitation.widgets.${widgetIndex}.config.isFloating`)}
                 />
                 <div className="relative h-6 w-12 rounded-full border border-slate-200 bg-slate-100 transition-[background-color] after:ml-[-1px] after:mt-[-1px] after:block after:h-6 after:w-6 after:rounded-full after:border after:border-slate-300 after:bg-white after:transition-[background-color,transform] peer-checked:border-indigo-600 peer-checked:bg-indigo-600 peer-checked:after:translate-x-full peer-checked:after:border-indigo-600 peer-focus:ring" />

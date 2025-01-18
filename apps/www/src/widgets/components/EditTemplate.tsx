@@ -82,6 +82,10 @@ function EditTemplate() {
     return <ErrorTemplate />;
   }
 
+  if (!invitation) {
+    return null;
+  }
+
   return (
     <FormProvider {...methods}>
       {modalState.isOpen ? (

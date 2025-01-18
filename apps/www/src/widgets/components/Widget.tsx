@@ -2,7 +2,6 @@
 
 import type { IInvitation, WidgetItem } from '@repo/shared/src/types/pageBrothers.type';
 import dynamic from 'next/dynamic';
-import { memo } from 'react';
 import { useWatch } from 'react-hook-form';
 
 import { useWidgetIndex } from '../hooks';
@@ -47,8 +46,7 @@ const components: Record<
   }),
 };
 
-function UnmemoizedWidget({ invitation, widgetItem, isMultiModal }: WidgetProps) {
-  const WidgetComponent = components[widgetItem.type as keyof typeof components];
+function Widget({ invitation, widgetItem, isMultiModal }: WidgetProps) {
   const widgetIndex = useWidgetIndex(widgetItem)!;
 
   const changingInvitation =
@@ -57,6 +55,8 @@ function UnmemoizedWidget({ invitation, widgetItem, isMultiModal }: WidgetProps)
     }) ?? invitation;
 
   const changingWidgetItem = (changingInvitation as IInvitation).widgets[widgetIndex] ?? widgetItem;
+
+  const WidgetComponent = components[changingWidgetItem.type as keyof typeof components];
 
   return (
     <WidgetComponent
@@ -67,5 +67,5 @@ function UnmemoizedWidget({ invitation, widgetItem, isMultiModal }: WidgetProps)
   );
 }
 
-const Widget = memo(UnmemoizedWidget);
+// const Widget = memo(UnmemoizedWidget);
 export default Widget;
