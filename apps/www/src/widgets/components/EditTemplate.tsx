@@ -22,6 +22,7 @@ import type { HookFormValues } from '@/www/widgets/types';
 import type { ModalStore } from '@/www/widgets/zustand';
 import useModalStore, { useToastStore } from '@/www/widgets/zustand';
 
+import LocationMapRouter from '../location/LocationMapRouter';
 import RsvpSumbit from '../rsvp/RsvpSumbit';
 
 function EditTemplate() {
@@ -123,6 +124,9 @@ function EditTemplate() {
             ) : null}
             {thirdModalState.items ? (
               <CongratulationList items={thirdModalState.items} handleClickCopy={handleClickCopy} />
+            ) : null}
+            {thirdModalState.location ? (
+              <LocationMapRouter location={thirdModalState.location} />
             ) : null}
           </Modal>
         </>

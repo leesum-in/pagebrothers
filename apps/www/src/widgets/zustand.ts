@@ -1,5 +1,6 @@
 import type {
   IInvitation,
+  IInvitationLocation,
   OwnerAccountItem,
   RsvpExtraField,
   WidgetItem,
@@ -23,6 +24,7 @@ export type ThirdModalState = {
   items?: OwnerAccountItem[] | null;
   isRejected?: boolean | null;
   extraFields?: RsvpExtraField[] | null;
+  location?: IInvitationLocation | null;
 };
 
 export type ModalStore = {
@@ -40,7 +42,12 @@ export type ModalStore = {
     widget: WidgetItem | Omit<WidgetItem, 'id'> | null;
     calendar?: boolean;
   }) => void;
-  openThirdModal: ({ extraFields, isRejected, items }: Omit<ThirdModalState, 'isOpen'>) => void;
+  openThirdModal: ({
+    extraFields,
+    isRejected,
+    items,
+    location,
+  }: Omit<ThirdModalState, 'isOpen'>) => void;
   closeModal: () => void;
   closeMultiModal: () => void;
   closeThirdModal: () => void;
@@ -63,6 +70,7 @@ const useModalStore = create<ModalStore>((set) => ({
     isOpen: false,
     isRejected: false,
     extraFields: null,
+    location: null,
   },
   isDragging: false,
   invitation: null,
@@ -86,13 +94,19 @@ const useModalStore = create<ModalStore>((set) => ({
       },
     }));
   },
-  openThirdModal: ({ extraFields, isRejected, items }: Omit<ThirdModalState, 'isOpen'>) => {
+  openThirdModal: ({
+    extraFields,
+    isRejected,
+    items,
+    location,
+  }: Omit<ThirdModalState, 'isOpen'>) => {
     set((state: ModalStore) => ({
       thirdModalState: {
         ...state.thirdModalState,
         isOpen: true,
         items,
         extraFields,
+        location,
         isRejected,
       },
     }));
@@ -109,7 +123,12 @@ const useModalStore = create<ModalStore>((set) => ({
     set((state: ModalStore) => ({ multiModalState: { ...state.multiModalState, isOpen: false } }));
     setTimeout(() => {
       set((state: ModalStore) => ({
-        multiModalState: { ...state.multiModalState, widget: null, calendar: false },
+        multiModalState: {
+          ...state.multiModalState,
+          widget: null,
+          calendar: false,
+          location: null,
+        },
       }));
     }, 300);
   },

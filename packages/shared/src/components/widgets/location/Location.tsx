@@ -14,6 +14,7 @@ interface LocationProps {
   kakaoObject?: Window['kakao'];
   isMultiModal?: boolean;
   onCopyAddress?: () => void;
+  onOpenMap?: () => void;
 }
 
 function Location({
@@ -22,6 +23,7 @@ function Location({
   kakaoObject,
   isMultiModal,
   onCopyAddress,
+  onOpenMap,
 }: LocationProps) {
   const mapRef = useRef<HTMLDivElement>(null);
 
@@ -77,7 +79,11 @@ function Location({
         </p>
         <div>
           <p>
-            <span>{invitationLocation.address}</span>
+            <span>
+              {config.addressFormatKey === 'ROAD'
+                ? invitationLocation.roadAddress
+                : invitationLocation.address}
+            </span>
           </p>
           <p>{invitationLocation.placeDetail}</p>
         </div>
@@ -97,6 +103,7 @@ function Location({
             <button
               type="button"
               className="!bg-theme-black/80 h-8 rounded-sm px-2 text-xs bg-indigo-600 text-white hover:bg-indigo-700 focus:ring center-flex gap-2 font-bold shadow-1 transition-colors disabled:opacity-40"
+              onClick={onOpenMap}
             >
               지도 앱에서 보기
               <LuArrowRight className="-mr-1 text-base" />
