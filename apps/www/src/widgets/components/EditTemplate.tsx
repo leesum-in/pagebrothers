@@ -122,7 +122,10 @@ function EditTemplate() {
               />
             ) : null}
             {thirdModalState.items ? (
-              <CongratulationList items={thirdModalState.items} handleClickCopy={handleClickCopy} />
+              <CongratulationList
+                items={thirdModalState.items as OwnerAccountItem[]}
+                handleClickCopy={handleClickCopy}
+              />
             ) : null}
           </Modal>
         </>

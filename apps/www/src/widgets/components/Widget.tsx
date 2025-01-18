@@ -59,10 +59,14 @@ function UnmemoizedWidget({ invitation, widgetItem, isMultiModal }: WidgetProps)
     name: 'invitation',
   });
 
+  // 최초 청첩장 생성시 인덱스가 없어서 인트로 위젯 미리보기 관련 에러가 발생
+  // 따라서 인덱스가 없으면 최초 위젯 아이템을 사용
+  const widgetItemItem = fields.filter((field) => field.index === widgetIndex)[0] ?? widgetItem;
+
   return (
     <WidgetComponent
       invitation={changingInvitation ? (changingInvitation as IInvitation) : invitation}
-      widgetItem={fields.filter((field) => field.index === widgetIndex)[0]}
+      widgetItem={widgetItemItem}
       isMultiModal={isMultiModal}
     />
   );

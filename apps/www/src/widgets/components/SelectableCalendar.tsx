@@ -105,7 +105,10 @@ function SelectableCalendar({ invitation }: IntroCalendarProps) {
 
   return (
     <div>
-      <div className="react-datepicker custom-calendar text-slate-600" style={{ height: 348 }}>
+      <div
+        className="react-datepicker custom-calendar text-slate-600 font-sans"
+        style={{ height: 348 }}
+      >
         <DatePicker
           selected={selectedDay}
           onChange={handleOnChange}

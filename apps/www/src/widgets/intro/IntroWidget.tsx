@@ -19,6 +19,7 @@ function IntroWidgetComp({
   invitation,
   isMultiModal = false,
 }: IntroWidgetProps): React.ReactNode {
+  console.log('IntroWidgetComp', widgetItem);
   return (
     <WidgetWrapper widgetItem={widgetItem} isMultiModal={isMultiModal}>
       <div className="no-interaction">
