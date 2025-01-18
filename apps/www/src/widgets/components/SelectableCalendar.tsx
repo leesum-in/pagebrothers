@@ -2,106 +2,26 @@
 
 import { cn } from '@repo/shared';
 import type { IInvitation } from '@repo/shared/src/types/pageBrothers.type';
-import {
-  format,
-  getDate,
-  getMonth,
-  getYear,
-  isBefore,
-  isSameDay,
-  setHours,
-  setMinutes,
-  startOfDay,
-} from 'date-fns';
+import { getDate, isBefore, isSameDay, setHours, setMinutes, startOfDay } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import type { PropsWithChildren } from 'react';
-import { useEffect, useMemo, useState } from 'react';
-import type { ReactDatePickerCustomHeaderProps } from 'react-datepicker';
 import DatePicker from 'react-datepicker';
 import { useFormContext } from 'react-hook-form';
 
-import { Before, Next } from '@/www/ui/svgs';
-import { getCombinedDateTime } from '@/www/widgets/utils';
-import useModalStore from '@/www/widgets/zustand';
+import DatePickerCalendarHeader from '../calendar/DatePickerCalendarHeader';
+import { useCalendarSelection } from '../hooks';
 import '../multi-modal-datepicker.css';
 
-interface IntroCalendarProps {
+interface SelectableCalendarProps {
   invitation: IInvitation;
 }
 
-function SelectableCalendar({ invitation }: IntroCalendarProps) {
+function SelectableCalendar({ invitation }: SelectableCalendarProps) {
   const { setValue } = useFormContext();
-
-  const [selectedDay, setSelectedDay] = useState<Date | undefined>(new Date(invitation.eventAt));
-  const [selectedTime, setSelectedTime] = useState<Date | undefined>(new Date(invitation.eventAt));
-  const [isTimeClicked, setIsTimeClicked] = useState<boolean>(false);
-
-  const { closeMultiModal } = useModalStore();
-
-  const handleOnChange = (date: Date | null) => {
-    if (date) setSelectedDay(date);
-  };
-
-  const handleOnChangeTime = (date: Date | null) => {
-    if (date) setSelectedTime(date);
-    setIsTimeClicked(true);
-  };
-
-  const originDate = useMemo(() => {
-    return getCombinedDateTime(new Date(invitation.eventAt), new Date(invitation.eventAt));
-  }, [invitation]);
-
-  const combinedDateTime = useMemo(() => {
-    if (!selectedDay || !selectedTime) return;
-    return getCombinedDateTime(selectedDay, selectedTime);
-  }, [selectedDay, selectedTime]);
-
-  useEffect(() => {
-    const selectedTimeToCenter = document.querySelector(
-      '.react-datepicker__time-list-item--selected',
-    );
-    if (selectedTimeToCenter) {
-      selectedTimeToCenter.scrollIntoView({
-        behavior: 'instant',
-        block: 'center',
-        inline: 'center',
-      });
-    }
-  }, [selectedTime]);
-
-  useEffect(() => {
-    if (selectedDay && selectedTime && combinedDateTime) {
-      const datesAreEqual = isSameDay(originDate, combinedDateTime);
-      if (!datesAreEqual || !isTimeClicked) {
-        const formatted = format(combinedDateTime, "yyyy-MM-dd'T'HH:mm:ss");
-        setValue('invitation.eventAt', formatted);
-        if (isTimeClicked) {
-          closeMultiModal();
-          return;
-        }
-      }
-      if (isTimeClicked) {
-        closeMultiModal();
-      }
-    }
-  }, [
-    selectedDay,
-    selectedTime,
-    setValue,
-    closeMultiModal,
+  const { selectedDay, selectedTime, handleOnChange, handleOnChangeTime } = useCalendarSelection({
     invitation,
-    isTimeClicked,
-    originDate,
-    combinedDateTime,
-  ]);
-
-  useEffect(() => {
-    return () => {
-      if (!combinedDateTime) return;
-      const formatted = format(combinedDateTime, "yyyy-MM-dd'T'HH:mm:ss");
-      setValue('invitation.eventAt', formatted);
-    };
-  }, [setValue, isTimeClicked, combinedDateTime]);
+    setValue,
+  });
 
   return (
     <div>
@@ -169,47 +89,4 @@ function DatePickerCalendarContainer({ children }: PropsWithChildren) {
 
 function DatePickerTimeContainer({ children }: PropsWithChildren) {
   return <section id="time">{children}</section>;
-}
-
-function DatePickerCalendarHeader({
-  date,
-  increaseYear,
-  decreaseYear,
-  decreaseMonth,
-  increaseMonth,
-  prevYearButtonDisabled,
-  nextYearButtonDisabled,
-  prevMonthButtonDisabled,
-  nextMonthButtonDisabled,
-  selectedDay,
-}: ReactDatePickerCustomHeaderProps & { selectedDay: Date }) {
-  return (
-    <div className="react-datepicker__header--month">
-      <button
-        type="button"
-        onClick={decreaseYear}
-        disabled={getMonth(date) === getMonth(selectedDay) || prevYearButtonDisabled}
-      >
-        <Before className="text-xl" isDouble />
-      </button>
-
-      <button
-        type="button"
-        onClick={decreaseMonth}
-        disabled={getMonth(date) === getMonth(selectedDay) || prevMonthButtonDisabled}
-      >
-        <Before className="text-xl" />
-      </button>
-
-      <div className="flex-1 text-center">{`${getYear(date)}년 ${getMonth(date) + 1}월`}</div>
-
-      <button type="button" onClick={increaseMonth} disabled={nextMonthButtonDisabled}>
-        <Next className="text-xl" />
-      </button>
-
-      <button type="button" onClick={increaseYear} disabled={nextYearButtonDisabled}>
-        <Next className="text-xl" isDouble />
-      </button>
-    </div>
-  );
 }
