@@ -46,14 +46,13 @@ const components: Record<
   }),
 };
 
-function Widget({ invitation, widgetItem, isMultiModal }: WidgetProps) {
+function WidgetDistributor({ invitation, widgetItem, isMultiModal }: WidgetProps) {
+  // 여기는 변화하는 값을 바로 받아서 반영해야 하기 때문에 아래 변화하는 위젯 아이템 로직을 추가
   const widgetIndex = useWidgetIndex(widgetItem)!;
-
   const changingInvitation =
     useWatch<HookFormValues>({
       name: 'invitation',
     }) ?? invitation;
-
   const changingWidgetItem = (changingInvitation as IInvitation).widgets[widgetIndex] ?? widgetItem;
 
   const WidgetComponent = components[changingWidgetItem.type as keyof typeof components];
@@ -68,4 +67,4 @@ function Widget({ invitation, widgetItem, isMultiModal }: WidgetProps) {
 }
 
 // const Widget = memo(UnmemoizedWidget);
-export default Widget;
+export default WidgetDistributor;
