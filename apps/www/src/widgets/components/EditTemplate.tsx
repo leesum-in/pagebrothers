@@ -11,8 +11,8 @@ import { useShallow } from 'zustand/shallow';
 import { ErrorTemplate, FixedLoader, PageWrapper } from '@/www/ui';
 import {
   SelectableCalendar,
-  Widget,
-  WidgetModal,
+  WidgetConfigureDistributor,
+  WidgetDistributor,
   WidgetModalFooter,
   WidgetModalHeader,
   WidgetNotFound,
@@ -22,6 +22,7 @@ import type { HookFormValues } from '@/www/widgets/types';
 import type { ModalStore } from '@/www/widgets/zustand';
 import useModalStore, { useToastStore } from '@/www/widgets/zustand';
 
+import LocationMapRouter from '../location/LocationMapRouter';
 import RsvpSumbit from '../rsvp/RsvpSumbit';
 
 function EditTemplate() {
@@ -81,6 +82,10 @@ function EditTemplate() {
     return <ErrorTemplate />;
   }
 
+  if (!invitation) {
+    return null;
+  }
+
   return (
     <FormProvider {...methods}>
       {modalState.isOpen ? (
@@ -98,7 +103,7 @@ function EditTemplate() {
             }
             reset={methods.reset}
           >
-            <WidgetModal widgetItem={modalState.widget ? modalState.widget : null} />
+            <WidgetConfigureDistributor widgetItem={modalState.widget ? modalState.widget : null} />
           </Modal>
           <Modal
             isModalOpen={multiModalState.isOpen}
@@ -110,7 +115,11 @@ function EditTemplate() {
           >
             {multiModalState.calendar ? <SelectableCalendar invitation={invitation} /> : null}
             {multiModalState.widget ? (
-              <Widget widgetItem={multiModalState.widget} isMultiModal invitation={invitation} />
+              <WidgetDistributor
+                widgetItem={multiModalState.widget}
+                isMultiModal
+                invitation={invitation}
+              />
             ) : null}
           </Modal>
           <Modal isModalOpen={thirdModalState.isOpen} onCloseModal={closeThirdModal} isThirdModal>
@@ -124,6 +133,9 @@ function EditTemplate() {
             {thirdModalState.items ? (
               <CongratulationList items={thirdModalState.items} handleClickCopy={handleClickCopy} />
             ) : null}
+            {thirdModalState.location ? (
+              <LocationMapRouter location={thirdModalState.location} />
+            ) : null}
           </Modal>
         </>
       ) : null}
@@ -135,7 +147,7 @@ function EditTemplate() {
             <div className="mx-auto w-full max-w-[26rem]">
               <div className="space-y-6">
                 {invitation.widgets.map((widget) => (
-                  <Widget key={widget.id} invitation={invitation} widgetItem={widget} />
+                  <WidgetDistributor key={widget.id} invitation={invitation} widgetItem={widget} />
                 ))}
               </div>
             </div>

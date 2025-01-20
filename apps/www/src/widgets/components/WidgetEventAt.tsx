@@ -1,4 +1,5 @@
 import { Label } from '@repo/shared';
+import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { MdOutlineCalendarToday } from 'react-icons/md';
 
@@ -9,11 +10,18 @@ import WidgetLabelWithInput from './WidgetLabelWithInput';
 
 function WidgetEventAt() {
   const { openMultiModal } = useModalStore();
-  const { watch, register } = useFormContext<HookFormValues>();
+  const { watch, getValues, register } = useFormContext<HookFormValues>();
+  const [eventAt, setEventAt] = useState(formatDate(getValues('invitation.eventAt'), 'KO'));
 
   const handleClickCalendar = () => {
     openMultiModal({ widget: null, calendar: true });
   };
+  const watchedEventAt = watch('invitation.eventAt');
+
+  useEffect(() => {
+    if (watchedEventAt.includes('년')) return;
+    setEventAt(formatDate(watchedEventAt, 'KO'));
+  }, [watchedEventAt]);
 
   return (
     <>
@@ -24,7 +32,7 @@ function WidgetEventAt() {
         <WidgetLabelWithInput
           labelClassName="relative flex items-center overflow-hidden rounded-md border bg-white focus-within:ring border-slate-200 "
           inputClassName="peer block h-12 w-full bg-white px-4 text-slate-600 placeholder:text-slate-300 disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-200"
-          inputValue={formatDate(watch('invitation.eventAt'), 'KO')}
+          inputValue={eventAt}
           register={register}
           registerOption="invitation.eventAt"
           readonly

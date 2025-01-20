@@ -1,7 +1,8 @@
 'use client';
 
 import { cn } from '@repo/shared';
-import type { RegisterOptions, UseFormRegister } from 'react-hook-form';
+import { useRef } from 'react';
+import type { RegisterOptions, UseFormRegister, UseFormRegisterReturn } from 'react-hook-form';
 
 import type { HookFormValues } from '@/www/widgets/types';
 
@@ -48,9 +49,19 @@ function WidgetLabelWithInput({
   textareaPlaceholder,
   id,
 }: WidgetLabelWithInputProps) {
-  if (!register) {
-    throw new Error('register is required');
+  const registerWithOptionRef = useRef<UseFormRegisterReturn<'invitation'> | null>(null);
+
+  if (register) {
+    if (typeof registerOption === 'string') {
+      registerWithOptionRef.current = register(registerOption as keyof HookFormValues);
+    } else {
+      registerWithOptionRef.current = register(
+        registerOption!.name as keyof HookFormValues,
+        registerOption!.options as RegisterOptions<HookFormValues, keyof HookFormValues>,
+      );
+    }
   }
+
   return (
     <label className={labelClassName}>
       <div className="flex items-center" />
@@ -66,12 +77,7 @@ function WidgetLabelWithInput({
           defaultValue={defaultValue}
           rows={3}
           placeholder={textareaPlaceholder}
-          {...(typeof registerOption === 'string'
-            ? register(registerOption as keyof HookFormValues)
-            : register(
-                registerOption!.name as keyof HookFormValues,
-                registerOption!.options as RegisterOptions<HookFormValues, keyof HookFormValues>,
-              ))}
+          {...registerWithOptionRef.current}
           onChange={onInputChange as (e: React.ChangeEvent<HTMLTextAreaElement>) => void}
         />
       ) : (
@@ -86,17 +92,8 @@ function WidgetLabelWithInput({
           checked={inputChecked}
           defaultChecked={inputDefaultChecked}
           onClick={onInputClick as (e: React.MouseEvent<HTMLInputElement>) => void}
-          {...(typeof registerOption === 'string'
-            ? register(registerOption as keyof HookFormValues)
-            : register(
-                registerOption!.name as keyof HookFormValues,
-                registerOption!.options as RegisterOptions<HookFormValues, keyof HookFormValues>,
-              ))}
-          onChange={
-            typeof registerOption === 'string'
-              ? (onInputChange as (e: React.ChangeEvent<HTMLInputElement>) => void)
-              : undefined
-          }
+          {...registerWithOptionRef.current}
+          onChange={onInputChange as (e: React.ChangeEvent<HTMLInputElement>) => void}
           readOnly={readonly}
           placeholder={placeholder}
         />

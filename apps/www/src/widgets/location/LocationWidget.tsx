@@ -4,7 +4,7 @@ import type { IInvitation, LocationWidgetConfig, WidgetItem } from '@repo/shared
 import { cn, Location } from '@repo/shared';
 
 import { ComponentWithKakaoScript, WidgetWrapper } from '../components';
-import { useToastStore } from '../zustand';
+import useModalStore, { useToastStore } from '../zustand';
 
 interface LocationWidgetProps {
   widgetItem: WidgetItem;
@@ -14,11 +14,17 @@ interface LocationWidgetProps {
 
 function LocationWidget({ widgetItem, invitation, isMultiModal = false }: LocationWidgetProps) {
   const { openToast } = useToastStore();
+  const { openThirdModal } = useModalStore();
 
   const handleCopyAddress = async () => {
     if (!invitation) return;
     await navigator.clipboard.writeText(invitation.location.address);
     openToast(`[${invitation.location.address}]가 복사되었습니다.`);
+  };
+
+  const handleOpenMap = () => {
+    if (!invitation) return;
+    openThirdModal({ location: invitation.location });
   };
 
   return (
@@ -31,6 +37,7 @@ function LocationWidget({ widgetItem, invitation, isMultiModal = false }: Locati
               invitationLocation={invitation.location}
               isMultiModal={isMultiModal}
               onCopyAddress={handleCopyAddress}
+              onOpenMap={handleOpenMap}
             />
           </ComponentWithKakaoScript>
         ) : null}

@@ -167,76 +167,78 @@ function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.
       />
 
       {/** 대표 이미지 */}
-      <div className="space-y-2">
-        <div>
-          <Label label="대표 이미지" />
-        </div>
-        <div>
-          <div
-            className={cn(
-              'center-flex relative h-[4.5rem] overflow-hidden rounded-lg border border-dashed border-slate-300',
-              introWidgetConfig.coverImage ? 'bg-white' : 'px-4',
-            )}
-          >
-            {isImageLoading ? <Loader /> : null}
-            {introWidgetConfig.coverImage ? (
-              <div className="center-flex relative flex-1 gap-4">
-                <div className="relative h-[4.5rem] w-[4.5rem] flex-none bg-slate-200 object-contain">
-                  <Image
-                    src={introWidgetConfig.coverImage.url}
-                    alt="uploaded"
-                    className="relative h-[4.5rem] w-[4.5rem] flex-none bg-white object-contain"
-                    width={introWidgetConfig.coverImage.dimensions.width}
-                    height={introWidgetConfig.coverImage.dimensions.height}
-                  />
-                </div>
-                <div className="w-0 flex-1 text-sm">
-                  <div className="truncate font-bold text-slate-500">이미지 등록됨</div>
-                  <div className="truncate text-slate-400 empty:hidden">
-                    {introWidgetConfig.coverImage.id}
+      {introWidgetConfig.layoutKey !== 'ONLY_TEXT' ? (
+        <div className="space-y-2">
+          <div>
+            <Label label="대표 이미지" />
+          </div>
+          <div>
+            <div
+              className={cn(
+                'center-flex relative h-[4.5rem] overflow-hidden rounded-lg border border-dashed border-slate-300',
+                introWidgetConfig.coverImage ? 'bg-white' : 'px-4',
+              )}
+            >
+              {isImageLoading ? <Loader /> : null}
+              {introWidgetConfig.coverImage ? (
+                <div className="center-flex relative flex-1 gap-4">
+                  <div className="relative h-[4.5rem] w-[4.5rem] flex-none bg-slate-200 object-contain">
+                    <Image
+                      src={introWidgetConfig.coverImage.url}
+                      alt="uploaded"
+                      className="relative h-[4.5rem] w-[4.5rem] flex-none bg-white object-contain"
+                      width={introWidgetConfig.coverImage.dimensions.width}
+                      height={introWidgetConfig.coverImage.dimensions.height}
+                    />
+                  </div>
+                  <div className="w-0 flex-1 text-sm">
+                    <div className="truncate font-bold text-slate-500">이미지 등록됨</div>
+                    <div className="truncate text-slate-400 empty:hidden">
+                      {introWidgetConfig.coverImage.id}
+                    </div>
+                  </div>
+                  <div className="center-flex gap-6 pr-4">
+                    <Button
+                      type="button"
+                      variants="text_secondary"
+                      size="medium"
+                      className="h-12 rounded-md px-0 text-sm  text-indigo-600 hover:text-indigo-700 center-flex gap-2 font-bold shadow-1 transition-colors disabled:opacity-40"
+                    >
+                      편집
+                    </Button>
+                    <Button
+                      type="button"
+                      variants="text_secondary"
+                      size="medium"
+                      className="h-12 rounded-md px-0 text-sm  text-slate-500 hover:text-slate-600 center-flex gap-2 font-bold shadow-1 transition-colors disabled:opacity-40"
+                      onClick={handleClickDeleteImage}
+                    >
+                      삭제
+                    </Button>
                   </div>
                 </div>
-                <div className="center-flex gap-6 pr-4">
-                  <Button
-                    type="button"
-                    variants="text_secondary"
-                    size="medium"
-                    className="h-12 rounded-md px-0 text-sm  text-indigo-600 hover:text-indigo-700 center-flex gap-2 font-bold shadow-1 transition-colors disabled:opacity-40"
-                  >
-                    편집
-                  </Button>
-                  <Button
-                    type="button"
-                    variants="text_secondary"
-                    size="medium"
-                    className="h-12 rounded-md px-0 text-sm  text-slate-500 hover:text-slate-600 center-flex gap-2 font-bold shadow-1 transition-colors disabled:opacity-40"
-                    onClick={handleClickDeleteImage}
-                  >
-                    삭제
-                  </Button>
-                </div>
-              </div>
-            ) : null}
-            {!introWidgetConfig.coverImage && !isImageLoading ? (
-              <>
-                <Label
-                  label="이미지 업로드"
-                  addOn="png, jpg / 최대 10mb"
-                  className="flex-1 text-sm flex-col items-start"
-                  addOnClassName="text-slate-400"
-                />
-                <LuPlusCircle className="ml-auto flex-none stroke-1 text-2xl" />
-                <input
-                  className="absolute top-0 left-0 h-full w-full cursor-pointer opacity-0 file:cursor-pointer"
-                  type="file"
-                  accept="image/png, image/jpeg"
-                  onChange={handleChangeFile}
-                />
-              </>
-            ) : null}
+              ) : null}
+              {!introWidgetConfig.coverImage && !isImageLoading ? (
+                <>
+                  <Label
+                    label="이미지 업로드"
+                    addOn="png, jpg / 최대 10mb"
+                    className="flex-1 text-sm flex-col items-start"
+                    addOnClassName="text-slate-400"
+                  />
+                  <LuPlusCircle className="ml-auto flex-none stroke-1 text-2xl" />
+                  <input
+                    className="absolute top-0 left-0 h-full w-full cursor-pointer opacity-0 file:cursor-pointer"
+                    type="file"
+                    accept="image/png, image/jpeg"
+                    onChange={handleChangeFile}
+                  />
+                </>
+              ) : null}
+            </div>
           </div>
         </div>
-      </div>
+      ) : null}
 
       <div className="overflow-hidden rounded-lg border border-slate-200 bg-white">
         <div className="[--theme-black:15,23,42] [--theme-inter:51,65,85] [--theme-colored:100,116,139] [--theme-block:0,0,0] font-noto text-[14px] leading-loose text-theme-black/60">

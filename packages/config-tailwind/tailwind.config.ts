@@ -168,6 +168,10 @@ const config: Omit<Config, 'content'> = {
           fontSize: '1.25em',
           lineHeight: '1.6',
         },
+        '.text-em-2xl': {
+          fontSize: '1.5em',
+          lineHeight: '1.4',
+        },
         '.center-flex': {
           display: 'flex',
           'justify-content': 'center',

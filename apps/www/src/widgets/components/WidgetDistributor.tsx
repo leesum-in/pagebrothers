@@ -2,8 +2,7 @@
 
 import type { IInvitation, WidgetItem } from '@repo/shared/src/types/pageBrothers.type';
 import dynamic from 'next/dynamic';
-import { memo } from 'react';
-import { useFieldArray, useWatch } from 'react-hook-form';
+import { useWatch } from 'react-hook-form';
 
 import { useWidgetIndex } from '../hooks';
 import type { HookFormValues } from '../types';
@@ -47,26 +46,25 @@ const components: Record<
   }),
 };
 
-function UnmemoizedWidget({ invitation, widgetItem, isMultiModal }: WidgetProps) {
-  const WidgetComponent = components[widgetItem.type as keyof typeof components];
+function WidgetDistributor({ invitation, widgetItem, isMultiModal }: WidgetProps) {
+  // 여기는 변화하는 값을 바로 받아서 반영해야 하기 때문에 아래 변화하는 위젯 아이템 로직을 추가
   const widgetIndex = useWidgetIndex(widgetItem)!;
+  const changingInvitation =
+    useWatch<HookFormValues>({
+      name: 'invitation',
+    }) ?? invitation;
+  const changingWidgetItem = (changingInvitation as IInvitation).widgets[widgetIndex] ?? widgetItem;
 
-  const { fields } = useFieldArray<HookFormValues, `invitation.widgets`>({
-    name: `invitation.widgets` as const,
-  });
-
-  const changingInvitation = useWatch<HookFormValues>({
-    name: 'invitation',
-  });
+  const WidgetComponent = components[changingWidgetItem.type as keyof typeof components];
 
   return (
     <WidgetComponent
       invitation={changingInvitation ? (changingInvitation as IInvitation) : invitation}
-      widgetItem={fields.filter((field) => field.index === widgetIndex)[0]}
+      widgetItem={changingWidgetItem as WidgetItem}
       isMultiModal={isMultiModal}
     />
   );
 }
 
-const Widget = memo(UnmemoizedWidget);
-export default Widget;
+// const Widget = memo(UnmemoizedWidget);
+export default WidgetDistributor;

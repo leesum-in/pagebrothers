@@ -1,6 +1,6 @@
 'use client';
 
-import { Checkbox, LabelWithSub } from '@repo/shared';
+import { Checkbox, cn, LabelWithSub } from '@repo/shared';
 import { useFormContext } from 'react-hook-form';
 
 import { WidgetLabelWithInput } from '../components';
@@ -54,7 +54,7 @@ function GreetingHostDisplay({
       {/** 정보 */}
       <div className="grid grid-cols-2 gap-x-4 gap-y-8">
         {/** 이름 */}
-        <div className="space-y-2 col-span-1">
+        <div className={cn('space-y-2 col-span-2', { 'col-span-1': withParent })}>
           <div>
             <LabelWithSub label={`${type === 'groom' ? '🤵 신랑' : '👰 신부'} 이름`} />
           </div>
@@ -70,13 +70,17 @@ function GreetingHostDisplay({
             </WidgetLabelWithInput>
           </div>
         </div>
+
         {/** 서열 */}
-        <div className="space-y-2">
-          <div>
-            <LabelWithSub label="서열 표기" />
+        {withParent ? (
+          <div className="space-y-2">
+            <div>
+              <LabelWithSub label="서열 표기" />
+            </div>
+            {Combobox()}
           </div>
-          {Combobox()}
-        </div>
+        ) : null}
+
         {withParent ? (
           <>
             {/** 아버지 */}

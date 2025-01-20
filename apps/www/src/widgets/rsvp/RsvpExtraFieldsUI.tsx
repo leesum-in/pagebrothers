@@ -1,7 +1,8 @@
+/* eslint-disable react/no-array-index-key -- 문항 삭제 시 오류 발생 */
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { Label, type RsvpExtraField } from '@repo/shared';
-import { useEffect, useState, type Dispatch, type SetStateAction } from 'react';
+import { useState, type Dispatch, type SetStateAction } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FaRegTrashAlt } from 'react-icons/fa';
 import { HiPlus } from 'react-icons/hi2';
@@ -12,6 +13,7 @@ import { Move } from '@/www/ui';
 
 import { WidgetLabelWithInput } from '../components';
 import type { HookFormValues } from '../types';
+import RsvpExtraFieldTitle from './RsvpExtraFieldTitle';
 
 interface RsvpExtraFieldsProps {
   extraField: RsvpExtraField;
@@ -27,9 +29,10 @@ function RsvpExtraFieldsUI({
   setExtraFields,
 }: RsvpExtraFieldsProps) {
   const { watch, register, setValue } = useFormContext<HookFormValues>();
-  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
-    id: extraField.id, // 고유 ID
-  });
+  const { attributes, listeners, setNodeRef, setActivatorNodeRef, transform, transition } =
+    useSortable({
+      id: extraField.id, // 고유 ID
+    });
   const [options, setOptions] = useState(extraField.options);
 
   // y축만 적용하도록 transform 수정
@@ -43,24 +46,24 @@ function RsvpExtraFieldsUI({
     boxShadow: transform ? '0px 0px 20px 0px rgba(0, 0, 0, 0.1)' : 'none', // 드래그 중에만 shadow 적용
   };
 
+  const type = watch(`invitation.widgets.${widgetIndex}.config.extraFields.${index}.type`);
+
   const handleAddOption = () => {
-    setOptions([...options, '']);
+    setOptions((prev) => [...prev, '']);
   };
 
   const handleDeleteOption = (option: string) => {
-    setOptions(options.filter((o) => o !== option));
+    setOptions((prev) => prev.filter((o) => o !== option));
   };
 
-  useEffect(() => {
-    setValue(`invitation.widgets.${widgetIndex}.config.extraFields.${index}.options`, options);
-    setExtraFields((prev) => {
-      const newExtraFields = [...prev];
-      newExtraFields[index] = { ...newExtraFields[index], options };
-      return newExtraFields;
-    });
-  }, [options, setExtraFields, index, setValue, widgetIndex]);
-
-  const type = watch(`invitation.widgets.${widgetIndex}.config.extraFields.${index}.type`);
+  const handleDeleteField = () => {
+    if (confirm('이 문항을 삭제하시겠어요? 삭제된 내용은 복구할 수 없어요.')) {
+      setExtraFields((prev) => {
+        const newExtraFields = prev.filter((item) => item.id !== extraField.id);
+        return newExtraFields;
+      });
+    }
+  };
 
   return (
     <li
@@ -75,6 +78,7 @@ function RsvpExtraFieldsUI({
             className="center-flex h-12 w-12 touch-none gap-3 rounded-md bg-white ring-1"
             type="button"
             {...listeners}
+            ref={setActivatorNodeRef}
           >
             <Move className="text-xl text-slate-500" />
           </button>
@@ -83,6 +87,7 @@ function RsvpExtraFieldsUI({
               <label className="relative flex items-center overflow-hidden rounded-md border bg-white focus-within:ring border-slate-200 w-full">
                 <div className="flex flex-none items-center" />
                 <select
+                  defaultValue={type}
                   className="peer block h-12 w-full appearance-none bg-white pl-4 pr-16 text-slate-600 invalid:text-slate-300 disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-200 "
                   {...register(
                     `invitation.widgets.${widgetIndex}.config.extraFields.${index}.type`,
@@ -103,7 +108,7 @@ function RsvpExtraFieldsUI({
             className="absolute bottom-0 right-0 -translate-y-2 p-4 text-base text-red-500"
             type="button"
           >
-            <FaRegTrashAlt className="w-[14px] h-[14px]" />
+            <FaRegTrashAlt className="w-[14px] h-[14px]" onClick={handleDeleteField} />
           </button>
         </li>
 
@@ -119,7 +124,7 @@ function RsvpExtraFieldsUI({
                   <div className="space-y-2">
                     {options.map((option, idx) => (
                       <WidgetLabelWithInput
-                        key={`${option}option`}
+                        key={`${option}option${idx}`}
                         labelClassName="relative flex items-center overflow-hidden rounded-md border bg-white focus-within:ring border-slate-200 w-full"
                         inputClassName="peer block h-12 w-full bg-white px-4 text-slate-600 placeholder:text-slate-300 disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-200"
                         defaultValue={option}
@@ -141,7 +146,7 @@ function RsvpExtraFieldsUI({
                       </WidgetLabelWithInput>
                     ))}
                     <button
-                      disabled={type === 'Radio' && options.length >= 3}
+                      disabled={options.length >= 3}
                       type="button"
                       onClick={handleAddOption}
                       className="h-12 w-12 !p-0 rounded-md px-4 text-sm border border-dashed border-slate-300 center-flex gap-2 font-bold shadow-1 transition-colors disabled:opacity-40"
@@ -204,9 +209,20 @@ function RsvpExtraFieldsUI({
                       className="no-interaction peer absolute flex-none opacity-0"
                       type="checkbox"
                       checked={extraField.needResponseRejected}
-                      {...register(
-                        `invitation.widgets.${widgetIndex}.config.extraFields.${index}.needResponseRejected`,
-                      )}
+                      onChange={(e) => {
+                        setValue(
+                          `invitation.widgets.${widgetIndex}.config.extraFields.${index}.needResponseRejected`,
+                          e.target.checked,
+                        );
+                        setExtraFields((prev) => {
+                          const newFields = [...prev];
+                          newFields[index] = {
+                            ...newFields[index],
+                            needResponseRejected: e.target.checked,
+                          };
+                          return newFields;
+                        });
+                      }}
                     />
                     <div className="relative h-6 w-12 rounded-full border border-slate-200 bg-slate-100 transition-[background-color] after:ml-[-1px] after:mt-[-1px] after:block after:h-6 after:w-6 after:rounded-full after:border after:border-slate-300 after:bg-white after:transition-[background-color,transform] peer-checked:border-indigo-600 peer-checked:bg-indigo-600 peer-checked:after:translate-x-full peer-checked:after:border-indigo-600 peer-focus:ring" />
                   </label>
@@ -226,10 +242,21 @@ function RsvpExtraFieldsUI({
                     <input
                       className="no-interaction peer absolute flex-none opacity-0"
                       type="checkbox"
-                      checked={extraField.optional}
-                      {...register(
-                        `invitation.widgets.${widgetIndex}.config.extraFields.${index}.optional`,
-                      )}
+                      checked={extraField.optional ?? false}
+                      onChange={(e) => {
+                        setValue(
+                          `invitation.widgets.${widgetIndex}.config.extraFields.${index}.optional`,
+                          e.target.checked,
+                        );
+                        setExtraFields((prev) => {
+                          const newFields = [...prev];
+                          newFields[index] = {
+                            ...newFields[index],
+                            optional: e.target.checked,
+                          };
+                          return newFields;
+                        });
+                      }}
                     />
                     <div className="relative h-6 w-12 rounded-full border border-slate-200 bg-slate-100 transition-[background-color] after:ml-[-1px] after:mt-[-1px] after:block after:h-6 after:w-6 after:rounded-full after:border after:border-slate-300 after:bg-white after:transition-[background-color,transform] peer-checked:border-indigo-600 peer-checked:bg-indigo-600 peer-checked:after:translate-x-full peer-checked:after:border-indigo-600 peer-focus:ring" />
                   </label>
@@ -245,35 +272,3 @@ function RsvpExtraFieldsUI({
 }
 
 export default RsvpExtraFieldsUI;
-
-interface RsvpExtraFieldTitleProps {
-  extraField: RsvpExtraField;
-  index: number;
-  widgetIndex: number;
-}
-
-function RsvpExtraFieldTitle({ extraField, index, widgetIndex }: RsvpExtraFieldTitleProps) {
-  const { register } = useFormContext<HookFormValues>();
-
-  return (
-    <li>
-      <div className="space-y-2 ">
-        <div>
-          <Label label="문항 타이틀" />
-        </div>
-        <div>
-          <WidgetLabelWithInput
-            labelClassName="relative flex items-center overflow-hidden rounded-md border bg-white focus-within:ring border-slate-200 w-full"
-            inputClassName="peer block h-12 w-full bg-white px-4 text-slate-600 placeholder:text-slate-300 disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-200"
-            defaultValue={extraField.label}
-            placeholder="입력하지 않으면 문항 타이틀이 생략돼요."
-            register={register}
-            registerOption={`invitation.widgets.${widgetIndex}.config.extraFields.${index}.label`}
-          >
-            <div className="flex flex-none items-center" />
-          </WidgetLabelWithInput>
-        </div>
-      </div>
-    </li>
-  );
-}

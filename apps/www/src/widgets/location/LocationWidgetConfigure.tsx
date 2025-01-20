@@ -2,6 +2,7 @@
 'use client';
 
 import type {
+  LocationAddressFormatKey,
   LocationTrafficDescriptionItems,
   LocationWidgetConfig,
   WidgetItem,
@@ -39,7 +40,7 @@ interface LocationWidgetConfigureProps {
 }
 
 function LocationWidgetConfigure({ widgetItem }: LocationWidgetConfigureProps) {
-  const { watch, register, setValue } = useFormContext<HookFormValues>();
+  const { watch, register, setValue, getValues } = useFormContext<HookFormValues>();
   const { setOnSubmit, closeModal, invitation } = useModalStore(
     useShallow((state: ModalStore) => ({
       setOnSubmit: state.setOnSubmit,
@@ -82,6 +83,14 @@ function LocationWidgetConfigure({ widgetItem }: LocationWidgetConfigureProps) {
       `invitation.widgets.${widgetIndex}.config.exposeMap`,
       !watch(`invitation.widgets.${widgetIndex}.config.exposeMap`),
     );
+  };
+
+  const handleChangeAddressFormatKey = (
+    e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>,
+  ) => {
+    if (widgetIndex === null) return;
+    const targetValue = e.target.value as LocationAddressFormatKey;
+    setValue(`invitation.widgets.${widgetIndex}.config.addressFormatKey`, targetValue);
   };
 
   const onSubmit: SubmitHandler<HookFormValues> = useCallback(() => {
@@ -162,7 +171,7 @@ function LocationWidgetConfigure({ widgetItem }: LocationWidgetConfigureProps) {
       {/** 예식장 주소 */}
       <WidgetAddress isAddress={isAddress} setIsAddress={setIsAddress} />
 
-      {/** 표기법 */}
+      {/** 표기 주소 */}
       <div className="space-y-2">
         <div>
           <LabelWithSub label="표기 주소" />
@@ -175,20 +184,23 @@ function LocationWidgetConfigure({ widgetItem }: LocationWidgetConfigureProps) {
                   labelClassName="relative cursor-pointer"
                   inputType="radio"
                   inputValue={item.key}
-                  inputChecked={
-                    widgetIndex
-                      ? watch(`invitation.widgets.${widgetIndex}.config.addressFormatKey`) ===
-                        item.key
-                      : false
+                  inputDefaultChecked={
+                    getValues(`invitation.widgets.${widgetIndex}.config.addressFormatKey`) ===
+                    item.key
                   }
                   register={register}
                   registerOption={`invitation.widgets.${widgetIndex}.config.addressFormatKey`}
                   inputClassName="peer hidden"
+                  onInputChange={handleChangeAddressFormatKey}
                 >
                   <div className="rounded-lg border border-slate-200 bg-white px-5 py-3 peer-checked:border-indigo-600">
                     <p className="text-slate-600">
                       <span className="font-bold">{item.label}</span>
-                      <span>{watch(`invitation.location.roadAddress`)}</span>
+                      <span>
+                        {item.key === 'ROAD'
+                          ? ` (${watch(`invitation.location.roadAddress`)})`
+                          : ` (${watch(`invitation.location.address`)})`}
+                      </span>
                     </p>
                   </div>
                 </WidgetLabelWithInput>

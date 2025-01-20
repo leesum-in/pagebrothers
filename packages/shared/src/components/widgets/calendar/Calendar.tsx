@@ -100,7 +100,7 @@ function DatePickerDay(day: number, date: Date, selectedDay: Date) {
       <span>{getDate(date)}</span>
       {isSameDay(date, selectedDay) && (
         <span className="center-flex !absolute inset-0 top-auto m-auto translate-y-2 text-em-xs !leading-none !text-theme-inter/70 font-noto !text-black">
-          {format(selectedDay, 'aa HH:mm')}
+          {format(selectedDay, 'aa h:mm')}
         </span>
       )}
     </>

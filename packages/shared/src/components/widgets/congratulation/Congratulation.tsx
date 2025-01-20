@@ -27,7 +27,7 @@ function Congratulation({
     >
       <p
         className={cn('font-bold text-theme-inter/70', {
-          'text-em-lg text-center': config.align === 'CENTER',
+          'text-em-lg text-center': config.align === 'CENTER' || !config.align,
           'text-em-lg text-left': config.align === 'LEFT',
           'text-em-lg text-right': config.align === 'RIGHT',
         })}

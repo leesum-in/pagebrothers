@@ -24,7 +24,7 @@ function CongratulationMain({
   return (
     <li
       className={cn({
-        'flex-1': config.align !== 'CENTER',
+        'flex-1': config.align !== 'CENTER' && config.align !== undefined,
         'overflow-hidden': config.layout === 'COLLABSIBLE',
         'space-y-2': config.layout === 'SPREADED',
       })}
@@ -34,7 +34,7 @@ function CongratulationMain({
           <div className="group w-full space-y-2">
             <div
               className={cn('space-x-1', {
-                'text-center': config.align === 'CENTER',
+                'text-center': config.align === 'CENTER' || !config.align,
                 'text-left': config.align === 'LEFT',
                 'text-right': config.align === 'RIGHT',
               })}

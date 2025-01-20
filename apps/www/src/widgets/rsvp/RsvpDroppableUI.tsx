@@ -6,8 +6,6 @@ import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-ki
 import { DndProvider } from '@repo/shared';
 import type { Dispatch, PropsWithChildren, SetStateAction } from 'react';
 
-// 확장성을 위해 제네릭으로 변경할 것
-// Gallery에서만 사용하는 것이 아니라 shared 에서 정의하는 것도 고려해볼 것
 type DroppableProps<T> = PropsWithChildren & {
   items: T[];
   setItems: Dispatch<SetStateAction<T[]>>;
