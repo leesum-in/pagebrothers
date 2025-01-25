@@ -1,15 +1,26 @@
 'use client';
 
-import type { EventSequenceItem, WidgetItem } from '@repo/shared';
+import type {
+  EventSequenceItem,
+  EventSequenceWidgetConfig,
+  EventSequenceWidgetItem,
+  WidgetItem,
+} from '@repo/shared';
 import { LabelWithSub } from '@repo/shared';
+import { useCallback, useEffect } from 'react';
+import type { SubmitHandler } from 'react-hook-form';
 import { useFieldArray, useFormContext } from 'react-hook-form';
+import { FaRegTrashAlt } from 'react-icons/fa';
 import { HiPlus } from 'react-icons/hi2';
 import { useShallow } from 'zustand/shallow';
+
+import { FixedLoader } from '@/www/ui';
 
 import { WidgetBreakLine } from '../components';
 import WidgetThreeWaySelector from '../components/WidgetThreeWaySelector';
 import { useWidgetIndex } from '../hooks';
-import type { HookFormValues } from '../types';
+import { useInvitationConfigMutation } from '../mutations';
+import type { ConfigPayload, HookFormValues } from '../types';
 import type { ModalStore } from '../zustand';
 import useModalStore from '../zustand';
 
@@ -18,7 +29,11 @@ interface EventSequenceWidgetConfigureProps {
 }
 
 function EventSequenceWidgetConfigure({ widgetItem }: EventSequenceWidgetConfigureProps) {
-  const { register } = useFormContext<HookFormValues, EventSequenceItem[]>();
+  const widgetIndex = useWidgetIndex(widgetItem);
+  const { control, register } = useFormContext<
+    HookFormValues,
+    `invitation.widgets.${number}.config.items`
+  >();
   const { setOnSubmit, closeModal, invitation } = useModalStore(
     useShallow((state: ModalStore) => ({
       setOnSubmit: state.setOnSubmit,
@@ -26,16 +41,62 @@ function EventSequenceWidgetConfigure({ widgetItem }: EventSequenceWidgetConfigu
       invitation: state.invitation,
     })),
   );
-  const widgetIndex = useWidgetIndex(widgetItem);
 
   const {
     fields: eventSequenceFields,
     append: eventSequenceAppend,
     remove: eventSequenceRemove,
   } = useFieldArray<HookFormValues, `invitation.widgets.${number}.config.items`>({
-    name: `invitation.widgets.${widgetIndex!}.config.items` as const,
-    keyName: 'id',
+    control,
+    name: `invitation.widgets.${widgetIndex!}.config.items` as `invitation.widgets.0.config.items`,
   });
+
+  const { mutate: putInvitationConfig } = useInvitationConfigMutation(invitation?.id ?? '');
+
+  const handleRemoveClick = (index: number) => {
+    eventSequenceRemove(index);
+  };
+
+  const handleAddClick = () => {
+    eventSequenceAppend({
+      title: '',
+      description: '',
+    });
+  };
+
+  const onSubmit: SubmitHandler<HookFormValues> = useCallback(
+    (data) => {
+      if (!invitation || !('id' in widgetItem) || widgetIndex === null || widgetIndex === -1)
+        return;
+      if (!data.invitation) return;
+
+      const configData = (data.invitation.widgets[widgetIndex] as EventSequenceWidgetItem).config;
+
+      const config: EventSequenceWidgetConfig = {
+        title: configData.title,
+        align: configData.align,
+        items: configData.items,
+      };
+
+      const configPayloadData: ConfigPayload = {
+        id: widgetItem.id,
+        type: 'EVENT_SEQUENCE',
+        index: widgetIndex,
+        config,
+        stickers: [],
+      };
+
+      putInvitationConfig(configPayloadData);
+      closeModal();
+    },
+    [closeModal, invitation, putInvitationConfig, widgetIndex, widgetItem],
+  );
+
+  useEffect(() => {
+    setOnSubmit(onSubmit);
+  }, [setOnSubmit, onSubmit]);
+
+  if (widgetIndex === null) return <FixedLoader />;
 
   return (
     <div className="space-y-8">
@@ -65,7 +126,7 @@ function EventSequenceWidgetConfigure({ widgetItem }: EventSequenceWidgetConfigu
         </div>
         <div>
           <ul className="space-y-4">
-            {eventSequenceFields.map((field, index) => (
+            {(eventSequenceFields as EventSequenceItem[]).map((field, index) => (
               <li className="relative" key={field.title}>
                 <label className="relative flex items-center overflow-hidden rounded-md border bg-white focus-within:ring border-slate-200 rounded-b-none focus-within:z-10">
                   <div className="flex flex-none items-center" />
@@ -83,7 +144,10 @@ function EventSequenceWidgetConfigure({ widgetItem }: EventSequenceWidgetConfigu
                       tabIndex={-1}
                       className="absolute bottom-0 right-0 p-4 text-base text-red-500"
                       type="button"
-                    />
+                      onClick={() => handleRemoveClick(index)}
+                    >
+                      <FaRegTrashAlt />
+                    </button>
                   </div>
                 </label>
                 <label className="relative flex items-center overflow-hidden rounded-lg border focus-within:ring border-slate-200 -mt-[1px] rounded-t-none">
@@ -102,17 +166,19 @@ function EventSequenceWidgetConfigure({ widgetItem }: EventSequenceWidgetConfigu
                 </label>
               </li>
             ))}
+            <li>
+              <button
+                type="button"
+                className="w-full h-12 rounded-md px-4 text-sm border border-dashed border-slate-300 center-flex gap-2 font-bold shadow-1 transition-colors disabled:opacity-40"
+                onClick={handleAddClick}
+              >
+                <span>구성 추가하기</span>
+                <HiPlus />
+              </button>
+            </li>
           </ul>
         </div>
       </div>
-
-      <button
-        type="button"
-        className="w-full h-12 rounded-md px-4 text-sm border border-dashed border-slate-300 center-flex gap-2 font-bold shadow-1 transition-colors disabled:opacity-40"
-      >
-        <span>구성 추가하기</span>
-        <HiPlus />
-      </button>
     </div>
   );
 }

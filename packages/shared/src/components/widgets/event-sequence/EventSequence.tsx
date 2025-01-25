@@ -22,7 +22,7 @@ function EventSequence({ config, isMultiModal }: EventSequenceProps) {
       <div>
         <ul className="space-y-4">
           {config.items.map((item) => (
-            <li className="relative">
+            <li className="relative" key={item.title}>
               <div className="relative flex items-center gap-2 font-bold">
                 <div className="center-flex h-6 w-6 flex-none">
                   <FiClock />
