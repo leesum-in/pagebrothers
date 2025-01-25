@@ -6,7 +6,6 @@ import type {
   EventSequenceWidgetItem,
   GalleryWidgetItem,
   GreetingWidgetItem,
-  IInvitation,
   IntroWidgetItem,
   LocationWidgetItem,
   MessageWidgetItem,
@@ -14,7 +13,6 @@ import type {
   VideoWidgetItem,
   WidgetItem,
 } from '@repo/shared/src/types/pageBrothers.type';
-import { useWatch } from 'react-hook-form';
 
 import { CalendarWidget } from '../calendar';
 import { CongratulationWidget } from '../congratulation';
@@ -26,29 +24,34 @@ import { IntroWidget } from '../intro';
 import { LocationWidget } from '../location';
 import { MessageWidget } from '../message';
 import { RsvpWidget } from '../rsvp';
-import type { HookFormValues } from '../types';
 import { VideoWidget } from '../video';
+import useModalStore from '../zustand';
 
 interface WidgetProps {
-  invitation?: IInvitation;
+  // invitation?: IInvitation;
   widgetItem: WidgetItem | Omit<WidgetItem, 'id'>;
   isMultiModal?: boolean;
 }
 
-function WidgetDistributor({ invitation, widgetItem, isMultiModal }: WidgetProps) {
+function WidgetDistributor({ widgetItem, isMultiModal }: WidgetProps) {
   // 여기는 변화하는 값을 바로 받아서 반영해야 하기 때문에 아래 변화하는 위젯 아이템 로직을 추가
   const widgetIndex = useWidgetIndex(widgetItem)!;
-  const changingInvitation =
-    useWatch<HookFormValues>({
-      name: 'invitation',
-    }) ?? invitation;
-  const changingWidgetItem = (changingInvitation as IInvitation).widgets[widgetIndex] ?? widgetItem;
+  // 여기를 useWatch 대신에 zustand invitation 으로 변경?
+  // const changingInvitation =
+  //   useWatch<HookFormValues>({
+  //     name: 'invitation',
+  //   }) ?? invitation;
+
+  const { invitation: changingInvitation } = useModalStore();
+
+  if (!changingInvitation) return null;
+  const changingWidgetItem = changingInvitation.widgets[widgetIndex] ?? widgetItem;
 
   if (widgetItem.type === 'INTRO')
     return (
       <IntroWidget
         widgetItem={changingWidgetItem as IntroWidgetItem}
-        invitation={changingInvitation as IInvitation}
+        invitation={changingInvitation}
         isMultiModal={isMultiModal}
       />
     );
@@ -58,7 +61,7 @@ function WidgetDistributor({ invitation, widgetItem, isMultiModal }: WidgetProps
     return (
       <CalendarWidget
         widgetItem={changingWidgetItem as CalendarWidgetItem}
-        invitation={changingInvitation as IInvitation}
+        invitation={changingInvitation}
         isMultiModal={isMultiModal}
       />
     );
@@ -66,7 +69,7 @@ function WidgetDistributor({ invitation, widgetItem, isMultiModal }: WidgetProps
     return (
       <LocationWidget
         widgetItem={changingWidgetItem as LocationWidgetItem}
-        invitation={changingInvitation as IInvitation}
+        invitation={changingInvitation}
         isMultiModal={isMultiModal}
       />
     );
@@ -74,7 +77,7 @@ function WidgetDistributor({ invitation, widgetItem, isMultiModal }: WidgetProps
     return (
       <GalleryWidget
         widgetItem={changingWidgetItem as GalleryWidgetItem}
-        invitation={changingInvitation as IInvitation}
+        invitation={changingInvitation}
         isMultiModal={isMultiModal}
       />
     );
@@ -82,7 +85,7 @@ function WidgetDistributor({ invitation, widgetItem, isMultiModal }: WidgetProps
     return (
       <RsvpWidget
         widgetItem={changingWidgetItem as RsvpWidgetItem}
-        invitation={changingInvitation as IInvitation}
+        invitation={changingInvitation}
         isMultiModal={isMultiModal}
       />
     );
@@ -90,7 +93,7 @@ function WidgetDistributor({ invitation, widgetItem, isMultiModal }: WidgetProps
     return (
       <GreetingWidget
         widgetItem={changingWidgetItem as GreetingWidgetItem}
-        invitation={changingInvitation as IInvitation}
+        invitation={changingInvitation}
         isMultiModal={isMultiModal}
       />
     );
@@ -98,7 +101,7 @@ function WidgetDistributor({ invitation, widgetItem, isMultiModal }: WidgetProps
     return (
       <CongratulationWidget
         widgetItem={changingWidgetItem as CongratulationWidgetItem}
-        invitation={changingInvitation as IInvitation}
+        invitation={changingInvitation}
         isMultiModal={isMultiModal}
       />
     );
@@ -113,7 +116,7 @@ function WidgetDistributor({ invitation, widgetItem, isMultiModal }: WidgetProps
     return (
       <EventSequenceWidget
         widgetItem={changingWidgetItem as EventSequenceWidgetItem}
-        invitation={changingInvitation as IInvitation}
+        invitation={changingInvitation}
         isMultiModal={isMultiModal}
       />
     );

@@ -118,7 +118,7 @@ function EditTemplate() {
               <WidgetDistributor
                 widgetItem={multiModalState.widget}
                 isMultiModal
-                invitation={invitation}
+                // invitation={invitation}
               />
             ) : null}
           </Modal>
@@ -147,7 +147,7 @@ function EditTemplate() {
             <div className="mx-auto w-full max-w-[26rem]">
               <div className="space-y-6">
                 {invitation.widgets.map((widget) => (
-                  <WidgetDistributor key={widget.id} invitation={invitation} widgetItem={widget} />
+                  <WidgetDistributor key={widget.id} widgetItem={widget} />
                 ))}
               </div>
             </div>
