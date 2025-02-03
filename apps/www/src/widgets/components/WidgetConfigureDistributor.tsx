@@ -6,6 +6,7 @@ import { memo } from 'react';
 
 import { CalendarWidgetConfigure } from '../calendar';
 import { CongratulationWidgetConfigure } from '../congratulation';
+import { EventSequenceWidgetConfigure } from '../event-sequence';
 import { GalleryWidgetConfigure } from '../gallery';
 import { GreetingWidgetConfigure } from '../greeting';
 import { IntroWidgetConfigure } from '../intro';
@@ -31,6 +32,8 @@ function UnmemoizedWidgetConfigureDistributor({ widgetItem }: WidgetModalProps) 
   if (widgetItem.type === 'CONGRATULATION')
     return <CongratulationWidgetConfigure widgetItem={widgetItem} />;
   if (widgetItem.type === 'MESSAGE') return <MessageWidgetConfigure widgetItem={widgetItem} />;
+  if (widgetItem.type === 'EVENT_SEQUENCE')
+    return <EventSequenceWidgetConfigure widgetItem={widgetItem} />;
 }
 
 const WidgetConfigureDistributor = memo(UnmemoizedWidgetConfigureDistributor);

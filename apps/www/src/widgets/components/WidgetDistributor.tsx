@@ -1,69 +1,125 @@
 'use client';
 
-import type { IInvitation, WidgetItem } from '@repo/shared/src/types/pageBrothers.type';
-import dynamic from 'next/dynamic';
-import { useWatch } from 'react-hook-form';
+import type {
+  CalendarWidgetItem,
+  CongratulationWidgetItem,
+  EventSequenceWidgetItem,
+  GalleryWidgetItem,
+  GreetingWidgetItem,
+  IntroWidgetItem,
+  LocationWidgetItem,
+  MessageWidgetItem,
+  RsvpWidgetItem,
+  VideoWidgetItem,
+  WidgetItem,
+} from '@repo/shared/src/types/pageBrothers.type';
 
+import { CalendarWidget } from '../calendar';
+import { CongratulationWidget } from '../congratulation';
+import { EventSequenceWidget } from '../event-sequence';
+import { GalleryWidget } from '../gallery';
+import { GreetingWidget } from '../greeting';
 import { useWidgetIndex } from '../hooks';
-import type { HookFormValues } from '../types';
+import { IntroWidget } from '../intro';
+import { LocationWidget } from '../location';
+import { MessageWidget } from '../message';
+import { RsvpWidget } from '../rsvp';
+import { VideoWidget } from '../video';
+import useModalStore from '../zustand';
 
 interface WidgetProps {
-  invitation?: IInvitation;
+  // invitation?: IInvitation;
   widgetItem: WidgetItem | Omit<WidgetItem, 'id'>;
   isMultiModal?: boolean;
 }
 
-const components: Record<
-  string,
-  React.ComponentType<{ invitation?: IInvitation; widgetItem: WidgetItem; isMultiModal?: boolean }>
-> = {
-  INTRO: dynamic(() => import('../intro/IntroWidget'), {
-    ssr: false,
-  }),
-  VIDEO: dynamic(() => import('../video/VideoWidget'), {
-    ssr: false,
-  }),
-  MESSAGE: dynamic(() => import('../message/MessageWidget'), {
-    ssr: false,
-  }),
-  CALENDAR: dynamic(() => import('../calendar/CalendarWidget'), {
-    ssr: false,
-  }),
-  LOCATION: dynamic(() => import('../location/LocationWidget'), {
-    ssr: false,
-  }),
-  GALLERY: dynamic(() => import('../gallery/GalleryWidget'), {
-    ssr: false,
-  }),
-  RSVP: dynamic(() => import('../rsvp/RsvpWidget'), {
-    ssr: false,
-  }),
-  GREETING: dynamic(() => import('../greeting/GreetingWidget'), {
-    ssr: false,
-  }),
-  CONGRATULATION: dynamic(() => import('../congratulation/CongratulationWidget'), {
-    ssr: false,
-  }),
-};
-
-function WidgetDistributor({ invitation, widgetItem, isMultiModal }: WidgetProps) {
+function WidgetDistributor({ widgetItem, isMultiModal }: WidgetProps) {
   // 여기는 변화하는 값을 바로 받아서 반영해야 하기 때문에 아래 변화하는 위젯 아이템 로직을 추가
   const widgetIndex = useWidgetIndex(widgetItem)!;
-  const changingInvitation =
-    useWatch<HookFormValues>({
-      name: 'invitation',
-    }) ?? invitation;
-  const changingWidgetItem = (changingInvitation as IInvitation).widgets[widgetIndex] ?? widgetItem;
+  // 여기를 useWatch 대신에 zustand invitation 으로 변경?
+  // const changingInvitation =
+  //   useWatch<HookFormValues>({
+  //     name: 'invitation',
+  //   }) ?? invitation;
 
-  const WidgetComponent = components[changingWidgetItem.type as keyof typeof components];
+  const { invitation: changingInvitation } = useModalStore();
 
-  return (
-    <WidgetComponent
-      invitation={changingInvitation ? (changingInvitation as IInvitation) : invitation}
-      widgetItem={changingWidgetItem as WidgetItem}
-      isMultiModal={isMultiModal}
-    />
-  );
+  if (!changingInvitation) return null;
+  const changingWidgetItem = changingInvitation.widgets[widgetIndex] ?? widgetItem;
+
+  if (widgetItem.type === 'INTRO')
+    return (
+      <IntroWidget
+        widgetItem={changingWidgetItem as IntroWidgetItem}
+        invitation={changingInvitation}
+        isMultiModal={isMultiModal}
+      />
+    );
+  if (widgetItem.type === 'VIDEO')
+    return <VideoWidget widgetItem={widgetItem as VideoWidgetItem} isMultiModal={isMultiModal} />;
+  if (widgetItem.type === 'CALENDAR')
+    return (
+      <CalendarWidget
+        widgetItem={changingWidgetItem as CalendarWidgetItem}
+        invitation={changingInvitation}
+        isMultiModal={isMultiModal}
+      />
+    );
+  if (widgetItem.type === 'LOCATION')
+    return (
+      <LocationWidget
+        widgetItem={changingWidgetItem as LocationWidgetItem}
+        invitation={changingInvitation}
+        isMultiModal={isMultiModal}
+      />
+    );
+  if (widgetItem.type === 'GALLERY')
+    return (
+      <GalleryWidget
+        widgetItem={changingWidgetItem as GalleryWidgetItem}
+        invitation={changingInvitation}
+        isMultiModal={isMultiModal}
+      />
+    );
+  if (widgetItem.type === 'RSVP')
+    return (
+      <RsvpWidget
+        widgetItem={changingWidgetItem as RsvpWidgetItem}
+        invitation={changingInvitation}
+        isMultiModal={isMultiModal}
+      />
+    );
+  if (widgetItem.type === 'GREETING')
+    return (
+      <GreetingWidget
+        widgetItem={changingWidgetItem as GreetingWidgetItem}
+        invitation={changingInvitation}
+        isMultiModal={isMultiModal}
+      />
+    );
+  if (widgetItem.type === 'CONGRATULATION')
+    return (
+      <CongratulationWidget
+        widgetItem={changingWidgetItem as CongratulationWidgetItem}
+        invitation={changingInvitation}
+        isMultiModal={isMultiModal}
+      />
+    );
+  if (widgetItem.type === 'MESSAGE')
+    return (
+      <MessageWidget
+        widgetItem={changingWidgetItem as MessageWidgetItem}
+        isMultiModal={isMultiModal}
+      />
+    );
+  if (widgetItem.type === 'EVENT_SEQUENCE')
+    return (
+      <EventSequenceWidget
+        widgetItem={changingWidgetItem as EventSequenceWidgetItem}
+        invitation={changingInvitation}
+        isMultiModal={isMultiModal}
+      />
+    );
 }
 
 // const Widget = memo(UnmemoizedWidget);

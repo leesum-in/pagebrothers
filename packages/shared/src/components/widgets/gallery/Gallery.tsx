@@ -2,11 +2,12 @@
 
 import { useCallback, useEffect, useReducer, useRef, useState } from 'react';
 import { useSlider } from '../../../hooks';
-import type { GalleryWidgetItem } from '../../../types';
+import type { GalleryWidgetItem, IInvitation } from '../../../types';
 import { cn } from '../../../utils';
 
 interface GalleryProps {
   widgetItem: GalleryWidgetItem;
+  invitation: IInvitation;
 }
 
 function reducer(state: { isDragging: boolean }, action: { type: string }) {
@@ -22,7 +23,9 @@ function reducer(state: { isDragging: boolean }, action: { type: string }) {
 
 const MAX_IMAGE_WIDTH = 420;
 
-function Gallery({ widgetItem }: GalleryProps) {
+function Gallery({ widgetItem, invitation }: GalleryProps) {
+  if (!invitation) return null;
+
   const [currentViewingItemIndex, setCurrentViewingItemIndex] = useState(0);
   const [state, dispatch] = useReducer(reducer, { isDragging: false });
   const { isDragging } = state;
