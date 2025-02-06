@@ -2,6 +2,7 @@ import type { IInvitationDesign } from '@repo/shared';
 import { useState } from 'react';
 
 import DesignSelector from './DesignSelector';
+import DetailSettings from './DetailSettings';
 
 function DesignSettings() {
   const [design, setDesign] = useState<IInvitationDesign>({
@@ -11,6 +12,7 @@ function DesignSettings() {
     textSize: 'sm',
     zoomDisabled: 'none',
   });
+  const [isDesignVisible, setIsDesignVisible] = useState(true);
 
   const handleDesignChange = (newDesign: Partial<IInvitationDesign>): void => {
     setDesign((prevDesign) => ({
@@ -52,6 +54,9 @@ function DesignSettings() {
                   <button
                     type="button"
                     className="border-b-2 p-2 font-bold border-indigo-700 text-indigo-700"
+                    onClick={() => {
+                      setIsDesignVisible(true);
+                    }}
                   >
                     스타일
                   </button>
@@ -60,13 +65,20 @@ function DesignSettings() {
                   <button
                     type="button"
                     className="border-b-2 p-2 font-bold border-transparent text-slate-400"
+                    onClick={() => {
+                      setIsDesignVisible(false);
+                    }}
                   >
                     상세 설정
                   </button>
                 </li>
               </ul>
             </header>
-            <DesignSelector design={design} onDesignChange={handleDesignChange} />
+            {isDesignVisible ? (
+              <DesignSelector design={design} onDesignChange={handleDesignChange} />
+            ) : (
+              <DetailSettings />
+            )}
           </div>
         </div>
       </div>
