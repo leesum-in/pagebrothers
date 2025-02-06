@@ -12,6 +12,7 @@ import { GreetingWidgetConfigure } from '../greeting';
 import { IntroWidgetConfigure } from '../intro';
 import { LocationWidgetConfigure } from '../location';
 import { MessageWidgetConfigure } from '../message';
+import { QnAWidgetConfigure } from '../qna';
 import { RsvpWidgetConfigure } from '../rsvp';
 import { VideoWidgetConfigure } from '../video';
 
@@ -34,6 +35,7 @@ function UnmemoizedWidgetConfigureDistributor({ widgetItem }: WidgetModalProps) 
   if (widgetItem.type === 'MESSAGE') return <MessageWidgetConfigure widgetItem={widgetItem} />;
   if (widgetItem.type === 'EVENT_SEQUENCE')
     return <EventSequenceWidgetConfigure widgetItem={widgetItem} />;
+  if (widgetItem.type === 'QNA') return <QnAWidgetConfigure widgetItem={widgetItem} />;
 }
 
 const WidgetConfigureDistributor = memo(UnmemoizedWidgetConfigureDistributor);

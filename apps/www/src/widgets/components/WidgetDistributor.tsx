@@ -9,6 +9,7 @@ import type {
   IntroWidgetItem,
   LocationWidgetItem,
   MessageWidgetItem,
+  QnaWidgetItem,
   RsvpWidgetItem,
   VideoWidgetItem,
   WidgetItem,
@@ -23,6 +24,7 @@ import { useWidgetIndex } from '../hooks';
 import { IntroWidget } from '../intro';
 import { LocationWidget } from '../location';
 import { MessageWidget } from '../message';
+import { QnAWidget } from '../qna';
 import { RsvpWidget } from '../rsvp';
 import { VideoWidget } from '../video';
 import useModalStore from '../zustand';
@@ -116,6 +118,15 @@ function WidgetDistributor({ widgetItem, isMultiModal }: WidgetProps) {
     return (
       <EventSequenceWidget
         widgetItem={changingWidgetItem as EventSequenceWidgetItem}
+        invitation={changingInvitation}
+        isMultiModal={isMultiModal}
+      />
+    );
+
+  if (widgetItem.type === 'QNA')
+    return (
+      <QnAWidget
+        widgetItem={changingWidgetItem as QnaWidgetItem}
         invitation={changingInvitation}
         isMultiModal={isMultiModal}
       />
