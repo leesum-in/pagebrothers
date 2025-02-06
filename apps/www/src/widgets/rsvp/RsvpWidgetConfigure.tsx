@@ -5,12 +5,11 @@ import { Label, LabelWithSub } from '@repo/shared';
 import { useCallback, useEffect, useState } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useFormContext } from 'react-hook-form';
-import { HiPlus } from 'react-icons/hi2';
 import { useShallow } from 'zustand/shallow';
 
 import { FixedLoader } from '@/www/ui';
 
-import { WidgetLabelWithInput } from '../components';
+import { WidgetAddListButton, WidgetLabelWithInput } from '../components';
 import WidgetThreeWaySelector from '../components/WidgetThreeWaySelector';
 import { useWidgetIndex } from '../hooks';
 import { useInvitationConfigMutation } from '../mutations';
@@ -39,6 +38,21 @@ function RsvpWidgetConfigure({ widgetItem }: RsvpWidgetConfigureProps) {
 
   const { mutate: putInvitationConfig } = useInvitationConfigMutation(invitation?.id ?? '');
   const widgetIndex = useWidgetIndex(widgetItem);
+
+  const handleAddClick = () => {
+    setExtraFields([
+      ...extraFields,
+      {
+        id: '',
+        type: 'InputText',
+        label: '',
+        needResponseRejected: false,
+        placeholder: '',
+        options: [],
+        optional: false,
+      },
+    ]);
+  };
 
   const onSubmit: SubmitHandler<HookFormValues> = useCallback(() => {
     if (!invitation || widgetIndex === null || widgetIndex === -1 || !('id' in widgetItem)) return;
@@ -200,13 +214,7 @@ function RsvpWidgetConfigure({ widgetItem }: RsvpWidgetConfigureProps) {
               setExtraFields={setExtraFields}
             />
           ))}
-          <button
-            type="button"
-            className="w-full h-12 rounded-md px-4 text-sm border border-dashed border-slate-300 center-flex gap-2 font-bold shadow-1 transition-colors disabled:opacity-40"
-          >
-            <span>구성 추가하기</span>
-            <HiPlus />
-          </button>
+          <WidgetAddListButton handleAddClick={handleAddClick} />
         </RsvpDroppableUl>
       </div>
     </div>
