@@ -1,11 +1,6 @@
 'use client';
 
-import type {
-  EventSequenceItem,
-  EventSequenceWidgetConfig,
-  EventSequenceWidgetItem,
-  WidgetItem,
-} from '@repo/shared';
+import type { QnaItem, QnaWidgetConfig, QnaWidgetItem, WidgetItem } from '@repo/shared';
 import { LabelWithSub } from '@repo/shared';
 import { useCallback, useEffect } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
@@ -23,11 +18,11 @@ import type { ConfigPayload, HookFormValues } from '../types';
 import type { ModalStore } from '../zustand';
 import useModalStore from '../zustand';
 
-interface EventSequenceWidgetConfigureProps {
+interface QnAWidgetConfigureProps {
   widgetItem: WidgetItem | Omit<WidgetItem, 'id'>;
 }
 
-function EventSequenceWidgetConfigure({ widgetItem }: EventSequenceWidgetConfigureProps) {
+function QnAWidgetConfigure({ widgetItem }: QnAWidgetConfigureProps) {
   const widgetIndex = useWidgetIndex(widgetItem);
   const { control, register } = useFormContext<
     HookFormValues,
@@ -41,25 +36,25 @@ function EventSequenceWidgetConfigure({ widgetItem }: EventSequenceWidgetConfigu
     })),
   );
 
+  const { mutate: putInvitationConfig } = useInvitationConfigMutation(invitation?.id ?? '');
+
   const {
-    fields: eventSequenceFields,
-    append: eventSequenceAppend,
-    remove: eventSequenceRemove,
+    fields: qnaFields,
+    append: qnaAppend,
+    remove: qnaRemove,
   } = useFieldArray<HookFormValues, `invitation.widgets.${number}.config.items`>({
     control,
     name: `invitation.widgets.${widgetIndex!}.config.items` as `invitation.widgets.0.config.items`,
   });
 
-  const { mutate: putInvitationConfig } = useInvitationConfigMutation(invitation?.id ?? '');
-
   const handleRemoveClick = (index: number) => {
-    eventSequenceRemove(index);
+    qnaRemove(index);
   };
 
   const handleAddClick = () => {
-    eventSequenceAppend({
-      title: '',
-      description: '',
+    qnaAppend({
+      question: '',
+      answer: '',
     });
   };
 
@@ -69,9 +64,9 @@ function EventSequenceWidgetConfigure({ widgetItem }: EventSequenceWidgetConfigu
         return;
       if (!data.invitation) return;
 
-      const configData = (data.invitation.widgets[widgetIndex] as EventSequenceWidgetItem).config;
+      const configData = (data.invitation.widgets[widgetIndex] as QnaWidgetItem).config;
 
-      const config: EventSequenceWidgetConfig = {
+      const config: QnaWidgetConfig = {
         title: configData.title,
         align: configData.align,
         items: configData.items,
@@ -79,7 +74,7 @@ function EventSequenceWidgetConfigure({ widgetItem }: EventSequenceWidgetConfigu
 
       const configPayloadData: ConfigPayload = {
         id: widgetItem.id,
-        type: 'EVENT_SEQUENCE',
+        type: 'QNA',
         index: widgetIndex,
         config,
         stickers: [],
@@ -101,7 +96,7 @@ function EventSequenceWidgetConfigure({ widgetItem }: EventSequenceWidgetConfigu
     <div className="space-y-8">
       {/** 텍스트 정렬 */}
       <div className="space-y-2">
-        <WidgetThreeWaySelector label="텍스트 정렬" widgetItem={widgetItem} />
+        <WidgetThreeWaySelector label="타이틀 정렬" widgetItem={widgetItem} />
       </div>
 
       {/** 타이틀 */}
@@ -109,7 +104,7 @@ function EventSequenceWidgetConfigure({ widgetItem }: EventSequenceWidgetConfigu
         <div>
           <LabelWithSub
             label="타이틀"
-            subLabel="입력하면 구성 위에 추가됩니다."
+            subLabel="입력하면 질의응답 목록 위에 추가됩니다."
             addOn={<span className="text-sm text-slate-400">(선택)</span>}
           />
         </div>
@@ -117,7 +112,7 @@ function EventSequenceWidgetConfigure({ widgetItem }: EventSequenceWidgetConfigu
           <WidgetLabelWithInput
             labelClassName="relative flex items-center overflow-hidden rounded-lg border focus-within:ring border-slate-200"
             inputClassName="peer block h-12 w-full bg-white px-4 text-slate-600 placeholder:text-slate-300 disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-200"
-            defaultValue={(widgetItem.config as EventSequenceWidgetConfig).title}
+            defaultValue={(widgetItem.config as QnaWidgetConfig).title}
             register={register}
             registerOption={`invitation.widgets.${widgetIndex}.config.title`}
           />
@@ -126,22 +121,22 @@ function EventSequenceWidgetConfigure({ widgetItem }: EventSequenceWidgetConfigu
 
       <WidgetBreakLine />
 
-      {/** 구성 추가 */}
+      {/** 질의 응답 */}
       <div className="space-y-2">
         <div className="flex items-center justify-between text-slate-600">
-          <div className="font-bold">예식 구성</div>
+          <div className="font-bold">질의응답</div>
           <div className="text-sm" />
         </div>
         <div>
           <ul className="space-y-4">
-            {(eventSequenceFields as EventSequenceItem[]).map((field, index) => (
+            {(qnaFields as QnaItem[]).map((field, index) => (
               <WidgetLiTitleAndDesc
-                key={field.title}
+                key={field.question}
                 titleRegister={register(
-                  `invitation.widgets.${widgetIndex}.config.items.${index}.title` as keyof HookFormValues,
+                  `invitation.widgets.${widgetIndex}.config.items.${index}.question` as keyof HookFormValues,
                 )}
                 descRegister={register(
-                  `invitation.widgets.${widgetIndex}.config.items.${index}.description` as keyof HookFormValues,
+                  `invitation.widgets.${widgetIndex}.config.items.${index}.answer` as keyof HookFormValues,
                 )}
                 widgetIndex={widgetIndex}
                 index={index}
@@ -158,4 +153,4 @@ function EventSequenceWidgetConfigure({ widgetItem }: EventSequenceWidgetConfigu
   );
 }
 
-export default EventSequenceWidgetConfigure;
+export default QnAWidgetConfigure;
