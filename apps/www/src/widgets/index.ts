@@ -8,6 +8,7 @@ export * from './intro';
 export * from './location';
 export * from './message';
 export * from './mutations';
+export * from './qna';
 export * from './queries';
 export * from './types';
 export * from './utils';
