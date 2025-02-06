@@ -1,7 +1,8 @@
 'use client';
 
 import { COLOR_HIGHLIGHTS } from '@repo/shared';
-import { SelectorProps } from './DesignSelector';
+
+import type { SelectorProps } from './DesignSelector';
 
 export default function ColorSelector({
   value,
