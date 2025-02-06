@@ -1,6 +1,6 @@
-import { QnaWidgetConfig } from '@/shared/types';
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react';
 import { HiChevronDown } from 'react-icons/hi2';
+import { QnaWidgetConfig } from '../../../types/pageBrothers.type';
 import { cn } from '../../../utils';
 
 interface QnAProps {
