@@ -1,13 +1,24 @@
+import { cn } from '@repo/shared';
 import type { PropsWithChildren } from 'react';
 
-// 이 컴포넌트는 완전히 임시입니다...
-// overflow-x-hidden
-// bg-slate-50
-// 이런 클래스들을 props로 받아야 할 것 같기도..
-function PageWrapper({ children }: PropsWithChildren) {
+interface PageWrapperProps extends PropsWithChildren {
+  className?: string;
+  extraChildren?: React.ReactNode;
+  extraClassName?: string;
+}
+
+function PageWrapper({ children, extraChildren, className, extraClassName }: PageWrapperProps) {
   return (
-    <div className="flex flex-1 flex-col overflow-x-hidden">
-      <div className="flex-1 px-4 py-16 desktop:py-24">{children}</div>
+    <div className={cn('flex flex-1 flex-col', className)}>
+      <div
+        className={cn(
+          'flex flex-1 flex-col gap-4 p-4 desktop:flex-row desktop:gap-8',
+          extraClassName,
+        )}
+      >
+        {children}
+      </div>
+      {extraChildren}
     </div>
   );
 }
