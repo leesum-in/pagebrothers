@@ -16,7 +16,7 @@ import { FixedLoader } from '@/www/ui';
 
 import { WidgetBreakLine, WidgetLabelWithInput } from '../components';
 import WidgetThreeWaySelector from '../components/WidgetThreeWaySelector';
-import { useCombobox, useWidgetIndex } from '../hooks';
+import { useCombobox, useInvitation, useWidgetIndex } from '../hooks';
 import { useInvitationConfigMutation } from '../mutations';
 import type { ConfigPayload, HookFormValues } from '../types';
 import type { ModalStore } from '../zustand';
@@ -33,14 +33,13 @@ const comboboxOptions = ['아들', '장남', '차남', '삼남', '딸', '장녀'
 
 function GreetingWidgetConfigure({ widgetItem }: GreetingWidgetConfigureProps) {
   const { watch, register } = useFormContext<HookFormValues>();
-  const { setOnSubmit, closeModal, invitation } = useModalStore(
+  const { setOnSubmit, closeModal } = useModalStore(
     useShallow((state: ModalStore) => ({
       setOnSubmit: state.setOnSubmit,
       closeModal: state.closeModal,
-      invitation: state.invitation,
     })),
   );
-
+  const { invitation } = useInvitation();
   const { mutate: putInvitationConfig } = useInvitationConfigMutation(invitation?.id ?? '');
 
   const widgetIndex = useWidgetIndex(widgetItem);

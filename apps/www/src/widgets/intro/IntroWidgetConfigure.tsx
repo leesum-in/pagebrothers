@@ -28,7 +28,7 @@ import type { ModalStore } from '@/www/widgets/zustand';
 import useModalStore from '@/www/widgets/zustand';
 
 import WidgetEventAt from '../components/WidgetEventAt';
-import { useWidgetIndex } from '../hooks';
+import { useInvitation, useWidgetIndex } from '../hooks';
 
 import { IntroSelectDateFormatKey, IntroSelectLayout } from '.';
 
@@ -43,15 +43,14 @@ function IntroWidgetConfigure({ widgetItem }: IntroWidgetConfigureProps): React.
   );
   const [isImageLoading, setIsImageLoading] = useState(false);
   const { watch, register } = useFormContext<HookFormValues>();
-  const { setOnSubmit, closeModal, invitation } = useModalStore(
+  const { setOnSubmit, closeModal } = useModalStore(
     useShallow((state: ModalStore) => ({
       setOnSubmit: state.setOnSubmit,
       closeModal: state.closeModal,
-      invitation: state.invitation,
     })),
   );
   const widgetIndex = useWidgetIndex(widgetItem);
-
+  const { invitation } = useInvitation();
   const { mutate: putInvitationConfig } = useInvitationConfigMutation(invitation?.id ?? '');
   const { mutate: postWidget } = useWidgetMutation(invitation?.id ?? '');
   const { mutate: postEventInfo } = useEventInfoMutation(invitation?.id ?? '');

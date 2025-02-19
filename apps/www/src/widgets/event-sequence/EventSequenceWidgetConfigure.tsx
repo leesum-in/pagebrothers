@@ -17,7 +17,7 @@ import { FixedLoader } from '@/www/ui';
 import { WidgetAddListButton, WidgetBreakLine, WidgetLabelWithInput } from '../components';
 import WidgetLiTitleAndDesc from '../components/WidgetLiTitleAndDesc';
 import WidgetThreeWaySelector from '../components/WidgetThreeWaySelector';
-import { useWidgetIndex } from '../hooks';
+import { useInvitation, useWidgetIndex } from '../hooks';
 import { useInvitationConfigMutation } from '../mutations';
 import type { ConfigPayload, HookFormValues } from '../types';
 import type { ModalStore } from '../zustand';
@@ -33,13 +33,13 @@ function EventSequenceWidgetConfigure({ widgetItem }: EventSequenceWidgetConfigu
     HookFormValues,
     `invitation.widgets.${number}.config.items`
   >();
-  const { setOnSubmit, closeModal, invitation } = useModalStore(
+  const { setOnSubmit, closeModal } = useModalStore(
     useShallow((state: ModalStore) => ({
       setOnSubmit: state.setOnSubmit,
       closeModal: state.closeModal,
-      invitation: state.invitation,
     })),
   );
+  const { invitation } = useInvitation();
 
   const {
     fields: eventSequenceFields,

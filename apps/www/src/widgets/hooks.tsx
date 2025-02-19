@@ -8,11 +8,21 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState } 
 import useModalStore from '@/www/widgets/zustand';
 
 import WidgetCombobox from './components/WidgetCombobox';
+import { useInvitationQuery } from './queries';
 import { getCombinedDateTime, getWidgetIndex } from './utils';
 
+export function useInvitation() {
+  const { invitationId } = useModalStore();
+  const { data: invitation, isPending, error } = useInvitationQuery(invitationId ?? '');
+  return { invitation, isPending, error };
+}
+
 export function useWidgetIndex(widgetItem: WidgetItem | Omit<WidgetItem, 'id'>) {
-  const { invitation } = useModalStore();
-  return useMemo(() => getWidgetIndex(invitation, widgetItem), [invitation, widgetItem]);
+  const { invitation } = useInvitation();
+  return useMemo(() => {
+    if (!invitation) return null;
+    return getWidgetIndex(invitation, widgetItem);
+  }, [invitation, widgetItem]);
 }
 
 interface UseComboboxProps {

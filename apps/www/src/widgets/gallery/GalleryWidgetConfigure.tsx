@@ -19,7 +19,7 @@ import { FixedLoader, Loader } from '@/www/ui';
 
 import { WidgetBreakLine, WidgetLabelWithInput } from '../components';
 import WidgetThreeWaySelector from '../components/WidgetThreeWaySelector';
-import { useWidgetIndex } from '../hooks';
+import { useInvitation, useWidgetIndex } from '../hooks';
 import { useInvitationConfigMutation, useInvitationImageMutation } from '../mutations';
 import type { ConfigPayload, HookFormValues } from '../types';
 import { getImageSize } from '../utils';
@@ -51,14 +51,14 @@ function GalleryWidgetConfigure({ widgetItem }: GalleryWidgetConfigureProps) {
 
   const { watch, register } = useFormContext<HookFormValues>();
 
-  const { setOnSubmit, closeModal, invitation } = useModalStore(
+  const { setOnSubmit, closeModal } = useModalStore(
     useShallow((state: ModalStore) => ({
       setOnSubmit: state.setOnSubmit,
       closeModal: state.closeModal,
-      invitation: state.invitation,
     })),
   );
   const widgetIndex = useWidgetIndex(widgetItem);
+  const { invitation } = useInvitation();
 
   const { mutate: putInvitationConfig } = useInvitationConfigMutation(invitation?.id ?? '');
   const { mutateAsync: postInvitationImage } = useInvitationImageMutation(invitation?.id ?? '');

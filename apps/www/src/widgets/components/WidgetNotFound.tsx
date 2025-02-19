@@ -4,18 +4,13 @@ import { Button } from '@repo/shared';
 import type { WidgetItem } from '@repo/shared/src/types/pageBrothers.type';
 import { useEffect, useMemo } from 'react';
 import { AiOutlinePlusCircle } from 'react-icons/ai';
-import { useShallow } from 'zustand/shallow';
 
-import type { ModalStore } from '@/www/widgets/zustand';
-import useModalStore from '@/www/widgets/zustand';
+import { useInvitation } from '../hooks';
+import useModalStore from '../zustand';
 
 function WidgetNotFound() {
-  const { openModal, invitation } = useModalStore(
-    useShallow((state: ModalStore) => ({
-      openModal: state.openModal,
-      invitation: state.invitation,
-    })),
-  );
+  const openModal = useModalStore((state) => state.openModal);
+  const { invitation } = useInvitation();
 
   const introDefaultWidget: Omit<WidgetItem, 'id'> = useMemo(() => {
     return {

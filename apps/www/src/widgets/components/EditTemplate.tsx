@@ -17,17 +17,16 @@ import {
   WidgetModalHeader,
   WidgetNotFound,
 } from '@/www/widgets/components';
-import { useInvitationQuery } from '@/www/widgets/queries';
 import type { HookFormValues } from '@/www/widgets/types';
 import type { ModalStore } from '@/www/widgets/zustand';
 import useModalStore, { useToastStore } from '@/www/widgets/zustand';
 
+import { useInvitation } from '../hooks';
 import LocationMapRouter from '../location/LocationMapRouter';
 import RsvpSumbit from '../rsvp/RsvpSumbit';
 
 function EditTemplate() {
   const { id } = useParams<{ id: string }>();
-  const { data: invitation, isPending, error } = useInvitationQuery(id);
   const { openToast } = useToastStore();
   const {
     isDragging,
@@ -37,7 +36,7 @@ function EditTemplate() {
     closeModal,
     closeMultiModal,
     closeThirdModal,
-    setInvitation,
+    setInvitationId,
     onSubmit,
   } = useModalStore(
     useShallow((state: ModalStore) => ({
@@ -48,10 +47,13 @@ function EditTemplate() {
       closeModal: state.closeModal,
       closeMultiModal: state.closeMultiModal,
       closeThirdModal: state.closeThirdModal,
-      setInvitation: state.setInvitation,
+      setInvitationId: state.setInvitationId,
       onSubmit: state.onSubmit,
     })),
   );
+
+  const { invitation, isPending, error } = useInvitation();
+
   const methods = useForm<HookFormValues>({
     defaultValues: {
       invitation: null,
@@ -67,12 +69,15 @@ function EditTemplate() {
   );
 
   useEffect(() => {
+    if (!id) return;
+    setInvitationId(id);
+  }, [id, setInvitationId]);
+
+  useEffect(() => {
     console.log('invitation ====>', invitation);
-    if (invitation) {
-      setInvitation(invitation);
-      methods.reset({ invitation });
-    }
-  }, [invitation, setInvitation, methods]);
+    if (!invitation) return;
+    methods.reset({ invitation });
+  }, [methods, invitation]);
 
   if (isPending || !invitation) {
     return <FixedLoader />;

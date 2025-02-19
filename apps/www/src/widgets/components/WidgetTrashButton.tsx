@@ -1,15 +1,15 @@
 import type { WidgetItem } from '@repo/shared';
 import { FaRegTrashAlt } from 'react-icons/fa';
 
+import { useInvitation } from '../hooks';
 import { useWidgetDeleteMutation } from '../mutations';
-import useModalStore from '../zustand';
 
 interface WidgetTrashButtonProps {
   widgetItem: WidgetItem;
 }
 
 function WidgetTrashButton({ widgetItem }: WidgetTrashButtonProps) {
-  const { invitation } = useModalStore();
+  const { invitation } = useInvitation();
   const { mutate } = useWidgetDeleteMutation(invitation?.id ?? '');
 
   const handleClick = () => {

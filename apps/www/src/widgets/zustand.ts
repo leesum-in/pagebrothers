@@ -1,5 +1,4 @@
 import type {
-  IInvitation,
   IInvitationLocation,
   OwnerAccountItem,
   RsvpExtraField,
@@ -28,10 +27,10 @@ export type ThirdModalState = {
 };
 
 export type ModalStore = {
+  invitationId: string | null;
   modalState: ModalState;
   multiModalState: MultiModalState;
   thirdModalState: ThirdModalState;
-  invitation: IInvitation | null;
   isDragging: boolean;
   onSubmit: SubmitHandler<HookFormValues>;
   openModal: (widget: WidgetItem | Omit<WidgetItem, 'id'>) => void;
@@ -52,8 +51,8 @@ export type ModalStore = {
   closeMultiModal: () => void;
   closeThirdModal: () => void;
   setOnSubmit: (onSubmit: SubmitHandler<HookFormValues>) => void;
-  setInvitation: (invitation: IInvitation) => void;
   setIsDragging: (isDragging: boolean) => void;
+  setInvitationId: (invitationId: string) => void;
 };
 
 const useModalStore = create<ModalStore>((set) => ({
@@ -72,8 +71,8 @@ const useModalStore = create<ModalStore>((set) => ({
     extraFields: null,
     location: null,
   },
+  invitationId: null,
   isDragging: false,
-  invitation: null,
   onSubmit: () => {},
   openModal: (widget: WidgetItem | Omit<WidgetItem, 'id'>) => {
     set((state: ModalStore) => ({ modalState: { ...state.modalState, isOpen: true, widget } }));
@@ -145,11 +144,11 @@ const useModalStore = create<ModalStore>((set) => ({
   setOnSubmit: (onSubmit: SubmitHandler<HookFormValues>) => {
     set((state: ModalStore) => ({ ...state, onSubmit }));
   },
-  setInvitation: (invitation: IInvitation) => {
-    set((state: ModalStore) => ({ ...state, invitation }));
-  },
   setIsDragging: (isDragging: boolean) => {
     set((state: ModalStore) => ({ ...state, isDragging }));
+  },
+  setInvitationId: (invitationId: string) => {
+    set((state: ModalStore) => ({ ...state, invitationId }));
   },
 }));
 

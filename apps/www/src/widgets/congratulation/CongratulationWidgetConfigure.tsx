@@ -18,7 +18,7 @@ import { FixedLoader } from '@/www/ui';
 
 import { WidgetLabelWithInput } from '../components';
 import WidgetThreeWaySelector from '../components/WidgetThreeWaySelector';
-import { InputErrorProvider, useInputErrorContext, useWidgetIndex } from '../hooks';
+import { InputErrorProvider, useInputErrorContext, useInvitation, useWidgetIndex } from '../hooks';
 import { useInvitationConfigMutation } from '../mutations';
 import type { ConfigPayload, HookFormValues } from '../types';
 import type { ModalStore } from '../zustand';
@@ -40,13 +40,13 @@ function CongratulationWidgetConfigureInner({ widgetItem }: CongratulationWidget
   const widgetConfig = widgetItem.config as CongratulationWidgetConfig;
   const { isInputError, setIsInputError } = useInputErrorContext();
   const { watch, register, setValue, getValues } = useFormContext<HookFormValues>();
-  const { setOnSubmit, closeModal, invitation } = useModalStore(
+  const { setOnSubmit, closeModal } = useModalStore(
     useShallow((state: ModalStore) => ({
       setOnSubmit: state.setOnSubmit,
       closeModal: state.closeModal,
-      invitation: state.invitation,
     })),
   );
+  const { invitation } = useInvitation();
   const widgetIndex = useWidgetIndex(widgetItem);
   const { mutate: putInvitationConfig } = useInvitationConfigMutation(invitation?.id ?? '');
   const accounts = useRef(Object.entries(widgetConfig.accounts));

@@ -1,15 +1,14 @@
-import invitation from '@/mocks/MockInvitation';
 import widget from '@/mocks/MockWidget';
 import { VideoWidgetConfigure } from '@/www/widgets/video';
 import { Modal } from '@shared/components';
 import { QueryProvider } from '@shared/query';
-import { IInvitation, WidgetItem } from '@shared/types';
+import { WidgetItem } from '@shared/types';
 import { Meta, StoryFn } from '@storybook/react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { WidgetModalFooter } from 'www';
 import useModalStore from 'www/src/widgets/zustand';
 
-useModalStore.getState().setInvitation(invitation as IInvitation);
+// useModalStore.getState().setInvitation(invitation as IInvitation);
 useModalStore.getState().openModal(widget as WidgetItem);
 export default {
   title: 'www/WidgetConfig/Video',

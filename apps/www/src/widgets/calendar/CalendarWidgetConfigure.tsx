@@ -12,7 +12,7 @@ import { FixedLoader } from '@/www/ui';
 import { WidgetBreakLine, WidgetLabelWithInput } from '../components';
 import WidgetEventAt from '../components/WidgetEventAt';
 import WidgetThreeWaySelector from '../components/WidgetThreeWaySelector';
-import { useWidgetIndex } from '../hooks';
+import { useInvitation, useWidgetIndex } from '../hooks';
 import { useEventInfoMutation, useInvitationConfigMutation } from '../mutations';
 import type { ConfigPayload, EventInfoData, HookFormValues } from '../types';
 import type { ModalStore } from '../zustand';
@@ -25,14 +25,13 @@ interface CalendarWidgetConfigureProps {
 function CalendarWidgetConfigure({ widgetItem }: CalendarWidgetConfigureProps) {
   const [isIcalButtonChecked, setIsIcalButtonChecked] = useState(true);
   const { watch, register, reset } = useFormContext<HookFormValues>();
-  const { setOnSubmit, closeModal, invitation } = useModalStore(
+  const { setOnSubmit, closeModal } = useModalStore(
     useShallow((state: ModalStore) => ({
       setOnSubmit: state.setOnSubmit,
       closeModal: state.closeModal,
-      invitation: state.invitation,
     })),
   );
-
+  const { invitation } = useInvitation();
   const { mutate: postEventInfo } = useEventInfoMutation(invitation?.id ?? '');
   const { mutate: putInvitationConfig } = useInvitationConfigMutation(invitation?.id ?? '');
 

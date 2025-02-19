@@ -1,13 +1,11 @@
 'use client';
 
 import Link from 'next/link';
-import { useParams } from 'next/navigation';
 
-import { useInvitationQuery } from '@/www/widgets/queries';
+import { useInvitation } from '@/www/widgets/hooks';
 
 function Navigation(): React.ReactNode {
-  const { id } = useParams<{ id: string }>();
-  const { data: invitation } = useInvitationQuery(id);
+  const { invitation } = useInvitation();
 
   return (
     <nav className="sticky top-0 z-20 flex h-12 flex-none items-center bg-white pl-2 text-sm desktop:h-14 desktop:pl-3 desktop:text-base">
